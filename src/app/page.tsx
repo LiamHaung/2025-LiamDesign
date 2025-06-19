@@ -46,10 +46,30 @@ function getRandomIllustrationImagesNoRepeat(count: number) {
 // 在 client 端產生隨機圖片，避免 hydration error
 export default function Home() {
   const [lang, setLang] = useState<'zh' | 'en' | 'jp'>('zh');
-  const [showMenuInfo1, setShowMenuInfo1] = useState(false);
-  const [showMenuInfo2, setShowMenuInfo2] = useState(false);
-  const [showMenuInfo3, setShowMenuInfo3] = useState(false);
   const [marqueeImages, setMarqueeImages] = useState<string[]>([]);
+  const [projectStep, setProjectStep] = useState(1);
+  const projectStepData = [
+    {
+      title: 'STEP1',
+      desc: '青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。',
+    },
+    {
+      title: 'STEP2',
+      desc: '這是第二步驟的說明內容，可以自訂。',
+    },
+    {
+      title: 'STEP3',
+      desc: '這是第三步驟的說明內容，可以自訂。',
+    },
+    {
+      title: 'STEP4',
+      desc: '這是第四步驟的說明內容，可以自訂。',
+    },
+    {
+      title: 'STEP5',
+      desc: '這是第五步驟的說明內容，可以自訂。',
+    },
+  ];
 
   useEffect(() => {
     setMarqueeImages(getRandomIllustrationImagesNoRepeat(8));
@@ -184,61 +204,41 @@ export default function Home() {
 
           {/* 在 About Me section 之後添加侏羅紀菜單部分 */}
           <section id="jurassic-menu" className="w-full flex flex-col items-center justify-center mt-24 mb-24 relative" style={{ minHeight: 1200 }}>
-            {/* 左上 + 按鈕 */}
-            <button className="absolute left-1/2 top-[18%] z-30 w-14 h-14 bg-white border-2 border-black rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-200 transition" style={{transform: 'translate(-160px, 0)'}} onClick={() => setShowMenuInfo1(true)} aria-label="菜單icon-1">
-              <span style={{fontSize: 32, fontWeight: 900, color: '#231815'}}>+</span>
-            </button>
-            {showMenuInfo1 && (
-              <div className="absolute left-1/2 top-[22%] z-40 bg-white border-2 border-black rounded-xl shadow-xl p-6" style={{width: 340, minHeight: 120, transform: 'translate(-160px, 0)'}}>
-                <button onClick={() => setShowMenuInfo1(false)} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-black flex items-center justify-center" aria-label="關閉">
-                  <span style={{fontSize: 20, fontWeight: 900}}>-</span>
-                </button>
-                <div className="text-lg font-bold text-black">菜單資訊 1</div>
-                <div className="mt-2 text-base text-black">這裡可以填寫菜單說明內容。</div>
+            <div className="project-column-center">
+              <div className="bg-[#ffe000] px-6 py-3 mb-6 inline-block text-5xl font-extrabold text-black" style={{ fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif' }}>
+                2025 Jurassic MENU
               </div>
-            )}
-            {/* 右上 + 按鈕 */}
-            <button className="absolute left-1/2 top-[18%] z-30 w-14 h-14 bg-white border-2 border-black rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-200 transition" style={{transform: 'translate(160px, 0)'}} onClick={() => setShowMenuInfo2(true)} aria-label="菜單icon-2">
-              <span style={{fontSize: 32, fontWeight: 900, color: '#231815'}}>+</span>
-            </button>
-            {showMenuInfo2 && (
-              <div className="absolute left-1/2 top-[22%] z-40 bg-white border-2 border-black rounded-xl shadow-xl p-6" style={{width: 340, minHeight: 120, transform: 'translate(160px, 0)'}}>
-                <button onClick={() => setShowMenuInfo2(false)} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-black flex items-center justify-center" aria-label="關閉">
-                  <span style={{fontSize: 20, fontWeight: 900}}>-</span>
-                </button>
-                <div className="text-lg font-bold text-black">菜單資訊 2</div>
-                <div className="mt-2 text-base text-black">這裡可以填寫菜單說明內容。</div>
+              <div style={{ transform: 'scale(0.8)', transformOrigin: 'top center', width: '1134px', height: '1134px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
+                <FlipBook images={[
+                  { src: "/menu-0615-demo-test-img/page-1.png", width: 1134, height: 567 },
+                  { src: "/menu-0615-demo-test-img/page-2.png", width: 1134, height: 1134 },
+                  { src: "/menu-0615-demo-test-img/page-3.png", width: 1134, height: 1134 },
+                  { src: "/menu-0615-demo-test-img/page-4.png", width: 1134, height: 1134 },
+                  { src: "/menu-0615-demo-test-img/page-5.png", width: 1134, height: 1134 },
+                  { src: "/menu-0615-demo-test-img/page-6.png", width: 1134, height: 567 },
+                  { src: "/menu-0615-demo-test-img/page-12.png", width: 1134, height: 567 },
+                ]} />
               </div>
-            )}
-            {/* 下方 + 按鈕 */}
-            <button className="absolute left-1/2 bottom-[18%] z-30 w-14 h-14 bg-white border-2 border-black rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-200 transition" style={{transform: 'translateX(-50%)'}} onClick={() => setShowMenuInfo3(true)} aria-label="菜單icon-3">
-              <span style={{fontSize: 32, fontWeight: 900, color: '#231815'}}>+</span>
-            </button>
-            {showMenuInfo3 && (
-              <div className="absolute left-1/2 bottom-[22%] z-40 bg-white border-2 border-black rounded-xl shadow-xl p-6" style={{width: 340, minHeight: 120, transform: 'translateX(-50%)'}}>
-                <button onClick={() => setShowMenuInfo3(false)} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-black flex items-center justify-center" aria-label="關閉">
-                  <span style={{fontSize: 20, fontWeight: 900}}>-</span>
-                </button>
-                <div className="text-lg font-bold text-black">菜單資訊 3</div>
-                <div className="mt-2 text-base text-black">這裡可以填寫菜單說明內容。</div>
-              </div>
-            )}
-            <div id="jurassic-menu-bounds" className="relative w-full flex flex-row items-start justify-center gap-8" style={{ minHeight: 600 }}>
-              {/* 中間電子書 */}
-              <div className="flex flex-col items-center" style={{ margin: '0 auto' }}>
-                <div className="bg-[#ffe000] px-6 py-3 mb-6 inline-block text-5xl font-extrabold text-black" style={{ fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif' }}>
-                  2025 Jurassic MENU
-                </div>
-                <div style={{ transform: 'scale(0.8)', transformOrigin: 'top center', width: '1134px', height: '1134px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <FlipBook images={[
-                    { src: "/menu-0615-demo-test-img/page-1.png", width: 1134, height: 567 },
-                    { src: "/menu-0615-demo-test-img/page-2.png", width: 1134, height: 1134 },
-                    { src: "/menu-0615-demo-test-img/page-3.png", width: 1134, height: 1134 },
-                    { src: "/menu-0615-demo-test-img/page-4.png", width: 1134, height: 1134 },
-                    { src: "/menu-0615-demo-test-img/page-5.png", width: 1134, height: 1134 },
-                    { src: "/menu-0615-demo-test-img/page-6.png", width: 1134, height: 567 },
-                    { src: "/menu-0615-demo-test-img/page-12.png", width: 1134, height: 567 },
-                  ]} />
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+                <div className="project-step-card">
+                  <div className="project-step-header">
+                    <span className="project-step-title">{projectStepData[projectStep - 1].title}</span>
+                    <button
+                      className="project-step-btn"
+                      onClick={() => {
+                        setProjectStep(projectStep < 5 ? projectStep + 1 : 1);
+                      }}
+                      aria-label="切換步驟"
+                    >
+                      ▶
+                    </button>
+                  </div>
+                  <div className="project-step-body">
+                    <div className="project-step-desc">
+                      {projectStepData[projectStep - 1].desc}
+                    </div>
+                    <div className="project-step-img" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -262,6 +262,17 @@ export default function Home() {
           </div>
         </main>
       </div>
+      {/* Footer 區塊 */}
+      <footer className="footer-black">
+        <div className="footer-content">
+          <span className="footer-copyright">© 2025 Liam Design. All rights reserved.</span>
+          <span className="footer-icons">
+            <span className="footer-icon-placeholder" />
+            <span className="footer-icon-placeholder" />
+            <span className="footer-icon-placeholder" />
+          </span>
+        </div>
+      </footer>
       <style jsx global>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -466,6 +477,116 @@ export default function Home() {
         .logo-block.long img {
           width: 108px;
           height: 108px;
+        }
+        .footer-black {
+          width: 100%;
+          background: #000;
+          color: #fff;
+          padding: 32px 0 24px 0;
+          margin-top: 64px;
+        }
+        .footer-content {
+          max-width: 1440px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 48px;
+        }
+        .footer-copyright {
+          font-size: 1.1rem;
+          letter-spacing: 0.08em;
+        }
+        .footer-icons {
+          display: flex;
+          gap: 18px;
+        }
+        .footer-icon-placeholder {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: #222;
+          display: inline-block;
+        }
+        .project-step-card {
+          width: 800px;
+          min-height: 320px;
+          background: #fff;
+          border: 4px solid #222;
+          border-radius: 28px;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+          padding: 36px 36px 32px 36px;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          position: relative;
+        }
+        .project-step-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+        }
+        .project-step-title {
+          font-size: 2.6rem;
+          font-weight: 900;
+          letter-spacing: 0.04em;
+          color: #111;
+        }
+        .project-step-arrow {
+          font-size: 2.2rem;
+          font-weight: 900;
+          margin-top: 4px;
+          color: #111;
+        }
+        .project-step-body {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          gap: 0;
+        }
+        .project-step-desc {
+          flex: 1 1 50%;
+          max-width: 50%;
+          font-size: 1.15rem;
+          font-weight: 700;
+          line-height: 1.6;
+          margin-bottom: 0;
+          color: #111;
+          display: flex;
+          align-items: flex-start;
+        }
+        .project-step-img {
+          flex: 1 1 50%;
+          max-width: 50%;
+          width: 140px;
+          height: 140px;
+          background: #111;
+          border-radius: 8px;
+          margin-left: 32px;
+          align-self: flex-start;
+          position: static;
+        }
+        .project-column-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          max-width: 1440px;
+          margin: 0 auto;
+        }
+        .project-step-btn {
+          background: none;
+          border: none;
+          font-size: 2.2rem;
+          font-weight: 900;
+          color: #111;
+          cursor: pointer;
+          margin-top: 4px;
+          transition: color 0.15s;
+        }
+        .project-step-btn:hover {
+          color: #ffe600;
         }
       `}</style>
     </div>
