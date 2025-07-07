@@ -71,28 +71,142 @@ export default function Home() {
     },
   ];
 
+  // 打字機動畫：簡單設計
+  const simpleText = "簡單設計";
+  const [simpleDisplay, setSimpleDisplay] = useState("");
+  const [simpleDone, setSimpleDone] = useState(false);
+  useEffect(() => {
+    let i = 0;
+    setSimpleDisplay("");
+    setSimpleDone(false);
+    const interval = setInterval(() => {
+      setSimpleDisplay((prev) => prev + simpleText[i]);
+      i++;
+      if (i >= simpleText.length) {
+        clearInterval(interval);
+        setSimpleDone(true);
+      }
+    }, 220);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 打字機動畫：LIAM DESIGN
+  const liamText = "LIAM\nDESIGN";
+  const [liamDisplay, setLiamDisplay] = useState("");
+  useEffect(() => {
+    if (!simpleDone) return;
+    let i = 0;
+    setLiamDisplay("");
+    const interval = setInterval(() => {
+      setLiamDisplay((prev) => prev + liamText[i]);
+      i++;
+      if (i >= liamText.length) clearInterval(interval);
+    }, 120);
+    return () => clearInterval(interval);
+  }, [simpleDone]);
+
+  // 右側內文打字機動畫
+  const rightTexts = [
+    "沒有一件事是簡單的，",
+    "但簡單設計陪你把它慢慢梳理清楚。",
+    "適合剛起步、預算不多，但對品牌化有感覺的你。",
+    "我們提供有溫度、有機、有故事感的視覺協助，",
+    "從概念到Logo，從故事到包裝，",
+    "一起慢慢長出屬於品牌的樣子。"
+  ];
+  const [rightDisplay, setRightDisplay] = useState(Array(rightTexts.length).fill(""));
+  useEffect(() => {
+    if (!liamDisplay || liamDisplay.length < liamText.length) return;
+    let seg = 0;
+    let char = 0;
+    const arr = Array(rightTexts.length).fill("");
+    setRightDisplay(arr);
+    function typeNext() {
+      if (seg >= rightTexts.length) {
+        return;
+      }
+      if (char < rightTexts[seg].length) {
+        arr[seg] += rightTexts[seg][char];
+        setRightDisplay([...arr]);
+        char++;
+        setTimeout(typeNext, 60);
+      } else {
+        seg++;
+        char = 0;
+        setTimeout(typeNext, 300);
+      }
+    }
+    typeNext();
+    // eslint-disable-next-line
+  }, [liamDisplay]);
+
   useEffect(() => {
     setMarqueeImages(getRandomIllustrationImagesNoRepeat(8));
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full bg-[#ffe000] font-sans overflow-x-hidden">
-      {/* 背景格線 */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <svg width="100%" height="100%" className="w-full h-full" style={{ minHeight: '100vh', position: 'absolute', inset: 0 }}>
-          <defs>
-            <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <rect width="60" height="60" fill="transparent" />
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#000" strokeWidth="1" />
-              <path d="M 0 60 L 60 60 60 0" fill="none" stroke="#000" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+    <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#fff', zIndex: -50 }}>
+      {/* 黃色背景層（hero 區塊下方） */}
+      <div style={{ position: 'fixed', left: 0, top: 0, width: '100vw', height: '100vh', background: '#ffe000', zIndex: -50, pointerEvents: 'none' }} />
+      {/* 全頁格線背景 */}
+      <svg className="global-grid-bg" width="100vw" height="100vh" style={{ position: 'fixed', left: 0, top: 0, zIndex: -49, pointerEvents: 'none' }}>
+        <defs>
+          <pattern id="global-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+            <rect width="48" height="48" fill="none" />
+            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#000" strokeWidth="1" />
+            <path d="M 0 48 L 48 48 48 0" fill="none" stroke="#000" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="100vw" height="100vh" fill="url(#global-grid)" />
+      </svg>
+      {/* 形象牆（Hero Wall）區塊開始 */}
+      <section className="hero-block-grid">
+        <div className="hero-grid-container">
+          {/* 左側大標與 LIAM DESIGN 上下排列 */}
+          <div className="hero-left-block">
+            <div className="hero-title-block">
+              <span className="hero-title-bg hero-title-vertical">{simpleDisplay}</span>
+            </div>
+            <div className="hero-liam-block">
+              <span className="hero-liam-bg">{
+                liamDisplay.split("\n").map((line, idx, arr) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    {idx < arr.length - 1 && <br />}
+                  </React.Fragment>
+                ))
+              }</span>
+            </div>
+          </div>
+          {/* 右側直排中文介紹 */}
+          <div className="hero-vertical-desc">
+            {rightDisplay.map((txt, i) => (
+              <div key={i}>{txt}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* 形象牆（Hero Wall）區塊結束 */}
+
+      {/* 跑馬燈 - 形象牆與主內容交界處 */}
+      <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10, marginBottom: 16 }}>
+        <div className="animate-marquee whitespace-nowrap">
+          {Array(4).fill(null).map((_, i) => (
+            <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+          ))}
+        </div>
+      </div>
+      {/* 跑馬燈 - 白底黑字 */}
+      <div className="w-full bg-white py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+        <div className="animate-marquee-reverse whitespace-nowrap">
+          {Array(4).fill(null).map((_, i) => (
+            <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+          ))}
+        </div>
       </div>
 
       {/* 左側垂直導覽列（fixed） */}
-      <nav className="fixed top-1/2 left-0 z-50 flex flex-col items-center justify-center gap-6 bg-white border border-black rounded-r-2xl py-8 px-6" style={{ transform: 'translateY(-50%)' }}>
+      <nav className="fixed top-1/2 left-0 z-[2000] flex flex-col items-center justify-center gap-6 bg-white border border-black rounded-r-2xl py-8 px-6" style={{ transform: 'translateY(-50%)' }}>
         <a className="nav-link-vertical" href="#about" data-label="About">A</a>
         <a className="nav-link-vertical" href="#illustration" data-label="Illustration">I</a>
         <a className="nav-link-vertical" href="#branding" data-label="Branding">B</a>
@@ -263,7 +377,7 @@ export default function Home() {
         </main>
       </div>
       {/* Footer 區塊 */}
-      <footer className="footer-black">
+      <footer className="footer-black" style={{ zIndex: -48, position: 'relative' }}>
         <div className="footer-content">
           <span className="footer-copyright">© 2025 Liam Design. All rights reserved.</span>
           <span className="footer-icons">
@@ -587,6 +701,109 @@ export default function Home() {
         }
         .project-step-btn:hover {
           color: #ffe600;
+        }
+        .hero-block-grid {
+          position: relative;
+          width: 100vw;
+          min-height: 600px;
+          background: #fffbe6;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          z-index: 1;
+          padding-top: 100px;
+          padding-bottom: 150px;
+        }
+        .global-grid-bg {
+          width: 100vw;
+          height: 100vh;
+          position: fixed;
+          left: 0;
+          top: 0;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .hero-grid-container {
+          position: relative;
+          width: 100vw;
+          max-width: 1200px;
+          min-height: 600px;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          align-items: start;
+          gap: 0;
+          z-index: 1;
+        }
+        .hero-left-block {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          margin-top: 48px;
+          gap: 64px;
+        }
+        .hero-title-block {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .hero-title-bg {
+          font-size: 3.2rem;
+          font-weight: 900;
+          color: #111;
+          background: #ffe000;
+          padding: 20px 24px;
+          border-radius: 6px;
+          line-height: 1.1;
+          display: inline-block;
+          letter-spacing: 0.25em;
+        }
+        .hero-liam-block {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .hero-liam-bg {
+          font-size: 3.2rem;
+          font-weight: 900;
+          color: #111;
+          background: #ffe000;
+          padding: 20px 24px;
+          border-radius: 6px;
+          line-height: 1.1;
+          display: inline-block;
+        }
+        .hero-vertical-desc {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #111;
+          margin-top: 24px;
+          position: absolute;
+          right: calc(10vw - 100px);
+          top: 0;
+        }
+        .hero-vertical-desc > div {
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          background: #ffe000;
+          border-radius: 4px;
+          padding: 12px 8px;
+          display: inline-block;
+        }
+        .hero-vertical-desc > div:nth-child(1) { margin-top: 0; margin-bottom: 0; }
+        .hero-vertical-desc > div:nth-child(2) { margin-top: 24px; margin-bottom: 32px; }
+        .hero-vertical-desc > div:nth-child(3) { margin-top: -12px; margin-bottom: 12px; }
+        .hero-vertical-desc > div:nth-child(4) { margin-top: 18px; margin-bottom: 40px; }
+        .hero-vertical-desc > div:nth-child(5) { margin-top: -8px; margin-bottom: 18px; }
+        .hero-vertical-desc > div:nth-child(6) { margin-top: 20px; margin-bottom: 52px; }
+        .hero-title-vertical {
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
         }
       `}</style>
     </div>
