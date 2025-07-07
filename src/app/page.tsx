@@ -115,6 +115,7 @@ export default function Home() {
     "一起慢慢長出屬於品牌的樣子。"
   ];
   const [rightDisplay, setRightDisplay] = useState(Array(rightTexts.length).fill(""));
+  const [rightAllDone, setRightAllDone] = useState(false);
   useEffect(() => {
     if (!liamDisplay || liamDisplay.length < liamText.length) return;
     let seg = 0;
@@ -123,6 +124,7 @@ export default function Home() {
     setRightDisplay(arr);
     function typeNext() {
       if (seg >= rightTexts.length) {
+        setRightAllDone(true);
         return;
       }
       if (char < rightTexts[seg].length) {
@@ -177,6 +179,12 @@ export default function Home() {
                 ))
               }</span>
             </div>
+          </div>
+          {/* 中間地圖 SVG */}
+          <div className={`flex items-center justify-center fade-in-map${rightAllDone ? ' show' : ''}`} style={{ width: 440 }}>
+            {rightAllDone && (
+              <img src="/maps0708.svg" alt="地圖" style={{ width: 420, height: 'auto', display: 'block', margin: '0 auto' }} />
+            )}
           </div>
           {/* 右側直排中文介紹 */}
           <div className="hero-vertical-desc">
@@ -804,6 +812,13 @@ export default function Home() {
         .hero-title-vertical {
           writing-mode: vertical-rl;
           text-orientation: mixed;
+        }
+        .fade-in-map {
+          opacity: 0;
+          transition: opacity 0.8s cubic-bezier(.4,1.3,.6,1);
+        }
+        .fade-in-map.show {
+          opacity: 1;
         }
       `}</style>
     </div>
