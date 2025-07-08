@@ -109,14 +109,16 @@ export default function Home() {
             </div>
             {/* 中央黑框放 yilan_map.gif */}
             <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
-              {/* 敘述框區塊 */}
-              <div className="flex justify-center gap-4 mb-4" style={{ position: 'absolute', top: '-64px', left: '50%', transform: 'translateX(-50%)', width: '100%' }}>
-                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述一</div>
-                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述二</div>
-                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述三</div>
-              </div>
-              <div className="w-[756px] h-[756px] border-4 border-black bg-[#FAF6E9] flex items-center justify-center">
-                <img src="/yilan_map.gif" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
+              <div className="flex flex-col items-center">
+                {/* 敘述框區塊 */}
+                <div className="flex justify-center gap-4 mb-4">
+                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述一</div>
+                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述二</div>
+                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述三</div>
+                </div>
+                <div className="w-[756px] h-[756px] border-4 border-black bg-[#FAF6E9] flex items-center justify-center">
+                  <img src="/yilan_map.gif" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
+                </div>
               </div>
             </div>
             {/* runner.gif 直接顯示 */}
