@@ -1,75 +1,10 @@
 'use client';
 import Image from "next/image";
 import React, { useRef, useState, useEffect } from "react";
-import FlipBook from "@/components/FlipBook";
-
-// About Me 多語言內容
-const ABOUT_CONTENT = {
-  zh: {
-    label: "中",
-    text: "Liam工作室致力於打造具有創意與視覺焦點的品牌設計。我們專注於視覺識別（Logo、名片、社群素材）與整體品牌形象規劃，從概念發想到落地應用，協助客戶呈現最具辨識度的設計亮點，讓每一個品牌都能被精準聚焦、亮眼出眾。"
-  },
-  en: {
-    label: "英",
-    text: "Liam Design Studio specializes in creating visually impactful and concept-driven brand identities. From logo design and business cards to social media visuals, we help businesses stand out with unique and memorable design solutions. With a focus on clarity, creativity, and consistency, our work highlights the essence of every brand, ensuring your story is told through thoughtful and distinctive visuals."
-  },
-  jp: {
-    label: "日",
-    text: "Liamデザインスタジオは、視覚的なインパクトと創造性を重視したブランドデザインを提供します。ロゴ、名刺、SNSビジュアルなど、ブランドの個性と魅力を引き出すデザインで、印象に残るブランド構築をサポートします。あなたの「光る一点」を、世界に届けます。"
-  }
-};
 
 // illustration_1.png ~ illustration_6.png 隨機分配給 8 格，且不連續重複
-const ILLUSTRATION_IMAGES = [
-  '/illustration_1.png',
-  '/illustration_2.png',
-  '/illustration_3.png',
-  '/illustration_4.png',
-  '/illustration_5.png',
-  '/illustration_6.png',
-];
-function getRandomIllustrationImagesNoRepeat(count: number) {
-  const arr = [];
-  let lastIdx = -1;
-  for (let i = 0; i < count; i++) {
-    let idx;
-    do {
-      idx = Math.floor(Math.random() * ILLUSTRATION_IMAGES.length);
-    } while (idx === lastIdx && ILLUSTRATION_IMAGES.length > 1);
-    arr.push(ILLUSTRATION_IMAGES[idx]);
-    lastIdx = idx;
-  }
-  return arr;
-}
-
 // 在 client 端產生隨機圖片，避免 hydration error
 export default function Home() {
-  const [lang, setLang] = useState<'zh' | 'en' | 'jp'>('zh');
-  const [marqueeImages, setMarqueeImages] = useState<string[]>([]);
-  const [projectStep, setProjectStep] = useState(1);
-  const projectStepData = [
-    {
-      title: 'STEP1',
-      desc: '青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。—壹青山依舊在，幾度夕陽紅。慣看秋月春風。',
-    },
-    {
-      title: 'STEP2',
-      desc: '這是第二步驟的說明內容，可以自訂。',
-    },
-    {
-      title: 'STEP3',
-      desc: '這是第三步驟的說明內容，可以自訂。',
-    },
-    {
-      title: 'STEP4',
-      desc: '這是第四步驟的說明內容，可以自訂。',
-    },
-    {
-      title: 'STEP5',
-      desc: '這是第五步驟的說明內容，可以自訂。',
-    },
-  ];
-
   // 動畫依序顯示 state
   const [showSimple, setShowSimple] = useState(false);
   const [showLiam, setShowLiam] = useState(false);
@@ -89,281 +24,480 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setMarqueeImages(getRandomIllustrationImagesNoRepeat(8));
+    // setMarqueeImages(getRandomIllustrationImagesNoRepeat(8)); // This line was removed
   }, []);
 
   // 移除 runnerTop, useEffect, scroll/resize 事件
-  const blackMarqueeRef = useRef<HTMLDivElement>(null);
   const runnerRef = useRef<HTMLImageElement>(null);
 
+  // 圖片預覽狀態
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 處理圖片上傳
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 處理圖片區域點擊
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
-    <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#fff', zIndex: -50 }}>
-      {/* 黃色背景層（hero 區塊下方） */}
-      <div style={{ position: 'fixed', left: 0, top: 0, width: '100vw', height: '100vh', background: '#ffe000', zIndex: -50, pointerEvents: 'none' }} />
-      {/* 全頁格線背景 */}
-      <svg className="global-grid-bg" width="100vw" height="100vh" style={{ position: 'fixed', left: 0, top: 0, zIndex: -49, pointerEvents: 'none' }}>
-        <defs>
-          <pattern id="global-grid" width="48" height="48" patternUnits="userSpaceOnUse">
-            <rect width="48" height="48" fill="none" />
-            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#000" strokeWidth="1" />
-            <path d="M 0 48 L 48 48 48 0" fill="none" stroke="#000" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="100vw" height="100vh" fill="url(#global-grid)" />
-      </svg>
-      {/* 形象牆（Hero Wall）區塊開始 */}
-      <section className="hero-block-grid">
-        <div className="hero-grid-container">
-          {/* 左側大標與 LIAM DESIGN 上下排列 */}
-          <div className="hero-left-block" style={{ zIndex: 2, position: 'relative' }}>
-            <div
-              className={`hero-title-block slide-in-left${showSimple ? ' show' : ''}`}
-            >
-              <span className="hero-title-bg hero-title-vertical">簡單設計</span>
-            </div>
-            <div
-              className={`hero-liam-block slide-in-up${showLiam ? ' show' : ''}`}
-            >
-              <span className="hero-liam-bg">LIAM<br/>DESIGN</span>
-            </div>
-          </div>
-          {/* 右側直排中文介紹 */}
-          <div
-            className={`hero-vertical-desc slide-in-right${showRight ? ' show' : ''}`}
-            style={{ zIndex: 2, position: 'absolute', right: 'calc(10vw - 100px)', bottom: 0 }}
-          >
-            {[
-              "沒有一件事是簡單的，",
-              "但簡單設計陪你把它慢慢梳理清楚。",
-              "適合剛起步、預算不多，但對品牌化有感覺的你。",
-              "我們提供有溫度、有機、有故事感的視覺協助，",
-              "從概念到Logo，從故事到包裝，",
-              "一起慢慢長出屬於品牌的樣子。"
-            ].map((txt, i) => (
+    <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#fff' }}>
+      {/* 背景層容器 */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        {/* 黃色背景層（hero 區塊下方） */}
+        <div className="absolute inset-0" style={{ background: '#fff' }} />
+        {/* 全頁格線背景 */}
+        <svg className="global-grid-bg absolute inset-0" width="100%" height="100%">
+          <defs>
+            <pattern id="global-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <rect width="48" height="48" fill="none" />
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#000" strokeWidth="1" />
+              <path d="M 0 48 L 48 48 48 0" fill="none" stroke="#000" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#global-grid)" />
+        </svg>
+      </div>
+
+      {/* 主要內容容器 */}
+      <div className="relative z-10">
+        {/* 形象牆（Hero Wall）區塊開始 */}
+        <section className="hero-block-grid">
+          <div className="hero-grid-container">
+            {/* 左側大標與 LIAM DESIGN 上下排列 */}
+            <div className="hero-left-block" style={{ zIndex: 2, position: 'relative' }}>
               <div
-                key={i}
-                style={
-                  (i === 1 || i === 2 || i === 3)
-                    ? { whiteSpace: 'nowrap' }
-                    : undefined
-                }
+                className={`hero-title-block slide-in-left${showSimple ? ' show' : ''}`}
               >
-                {txt}
+                <span className="hero-title-bg hero-title-vertical">簡單設計</span>
               </div>
-            ))}
-          </div>
-          {/* runner.gif 直接顯示 */}
-        </div>
-      </section>
-      {/* 形象牆（Hero Wall）區塊結束 */}
-
-      {/* 跑馬燈 - 形象牆與主內容交界處 */}
-      <div style={{ position: 'relative' }}>
-        <img
-          ref={runnerRef}
-          src="/runner.gif"
-          alt="陪跑員"
-          style={{
-            position: 'absolute',
-            top: -250,
-            left: 0,
-            zIndex: 9999,
-            width: 'auto',
-            height: 'auto'
-          }}
-        />
-        <div ref={blackMarqueeRef} className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10, marginBottom: 16 }}>
-          <div className="animate-marquee whitespace-nowrap">
-            {Array(4).fill(null).map((_, i) => (
-              <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* 跑馬燈 - 白底黑字 */}
-      <div className="w-full bg-white py-4 overflow-hidden runner-bar-relative" style={{ position: 'relative', zIndex: 10 }}>
-        <div className="animate-marquee-reverse whitespace-nowrap">
-          {Array(4).fill(null).map((_, i) => (
-            <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
-          ))}
-        </div>
-      </div>
-
-      {/* Logo fixed 置左下 */}
-      <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
-        <div className="logo-block long">
-          <Image src="/logo.svg" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
-        </div>
-      </div>
-
-      {/* 內容 container（不含 navbar/aside） */}
-      <div className="relative w-full max-w-7xl px-16 mx-auto flex flex-col items-center">
-        {/* 主內容區塊 */}
-        <main className="relative z-10 flex flex-col items-center gap-12 pt-32 pb-16 px-4 min-h-[700px]">
-          {/* 視窗群（6個，錯落排列） */}
-          <div className="relative w-full min-h-[600px] z-10 pb-16" style={{ height: 520, margin: '0 auto', maxWidth: 1400, paddingBottom: 100 }}>
-            {/* hero_map.svg 永遠顯示在 hero 區塊下方，z-10（背景格線 z-0，hero_map.svg z-10） */}
-            {/* 這裡原本有五個+按鈕，已全部移除 */}
-            <div className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center" style={{transform: 'translate(-50%, -50%)'}}>
-              <img className="yilan-map-hover" src="/yilan_map.gif" alt="宜蘭地圖" style={{ width: '80vw', maxWidth: 1200, objectFit: 'contain', transform: 'scale(1.2)', transformOrigin: 'center' }} />
-            </div>
-            {/* 地圖上方對話窗 */}
-            <div className="absolute z-30 w-full" style={{left: 0, top: '8%'}}>
-              <div style={{position: 'absolute', left: '28%', top: '200px', pointerEvents: 'auto'}}>
-                <div className="speech-bubble speech-black vertical-bubble">{'設計經由溝通'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
-              </div>
-              <div style={{position: 'absolute', left: '60%', top: '18%', pointerEvents: 'auto'}}>
-                <div className="speech-bubble speech-white vertical-bubble">{'品牌源自生活'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
-              </div>
-              <div style={{position: 'absolute', left: '18%', top: '38%', pointerEvents: 'auto'}}>
-                <div className="speech-bubble speech-yellow vertical-bubble">{'精神來自土地'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
+              <div
+                className={`hero-liam-block slide-in-up${showLiam ? ' show' : ''}`}
+              >
+                <span className="hero-liam-bg">LIAM<br/>DESIGN</span>
               </div>
             </div>
-            {/* 地圖右側大按鈕（移到下方置中） */}
-          </div>
-          {/* 地圖下方置中按鈕 */}
-          <div className="w-full flex flex-col items-center justify-center gap-6 mt-8">
-            <button className="map-action-btn map-action-btn-center">了解案例</button>
-            <button className="map-action-btn map-action-btn-center">查詢報價</button>
-          </div>
-
-          {/* 跑馬燈一 */}
-          <div className="w-full max-w-7xl overflow-hidden mt-16 pt-12">
-            <div className="flex gap-4 animate-marquee">
-              {marqueeImages.map((src, i) => (
-                <div key={i} className="aspect-[16/9] w-64 border border-black bg-white flex flex-col items-center justify-start overflow-hidden rounded-xl" style={{borderRadius: 18}}>
-                  <div className="bg-black w-full h-7" />
-                  <div className="flex-1 w-full flex items-center justify-center bg-gray-300">
-                    <img src={src} alt={`illustration`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', borderRadius: 18 }} />
-                  </div>
+            {/* 右側直排中文介紹 */}
+            <div
+              className={`hero-vertical-desc slide-in-right${showRight ? ' show' : ''}`}
+              style={{ zIndex: 2, position: 'absolute', right: 'calc(10vw - 100px)', bottom: 0 }}
+            >
+              {["沒有一件事是簡單的，","但簡單設計陪你把它慢慢梳理清楚。","適合剛起步、預算不多，但對品牌化有感覺的你。","我們提供有溫度、有機、有故事感的視覺協助，","從概念到Logo，從故事到包裝，","一起慢慢長出屬於品牌的樣子。"].map((txt, i) => (
+                <div
+                  key={i}
+                  style={
+                    (i === 1 || i === 2 || i === 3)
+                      ? { whiteSpace: 'nowrap' }
+                      : undefined
+                  }
+                >
+                  {txt}
                 </div>
               ))}
             </div>
+            {/* 中央黑框放 yilan_map.gif */}
+            <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+              {/* 敘述框區塊 */}
+              <div className="flex justify-center gap-4 mb-4" style={{ position: 'absolute', top: '-64px', left: '50%', transform: 'translateX(-50%)', width: '100%' }}>
+                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述一</div>
+                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述二</div>
+                <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述三</div>
+              </div>
+              <div className="w-[756px] h-[756px] border-4 border-black bg-[#FAF6E9] flex items-center justify-center">
+                <img src="/yilan_map.gif" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
+              </div>
+            </div>
+            {/* runner.gif 直接顯示 */}
           </div>
-          {/* 跑馬燈二 */}
-          <div className="w-full max-w-7xl overflow-hidden">
-            <div className="flex gap-4 animate-marquee-reverse">
-              {marqueeImages.map((src, i) => (
-                <div key={i} className="aspect-[16/9] w-64 border border-black bg-white flex flex-col items-center justify-start overflow-hidden rounded-xl" style={{borderRadius: 18}}>
-                  <div className="bg-black w-full h-7" />
-                  <div className="flex-1 w-full flex items-center justify-center bg-gray-300">
-                    <img src={src} alt={`illustration`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', borderRadius: 18 }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        </section>
+        {/* 形象牆（Hero Wall）區塊結束 */}
 
-          {/* About Me 區塊 */}
-          <section className="w-full flex justify-center items-start mt-16">
-            <div className="flex flex-row gap-24 max-w-7xl w-full items-end">
-              {/* 頭貼 */}
-              <div className="flex-shrink-0 flex flex-col items-center justify-end">
-                <div className="border border-black bg-white overflow-hidden rounded-xl" style={{ width: 420, height: 480, display: 'flex', flexDirection: 'column' }}>
-                  <div className="bg-black h-10 flex items-center px-3 flex-shrink-0">
-                    <div className="w-3 h-3 rounded-full bg-white mr-2" />
-                    <div className="w-3 h-3 rounded-full bg-white mr-2" />
-                    <div className="w-3 h-3 rounded-full bg-white" />
-                  </div>
-                  <img src="/chactor.gif" alt="Chactor" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', transform: 'scale(1.5)', display: 'block', margin: 'auto' }} />
-                </div>
-              </div>
-              {/* 文字區塊 */}
-              <div className="flex-1 flex flex-col justify-end h-[480px]">
-                <div className="about-block">
-                  <div className="about-title-row">
-                    <span className="about-title">About Liam</span>
-                    <span className="about-lang-btns">
-                      {Object.entries(ABOUT_CONTENT).map(([key, val]) => (
-                        <button
-                          key={key}
-                          onClick={() => setLang(key as 'zh' | 'en' | 'jp')}
-                          className={`about-lang-btn ${lang === key ? 'active' : ''}`}
-                        >
-                          {val.label}
-                        </button>
-                      ))}
-                    </span>
-                  </div>
-                  <div className="about-content">
-                    {ABOUT_CONTENT[lang].text}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 在 About Me section 之後添加侏羅紀菜單部分 */}
-          <section id="jurassic-menu" className="w-full flex flex-col items-center justify-center mt-24 mb-24 relative" style={{ minHeight: 1200 }}>
-            <div className="project-column-center">
-              <div className="bg-[#ffe000] px-6 py-3 mb-6 inline-block text-5xl font-extrabold text-black" style={{ fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif' }}>
-                2025 Jurassic MENU
-              </div>
-              <div style={{ transform: 'scale(0.8)', transformOrigin: 'top center', width: '1134px', height: '1134px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
-                <FlipBook images={[
-                  { src: "/menu-0615-demo-test-img/page-1.png", width: 1134, height: 567 },
-                  { src: "/menu-0615-demo-test-img/page-2.png", width: 1134, height: 1134 },
-                  { src: "/menu-0615-demo-test-img/page-3.png", width: 1134, height: 1134 },
-                  { src: "/menu-0615-demo-test-img/page-4.png", width: 1134, height: 1134 },
-                  { src: "/menu-0615-demo-test-img/page-5.png", width: 1134, height: 1134 },
-                  { src: "/menu-0615-demo-test-img/page-6.png", width: 1134, height: 567 },
-                  { src: "/menu-0615-demo-test-img/page-12.png", width: 1134, height: 567 },
-                ]} />
-              </div>
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 48 }}>
-                <div className="project-step-card">
-                  <div className="project-step-header">
-                    <span className="project-step-title">{projectStepData[projectStep - 1].title}</span>
-                    <button
-                      className="project-step-btn"
-                      onClick={() => {
-                        setProjectStep(projectStep < 5 ? projectStep + 1 : 1);
-                      }}
-                      aria-label="切換步驟"
-                    >
-                      ▶
-                    </button>
-                  </div>
-                  <div className="project-step-body">
-                    <div className="project-step-desc">
-                      {projectStepData[projectStep - 1].desc}
-                    </div>
-                    <div className="project-step-img" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 跑馬燈一 - 黑底白字 */}
-          <div className="w-full bg-black py-4 overflow-hidden mt-12">
+        {/* 跑馬燈 - 形象牆與主內容交界處 */}
+        <div style={{ position: 'relative' }}>
+          <img
+            ref={runnerRef}
+            src="/runner.gif"
+            alt="陪跑員"
+            style={{
+              position: 'absolute',
+              top: -250,
+              left: 0,
+              zIndex: 9999,
+              width: 'auto',
+              height: 'auto'
+            }}
+          />
+          <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
             <div className="animate-marquee whitespace-nowrap">
-              {Array(3).fill(null).map((_, i) => (
-                <span key={i} className="text-white text-2xl font-extrabold mx-8">About Project　／　Design starts with communication.</span>
+              {Array(4).fill(null).map((_, i) => (
+                <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
               ))}
             </div>
           </div>
-          {/* 跑馬燈二 - 白底黑字 */}
-          <div className="w-full bg-white py-4 overflow-hidden">
-            <div className="animate-marquee-reverse whitespace-nowrap">
-              {Array(3).fill(null).map((_, i) => (
-                <span key={i} className="text-black text-2xl font-extrabold mx-8">About Project　／　Design starts with communication.</span>
-              ))}
-            </div>
-          </div>
-        </main>
-      </div>
-      {/* Footer 區塊 */}
-      <footer className="footer-black" style={{ zIndex: -48, position: 'relative' }}>
-        <div className="footer-content">
-          <span className="footer-copyright">© 2025 Liam Design. All rights reserved.</span>
-          <span className="footer-icons">
-            <span className="footer-icon-placeholder" />
-            <span className="footer-icon-placeholder" />
-            <span className="footer-icon-placeholder" />
-          </span>
         </div>
-      </footer>
+        {/* 跑馬燈 - 黃底黑字 */}
+        <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+          <div className="animate-marquee-reverse whitespace-nowrap">
+            {Array(4).fill(null).map((_, i) => (
+              <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Logo fixed 置左下 */}
+        <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
+          <div className="logo-block long">
+            <Image src="/logo.svg" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
+          </div>
+        </div>
+
+        {/* 內容 container（不含 navbar/aside） */}
+        <div className="relative w-full max-w-7xl px-16 mx-auto flex flex-col items-center">
+          {/* 主內容區塊 */}
+          <main className="relative z-10 flex flex-col items-center gap-12 pt-32 pb-16 px-4 min-h-[700px]">
+            {/* 3️⃣ 服務流程區塊 */}
+            <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* 左側內容 */}
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-bold mb-6 relative">
+                    <span className="relative z-10 text-black">服務流程（適合初創業的你）</span>
+                    <span className="absolute inset-0 bg-yellow-300 -skew-x-3 transform -translate-y-1 translate-x-2" style={{ zIndex: 1 }}></span>
+                  </h2>
+                  <p className="mb-8 text-lg text-gray-700 text-center">你有點怕設計費？我們不怕你問。<br/>我們用共感語氣陪你走每一步。</p>
+                  <ol className="mb-8 w-full flex flex-col gap-4 text-gray-900 font-medium">
+                    <li className="flex items-center gap-3">
+                      <span className="flex-shrink-0 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">1️⃣</span>
+                      <span>傾聽與提問</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="flex-shrink-0 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">2️⃣</span>
+                      <span>品牌基礎建立</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="flex-shrink-0 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">3️⃣</span>
+                      <span>視覺提案與調整</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="flex-shrink-0 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">4️⃣</span>
+                      <span>完稿與印刷、應用教學</span>
+                    </li>
+                  </ol>
+                  <div className="mb-8 w-full text-center">
+                    <span className="font-semibold text-gray-900">我們可以協助的事情：</span>
+                    <span className="text-gray-900 ml-2">Logo / 名片 / DM / 社群圖包 / 包裝 / 攝影剪輯</span>
+                  </div>
+                  <div className="w-full flex justify-center">
+                    <button className="map-action-btn map-action-btn-center">了解服務流程</button>
+                  </div>
+                </div>
+
+                {/* 右側照片空間 */}
+                <div className="flex items-center justify-center">
+                  <div 
+                    className="w-full aspect-square border-2 border-black rounded-2xl overflow-hidden relative group cursor-pointer"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    onClick={handleImageClick}
+                  >
+                    {/* 隱藏的文件輸入 */}
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+
+                    {/* 預設圖片或上傳的圖片 */}
+                    {previewImage ? (
+                      <Image
+                        src={previewImage}
+                        alt="設計流程示意圖"
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                        <div className="w-full h-full relative">
+                          {/* X 標記 */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-3/4 h-0.5 bg-gray-300 transform rotate-45"></div>
+                            <div className="w-3/4 h-0.5 bg-gray-300 transform -rotate-45"></div>
+                          </div>
+                          {/* 預設圖示 */}
+                          <div className="absolute inset-0 flex flex-col items-center justify-center opacity-50">
+                            <svg 
+                              className="w-12 h-12 text-gray-400 mb-2" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+                              />
+                            </svg>
+                            <span className="text-sm text-gray-500 font-medium">設計流程示意圖</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hover 效果 */}
+                    <div 
+                      className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-5 transition-opacity duration-300 ${
+                        isHovered ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    >
+                      <div className="bg-white bg-opacity-90 px-4 py-2 rounded-full shadow-lg">
+                        <span className="text-black text-sm font-medium">點擊預覽圖片</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 服務流程區塊結束後的跑馬燈 */}
+            <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+            <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+
+            {/* 4️⃣ 作品案例區塊 */}
+            <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* 左側內容 */}
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-bold mb-6 relative">
+                    <span className="relative z-10 text-black">作品案例</span>
+                    <span className="absolute inset-0 bg-yellow-300 -skew-x-3 transform -translate-y-1 translate-x-2" style={{ zIndex: 1 }}></span>
+                  </h2>
+                  <div className="flex gap-2 mb-8">
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">餐飲</span>
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">在地文創</span>
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">手作選物</span>
+                  </div>
+                  <ul className="w-full flex flex-col gap-4 mb-8">
+                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                      <div className="font-semibold text-black">阿嬤麵店</div>
+                      <div className="text-sm text-gray-900">原是市場一角的阿嬤麵店，現在有了識別與粉絲。</div>
+                    </li>
+                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                      <div className="font-semibold text-black">小鎮文創</div>
+                      <div className="text-sm text-gray-900">在地故事變成品牌，吸引更多年輕人參與。</div>
+                    </li>
+                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                      <div className="font-semibold text-black">手作選物店</div>
+                      <div className="text-sm text-gray-900">從無到有，品牌形象讓商品更有價值。</div>
+                    </li>
+                  </ul>
+                  <div className="w-full flex justify-center">
+                    <button className="map-action-btn map-action-btn-center">查看更多案例</button>
+                  </div>
+                </div>
+
+                {/* 右側照片空間 */}
+                <div className="flex items-center justify-center">
+                  <div className="w-full aspect-square border-2 border-black rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                      <div className="w-full h-full relative">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-50">
+                          <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-sm text-gray-500 font-medium">作品案例圖片</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 作品案例區塊結束後的跑馬燈 */}
+            <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+            <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+
+            {/* 5️⃣ 價格說明區塊 */}
+            <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* 左側內容 */}
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-bold mb-6 relative">
+                    <span className="relative z-10 text-black">價格說明（預算友善）</span>
+                    <span className="absolute inset-0 bg-yellow-300 -skew-x-3 transform -translate-y-1 translate-x-2" style={{ zIndex: 1 }}></span>
+                  </h2>
+                  <ul className="mb-8 w-full flex flex-col gap-4 text-black">
+                    <li className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <span>品牌起步包</span>
+                      <span className="font-bold">NT.12,000 起</span>
+                    </li>
+                    <li className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <span>整體品牌識別</span>
+                      <span className="font-bold">NT.30,000 起</span>
+                    </li>
+                  </ul>
+                  <div className="mb-8 text-center">
+                    <div className="text-gray-900 mb-2">價格透明，包含哪些項目、不包含印刷、可客製加購。</div>
+                    <div className="text-gray-900">不確定怎麼選沒關係，我們陪你一步一步選擇適合的。</div>
+                  </div>
+                  <div className="w-full flex justify-center">
+                    <button className="map-action-btn map-action-btn-center">索取報價單</button>
+                  </div>
+                </div>
+
+                {/* 右側照片空間 */}
+                <div className="flex items-center justify-center">
+                  <div className="w-full aspect-square border-2 border-black rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                      <div className="w-full h-full relative">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-50">
+                          <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-sm text-gray-500 font-medium">價格方案圖片</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 價格說明區塊結束後的跑馬燈 */}
+            <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+            <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+
+            {/* 6️⃣ 聯絡區塊 */}
+            <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* 左側內容 */}
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-bold mb-6 relative">
+                    <span className="relative z-10 text-black">聯絡我們</span>
+                    <span className="absolute inset-0 bg-yellow-300 -skew-x-3 transform -translate-y-1 translate-x-2" style={{ zIndex: 1 }}></span>
+                  </h2>
+                  <form className="w-full flex flex-col gap-4 mb-8">
+                    <input className="border rounded-lg px-4 py-2 text-black" type="text" placeholder="您的姓名" />
+                    <input className="border rounded-lg px-4 py-2 text-black" type="email" placeholder="Email 或聯絡方式" />
+                    <select className="border rounded-lg px-4 py-2 text-black">
+                      <option>想做的項目</option>
+                      <option>Logo設計</option>
+                      <option>品牌識別</option>
+                      <option>包裝設計</option>
+                      <option>社群圖包</option>
+                      <option>攝影剪輯</option>
+                    </select>
+                    <select className="border rounded-lg px-4 py-2 text-black">
+                      <option>預算範圍</option>
+                      <option>10,000-20,000</option>
+                      <option>20,000-40,000</option>
+                      <option>40,000+</option>
+                    </select>
+                    <input className="border rounded-lg px-4 py-2 text-black" type="text" placeholder="預計完成時間（如：2個月內）" />
+                    <textarea className="border rounded-lg px-4 py-2 text-black" placeholder="其他需求或想法"></textarea>
+                  </form>
+                  <div className="mb-8 text-center">
+                    <div className="text-gray-900 mb-2">或直接聯絡：
+                      <a href="https://line.me/" className="underline text-blue-600 ml-1">Line</a> / 
+                      <a href="https://instagram.com/" className="underline text-blue-600 ml-1">IG DM</a>
+                    </div>
+                    <div className="text-gray-900">我們會在三天內回覆你，不怕你問。</div>
+                  </div>
+                  <div className="w-full flex justify-center">
+                    <button className="map-action-btn map-action-btn-center">立即諮詢</button>
+                  </div>
+                </div>
+
+                {/* 右側照片空間 */}
+                <div className="flex items-center justify-center">
+                  <div className="w-full aspect-square border-2 border-black rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                      <div className="w-full h-full relative">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-50">
+                          <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-sm text-gray-500 font-medium">聯絡資訊圖片</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+        {/* Footer 區塊 */}
+        <footer className="relative z-10 bg-black">
+          <div className="footer-content flex flex-col md:flex-row items-center justify-between gap-4 py-6 px-8">
+            <div className="flex items-center gap-3">
+              <img src="/logo.svg" alt="Liam Design Logo" width={40} height={40} style={{display:'inline-block'}} />
+              <span className="font-bold text-lg">Liam Design 簡單設計</span>
+            </div>
+            <nav className="flex gap-6 text-base">
+              <a href="#cases" className="hover:underline">作品</a>
+              <a href="#pricing" className="hover:underline">報價</a>
+              <a href="#contact" className="hover:underline">聯絡我們</a>
+            </nav>
+            <div className="flex gap-4">
+              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="IG"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="#fff" strokeWidth="2"/><circle cx="12" cy="12" r="3" stroke="#fff" strokeWidth="2"/><circle cx="17" cy="7" r="1" fill="#fff"/></svg></a>
+              <a href="https://behance.net/" target="_blank" rel="noopener" aria-label="Behance"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2" stroke="#fff" strokeWidth="2"/><text x="7" y="16" fill="#fff" fontSize="8">Be</text></svg></a>
+              <a href="mailto:hello@liamdesign.com" aria-label="Email"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2" stroke="#fff" strokeWidth="2"/><path d="M3 7l9 7 9-7" stroke="#fff" strokeWidth="2"/></svg></a>
+            </div>
+          </div>
+        </footer>
+      </div>
       <style jsx global>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -855,10 +989,10 @@ export default function Home() {
         .vertical-bubble > div {
           line-height: 1.2;
         }
-        .vertical-bubble:hover {
-          transform: scale(1.15);
+        .speech-bubble.vertical-bubble:hover {
+          transform: scale(1.15) !important;
           z-index: 3;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.18) !important;
         }
         .yilan-map-hover {
           transition: transform 0.32s cubic-bezier(.4,1.3,.6,1), box-shadow 0.22s;
@@ -884,7 +1018,25 @@ export default function Home() {
           color: #000;
           transition: background 0.22s, color 0.22s, box-shadow 0.22s;
         }
-        .map-action-btn-center:hover {
+        .map-action-btn.map-action-btn-center:hover {
+          background: #000 !important;
+          color: #fff !important;
+        }
+        .test-hover-btn {
+          font-size: 2rem;
+          padding: 1.2em 2.5em;
+          border-radius: 1.5em;
+          font-weight: bold;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+          border: 3px solid #000;
+          outline: none;
+          cursor: pointer;
+          margin-bottom: 0.5em;
+          background: #ffe600;
+          color: #000;
+          transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .test-hover-btn:hover {
           background: #000;
           color: #fff;
         }
@@ -892,4 +1044,3 @@ export default function Home() {
     </div>
   );
 }
-
