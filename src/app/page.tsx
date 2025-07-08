@@ -1,7 +1,6 @@
 'use client';
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import React from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import FlipBook from "@/components/FlipBook";
 
 // About Me 多語言內容
@@ -71,80 +70,31 @@ export default function Home() {
     },
   ];
 
-  // 打字機動畫：簡單設計
-  const simpleText = "簡單設計";
-  const [simpleDisplay, setSimpleDisplay] = useState("");
-  const [simpleDone, setSimpleDone] = useState(false);
+  // 動畫依序顯示 state
+  const [showSimple, setShowSimple] = useState(false);
+  const [showLiam, setShowLiam] = useState(false);
+  const [showRight, setShowRight] = useState(false);
+
   useEffect(() => {
-    let i = 0;
-    setSimpleDisplay("");
-    setSimpleDone(false);
-    const interval = setInterval(() => {
-      setSimpleDisplay((prev) => prev + simpleText[i]);
-      i++;
-      if (i >= simpleText.length) {
-        clearInterval(interval);
-        setSimpleDone(true);
-      }
-    }, 220);
-    return () => clearInterval(interval);
+    setShowSimple(false);
+    setShowLiam(false);
+    setShowRight(false);
+    // 依序顯示
+    const t1 = setTimeout(() => setShowSimple(true), 100); // 簡單設計
+    const t2 = setTimeout(() => setShowLiam(true), 700);   // LIAM DESIGN
+    const t3 = setTimeout(() => setShowRight(true), 1300); // 右側內文
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
+    };
   }, []);
-
-  // 打字機動畫：LIAM DESIGN
-  const liamText = "LIAM\nDESIGN";
-  const [liamDisplay, setLiamDisplay] = useState("");
-  useEffect(() => {
-    if (!simpleDone) return;
-    let i = 0;
-    setLiamDisplay("");
-    const interval = setInterval(() => {
-      setLiamDisplay((prev) => prev + liamText[i]);
-      i++;
-      if (i >= liamText.length) clearInterval(interval);
-    }, 120);
-    return () => clearInterval(interval);
-  }, [simpleDone]);
-
-  // 右側內文打字機動畫
-  const rightTexts = [
-    "沒有一件事是簡單的，",
-    "但簡單設計陪你把它慢慢梳理清楚。",
-    "適合剛起步、預算不多，但對品牌化有感覺的你。",
-    "我們提供有溫度、有機、有故事感的視覺協助，",
-    "從概念到Logo，從故事到包裝，",
-    "一起慢慢長出屬於品牌的樣子。"
-  ];
-  const [rightDisplay, setRightDisplay] = useState(Array(rightTexts.length).fill(""));
-  const [rightAllDone, setRightAllDone] = useState(false);
-  useEffect(() => {
-    if (!liamDisplay || liamDisplay.length < liamText.length) return;
-    let seg = 0;
-    let char = 0;
-    const arr = Array(rightTexts.length).fill("");
-    setRightDisplay(arr);
-    function typeNext() {
-      if (seg >= rightTexts.length) {
-        setRightAllDone(true);
-        return;
-      }
-      if (char < rightTexts[seg].length) {
-        arr[seg] += rightTexts[seg][char];
-        setRightDisplay([...arr]);
-        char++;
-        setTimeout(typeNext, 60);
-      } else {
-        seg++;
-        char = 0;
-        setTimeout(typeNext, 300);
-      }
-    }
-    typeNext();
-    // eslint-disable-next-line
-  }, [liamDisplay]);
 
   useEffect(() => {
     setMarqueeImages(getRandomIllustrationImagesNoRepeat(8));
   }, []);
+
+  // 移除 runnerTop, useEffect, scroll/resize 事件
+  const blackMarqueeRef = useRef<HTMLDivElement>(null);
+  const runnerRef = useRef<HTMLImageElement>(null);
 
   return (
     <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#fff', zIndex: -50 }}>
@@ -165,47 +115,73 @@ export default function Home() {
       <section className="hero-block-grid">
         <div className="hero-grid-container">
           {/* 左側大標與 LIAM DESIGN 上下排列 */}
-          <div className="hero-left-block">
-            <div className="hero-title-block">
-              <span className="hero-title-bg hero-title-vertical">{simpleDisplay}</span>
+          <div className="hero-left-block" style={{ zIndex: 2, position: 'relative' }}>
+            <div
+              className={`hero-title-block slide-in-left${showSimple ? ' show' : ''}`}
+            >
+              <span className="hero-title-bg hero-title-vertical">簡單設計</span>
             </div>
-            <div className="hero-liam-block">
-              <span className="hero-liam-bg">{
-                liamDisplay.split("\n").map((line, idx, arr) => (
-                  <React.Fragment key={idx}>
-                    {line}
-                    {idx < arr.length - 1 && <br />}
-                  </React.Fragment>
-                ))
-              }</span>
+            <div
+              className={`hero-liam-block slide-in-up${showLiam ? ' show' : ''}`}
+            >
+              <span className="hero-liam-bg">LIAM<br/>DESIGN</span>
             </div>
-          </div>
-          {/* 中間地圖 SVG */}
-          <div className={`flex items-center justify-center fade-in-map${rightAllDone ? ' show' : ''}`} style={{ width: 440 }}>
-            {rightAllDone && (
-              <img src="/maps0708.svg" alt="地圖" style={{ width: 420, height: 'auto', display: 'block', margin: '0 auto' }} />
-            )}
           </div>
           {/* 右側直排中文介紹 */}
-          <div className="hero-vertical-desc">
-            {rightDisplay.map((txt, i) => (
-              <div key={i}>{txt}</div>
+          <div
+            className={`hero-vertical-desc slide-in-right${showRight ? ' show' : ''}`}
+            style={{ zIndex: 2, position: 'absolute', right: 'calc(10vw - 100px)', bottom: 0 }}
+          >
+            {[
+              "沒有一件事是簡單的，",
+              "但簡單設計陪你把它慢慢梳理清楚。",
+              "適合剛起步、預算不多，但對品牌化有感覺的你。",
+              "我們提供有溫度、有機、有故事感的視覺協助，",
+              "從概念到Logo，從故事到包裝，",
+              "一起慢慢長出屬於品牌的樣子。"
+            ].map((txt, i) => (
+              <div
+                key={i}
+                style={
+                  (i === 1 || i === 2 || i === 3)
+                    ? { whiteSpace: 'nowrap' }
+                    : undefined
+                }
+              >
+                {txt}
+              </div>
             ))}
           </div>
+          {/* runner.gif 直接顯示 */}
         </div>
       </section>
       {/* 形象牆（Hero Wall）區塊結束 */}
 
       {/* 跑馬燈 - 形象牆與主內容交界處 */}
-      <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10, marginBottom: 16 }}>
-        <div className="animate-marquee whitespace-nowrap">
-          {Array(4).fill(null).map((_, i) => (
-            <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
-          ))}
+      <div style={{ position: 'relative' }}>
+        <img
+          ref={runnerRef}
+          src="/runner.gif"
+          alt="陪跑員"
+          style={{
+            position: 'absolute',
+            top: -250,
+            left: 0,
+            zIndex: 9999,
+            width: 'auto',
+            height: 'auto'
+          }}
+        />
+        <div ref={blackMarqueeRef} className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10, marginBottom: 16 }}>
+          <div className="animate-marquee whitespace-nowrap">
+            {Array(4).fill(null).map((_, i) => (
+              <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+            ))}
+          </div>
         </div>
       </div>
       {/* 跑馬燈 - 白底黑字 */}
-      <div className="w-full bg-white py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+      <div className="w-full bg-white py-4 overflow-hidden runner-bar-relative" style={{ position: 'relative', zIndex: 10 }}>
         <div className="animate-marquee-reverse whitespace-nowrap">
           {Array(4).fill(null).map((_, i) => (
             <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
@@ -213,16 +189,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 左側垂直導覽列（fixed） */}
-      <nav className="fixed top-1/2 left-0 z-[2000] flex flex-col items-center justify-center gap-6 bg-white border border-black rounded-r-2xl py-8 px-6" style={{ transform: 'translateY(-50%)' }}>
-        <a className="nav-link-vertical" href="#about" data-label="About">A</a>
-        <a className="nav-link-vertical" href="#illustration" data-label="Illustration">I</a>
-        <a className="nav-link-vertical" href="#branding" data-label="Branding">B</a>
-        <a className="nav-link-vertical" href="#design" data-label="Design">D</a>
-      </nav>
-
       {/* Logo fixed 置左下 */}
-      <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.8)', transformOrigin: 'left bottom' }}>
+      <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
         <div className="logo-block long">
           <Image src="/logo.svg" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
         </div>
@@ -236,26 +204,27 @@ export default function Home() {
           <div className="relative w-full min-h-[600px] z-10 pb-16" style={{ height: 520, margin: '0 auto', maxWidth: 1400, paddingBottom: 100 }}>
             {/* hero_map.svg 永遠顯示在 hero 區塊下方，z-10（背景格線 z-0，hero_map.svg z-10） */}
             {/* 這裡原本有五個+按鈕，已全部移除 */}
-            <div className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center pointer-events-none" style={{transform: 'translate(-50%, -50%)'}}>
-              <img src="/yilan_map.gif" alt="宜蘭地圖" style={{ width: '80vw', maxWidth: 1200, objectFit: 'contain', transform: 'scale(1.2)', transformOrigin: 'center' }} />
+            <div className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center" style={{transform: 'translate(-50%, -50%)'}}>
+              <img className="yilan-map-hover" src="/yilan_map.gif" alt="宜蘭地圖" style={{ width: '80vw', maxWidth: 1200, objectFit: 'contain', transform: 'scale(1.2)', transformOrigin: 'center' }} />
             </div>
             {/* 地圖上方對話窗 */}
-            <div className="absolute z-30 w-full" style={{left: 0, top: '8%', pointerEvents: 'none'}}>
-              <div style={{position: 'absolute', left: '28%', top: '200px'}}>
-                <div className="speech-bubble speech-black">設計經由溝通</div>
+            <div className="absolute z-30 w-full" style={{left: 0, top: '8%'}}>
+              <div style={{position: 'absolute', left: '28%', top: '200px', pointerEvents: 'auto'}}>
+                <div className="speech-bubble speech-black vertical-bubble">{'設計經由溝通'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
               </div>
-              <div style={{position: 'absolute', left: '60%', top: '18%'}}>
-                <div className="speech-bubble speech-white">品牌源自生活</div>
+              <div style={{position: 'absolute', left: '60%', top: '18%', pointerEvents: 'auto'}}>
+                <div className="speech-bubble speech-white vertical-bubble">{'品牌源自生活'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
               </div>
-              <div style={{position: 'absolute', left: '18%', top: '38%'}}>
-                <div className="speech-bubble speech-yellow">精神來自土地</div>
+              <div style={{position: 'absolute', left: '18%', top: '38%', pointerEvents: 'auto'}}>
+                <div className="speech-bubble speech-yellow vertical-bubble">{'精神來自土地'.split('').map((c, i) => <div key={i}>{c}</div>)}</div>
               </div>
             </div>
-            {/* 地圖右側大按鈕 */}
-            <div className="absolute z-20 flex flex-col gap-6" style={{right: 'calc(10vw - 100px)', bottom: 0, transform: 'scale(0.8)', transformOrigin: 'right bottom'}}>
-              <button className="map-action-btn">了解案例</button>
-              <button className="map-action-btn">查詢報價</button>
-            </div>
+            {/* 地圖右側大按鈕（移到下方置中） */}
+          </div>
+          {/* 地圖下方置中按鈕 */}
+          <div className="w-full flex flex-col items-center justify-center gap-6 mt-8">
+            <button className="map-action-btn map-action-btn-center">了解案例</button>
+            <button className="map-action-btn map-action-btn-center">查詢報價</button>
           </div>
 
           {/* 跑馬燈一 */}
@@ -802,6 +771,7 @@ export default function Home() {
           border-radius: 4px;
           padding: 12px 8px;
           display: inline-block;
+          letter-spacing: 0.25em;
         }
         .hero-vertical-desc > div:nth-child(1) { margin-top: 0; margin-bottom: 0; }
         .hero-vertical-desc > div:nth-child(2) { margin-top: 24px; margin-bottom: 32px; }
@@ -820,7 +790,106 @@ export default function Home() {
         .fade-in-map.show {
           opacity: 1;
         }
+        .slide-in-map {
+          opacity: 0;
+          transform: scale(1.8) translateX(-300px);
+          transition: opacity 0.7s cubic-bezier(.4,1.3,.6,1), transform 0.9s cubic-bezier(.4,1.3,.6,1);
+        }
+        .slide-in-map.show {
+          opacity: 1;
+          transform: scale(1.8) translateX(0);
+        }
+        .slide-in-left {
+          opacity: 0;
+          transform: translateX(-60px);
+          transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .slide-in-left.show {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .slide-in-up {
+          opacity: 0;
+          transform: translateY(60px);
+          transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .slide-in-up.show {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .slide-in-right {
+          opacity: 0;
+          transform: translateX(60px);
+          transition: all 1.2s cubic-bezier(0.4,0,0.2,1);
+        }
+        .slide-in-right.show {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .runner-animate {
+          position: absolute;
+          top: -60px;
+          left: 0;
+          width: 72px;
+          height: 72px;
+          z-index: 9999;
+          animation: runner-move 12s linear infinite;
+        }
+        @keyframes runner-move {
+          0% { left: 0; }
+          100% { left: calc(100% - 72px); }
+        }
+        .runner-bar-relative {
+          position: relative;
+        }
+        .vertical-bubble {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.4rem;
+          letter-spacing: 0.2em;
+          transition: transform 0.22s cubic-bezier(.4,1.3,.6,1), box-shadow 0.18s;
+          cursor: pointer;
+        }
+        .vertical-bubble > div {
+          line-height: 1.2;
+        }
+        .vertical-bubble:hover {
+          transform: scale(1.15);
+          z-index: 3;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+        .yilan-map-hover {
+          transition: transform 0.32s cubic-bezier(.4,1.3,.6,1), box-shadow 0.22s;
+        }
+        .yilan-map-hover:hover {
+          transform: scale(1.32);
+          box-shadow: 0 12px 48px 0 rgba(0,0,0,0.25);
+          z-index: 10;
+        }
+        .map-action-btn-center {
+          display: block;
+          margin: 0 auto;
+          min-width: 260px;
+          font-size: 2rem;
+          padding: 1.2em 2.5em;
+          border-radius: 1.5em;
+          font-weight: bold;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+          border: 3px solid #000;
+          outline: none;
+          cursor: pointer;
+          background: #ffe600;
+          color: #000;
+          transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+        }
+        .map-action-btn-center:hover {
+          background: #000;
+          color: #fff;
+        }
       `}</style>
     </div>
   );
 }
+
