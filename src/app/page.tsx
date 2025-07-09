@@ -33,6 +33,7 @@ export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMapHovered, setIsMapHovered] = useState(false);
+  const [isEnterHovered, setIsEnterHovered] = useState(false);
 
   // 處理圖片上傳
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +74,7 @@ export default function Home() {
       {/* 主要內容容器 */}
       <div className="relative z-10">
         {/* 形象牆（Hero Wall）區塊開始 */}
-        <section className="hero-block-grid">
+        <section className="hero-block-grid relative">
           <div className="hero-grid-container">
             {/* 只保留 LIAM DESIGN 與地圖區塊 */}
             <div className="hero-left-block" style={{ zIndex: 2, position: 'relative', marginTop: 0 }}>
@@ -86,14 +87,38 @@ export default function Home() {
             <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
               <div className="flex flex-col items-center">
                 <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] bg-[#FAF6E9] flex items-center justify-center">
-                  <img
-                    src={isMapHovered ? "/yilan_mapv3.png" : "/yilan_mapv2.png"}
-                    alt="宜蘭地圖動畫"
-                    className="w-full h-full object-contain"
-                    style={{ transform: 'scale(0.7)', display: 'block', margin: '0 auto' }}
-                    onMouseEnter={() => setIsMapHovered(true)}
-                    onMouseLeave={() => setIsMapHovered(false)}
-                  />
+                  <div style={{position:'relative', width:'100%', height:'100%'}}>
+                    <img
+                      src={isMapHovered ? "/yilan_mapv3.png" : "/yilan_mapv2.png"}
+                      alt="宜蘭地圖動畫"
+                      className="w-full h-full object-contain"
+                      style={{ transform: 'scale(0.7)', display: 'block', margin: '0 auto' }}
+                      onMouseEnter={() => setIsMapHovered(true)}
+                      onMouseLeave={() => setIsMapHovered(false)}
+                    />
+                    {/* ENTER SVG 按鈕 */}
+                    <div
+                      style={{position:'absolute', right:'110px', bottom:'110px', width:'220px', height:'160px', zIndex:20, cursor:'pointer', transform:'scale(1.5)', transition:'transform 0.18s cubic-bezier(.4,1.3,.6,1)'}}
+                      onMouseEnter={()=>setIsEnterHovered(true)}
+                      onMouseLeave={()=>setIsEnterHovered(false)}
+                      onClick={e => {
+                        // scale 動畫
+                        const el = e.currentTarget;
+                        el.style.transform = 'scale(1.3)';
+                        setTimeout(() => {
+                          el.style.transform = 'scale(1.5)';
+                        }, 180);
+                        // 平滑滾動
+                        document.getElementById('cases')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      <img
+                        src={isEnterHovered ? "/enter2.svg" : "/enter1.svg"}
+                        alt="ENTER"
+                        style={{width:'100%', height:'100%', display:'block'}}
+                      />
+                    </div>
+                  </div>
                   {/* 地圖標籤（移到圖片前面） */}
                   <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)', left: 'calc(20% + 80px)' }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
@@ -116,6 +141,7 @@ export default function Home() {
             {/* 右側內文移動到地圖右下角，並改為新文案 */}
             {/* runner.gif 直接顯示 */}
           </div>
+          {/* Hero 區塊右下角 ENTER 按鈕 */}
         </section>
         {/* 形象牆（Hero Wall）區塊結束 */}
 
@@ -164,7 +190,7 @@ export default function Home() {
           {/* 主內容區塊 */}
           <main className="relative z-10 flex flex-col items-center gap-12 pt-32 pb-16 px-4 min-h-[700px]">
             {/* 4️⃣ 作品案例區塊 */}
-            <section className="w-full max-w-[1200px] rounded-2xl shadow-lg p-16 mb-12 border border-black" style={{background:'#fff'}}>
+            <section id="cases" className="w-full max-w-[1200px] rounded-2xl shadow-lg p-16 mb-12 border border-black" style={{background:'#fff'}}>
               <div className="relative flex gap-8 items-start">
                 {/* 左側固定區域 - 新設計 */}
                 <div className="w-[300px] min-w-[300px] p-0 rounded-2xl sticky top-4 self-start h-fit min-h-[600px] bg-[#ffe600] flex flex-col justify-between overflow-hidden relative" style={{boxShadow:'0 4px 16px rgba(0,0,0,0.10)'}}>
