@@ -80,6 +80,7 @@ export default function Home() {
             <div className="hero-left-block" style={{ zIndex: 2, position: 'relative' }}>
               <div
                 className={`hero-title-block slide-in-left${showSimple ? ' show' : ''}`}
+                style={{ pointerEvents: 'none' }}  // 移除簡單設計的點擊事件
               >
                 <span className="hero-title-bg hero-title-vertical">簡單設計</span>
               </div>
@@ -112,17 +113,17 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] bg-[#FAF6E9] flex items-center justify-center">
                   {/* 地圖標籤 */}
-                  <div className="absolute left-[15%] top-[15%] group cursor-pointer">
+                  <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10 }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       品牌源自土地
                     </div>
                   </div>
-                  <div className="absolute right-[35%] top-[10%] group cursor-pointer">
+                  <div className={`absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.8s' }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       越在地越國際
                     </div>
                   </div>
-                  <div className="absolute left-[45%] top-[40%] group cursor-pointer">
+                  <div className={`absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '2.0s' }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       設計藉由溝通
                     </div>
