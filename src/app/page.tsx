@@ -32,6 +32,7 @@ export default function Home() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isMapHovered, setIsMapHovered] = useState(false);
 
   // 處理圖片上傳
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,23 +86,30 @@ export default function Home() {
             <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
               <div className="flex flex-col items-center">
                 <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] bg-[#FAF6E9] flex items-center justify-center">
-                  {/* 地圖標籤 */}
-                  <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)' }}>
+                  <img
+                    src={isMapHovered ? "/yilan_mapv3.png" : "/yilan_mapv2.png"}
+                    alt="宜蘭地圖動畫"
+                    className="w-full h-full object-contain"
+                    style={{ transform: 'scale(0.7)', display: 'block', margin: '0 auto' }}
+                    onMouseEnter={() => setIsMapHovered(true)}
+                    onMouseLeave={() => setIsMapHovered(false)}
+                  />
+                  {/* 地圖標籤（移到圖片前面） */}
+                  <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)', left: 'calc(20% + 80px)' }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       品牌源自土地
                     </div>
                   </div>
-                  <div className={`absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.8s' }}>
+                  <div className={`absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.8s', zIndex: 10 }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       越在地越國際
                     </div>
                   </div>
-                  <div className={`absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '2.0s' }}>
+                  <div className={`absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '2.0s', zIndex: 10 }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       設計藉由溝通
                     </div>
                   </div>
-                  <img src="/yilan_map.png" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>
@@ -124,7 +132,7 @@ export default function Home() {
               zIndex: 9999,
               width: 'auto',
               height: 'auto',
-              transform: 'scale(0.9)'
+              transform: 'scale(0.72)'
             }}
           />
           <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
