@@ -108,19 +108,30 @@ export default function Home() {
               ))}
             </div>
             {/* 中央黑框放 yilan_map.gif */}
-            <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+            <div style={{ position: 'absolute', left: 'calc(50% - 50px)', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
               <div className="flex flex-col items-center">
-                {/* 敘述框區塊 */}
-                <div className="flex justify-center gap-4 mb-4">
-                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述一</div>
-                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述二</div>
-                  <div className="bg-yellow-300 text-black rounded-xl px-6 py-2 shadow font-bold text-lg">敘述三</div>
-                </div>
-                <div className="w-[756px] h-[756px] border-4 border-black bg-[#FAF6E9] flex items-center justify-center">
+                <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] bg-[#FAF6E9] flex items-center justify-center">
+                  {/* 地圖標籤 */}
+                  <div className="absolute left-[15%] top-[15%] group cursor-pointer">
+                    <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
+                      品牌源自土地
+                    </div>
+                  </div>
+                  <div className="absolute right-[35%] top-[10%] group cursor-pointer">
+                    <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
+                      越在地越國際
+                    </div>
+                  </div>
+                  <div className="absolute left-[45%] top-[40%] group cursor-pointer">
+                    <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
+                      設計藉由溝通
+                    </div>
+                  </div>
                   <img src="/yilan_map.gif" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>
+
             {/* runner.gif 直接顯示 */}
           </div>
         </section>
