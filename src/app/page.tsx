@@ -6,16 +6,14 @@ import React, { useRef, useState, useEffect } from "react";
 // 在 client 端產生隨機圖片，避免 hydration error
 export default function Home() {
   // 動畫依序顯示 state
-  const [showSimple, setShowSimple] = useState(false);
   const [showLiam, setShowLiam] = useState(false);
   const [showRight, setShowRight] = useState(false);
 
   useEffect(() => {
-    setShowSimple(false);
     setShowLiam(false);
     setShowRight(false);
     // 依序顯示
-    const t1 = setTimeout(() => setShowSimple(true), 100); // 簡單設計
+    const t1 = setTimeout(() => setShowLiam(true), 100); // 簡單設計
     const t2 = setTimeout(() => setShowLiam(true), 700);   // LIAM DESIGN
     const t3 = setTimeout(() => setShowRight(true), 1300); // 右側內文
     return () => {
@@ -76,44 +74,19 @@ export default function Home() {
         {/* 形象牆（Hero Wall）區塊開始 */}
         <section className="hero-block-grid">
           <div className="hero-grid-container">
-            {/* 左側大標與 LIAM DESIGN 上下排列 */}
-            <div className="hero-left-block" style={{ zIndex: 2, position: 'relative' }}>
-              <div
-                className={`hero-title-block slide-in-left${showSimple ? ' show' : ''}`}
-                style={{ pointerEvents: 'none' }}  // 移除簡單設計的點擊事件
-              >
-                <span className="hero-title-bg hero-title-vertical">簡單設計</span>
-              </div>
-              <div
-                className={`hero-liam-block slide-in-up${showLiam ? ' show' : ''}`}
-              >
+            {/* 只保留 LIAM DESIGN 與地圖區塊 */}
+            <div className="hero-left-block" style={{ zIndex: 2, position: 'relative', marginTop: 0 }}>
+              <div className={`hero-liam-block slide-in-up${showLiam ? ' show' : ''}`}
+                style={{ marginBottom: '32px' }}>
                 <span className="hero-liam-bg">LIAM<br/>DESIGN</span>
               </div>
             </div>
-            {/* 右側直排中文介紹 */}
-            <div
-              className={`hero-vertical-desc slide-in-right${showRight ? ' show' : ''}`}
-              style={{ zIndex: 2, position: 'absolute', right: 'calc(10vw - 100px)', bottom: 0 }}
-            >
-              {["沒有一件事是簡單的，","但簡單設計陪你把它慢慢梳理清楚。","適合剛起步、預算不多，但對品牌化有感覺的你。","我們提供有溫度、有機、有故事感的視覺協助，","從概念到Logo，從故事到包裝，","一起慢慢長出屬於品牌的樣子。"].map((txt, i) => (
-                <div
-                  key={i}
-                  style={
-                    (i === 1 || i === 2 || i === 3)
-                      ? { whiteSpace: 'nowrap' }
-                      : undefined
-                  }
-                >
-                  {txt}
-                </div>
-              ))}
-            </div>
-            {/* 中央黑框放 yilan_map.gif */}
-            <div style={{ position: 'absolute', left: 'calc(50% - 50px)', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+            {/* 地圖區塊置中 */}
+            <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
               <div className="flex flex-col items-center">
                 <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] bg-[#FAF6E9] flex items-center justify-center">
                   {/* 地圖標籤 */}
-                  <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10 }}>
+                  <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight ? 'opacity-100 translate-y-0' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)' }}>
                     <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                       品牌源自土地
                     </div>
@@ -128,11 +101,11 @@ export default function Home() {
                       設計藉由溝通
                     </div>
                   </div>
-                  <img src="/yilan_map.gif" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
+                  <img src="/yilan_map.png" alt="宜蘭地圖動畫" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>
-
+            {/* 右側內文移動到地圖右下角，並改為新文案 */}
             {/* runner.gif 直接顯示 */}
           </div>
         </section>
@@ -147,10 +120,11 @@ export default function Home() {
             style={{
               position: 'absolute',
               top: -250,
-              left: 0,
+              left: 80, // 往右移動 80px
               zIndex: 9999,
               width: 'auto',
-              height: 'auto'
+              height: 'auto',
+              transform: 'scale(1.5)'
             }}
           />
           <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
@@ -181,6 +155,104 @@ export default function Home() {
         <div className="relative w-full max-w-7xl px-16 mx-auto flex flex-col items-center">
           {/* 主內容區塊 */}
           <main className="relative z-10 flex flex-col items-center gap-12 pt-32 pb-16 px-4 min-h-[700px]">
+            {/* 4️⃣ 作品案例區塊 */}
+            <section className="w-full max-w-[1200px] rounded-2xl shadow-lg p-16 mb-12 border border-black" style={{background:'#fffbe6'}}>
+              <div className="relative flex gap-8 items-stretch">
+                {/* 左側固定區域 - 新設計 */}
+                <div className="w-[300px] min-w-[300px] p-0 rounded-3xl sticky top-4 self-start h-fit min-h-[600px] bg-[#ffe600] flex flex-col justify-between overflow-hidden relative" style={{boxShadow:'0 4px 16px rgba(0,0,0,0.10)'}}>
+                  <div className="px-8 pt-8 pb-40 relative z-10">
+                    <div className="inline-block bg-white rounded-full px-6 py-2 mb-4">
+                      <span className="text-3xl font-extrabold text-black tracking-wider">案例分享</span>
+                    </div>
+                    <div className="text-black font-bold text-base leading-relaxed">
+                      用心做事的小店，品牌化後宣傳更有力更有記憶點。現在，有了清楚的視覺樣貌，也更容易被看見和記住。
+                    </div>
+                  </div>
+                  <img src="/intro.png" alt="案例分享插畫" className="absolute bottom-0 left-0 w-full z-0 object-cover rounded-b-3xl" style={{pointerEvents:'none', transform:'scale(2) translateY(-50px)'}} />
+                </div>
+                {/* 右側網格 */}
+                <div className="flex-1 p-6 overflow-y-auto max-h-[800px]">
+                  <div className="grid grid-cols-12 gap-6 auto-rows-[250px]">
+                    {[...Array(11)].map((_, index) => (
+                      <div 
+                        key={index} 
+                        className={`relative bg-white rounded-xl p-4 pb-16 flex flex-col group cursor-pointer transition-all duration-300 hover:shadow-xl ${
+                          index === 0 ? 'col-span-6 row-span-2' :
+                          index === 1 ? 'col-span-6' :
+                          index === 2 ? 'col-span-4' :
+                          index === 3 ? 'col-span-4' :
+                          index === 4 ? 'col-span-4' :
+                          index === 5 ? 'col-span-6 row-span-2' :
+                          index === 6 ? 'col-span-6' :
+                          index === 7 ? 'col-span-8' :
+                          index === 8 ? 'col-span-4' :
+                          'col-span-6'
+                        }`}
+                      >
+                        <div className={`mb-4 w-full rounded-lg overflow-hidden ${
+                          index % 3 === 0 ? 'aspect-[4/3]' : index % 3 === 1 ? 'aspect-[16/9]' : 'aspect-square'
+                        }`}>
+                          <Image 
+                            src={`/illustration_${(index % 6) + 1}.png`}
+                            alt={`案例圖片 ${index + 1}`}
+                            width={400}
+                            height={400}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                        <h3 className="font-extrabold text-black transition-colors duration-300 group-hover:text-yellow-500">{[
+                          "手作麵包坊的品牌重塑",
+                          "文創市集視覺設計",
+                          "茶行品牌升級計畫",
+                          "職人工藝展覽設計",
+                          "小農市集品牌規劃",
+                          "手工皮件品牌設計",
+                          "古蹟導覽指示設計",
+                          "社區活動識別設計",
+                          "咖啡廳空間規劃",
+                          "伴手禮包裝設計",
+                          "藝術季活動設計"
+                        ][index]}</h3>
+                        <p className="text-sm font-extrabold text-black mt-2">{[
+                          "為在地老店注入新活力，重新設計品牌識別與包裝",
+                          "結合傳統與現代元素，打造獨特市集風格",
+                          "從包裝到空間，重新詮釋百年茶行的品牌精神",
+                          "透過視覺設計展現傳統工藝的當代價值",
+                          "建立在地小農與消費者的情感連結",
+                          "以簡約設計突顯皮革工藝的質感",
+                          "融合歷史元素的現代化指示系統",
+                          "創造凝聚社區情感的視覺符號",
+                          "打造兼具美感與實用性的用餐環境",
+                          "以現代設計詮釋傳統特產的包裝",
+                          "整合在地文化元素的季節性活動視覺"
+                        ][index]}</p>
+                        {/* 標籤區塊 */}
+                        <div className="absolute right-4 bottom-4 bg-yellow-300 text-black font-bold rounded-lg px-4 py-2 text-base shadow-md z-10">
+                          #品牌、插畫
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 作品案例區塊結束後的跑馬燈 */}
+            <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+            <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(4).fill(null).map((_, i) => (
+                  <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
+                ))}
+              </div>
+            </div>
+
             {/* 3️⃣ 服務流程區塊 */}
             <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -288,119 +360,6 @@ export default function Home() {
             </section>
 
             {/* 服務流程區塊結束後的跑馬燈 */}
-            <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
-              <div className="animate-marquee whitespace-nowrap">
-                {Array(4).fill(null).map((_, i) => (
-                  <span key={i} className="text-white text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
-                ))}
-              </div>
-            </div>
-            <div className="w-full bg-yellow-300 py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
-              <div className="animate-marquee-reverse whitespace-nowrap">
-                {Array(4).fill(null).map((_, i) => (
-                  <span key={i} className="text-black text-2xl font-extrabold mx-8">Design that listens. Design that grows.</span>
-                ))}
-              </div>
-            </div>
-
-            {/* 4️⃣ 作品案例區塊 */}
-            <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
-              <div className="relative flex gap-8">
-                {/* 左側固定區域 */}
-                <div className="w-[300px] min-w-[300px] p-6 rounded-xl sticky top-4 self-start h-fit bg-[#FAF6E9]">
-                  <h2 className="text-2xl font-bold mb-6">作品案例</h2>
-                  
-                  {/* 標籤 */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">餐飲</span>
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">在地文創</span>
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">手作選物</span>
-                  </div>
-
-                  {/* 案例列表 */}
-                  <div className="flex flex-col gap-4">
-                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                      <h3 className="font-semibold">阿嬤麵店</h3>
-                      <p className="text-sm text-gray-600">原是市場一角的阿嬤麵店，現在有了識別與粉絲。</p>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                      <h3 className="font-semibold">小鎮文創</h3>
-                      <p className="text-sm text-gray-600">在地故事變成品牌，吸引更多年輕人參與。</p>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                      <h3 className="font-semibold">手作選物店</h3>
-                      <p className="text-sm text-gray-600">從無到有，品牌形象讓商品更有價值。</p>
-                    </div>
-                  </div>
-
-                  <button className="w-full mt-6 px-6 py-3 bg-yellow-300 rounded-full font-bold hover:bg-yellow-400 transition-colors">
-                    查看更多案例
-                  </button>
-                </div>
-
-                {/* 右側網格 */}
-                <div className="flex-1 p-6 overflow-y-auto max-h-[800px]">
-                  <div className="grid grid-cols-12 gap-6 auto-rows-[250px]">
-                    {[...Array(11)].map((_, index) => (
-                      <div 
-                        key={index} 
-                        className={`bg-white rounded-xl p-4 flex flex-col group cursor-pointer transition-all duration-300 hover:shadow-xl ${
-                          // 為不同索引設置不同的網格佔位
-                          index === 0 ? 'col-span-6 row-span-2' :  // 第一個卡片佔據 6 列 2 行
-                          index === 1 ? 'col-span-6' :             // 第二個卡片佔據 6 列
-                          index === 2 ? 'col-span-4' :             // 第三個卡片佔據 4 列
-                          index === 3 ? 'col-span-4' :             // 第四個卡片佔據 4 列
-                          index === 4 ? 'col-span-4' :             // 第五個卡片佔據 4 列
-                          index === 5 ? 'col-span-6 row-span-2' :  // 第六個卡片佔據 6 列 2 行
-                          index === 6 ? 'col-span-6' :             // 第七個卡片佔據 6 列
-                          index === 7 ? 'col-span-8' :             // 第八個卡片佔據 8 列
-                          index === 8 ? 'col-span-4' :             // 第九個卡片佔據 4 列
-                          'col-span-6'                            // 其餘卡片佔據 6 列
-                        }`}
-                      >
-                        <div className="flex-1 rounded-lg mb-4 overflow-hidden">
-                          <Image 
-                            src={`/illustration_${(index % 6) + 1}.png`}
-                            alt={`案例圖片 ${index + 1}`}
-                            width={400}
-                            height={400}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        </div>
-                        <h3 className="font-extrabold text-black transition-colors duration-300 group-hover:text-yellow-500">{[
-                          "手作麵包坊的品牌重塑",
-                          "文創市集視覺設計",
-                          "茶行品牌升級計畫",
-                          "職人工藝展覽設計",
-                          "小農市集品牌規劃",
-                          "手工皮件品牌設計",
-                          "古蹟導覽指示設計",
-                          "社區活動識別設計",
-                          "咖啡廳空間規劃",
-                          "伴手禮包裝設計",
-                          "藝術季活動設計"
-                        ][index]}</h3>
-                        <p className="text-sm font-extrabold text-black mt-2">{[
-                          "為在地老店注入新活力，重新設計品牌識別與包裝",
-                          "結合傳統與現代元素，打造獨特市集風格",
-                          "從包裝到空間，重新詮釋百年茶行的品牌精神",
-                          "透過視覺設計展現傳統工藝的當代價值",
-                          "建立在地小農與消費者的情感連結",
-                          "以簡約設計突顯皮革工藝的質感",
-                          "融合歷史元素的現代化指示系統",
-                          "創造凝聚社區情感的視覺符號",
-                          "打造兼具美感與實用性的用餐環境",
-                          "以現代設計詮釋傳統特產的包裝",
-                          "整合在地文化元素的季節性活動視覺"
-                        ][index]}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 作品案例區塊結束後的跑馬燈 */}
             <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
               <div className="animate-marquee whitespace-nowrap">
                 {Array(4).fill(null).map((_, i) => (
