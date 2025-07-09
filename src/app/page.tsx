@@ -124,7 +124,7 @@ export default function Home() {
               zIndex: 9999,
               width: 'auto',
               height: 'auto',
-              transform: 'scale(1.5)'
+              transform: 'scale(0.9)'
             }}
           />
           <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
@@ -156,10 +156,10 @@ export default function Home() {
           {/* 主內容區塊 */}
           <main className="relative z-10 flex flex-col items-center gap-12 pt-32 pb-16 px-4 min-h-[700px]">
             {/* 4️⃣ 作品案例區塊 */}
-            <section className="w-full max-w-[1200px] rounded-2xl shadow-lg p-16 mb-12 border border-black" style={{background:'#fffbe6'}}>
-              <div className="relative flex gap-8 items-stretch">
+            <section className="w-full max-w-[1200px] rounded-2xl shadow-lg p-16 mb-12 border border-black" style={{background:'#fff'}}>
+              <div className="relative flex gap-8 items-start">
                 {/* 左側固定區域 - 新設計 */}
-                <div className="w-[300px] min-w-[300px] p-0 rounded-3xl sticky top-4 self-start h-fit min-h-[600px] bg-[#ffe600] flex flex-col justify-between overflow-hidden relative" style={{boxShadow:'0 4px 16px rgba(0,0,0,0.10)'}}>
+                <div className="w-[300px] min-w-[300px] p-0 rounded-2xl sticky top-4 self-start h-fit min-h-[600px] bg-[#ffe600] flex flex-col justify-between overflow-hidden relative" style={{boxShadow:'0 4px 16px rgba(0,0,0,0.10)'}}>
                   <div className="px-8 pt-8 pb-40 relative z-10">
                     <div className="inline-block bg-white rounded-full px-6 py-2 mb-4">
                       <span className="text-3xl font-extrabold text-black tracking-wider">案例分享</span>
@@ -172,17 +172,17 @@ export default function Home() {
                 </div>
                 {/* 右側網格 */}
                 <div className="flex-1 p-6 overflow-y-auto max-h-[800px]">
-                  <div className="grid grid-cols-12 gap-6 auto-rows-[250px]">
+                  <div className="grid grid-cols-12 gap-6 items-start">
                     {[...Array(11)].map((_, index) => (
                       <div 
                         key={index} 
-                        className={`relative bg-white rounded-xl p-4 pb-16 flex flex-col group cursor-pointer transition-all duration-300 hover:shadow-xl ${
-                          index === 0 ? 'col-span-6 row-span-2' :
+                        className={`bg-[#fffbe6] rounded-2xl p-4 flex flex-col group cursor-pointer transition-all duration-300 hover:shadow-xl ${
+                          index === 0 ? 'col-span-6' :
                           index === 1 ? 'col-span-6' :
                           index === 2 ? 'col-span-4' :
                           index === 3 ? 'col-span-4' :
                           index === 4 ? 'col-span-4' :
-                          index === 5 ? 'col-span-6 row-span-2' :
+                          index === 5 ? 'col-span-6' :
                           index === 6 ? 'col-span-6' :
                           index === 7 ? 'col-span-8' :
                           index === 8 ? 'col-span-4' :
@@ -227,7 +227,7 @@ export default function Home() {
                           "整合在地文化元素的季節性活動視覺"
                         ][index]}</p>
                         {/* 標籤區塊 */}
-                        <div className="absolute right-4 bottom-4 bg-yellow-300 text-black font-bold rounded-lg px-4 py-2 text-base shadow-md z-10">
+                        <div className="mt-4 bg-yellow-300 text-black font-bold rounded-lg px-4 py-2 text-base shadow-md z-10 self-end">
                           #品牌、插畫
                         </div>
                       </div>
