@@ -305,50 +305,96 @@ export default function Home() {
 
             {/* 4️⃣ 作品案例區塊 */}
             <section className="w-full max-w-[1200px] bg-white rounded-2xl shadow-lg p-16 mb-12 border border-black">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* 左側內容 */}
-                <div className="flex flex-col items-center">
-                  <h2 className="text-2xl font-bold mb-6 relative">
-                    <span className="relative z-10 text-black">作品案例</span>
-                    <span className="absolute inset-0 bg-yellow-300 -skew-x-3 transform -translate-y-1 translate-x-2" style={{ zIndex: 1 }}></span>
-                  </h2>
-                  <div className="flex gap-2 mb-8">
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">餐飲</span>
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">在地文創</span>
-                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm text-black">手作選物</span>
+              <div className="relative flex gap-8">
+                {/* 左側固定區域 */}
+                <div className="w-[300px] min-w-[300px] p-6 rounded-xl sticky top-4 self-start h-fit bg-[#FAF6E9]">
+                  <h2 className="text-2xl font-bold mb-6">作品案例</h2>
+                  
+                  {/* 標籤 */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">餐飲</span>
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">在地文創</span>
+                    <span className="px-3 py-1 bg-yellow-200 rounded-full text-sm">手作選物</span>
                   </div>
-                  <ul className="w-full flex flex-col gap-4 mb-8">
-                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                      <div className="font-semibold text-black">阿嬤麵店</div>
-                      <div className="text-sm text-gray-900">原是市場一角的阿嬤麵店，現在有了識別與粉絲。</div>
-                    </li>
-                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                      <div className="font-semibold text-black">小鎮文創</div>
-                      <div className="text-sm text-gray-900">在地故事變成品牌，吸引更多年輕人參與。</div>
-                    </li>
-                    <li className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                      <div className="font-semibold text-black">手作選物店</div>
-                      <div className="text-sm text-gray-900">從無到有，品牌形象讓商品更有價值。</div>
-                    </li>
-                  </ul>
-                  <div className="w-full flex justify-center">
-                    <button className="map-action-btn map-action-btn-center">查看更多案例</button>
+
+                  {/* 案例列表 */}
+                  <div className="flex flex-col gap-4">
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <h3 className="font-semibold">阿嬤麵店</h3>
+                      <p className="text-sm text-gray-600">原是市場一角的阿嬤麵店，現在有了識別與粉絲。</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <h3 className="font-semibold">小鎮文創</h3>
+                      <p className="text-sm text-gray-600">在地故事變成品牌，吸引更多年輕人參與。</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <h3 className="font-semibold">手作選物店</h3>
+                      <p className="text-sm text-gray-600">從無到有，品牌形象讓商品更有價值。</p>
+                    </div>
                   </div>
+
+                  <button className="w-full mt-6 px-6 py-3 bg-yellow-300 rounded-full font-bold hover:bg-yellow-400 transition-colors">
+                    查看更多案例
+                  </button>
                 </div>
 
-                {/* 右側照片空間 */}
-                <div className="flex items-center justify-center">
-                  <div className="w-full aspect-square border-2 border-black rounded-2xl overflow-hidden relative group cursor-pointer">
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-                      <div className="w-full h-full relative">
-                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-50">
-                          <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                          <span className="text-sm text-gray-500 font-medium">作品案例圖片</span>
+                {/* 右側網格 */}
+                <div className="flex-1 p-6 overflow-y-auto max-h-[800px]">
+                  <div className="grid grid-cols-12 gap-6 auto-rows-[250px]">
+                    {[...Array(11)].map((_, index) => (
+                      <div 
+                        key={index} 
+                        className={`bg-white rounded-xl p-4 flex flex-col group cursor-pointer transition-all duration-300 hover:shadow-xl ${
+                          // 為不同索引設置不同的網格佔位
+                          index === 0 ? 'col-span-6 row-span-2' :  // 第一個卡片佔據 6 列 2 行
+                          index === 1 ? 'col-span-6' :             // 第二個卡片佔據 6 列
+                          index === 2 ? 'col-span-4' :             // 第三個卡片佔據 4 列
+                          index === 3 ? 'col-span-4' :             // 第四個卡片佔據 4 列
+                          index === 4 ? 'col-span-4' :             // 第五個卡片佔據 4 列
+                          index === 5 ? 'col-span-6 row-span-2' :  // 第六個卡片佔據 6 列 2 行
+                          index === 6 ? 'col-span-6' :             // 第七個卡片佔據 6 列
+                          index === 7 ? 'col-span-8' :             // 第八個卡片佔據 8 列
+                          index === 8 ? 'col-span-4' :             // 第九個卡片佔據 4 列
+                          'col-span-6'                            // 其餘卡片佔據 6 列
+                        }`}
+                      >
+                        <div className="flex-1 rounded-lg mb-4 overflow-hidden">
+                          <Image 
+                            src={`/illustration_${(index % 6) + 1}.png`}
+                            alt={`案例圖片 ${index + 1}`}
+                            width={400}
+                            height={400}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
                         </div>
+                        <h3 className="font-extrabold text-black transition-colors duration-300 group-hover:text-yellow-500">{[
+                          "手作麵包坊的品牌重塑",
+                          "文創市集視覺設計",
+                          "茶行品牌升級計畫",
+                          "職人工藝展覽設計",
+                          "小農市集品牌規劃",
+                          "手工皮件品牌設計",
+                          "古蹟導覽指示設計",
+                          "社區活動識別設計",
+                          "咖啡廳空間規劃",
+                          "伴手禮包裝設計",
+                          "藝術季活動設計"
+                        ][index]}</h3>
+                        <p className="text-sm font-extrabold text-black mt-2">{[
+                          "為在地老店注入新活力，重新設計品牌識別與包裝",
+                          "結合傳統與現代元素，打造獨特市集風格",
+                          "從包裝到空間，重新詮釋百年茶行的品牌精神",
+                          "透過視覺設計展現傳統工藝的當代價值",
+                          "建立在地小農與消費者的情感連結",
+                          "以簡約設計突顯皮革工藝的質感",
+                          "融合歷史元素的現代化指示系統",
+                          "創造凝聚社區情感的視覺符號",
+                          "打造兼具美感與實用性的用餐環境",
+                          "以現代設計詮釋傳統特產的包裝",
+                          "整合在地文化元素的季節性活動視覺"
+                        ][index]}</p>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
