@@ -77,22 +77,22 @@ export default function Home() {
               </div>
               <div className="flex space-x-1">
                 <button style={{
-                  width: '16px',
-                  height: '14px',
+                  width: '24px',
+                  height: '21px',
                   background: '#c0c0c0',
                   border: '1px outset #c0c0c0',
-                  fontSize: '8px',
+                  fontSize: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'black'
                 }}>_</button>
                 <button style={{
-                  width: '16px',
-                  height: '14px',
+                  width: '24px',
+                  height: '21px',
                   background: '#c0c0c0',
                   border: '1px outset #c0c0c0',
-                  fontSize: '8px',
+                  fontSize: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -101,11 +101,11 @@ export default function Home() {
                 <button 
                   onClick={() => setShowIntroModal(false)}
                   style={{
-                    width: '16px',
-                    height: '14px',
+                    width: '24px',
+                    height: '21px',
                     background: '#c0c0c0',
                     border: '1px outset #c0c0c0',
-                    fontSize: '8px',
+                    fontSize: '12px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -217,12 +217,12 @@ export default function Home() {
                         }}
                       />
                       {/* DS Logo 前景 */}
-                      <img
-                        src="/DS-logo.png"
+                                            <img
+                        src="/DS-logov2.png"
                         alt="DS Logo"
                         className="absolute w-full object-contain ds-logo-bounce"
-                        style={{ 
-                          transform: 'scale(0.8)', 
+                        style={{
+                          transform: 'scale(0.672)',
                           zIndex: 2,
                           transformOrigin: 'center top',
                           top: showRight && !showIntroModal ? '-10%' : '-20%',
@@ -244,10 +244,10 @@ export default function Home() {
                           cursor:'pointer', 
                           transform: `translateX(-50%) scale(${showRight ? 1.5 : 0.5})`,
                           opacity: showRight ? 1 : 0.5,
-                          transition: 'all 0.5s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                          transition: 'bottom 0.5s ease-out, opacity 0.5s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           transitionDelay: showRight ? '0.6s' : '0s'
                         }}
-                        className={isTransitioning ? 'transition-fade' : ''}
+                        className={`${isTransitioning ? 'transition-fade' : ''} ${showRight ? 'enter-btn-bounce' : ''}`}
                         onMouseEnter={() => setIsEnterHovered(true)}
                         onMouseLeave={() => setIsEnterHovered(false)}
                         onClick={e => {
@@ -419,10 +419,21 @@ export default function Home() {
         }
         @keyframes bounce-logo {
           0%, 100% {
-            transform: translateY(0px) scale(0.8);
+            transform: translateY(0px) scale(0.672);
           }
           50% {
-            transform: translateY(-20px) scale(0.8);
+            transform: translateY(-20px) scale(0.672);
+          }
+        }
+        .enter-btn-bounce {
+          animation: bounce-enter 2s ease-in-out infinite;
+        }
+        @keyframes bounce-enter {
+          0%, 100% {
+            transform: translateX(-50%) translateY(0px) scale(1.5);
+          }
+          50% {
+            transform: translateX(-50%) translateY(-20px) scale(1.5);
           }
         }
       `}</style>
