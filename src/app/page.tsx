@@ -1,8 +1,10 @@
 'use client';
 import Image from "next/image";
 import React, { useRef, useState, useEffect } from "react";
-import ProfileSection from '../components/ProfileSection';
-import ProjectGrid from '../components/ProjectGrid';
+import VerticalWindow from '../components/VerticalWindow';
+import LoginSignupCard from '../components/LoginSignupCard';
+import TextWindow from '../components/TextWindow';
+import CarouselWindow from '../components/CarouselWindow';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -11,6 +13,26 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  
+  // 拖拽功能狀態 - 支援多個視窗
+  const [isDragging, setIsDragging] = useState<string | null>(null);
+  const [windowPositions, setWindowPositions] = useState({
+    loginCard: { x: 50, y: 50 },
+    textWindow: { x: 320, y: 80 },
+    carouselWindow: { x: 80, y: 220 }
+  });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
+  // 視窗狀態管理
+  const [windowStates, setWindowStates] = useState({
+    loginCard: { minimized: false, maximized: false, closed: true },
+    textWindow: { minimized: false, maximized: false, closed: true },
+    carouselWindow: { minimized: false, maximized: false, closed: true }
+  });
+
+  // 視窗層級管理
+  const [activeWindow, setActiveWindow] = useState<string | null>(null);
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -28,6 +50,27 @@ export default function Home() {
     };
   }, []);
 
+  // Loading 進度條動畫
+  useEffect(() => {
+    if (showIntroModal) {
+      const interval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            // 進度完成後等待1秒再關閉視窗
+            setTimeout(() => {
+              setShowIntroModal(false);
+            }, 1000);
+            return 100;
+          }
+          return prev + Math.random() * 3 + 1; // 隨機增加 1-4%
+        });
+      }, 150); // 每150ms更新一次
+
+      return () => clearInterval(interval);
+    }
+  }, [showIntroModal]);
+
   useEffect(() => {
     if (entered && casesRef.current) {
       setTimeout(() => {
@@ -41,6 +84,118 @@ export default function Home() {
     setTimeout(() => {
       setEntered(true);
     }, 1300);
+  };
+
+  // 拖拽處理函數 - 支援多個視窗
+  const handleMouseDown = (e: React.MouseEvent, windowId: string) => {
+    const rect = (e.target as HTMLElement).closest('.draggable-window')?.getBoundingClientRect();
+    if (rect) {
+      setIsDragging(windowId);
+      setActiveWindow(windowId); // 設置為活動視窗
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      e.preventDefault();
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      const container = (e.target as HTMLElement).closest('section');
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const newX = e.clientX - containerRect.left - dragOffset.x;
+        const newY = e.clientY - containerRect.top - dragOffset.y;
+        
+        // 根據不同視窗設定不同的邊界限制
+        let maxX, maxY;
+        switch (isDragging) {
+          case 'loginCard':
+            maxX = containerRect.width - 600;
+            maxY = containerRect.height - 350;
+            break;
+          case 'textWindow':
+            maxX = containerRect.width - 400;
+            maxY = containerRect.height - 300;
+            break;
+          case 'carouselWindow':
+            maxX = containerRect.width - 450;
+            maxY = containerRect.height - 320;
+            break;
+          default:
+            maxX = containerRect.width - 400;
+            maxY = containerRect.height - 300;
+        }
+        
+        setWindowPositions(prev => ({
+          ...prev,
+          [isDragging]: {
+            x: Math.max(0, Math.min(maxX, newX)),
+            y: Math.max(0, Math.min(maxY, newY))
+          }
+        }));
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(null);
+  };
+
+  // 視窗控制函數
+  const handleMinimize = (windowId: string) => {
+    setActiveWindow(windowId); // 設置為活動視窗
+    setWindowStates(prev => ({
+      ...prev,
+      [windowId]: { ...prev[windowId as keyof typeof prev], minimized: !prev[windowId as keyof typeof prev].minimized }
+    }));
+  };
+
+  const handleMaximize = (windowId: string) => {
+    setActiveWindow(windowId); // 設置為活動視窗
+    setWindowStates(prev => ({
+      ...prev,
+      [windowId]: { ...prev[windowId as keyof typeof prev], maximized: !prev[windowId as keyof typeof prev].maximized }
+    }));
+  };
+
+  const handleClose = (windowId: string) => {
+    setWindowStates(prev => ({
+      ...prev,
+      [windowId]: { ...prev[windowId as keyof typeof prev], closed: true }
+    }));
+  };
+
+  // 開啟插畫資料夾
+  const openIllustrationFolder = () => {
+    setWindowStates(prev => ({
+      ...prev,
+      loginCard: { minimized: false, maximized: false, closed: false },
+      textWindow: { minimized: false, maximized: false, closed: false },
+      carouselWindow: { minimized: false, maximized: false, closed: false }
+    }));
+    setActiveWindow('loginCard'); // 預設第一個視窗為活動視窗
+  };
+
+  // 計算視窗的 z-index
+  const getWindowZIndex = (windowId: string) => {
+    // 桌面圖示層級: 15
+    // 一般視窗層級: 20-25
+    // 活動視窗層級: 30
+    // 拖拽中視窗層級: 40
+    
+    if (isDragging === windowId) return 40;
+    if (activeWindow === windowId) return 30;
+    
+    // 為不同視窗設置不同的基礎層級
+    const baseZIndex = {
+      loginCard: 25,
+      textWindow: 22,
+      carouselWindow: 20
+    };
+    
+    return baseZIndex[windowId as keyof typeof baseZIndex] || 20;
   };
 
   return (
@@ -57,7 +212,7 @@ export default function Home() {
           }}>
             {/* Windows 98 標題列 */}
             <div className="win98-titlebar" style={{
-              background: 'linear-gradient(90deg, #0080ff 0%, #004080 100%)',
+              background: 'linear-gradient(90deg, #808080 0%, #404040 100%)',
               color: 'white',
               padding: '4px 6px',
               display: 'flex',
@@ -75,52 +230,12 @@ export default function Home() {
                 }}></div>
                 <span>冬山集合作社 - 工作室介紹</span>
               </div>
-              <div className="flex space-x-1">
-                <button style={{
-                  width: '24px',
-                  height: '21px',
-                  background: '#c0c0c0',
-                  border: '1px outset #c0c0c0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'black'
-                }}>_</button>
-                <button style={{
-                  width: '24px',
-                  height: '21px',
-                  background: '#c0c0c0',
-                  border: '1px outset #c0c0c0',
-                  fontSize: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'black'
-                }}>□</button>
-                <button 
-                  onClick={() => setShowIntroModal(false)}
-                  style={{
-                    width: '24px',
-                    height: '21px',
-                    background: '#c0c0c0',
-                    border: '1px outset #c0c0c0',
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'black',
-                    cursor: 'pointer'
-                  }}
-                  onMouseDown={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
-                  onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                >×</button>
-              </div>
+
             </div>
             
             {/* Windows 98 內容區域 */}
             <div style={{
-              background: '#000080',
+              background: '#2a2a2a',
               color: 'white',
               padding: '32px',
               fontSize: '22px',
@@ -139,7 +254,7 @@ export default function Home() {
               </div>
               
               <div style={{
-                borderTop: '1px solid #4080ff',
+                borderTop: '3px solid white',
                 paddingTop: '24px',
                 fontSize: '20px'
               }}>
@@ -154,8 +269,70 @@ export default function Home() {
                   hometown.&rdquo;
                 </p>
               </div>
+
+              {/* Loading 進度條區域 */}
+              <div style={{
+                position: 'absolute',
+                bottom: '20px',
+                right: '20px',
+                width: '200px',
+                background: '#f0f0f0',
+                border: '2px inset #c0c0c0',
+                padding: '8px'
+              }}>
+                <div style={{
+                  fontSize: '12px',
+                  marginBottom: '4px',
+                  color: '#000',
+                  fontFamily: 'var(--font-zpix), monospace'
+                }}>
+                  Loading... {Math.floor(loadingProgress)}%
+                </div>
+                
+                {/* 進度條背景 */}
+                <div style={{
+                  width: '100%',
+                  height: '16px',
+                  background: '#white',
+                  border: '1px inset #c0c0c0',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}>
+                  {/* 進度條填充 */}
+                  <div style={{
+                    width: `${loadingProgress}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #0066cc 0%, #0080ff 50%, #0066cc 100%)',
+                    transition: 'width 0.3s ease-out',
+                    position: 'relative'
+                  }}>
+                    {/* 進度條動畫效果 */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '-50px',
+                      width: '50px',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
+                      animation: loadingProgress < 100 ? 'loading-shine 1.5s infinite' : 'none'
+                    }} />
+                  </div>
+                </div>
+                
+                {/* 狀態文字 */}
+                <div style={{
+                  fontSize: '10px',
+                  marginTop: '4px',
+                  color: '#666',
+                  fontFamily: 'monospace'
+                }}>
+                  {loadingProgress < 100 ? '正在載入工作室資料...' : '載入完成！'}
+                </div>
+              </div>
             </div>
           </div>
+
+
         </div>
       )}
 
@@ -218,7 +395,7 @@ export default function Home() {
                       />
                       {/* DS Logo 前景 */}
                                             <img
-                        src="/DS-logov2.png"
+                        src="/dslogo-v3.png"
                         alt="DS Logo"
                         className="absolute w-full object-contain ds-logo-bounce"
                         style={{
@@ -374,13 +551,276 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative w-full h-[100vh] flex flex-row overflow-hidden">
-              <div className="h-full w-1/3 min-w-[320px] max-w-[480px] flex-shrink-0 sticky top-0 left-0 z-20 bg-transparent border-r border-gray-200 p-0 m-0" style={{height:'100vh'}}>
-                <ProfileSection />
+            <div className="relative w-full h-[100vh] flex flex-col lg:flex-row overflow-hidden">
+              <div className="h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0" style={{height:'100vh'}}>
+                <VerticalWindow 
+                  width="100%" 
+                  height="100vh"
+                />
               </div>
-              <section className="flex-1 w-2/3 h-full overflow-y-auto px-0 py-0 overflow-x-hidden">
-                <div className="bg-white border-2 border-black rounded-[40px] h-full p-8 flex flex-col justify-start items-stretch overflow-x-hidden">
-                  <ProjectGrid />
+              <section 
+                className="flex-1 lg:w-2/3 w-full h-full relative overflow-hidden desktop-area" 
+                style={{
+                  background: '#2a2a2a',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")`,
+                  padding: '20px'
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+              >
+                {/* 桌面模式 - 可拖拽視窗 */}
+                <div className="hidden lg:block">
+                  {/* 桌面圖示 */}
+                  <div className="absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15 }}>
+                    {/* 插畫資料夾 */}
+                    <div 
+                      className="flex flex-col items-center cursor-pointer group"
+                      onClick={openIllustrationFolder}
+                      style={{ width: '60px' }}
+                    >
+                      <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <span style={{ 
+                          fontSize: '10px', 
+                          color: '#ffffff', 
+                          textAlign: 'center',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                          lineHeight: '1.2'
+                        }}>
+                          插畫
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 設計資料夾 */}
+                    <div 
+                      className="flex flex-col items-center cursor-pointer group"
+                      style={{ width: '60px' }}
+                    >
+                      <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <span style={{ 
+                          fontSize: '10px', 
+                          color: '#ffffff', 
+                          textAlign: 'center',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                          lineHeight: '1.2'
+                        }}>
+                          設計
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 品牌資料夾 */}
+                    <div 
+                      className="flex flex-col items-center cursor-pointer group"
+                      style={{ width: '60px' }}
+                    >
+                      <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <span style={{ 
+                          fontSize: '10px', 
+                          color: '#ffffff', 
+                          textAlign: 'center',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                          lineHeight: '1.2'
+                        }}>
+                          品牌
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* LoginSignupCard 視窗 */}
+                  {!windowStates.loginCard.closed && (
+                    <div 
+                      className="draggable-window"
+                      style={{ 
+                        position: windowStates.loginCard.maximized ? 'absolute' : 'absolute',
+                        cursor: isDragging === 'loginCard' ? 'grabbing' : 'grab',
+                        left: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.x}px`,
+                        top: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.y}px`,
+                        width: windowStates.loginCard.maximized ? '100%' : 'auto',
+                        height: windowStates.loginCard.maximized ? '100%' : 'auto',
+                        userSelect: 'none',
+                        zIndex: getWindowZIndex('loginCard')
+                      }}
+                      onMouseDown={(e) => !windowStates.loginCard.maximized && handleMouseDown(e, 'loginCard')}
+                    >
+                    <LoginSignupCard 
+                      title="來自土地的設計夥伴"
+                      description="冬山集合作社，深耕宜蘭在地文化的設計工作室。我們相信好的品牌源於深度的溝通與理解，每一個設計都承載著故事與溫度。從品牌識別到印刷設計，我們用設計讓世界重新看見家鄉的美好。"
+                      windowTitle="冬山集合作社 - 工作室介紹.exe"
+                      leftImage="/hero.png"
+                      width={windowStates.loginCard.maximized ? "100%" : "600px"}
+                      height={windowStates.loginCard.maximized ? "100%" : "350px"}
+                      onMinimize={() => handleMinimize('loginCard')}
+                      onMaximize={() => handleMaximize('loginCard')}
+                      onClose={() => handleClose('loginCard')}
+                      isMinimized={windowStates.loginCard.minimized}
+                      isMaximized={windowStates.loginCard.maximized}
+                    />
+                  </div>
+                  )}
+
+                  {/* TextWindow 視窗 */}
+                  {!windowStates.textWindow.closed && (
+                    <div 
+                      className="draggable-window"
+                      style={{ 
+                        position: 'absolute', 
+                        left: windowStates.textWindow.maximized ? '0' : `${windowPositions.textWindow.x}px`,
+                        top: windowStates.textWindow.maximized ? '0' : `${windowPositions.textWindow.y}px`,
+                        width: windowStates.textWindow.maximized ? '100%' : 'auto',
+                        height: windowStates.textWindow.maximized ? '100%' : 'auto',
+                        cursor: isDragging === 'textWindow' ? 'grabbing' : 'grab',
+                        userSelect: 'none',
+                        zIndex: getWindowZIndex('textWindow')
+                      }}
+                      onMouseDown={(e) => !windowStates.textWindow.maximized && handleMouseDown(e, 'textWindow')}
+                    >
+                      <TextWindow 
+                        windowTitle="專案說明.txt"
+                        width={windowStates.textWindow.maximized ? "100%" : "400px"}
+                        height={windowStates.textWindow.maximized ? "100%" : "300px"}
+                        onMinimize={() => handleMinimize('textWindow')}
+                        onMaximize={() => handleMaximize('textWindow')}
+                        onClose={() => handleClose('textWindow')}
+                        isMinimized={windowStates.textWindow.minimized}
+                        isMaximized={windowStates.textWindow.maximized}
+                        content={`冬山集合作社 - 設計工作室
+
+我們的理念：
+每個品牌都有獨特的故事，我們用設計讓這些故事發光發熱。
+
+核心服務：
+• 品牌識別設計
+• 視覺形象規劃  
+• 印刷品設計
+• 包裝設計
+• 網站設計
+
+設計流程：
+1. 深度溝通了解需求
+2. 創意發想概念確立
+3. 精緻設計細節完善
+4. 完整交付使用指導
+
+聯絡我們：
+Email: hello@dongshan.design
+Tel: 03-9XX-XXXX
+
+在地設計，國際視野
+讓設計成為溝通的橋樑`}
+                      />
+                    </div>
+                  )}
+
+                  {/* CarouselWindow 視窗 */}
+                  {!windowStates.carouselWindow.closed && (
+                    <div 
+                      className="draggable-window"
+                      style={{ 
+                        position: 'absolute', 
+                        left: windowStates.carouselWindow.maximized ? '0' : `${windowPositions.carouselWindow.x}px`,
+                        top: windowStates.carouselWindow.maximized ? '0' : `${windowPositions.carouselWindow.y}px`,
+                        width: windowStates.carouselWindow.maximized ? '100%' : 'auto',
+                        height: windowStates.carouselWindow.maximized ? '100%' : 'auto',
+                        cursor: isDragging === 'carouselWindow' ? 'grabbing' : 'grab',
+                        userSelect: 'none',
+                        zIndex: getWindowZIndex('carouselWindow')
+                      }}
+                      onMouseDown={(e) => !windowStates.carouselWindow.maximized && handleMouseDown(e, 'carouselWindow')}
+                    >
+                      <CarouselWindow 
+                        windowTitle="作品集展示.exe"
+                        width={windowStates.carouselWindow.maximized ? "100%" : "450px"}
+                        height={windowStates.carouselWindow.maximized ? "100%" : "320px"}
+                        onMinimize={() => handleMinimize('carouselWindow')}
+                        onMaximize={() => handleMaximize('carouselWindow')}
+                        onClose={() => handleClose('carouselWindow')}
+                        isMinimized={windowStates.carouselWindow.minimized}
+                        isMaximized={windowStates.carouselWindow.maximized}
+                        images={[
+                          '/illustration_1.png',
+                          '/illustration_2.png', 
+                          '/illustration_3.png',
+                          '/illustration_4.png',
+                          '/illustration_5.png',
+                          '/illustration_6.png'
+                        ]}
+                        autoPlay={true}
+                        autoPlayInterval={5000}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* 響應式模式 - 一欄式布局 */}
+                <div className="lg:hidden h-full overflow-y-auto">
+                  <div style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '20px',
+                    padding: '10px'
+                  }}>
+                    <LoginSignupCard 
+                      title="來自土地的設計夥伴"
+                      description="冬山集合作社，深耕宜蘭在地文化的設計工作室。我們相信好的品牌源於深度的溝通與理解，每一個設計都承載著故事與溫度。從品牌識別到印刷設計，我們用設計讓世界重新看見家鄉的美好。"
+                      windowTitle="冬山集合作社 - 工作室介紹.exe"
+                      leftImage="/hero.png"
+                      width="100%"
+                      height="350px"
+                    />
+                    
+                    <TextWindow 
+                      windowTitle="專案說明.txt"
+                      width="100%"
+                      height="300px"
+                      content={`冬山集合作社 - 設計工作室
+
+我們的理念：
+每個品牌都有獨特的故事，我們用設計讓這些故事發光發熱。
+
+核心服務：
+• 品牌識別設計
+• 視覺形象規劃  
+• 印刷品設計
+• 包裝設計
+• 網站設計
+
+設計流程：
+1. 深度溝通了解需求
+2. 創意發想概念確立
+3. 精緻設計細節完善
+4. 完整交付使用指導
+
+聯絡我們：
+Email: hello@dongshan.design
+Tel: 03-9XX-XXXX
+
+在地設計，國際視野
+讓設計成為溝通的橋樑`}
+                    />
+                    
+                    <CarouselWindow 
+                      windowTitle="作品集展示.exe"
+                      width="100%"
+                      height="350px"
+                      images={[
+                        '/illustration_1.png',
+                        '/illustration_2.png', 
+                        '/illustration_3.png',
+                        '/illustration_4.png',
+                        '/illustration_5.png',
+                        '/illustration_6.png'
+                      ]}
+                      autoPlay={true}
+                      autoPlayInterval={5000}
+                    />
+                  </div>
                 </div>
               </section>
             </div>
@@ -435,6 +875,10 @@ export default function Home() {
           50% {
             transform: translateX(-50%) translateY(-20px) scale(1.5);
           }
+        }
+        @keyframes loading-shine {
+          0% { left: -50px; }
+          100% { left: 100%; }
         }
       `}</style>
     </div>
