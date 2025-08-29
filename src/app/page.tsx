@@ -202,13 +202,15 @@ export default function Home() {
     <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: 'transparent' }}>
       {/* Windows 98 風格介紹視窗 */}
       {showIntroModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
           <div className="win98-window relative" style={{
             width: '960px',
-            maxWidth: '90vw',
+            maxWidth: '95vw',
+            maxHeight: '90vh',
             background: '#c0c0c0',
             border: '2px outset #c0c0c0',
-            fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace'
+            fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace',
+            overflow: 'hidden'
           }}>
             {/* Windows 98 標題列 */}
             <div className="win98-titlebar" style={{
@@ -218,7 +220,7 @@ export default function Home() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              fontSize: '22px',
+              fontSize: 'clamp(14px, 4vw, 22px)',
               fontWeight: 'bold'
             }}>
               <div className="flex items-center space-x-2">
@@ -237,11 +239,13 @@ export default function Home() {
             <div style={{
               background: '#2a2a2a',
               color: 'white',
-              padding: '32px',
-              fontSize: '22px',
+              padding: 'clamp(16px, 4vw, 32px)',
+              fontSize: 'clamp(14px, 3.5vw, 22px)',
               lineHeight: '1.4',
               border: '2px inset #c0c0c0',
-              margin: '2px'
+              margin: '2px',
+              overflow: 'auto',
+              maxHeight: 'calc(90vh - 120px)'
             }}>
               <div style={{ marginBottom: '24px' }}>
                 <p>
@@ -255,8 +259,8 @@ export default function Home() {
               
               <div style={{
                 borderTop: '3px solid white',
-                paddingTop: '24px',
-                fontSize: '20px'
+                paddingTop: 'clamp(16px, 3vw, 24px)',
+                fontSize: 'clamp(12px, 3vw, 20px)'
               }}>
                 <p>
                   &ldquo;Hello, I&rsquo;m Liam.<br/>
@@ -273,16 +277,16 @@ export default function Home() {
               {/* Loading 進度條區域 */}
               <div style={{
                 position: 'absolute',
-                bottom: '20px',
-                right: '20px',
-                width: '400px',
+                bottom: 'clamp(10px, 2vw, 20px)',
+                right: 'clamp(10px, 2vw, 20px)',
+                width: 'clamp(280px, 60vw, 400px)',
                 background: 'transparent',
                 border: '2px inset #c0c0c0',
-                padding: '16px'
+                padding: 'clamp(8px, 2vw, 16px)'
               }}>
                 <div style={{
-                  fontSize: '14px',
-                  marginBottom: '8px',
+                  fontSize: 'clamp(10px, 2.5vw, 14px)',
+                  marginBottom: 'clamp(4px, 1vw, 8px)',
                   color: '#ffffff',
                   fontFamily: 'var(--font-press-start-2p), monospace',
                   textShadow: '2px 2px 0px #000000'
@@ -293,7 +297,7 @@ export default function Home() {
                 {/* 分格式進度條 */}
                 <div style={{
                   width: '100%',
-                  height: '32px',
+                  height: 'clamp(20px, 4vw, 32px)',
                   border: '2px inset #c0c0c0',
                   position: 'relative',
                   background: 'transparent',
@@ -560,26 +564,27 @@ export default function Home() {
             </div>
 
             <div className="relative w-full h-[100vh] flex flex-col lg:flex-row overflow-hidden">
-              <div className="h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0" style={{height:'100vh'}}>
+              <div className="h-auto lg:h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 lg:sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0" style={{height: 'auto', minHeight: '60vh'}}>
                 <VerticalWindow 
                   width="100%" 
-                  height="100vh"
+                  height="auto"
                 />
               </div>
               <section 
-                className="flex-1 lg:w-2/3 w-full h-full relative overflow-hidden desktop-area" 
+                className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-hidden desktop-area" 
                 style={{
                   background: '#2a2a2a',
                   backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")`,
-                  padding: '20px'
+                  padding: 'clamp(10px, 3vw, 20px)',
+                  minHeight: '40vh'
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
               >
                 {/* 桌面模式 - 可拖拽視窗 */}
                 <div className="hidden lg:block">
-                  {/* 桌面圖示 */}
-                  <div className="absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15 }}>
+                  {/* 桌面圖示 - 僅桌面顯示 */}
+                  <div className="hidden lg:block absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15 }}>
                     {/* 插畫資料夾 */}
                     <div 
                       className="flex flex-col items-center cursor-pointer group"
@@ -767,12 +772,12 @@ Tel: 03-9XX-XXXX
                 </div>
 
                 {/* 響應式模式 - 一欄式布局 */}
-                <div className="lg:hidden h-full overflow-y-auto">
+                <div className="lg:hidden h-auto overflow-y-auto">
                   <div style={{ 
                     display: 'flex', 
                     flexDirection: 'column', 
-                    gap: '20px',
-                    padding: '10px'
+                    gap: 'clamp(15px, 4vw, 20px)',
+                    padding: 'clamp(10px, 3vw, 15px)'
                   }}>
                     <LoginSignupCard 
                       title="來自土地的設計夥伴"
@@ -780,13 +785,13 @@ Tel: 03-9XX-XXXX
                       windowTitle="冬山集合作社 - 工作室介紹.exe"
                       leftImage="/hero.png"
                       width="100%"
-                      height="350px"
+                      height="clamp(280px, 50vw, 350px)"
                     />
                     
                     <TextWindow 
                       windowTitle="專案說明.txt"
                       width="100%"
-                      height="300px"
+                      height="clamp(250px, 45vw, 300px)"
                       content={`冬山集合作社 - 設計工作室
 
 我們的理念：
@@ -816,7 +821,7 @@ Tel: 03-9XX-XXXX
                     <CarouselWindow 
                       windowTitle="作品集展示.exe"
                       width="100%"
-                      height="350px"
+                      height="clamp(280px, 50vw, 350px)"
                       images={[
                         '/illustration_1.png',
                         '/illustration_2.png', 

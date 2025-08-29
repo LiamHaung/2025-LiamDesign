@@ -36,7 +36,8 @@ const VerticalWindow: React.FC<VerticalWindowProps> = ({
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: 'fit-content'
       }}
     >
       {/* 標題欄 - Instagram.exe */}
@@ -44,8 +45,8 @@ const VerticalWindow: React.FC<VerticalWindowProps> = ({
         style={{
           background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)',
           color: 'white',
-          padding: '4px 8px',
-          fontSize: '11px',
+          padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
+          fontSize: 'clamp(9px, 2.5vw, 11px)',
           fontWeight: 'bold',
           display: 'flex',
           justifyContent: 'space-between',
