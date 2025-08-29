@@ -275,48 +275,56 @@ export default function Home() {
                 position: 'absolute',
                 bottom: '20px',
                 right: '20px',
-                width: '200px',
-                background: '#f0f0f0',
+                width: '400px',
+                background: 'transparent',
                 border: '2px inset #c0c0c0',
-                padding: '8px'
+                padding: '16px'
               }}>
                 <div style={{
-                  fontSize: '12px',
-                  marginBottom: '4px',
-                  color: '#000',
-                  fontFamily: 'var(--font-zpix), monospace'
+                  fontSize: '14px',
+                  marginBottom: '8px',
+                  color: '#ffffff',
+                  fontFamily: 'var(--font-press-start-2p), monospace',
+                  textShadow: '2px 2px 0px #000000'
                 }}>
                   Loading... {Math.floor(loadingProgress)}%
                 </div>
                 
-                {/* 進度條背景 */}
+                {/* 分格式進度條 */}
                 <div style={{
                   width: '100%',
-                  height: '16px',
-                  background: '#white',
-                  border: '1px inset #c0c0c0',
+                  height: '32px',
+                  border: '2px inset #c0c0c0',
                   position: 'relative',
-                  overflow: 'hidden'
+                  background: 'transparent',
+                  display: 'flex'
                 }}>
-                  {/* 進度條填充 */}
-                  <div style={{
-                    width: `${loadingProgress}%`,
-                    height: '100%',
-                    background: 'linear-gradient(90deg, #0066cc 0%, #0080ff 50%, #0066cc 100%)',
-                    transition: 'width 0.3s ease-out',
-                    position: 'relative'
-                  }}>
-                    {/* 進度條動畫效果 */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '0',
-                      left: '-50px',
-                      width: '50px',
-                      height: '100%',
-                      background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
-                      animation: loadingProgress < 100 ? 'loading-shine 1.5s infinite' : 'none'
-                    }} />
-                  </div>
+                  {/* 生成10格進度條 */}
+                  {Array.from({ length: 10 }, (_, index) => {
+                    const segmentProgress = (loadingProgress / 10);
+                    const isActive = index < Math.floor(segmentProgress);
+                    const isPartiallyActive = index === Math.floor(segmentProgress) && segmentProgress % 1 > 0;
+                    
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          flex: '1',
+                          height: '100%',
+                          background: isActive 
+                            ? '#008000'
+                            : isPartiallyActive 
+                              ? `linear-gradient(90deg, #008000 ${(segmentProgress % 1) * 100}%, transparent ${(segmentProgress % 1) * 100}%)`
+                              : 'transparent',
+                          border: '1px solid #808080',
+                          borderRight: index === 9 ? '1px solid #808080' : 'none',
+                          position: 'relative',
+                          transition: 'background 0.3s ease-out'
+                        }}
+                      >
+                      </div>
+                    );
+                  })}
                 </div>
                 
                 {/* 狀態文字 */}
@@ -876,10 +884,7 @@ Tel: 03-9XX-XXXX
             transform: translateX(-50%) translateY(-20px) scale(1.5);
           }
         }
-        @keyframes loading-shine {
-          0% { left: -50px; }
-          100% { left: 100%; }
-        }
+
       `}</style>
     </div>
   );
