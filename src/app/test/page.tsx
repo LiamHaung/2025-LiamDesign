@@ -8,6 +8,7 @@ import ProjectTimeline from '@/components/ProjectTimeline';
 import LoginSignupCard from '@/components/LoginSignupCard';
 import TextWindow from '@/components/TextWindow';
 import CarouselWindow from '@/components/CarouselWindow';
+import ContactForm from '@/components/ContactForm';
 
 export default function TestPage() {
   // FlipBook 範例圖片數據
@@ -26,8 +27,33 @@ export default function TestPage() {
       minHeight: '100vh',
       background: 'white',
       padding: '20px',
-      fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace'
+      fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace',
+      position: 'relative'
     }}>
+      {/* 測試用手機版按鈕 */}
+      <div 
+        className="lg:hidden fixed top-4 right-4"
+        style={{ 
+          zIndex: 9999,
+          width: '44px',
+          height: '44px',
+          background: '#ff0000',
+          border: '2px outset #c0c0c0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          fontFamily: 'var(--font-zpix), monospace',
+          fontSize: '18px',
+          color: 'white'
+        }}
+                 onClick={() => {
+           console.log('手機版按鈕被點擊！');
+           alert('手機版按鈕正常工作！現在請到主頁面測試漢堡選單');
+         }}
+       >
+         📱
+       </div>
       <h1 style={{ 
         color: 'black', 
         textAlign: 'center', 
@@ -509,17 +535,41 @@ Copyright © 2024 冬山集合作社 All rights reserved.`}
         </div>
       </div>
 
-      {/* 第四區：ProjectTimeline 組件 - 需要在最後，因為它會使用全螢幕水平滾動 */}
+            {/* 第四區：聯絡表單組件 */}
+      <section style={{ marginTop: '60px', marginBottom: '60px' }}>
+        <h2 style={{
+          color: 'black',
+          fontSize: '18px',
+          marginBottom: '20px',
+          textAlign: 'center'
+        }}>
+          ContactForm 聯絡表單組件
+        </h2>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px'
+        }}>
+          <ContactForm 
+            windowTitle="聯絡表單 Demo.exe"
+            width="500px"
+            height="450px"
+          />
+        </div>
+      </section>
+
+      {/* 第五區：ProjectTimeline 組件 - 需要在最後，因為它會使用全螢幕水平滾動 */}
       <section style={{ marginTop: '60px' }}>
                  <h2 style={{
-           color: 'black',
-           fontSize: '18px',
-           marginBottom: '20px',
-           textAlign: 'center'
-         }}>
-           ProjectTimeline 水平滾動時間軸
-         </h2>
-        <ProjectTimeline />
+          color: 'black',
+          fontSize: '18px',
+          marginBottom: '20px',
+          textAlign: 'center'
+        }}>
+          ProjectTimeline 水平滾動時間軸
+        </h2>
+       <ProjectTimeline />
       </section>
     </div>
   );

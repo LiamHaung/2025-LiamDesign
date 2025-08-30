@@ -46,13 +46,14 @@ const TextWindow: React.FC<TextWindowProps> = ({
       <div style={{
         background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)',
         color: 'white',
-        padding: '4px 8px',
-        fontSize: '11px',
+        padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
+        fontSize: 'clamp(9px, 2.5vw, 11px)',
         fontWeight: 'bold',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid #808080'
+        borderBottom: '1px solid #808080',
+        minHeight: 'clamp(20px, 5vw, 24px)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{
@@ -155,8 +156,8 @@ const TextWindow: React.FC<TextWindowProps> = ({
             background: 'white',
             border: '2px inset #c0c0c0',
             margin: '2px',
-            padding: '8px',
-            fontSize: '11px',
+            padding: 'clamp(6px, 1.5vw, 8px)',
+            fontSize: 'clamp(10px, 2.2vw, 11px)',
             lineHeight: '1.6',
             color: '#000',
             overflow: 'auto',

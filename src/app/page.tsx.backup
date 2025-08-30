@@ -5,6 +5,7 @@ import VerticalWindow from '../components/VerticalWindow';
 import LoginSignupCard from '../components/LoginSignupCard';
 import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
+import ContactForm from '../components/ContactForm';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -20,7 +21,8 @@ export default function Home() {
   const [windowPositions, setWindowPositions] = useState({
     loginCard: { x: 50, y: 50 },
     textWindow: { x: 320, y: 80 },
-    carouselWindow: { x: 80, y: 220 }
+    carouselWindow: { x: 80, y: 220 },
+    contactForm: { x: 200, y: 150 }
   });
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
@@ -28,7 +30,8 @@ export default function Home() {
   const [windowStates, setWindowStates] = useState({
     loginCard: { minimized: false, maximized: false, closed: true },
     textWindow: { minimized: false, maximized: false, closed: true },
-    carouselWindow: { minimized: false, maximized: false, closed: true }
+    carouselWindow: { minimized: false, maximized: false, closed: true },
+    contactForm: { minimized: false, maximized: false, closed: true }
   });
 
   // 視窗層級管理
@@ -36,7 +39,24 @@ export default function Home() {
   
   // 手機版漢堡選單狀態
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // 控制是否顯示 VerticalWindow (手機版)
   const [showVerticalWindow, setShowVerticalWindow] = useState(true);
+
+  // 點擊外部關閉選單
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (mobileMenuOpen && !target.closest('.mobile-menu')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -127,6 +147,10 @@ export default function Home() {
             maxX = containerRect.width - 450;
             maxY = containerRect.height - 320;
             break;
+          case 'contactForm':
+            maxX = containerRect.width - 500;
+            maxY = containerRect.height - 450;
+            break;
           default:
             maxX = containerRect.width - 400;
             maxY = containerRect.height - 300;
@@ -173,22 +197,37 @@ export default function Home() {
 
   // 開啟插畫資料夾
   const openIllustrationFolder = () => {
-    console.log('openIllustrationFolder 被調用！');
-    console.log('設置前 windowStates:', windowStates);
-    setWindowStates(prev => ({
-      ...prev,
-      loginCard: { minimized: false, maximized: false, closed: false },
-      textWindow: { minimized: false, maximized: false, closed: false },
-      carouselWindow: { minimized: false, maximized: false, closed: false },
-      contactForm: { minimized: false, maximized: false, closed: true }
-    }));
+    console.log('插畫資料夾被點擊！正在開啟三個視窗...');
+    setWindowStates(prev => {
+      const newState = {
+        ...prev,
+        // 確保只開啟三個插畫相關視窗
+        loginCard: { minimized: false, maximized: false, closed: false },
+        textWindow: { minimized: false, maximized: false, closed: false },
+        carouselWindow: { minimized: false, maximized: false, closed: false },
+        // 確保聯絡表單是關閉的
+        contactForm: { minimized: false, maximized: false, closed: true }
+      };
+      console.log('新的視窗狀態:', newState);
+      return newState;
+    });
     setActiveWindow('loginCard'); // 預設第一個視窗為活動視窗
-    setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
     setMobileMenuOpen(false); // 關閉手機選單
-    console.log('所有狀態設置完成！');
+    setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
+    console.log('視窗狀態已更新，選單已關閉');
   };
 
-  // 回到主頁
+  // 開啟聯絡表單
+  const openContactForm = () => {
+    setWindowStates(prev => ({
+      ...prev,
+      contactForm: { minimized: false, maximized: false, closed: false }
+    }));
+    setActiveWindow('contactForm');
+    setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
+  };
+  
+  // 回到主頁 (顯示 VerticalWindow)
   const goToHome = () => {
     setWindowStates(prev => ({
       ...prev,
@@ -215,7 +254,8 @@ export default function Home() {
     const baseZIndex = {
       loginCard: 25,
       textWindow: 22,
-      carouselWindow: 20
+      carouselWindow: 20,
+      contactForm: 23
     };
     
     return baseZIndex[windowId as keyof typeof baseZIndex] || 20;
@@ -581,7 +621,7 @@ export default function Home() {
             </div>
 
             {/* 手機版漢堡選單 - 在跑馬燈和主內容之間 */}
-            <div className="block lg:hidden w-full py-3 flex justify-center relative" style={{ 
+            <div className="block lg:hidden w-full py-3 flex justify-center relative hamburger-menu" style={{ 
               zIndex: 50, 
               background: '#2a2a2a',
               minHeight: '60px',
@@ -590,6 +630,7 @@ export default function Home() {
             }}>
               <button
                 onClick={() => {
+                  console.log('漢堡按鈕被點擊！目前狀態:', mobileMenuOpen);
                   setMobileMenuOpen(!mobileMenuOpen);
                 }}
                 style={{
@@ -615,86 +656,113 @@ export default function Home() {
               >
                 ☰
               </button>
+
+              {/* 下拉選單 */}
               {mobileMenuOpen && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: '#c0c0c0',
-                  border: '2px outset #c0c0c0',
-                  minWidth: '200px',
-                  zIndex: 52
-                }}>
-                  <div onClick={goToHome} style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: '#f0f0f0',
+                    border: '2px outset #c0c0c0',
+                    borderRadius: '4px',
+                    minWidth: '200px',
+                    boxShadow: '3px 3px 6px rgba(0,0,0,0.3)',
                     fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
+                    fontSize: '11px',
+                    zIndex: 52
                   }}>
-                    <span>🏠</span>
-                    <span>回主頁</span>
+                    {/* 選單項目 */}
+                    <div
+                      onClick={goToHome}
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #808080',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#0078d4'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      <span>🏠</span>
+                      <span>回主頁</span>
+                    </div>
+                    
+                    <div
+                      onClick={openIllustrationFolder}
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #808080',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#0078d4'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      <span>📁</span>
+                      <span>插畫</span>
+                    </div>
+
+                    <div
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #808080',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        color: '#666'
+                      }}
+                    >
+                      <span>📁</span>
+                      <span>設計</span>
+                    </div>
+
+                    <div
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #808080',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        color: '#666'
+                      }}
+                    >
+                      <span>📁</span>
+                      <span>品牌</span>
+                    </div>
+
+                    <div
+                      onClick={() => {
+                        setWindowStates(prev => ({
+                          ...prev,
+                          contactForm: { minimized: false, maximized: false, closed: false }
+                        }));
+                        setMobileMenuOpen(false);
+                        setShowVerticalWindow(false);
+                      }}
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#0078d4'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      <span>📧</span>
+                      <span>聯絡我們</span>
+                    </div>
                   </div>
-                                     <div onClick={() => {
-                     console.log('插畫被點擊！');
-                     openIllustrationFolder();
-                   }} style={{
-                     padding: '12px 16px',
-                     cursor: 'pointer',
-                     borderBottom: '1px solid #808080',
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '8px',
-                     fontFamily: 'var(--font-zpix), monospace',
-                     fontSize: '12px'
-                   }}>
-                     <span>🎨</span>
-                     <span>插畫</span>
-                   </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>🎨</span>
-                    <span>設計</span>
-                  </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>🏷️</span>
-                    <span>品牌</span>
-                  </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>📧</span>
-                    <span>聯絡我們</span>
-                  </div>
-                </div>
-              )}
+                )}
             </div>
 
             <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
@@ -703,15 +771,15 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative w-full h-[100vh] flex flex-col lg:flex-row overflow-hidden">
+            <div className="relative w-full h-auto lg:h-[100vh] flex flex-col lg:flex-row overflow-auto lg:overflow-hidden">
               <div className={`h-auto lg:h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 lg:sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0 ${!showVerticalWindow ? 'hidden lg:block' : ''}`} style={{height: 'auto', minHeight: '60vh'}}>
                 <VerticalWindow 
                   width="100%" 
-                  height="auto"
+                  height="100vh"
                 />
               </div>
               <section 
-                className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-hidden desktop-area" 
+                className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-auto lg:overflow-hidden desktop-area desktop-section" 
                 style={{
                   background: '#2a2a2a',
                   backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -721,8 +789,13 @@ export default function Home() {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
               >
+
+
+
                 {/* 桌面模式 - 可拖拽視窗 */}
-                <div className="hidden lg:block">
+                <div className="block w-full desktop-container" style={{ minHeight: '100vh', position: 'relative' }}>
+                  
+
                   {/* 桌面圖示 - 僅桌面顯示 */}
                   <div className="hidden lg:block absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15 }}>
                     {/* 插畫資料夾 */}
@@ -785,34 +858,54 @@ export default function Home() {
                         </span>
                       </div>
                     </div>
+
+                    {/* 聯絡我們信箱 */}
+                    <div 
+                      className="flex flex-col items-center cursor-pointer group"
+                      onClick={openContactForm}
+                      style={{ width: '60px' }}
+                    >
+                      <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📧</div>
+                        <span style={{ 
+                          fontSize: '10px', 
+                          color: '#ffffff', 
+                          textAlign: 'center',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                          lineHeight: '1.2'
+                        }}>
+                          聯絡我們
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  {/* 調試資訊 */}
-                  <div className="lg:hidden w-full bg-blue-500 text-white p-2 text-center" style={{ fontSize: '12px' }}>
-                    DEBUG: LoginCard closed={String(windowStates.loginCard.closed)} | showVerticalWindow={String(showVerticalWindow)}
-                  </div>
-                  
                   {/* LoginSignupCard 視窗 */}
                   {!windowStates.loginCard.closed && (
-                    <div 
-                      className="draggable-window"
-                      style={{ 
-                        position: windowStates.loginCard.maximized ? 'absolute' : 'absolute',
-                        cursor: isDragging === 'loginCard' ? 'grabbing' : 'grab',
-                        left: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.x}px`,
-                        top: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.y}px`,
-                        width: windowStates.loginCard.maximized ? '100%' : 'auto',
-                        height: windowStates.loginCard.maximized ? '100%' : 'auto',
-                        userSelect: 'none',
-                        zIndex: getWindowZIndex('loginCard')
-                      }}
-                      onMouseDown={(e) => !windowStates.loginCard.maximized && handleMouseDown(e, 'loginCard')}
-                    >
+                    <>
+                      <div className="lg:hidden w-full bg-red-500 text-white p-2 text-center">
+                        🔴 LoginSignupCard 視窗應該在這裡 🔴
+                      </div>
+                      <div 
+                        className="draggable-window mobile-window w-full p-0 m-0"
+                        style={{ 
+                          position: windowStates.loginCard.maximized ? 'absolute' : 'absolute',
+                          cursor: isDragging === 'loginCard' ? 'grabbing' : 'grab',
+                          left: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.x}px`,
+                          top: windowStates.loginCard.maximized ? '0' : `${windowPositions.loginCard.y}px`,
+                          width: windowStates.loginCard.maximized ? '100%' : 'auto',
+                          height: windowStates.loginCard.maximized ? '100%' : 'auto',
+                          userSelect: 'none',
+                          zIndex: getWindowZIndex('loginCard')
+                        }}
+                        onMouseDown={(e) => !windowStates.loginCard.maximized && handleMouseDown(e, 'loginCard')}
+                      >
                     <LoginSignupCard 
                       title="來自土地的設計夥伴"
                       description="冬山集合作社，深耕宜蘭在地文化的設計工作室。我們相信好的品牌源於深度的溝通與理解，每一個設計都承載著故事與溫度。從品牌識別到印刷設計，我們用設計讓世界重新看見家鄉的美好。"
                       windowTitle="冬山集合作社 - 工作室介紹.exe"
                       leftImage="/hero.png"
-                      width={windowStates.loginCard.maximized ? "100%" : "600px"}
+                      width="100%"
                       height={windowStates.loginCard.maximized ? "100%" : "350px"}
                       onMinimize={() => handleMinimize('loginCard')}
                       onMaximize={() => handleMaximize('loginCard')}
@@ -821,12 +914,17 @@ export default function Home() {
                       isMaximized={windowStates.loginCard.maximized}
                     />
                   </div>
+                    </>
                   )}
 
                   {/* TextWindow 視窗 */}
                   {!windowStates.textWindow.closed && (
-                    <div 
-                      className="draggable-window"
+                    <>
+                      <div className="lg:hidden w-full bg-green-500 text-white p-2 text-center">
+                        🟢 TextWindow 視窗應該在這裡 🟢
+                      </div>
+                      <div 
+                        className="draggable-window mobile-window w-full p-0 m-0"
                       style={{ 
                         position: 'absolute', 
                         left: windowStates.textWindow.maximized ? '0' : `${windowPositions.textWindow.x}px`,
@@ -841,7 +939,7 @@ export default function Home() {
                     >
                       <TextWindow 
                         windowTitle="專案說明.txt"
-                        width={windowStates.textWindow.maximized ? "100%" : "400px"}
+                        width="100%"
                         height={windowStates.textWindow.maximized ? "100%" : "300px"}
                         onMinimize={() => handleMinimize('textWindow')}
                         onMaximize={() => handleMaximize('textWindow')}
@@ -879,7 +977,7 @@ Tel: 03-9XX-XXXX
                   {/* CarouselWindow 視窗 */}
                   {!windowStates.carouselWindow.closed && (
                     <div 
-                      className="draggable-window"
+                      className="draggable-window mobile-window w-full p-0 m-0"
                       style={{ 
                         position: 'absolute', 
                         left: windowStates.carouselWindow.maximized ? '0' : `${windowPositions.carouselWindow.x}px`,
@@ -894,7 +992,7 @@ Tel: 03-9XX-XXXX
                     >
                       <CarouselWindow 
                         windowTitle="作品集展示.exe"
-                        width={windowStates.carouselWindow.maximized ? "100%" : "450px"}
+                        width="100%"
                         height={windowStates.carouselWindow.maximized ? "100%" : "320px"}
                         onMinimize={() => handleMinimize('carouselWindow')}
                         onMaximize={() => handleMaximize('carouselWindow')}
@@ -914,72 +1012,38 @@ Tel: 03-9XX-XXXX
                       />
                     </div>
                   )}
+
+                  {/* ContactForm 視窗 */}
+                  {!windowStates.contactForm.closed && (
+                    <div 
+                      className="draggable-window mobile-window w-full p-0 m-0"
+                      style={{ 
+                        position: 'absolute', 
+                        left: windowStates.contactForm.maximized ? '0' : `${windowPositions.contactForm.x}px`,
+                        top: windowStates.contactForm.maximized ? '0' : `${windowPositions.contactForm.y}px`,
+                        width: windowStates.contactForm.maximized ? '100%' : 'auto',
+                        height: windowStates.contactForm.maximized ? '100%' : 'auto',
+                        cursor: isDragging === 'contactForm' ? 'grabbing' : 'grab',
+                        userSelect: 'none',
+                        zIndex: getWindowZIndex('contactForm')
+                      }}
+                      onMouseDown={(e) => !windowStates.contactForm.maximized && handleMouseDown(e, 'contactForm')}
+                    >
+                      <ContactForm 
+                        windowTitle="聯絡表單.exe"
+                        width="100%"
+                        height={windowStates.contactForm.maximized ? "100%" : "450px"}
+                        onMinimize={() => handleMinimize('contactForm')}
+                        onMaximize={() => handleMaximize('contactForm')}
+                        onClose={() => handleClose('contactForm')}
+                        isMinimized={windowStates.contactForm.minimized}
+                        isMaximized={windowStates.contactForm.maximized}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                {/* 響應式模式 - 一欄式布局 */}
-                <div className="lg:hidden h-auto overflow-y-auto">
-                  <div style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    gap: 'clamp(15px, 4vw, 20px)',
-                    padding: 'clamp(10px, 3vw, 15px)'
-                  }}>
-                    <LoginSignupCard 
-                      title="來自土地的設計夥伴"
-                      description="冬山集合作社，深耕宜蘭在地文化的設計工作室。我們相信好的品牌源於深度的溝通與理解，每一個設計都承載著故事與溫度。從品牌識別到印刷設計，我們用設計讓世界重新看見家鄉的美好。"
-                      windowTitle="冬山集合作社 - 工作室介紹.exe"
-                      leftImage="/hero.png"
-                      width="100%"
-                      height="clamp(280px, 50vw, 350px)"
-                    />
-                    
-                    <TextWindow 
-                      windowTitle="專案說明.txt"
-                      width="100%"
-                      height="clamp(250px, 45vw, 300px)"
-                      content={`冬山集合作社 - 設計工作室
 
-我們的理念：
-每個品牌都有獨特的故事，我們用設計讓這些故事發光發熱。
-
-核心服務：
-• 品牌識別設計
-• 視覺形象規劃  
-• 印刷品設計
-• 包裝設計
-• 網站設計
-
-設計流程：
-1. 深度溝通了解需求
-2. 創意發想概念確立
-3. 精緻設計細節完善
-4. 完整交付使用指導
-
-聯絡我們：
-Email: hello@dongshan.design
-Tel: 03-9XX-XXXX
-
-在地設計，國際視野
-讓設計成為溝通的橋樑`}
-                    />
-                    
-                    <CarouselWindow 
-                      windowTitle="作品集展示.exe"
-                      width="100%"
-                      height="clamp(280px, 50vw, 350px)"
-                      images={[
-                        '/illustration_1.png',
-                        '/illustration_2.png', 
-                        '/illustration_3.png',
-                        '/illustration_4.png',
-                        '/illustration_5.png',
-                        '/illustration_6.png'
-                      ]}
-                      autoPlay={true}
-                      autoPlayInterval={5000}
-                    />
-                  </div>
-                </div>
               </section>
             </div>
           </>
@@ -987,13 +1051,6 @@ Tel: 03-9XX-XXXX
       </div>
 
       <style jsx>{`
-        /* 桌面版設置 */
-        @media (min-width: 1024px) {
-          /* 強制隱藏漢堡選單 */
-          .block.lg\\:hidden {
-            display: none !important;
-          }
-        }
         .hero-grid-container {
           position: relative;
           width: 100%;
@@ -1001,6 +1058,80 @@ Tel: 03-9XX-XXXX
           margin: 0 auto;
           padding: 0 48px;
           z-index: 1;
+        }
+
+        @media (max-width: 1023px) {
+          .desktop-section {
+            padding: 0 !important;
+            width: 100vw !important;
+            margin: 0 !important;
+          }
+          
+          .desktop-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+          }
+          
+          .mobile-window {
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            margin-bottom: 20px !important;
+            cursor: default !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          .mobile-window > *,
+          .mobile-window > * > * {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* 強制移除所有可能的邊距和內邊距 */
+          .mobile-window .retro-card,
+          .mobile-window .text-window,
+          .mobile-window .carousel-window {
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+          }
+        }
+        
+        /* 桌面版設置 */
+        @media (min-width: 1024px) {
+          /* 強制隱藏漢堡選單 */
+          .hamburger-menu {
+            display: none !important;
+          }
+          
+          /* 視窗固定寬度 - 不撐滿 */
+          .mobile-window {
+            width: auto !important;
+          }
+          .mobile-window .retro-card {
+            width: 600px !important;
+            max-width: 600px !important;
+          }
+          .mobile-window .text-window {
+            width: 400px !important;
+            max-width: 400px !important;
+          }
+          .mobile-window .carousel-window {
+            width: 450px !important;
+            max-width: 450px !important;
+          }
+          .mobile-window .contact-form {
+            width: 500px !important;
+            max-width: 500px !important;
+          }
         }
 
         .transition-up {

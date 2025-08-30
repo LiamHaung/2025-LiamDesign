@@ -50,13 +50,14 @@ const LoginSignupCard: React.FC<LoginSignupCardProps> = ({
       <div style={{
         background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)',
         color: 'white',
-        padding: '4px 8px',
-        fontSize: '11px',
+        padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
+        fontSize: 'clamp(9px, 2.5vw, 11px)',
         fontWeight: 'bold',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid #808080'
+        borderBottom: '1px solid #808080',
+        minHeight: 'clamp(20px, 5vw, 24px)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{
@@ -156,7 +157,7 @@ const LoginSignupCard: React.FC<LoginSignupCardProps> = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'flex-start',
-          padding: '40px 30px',
+          padding: 'clamp(20px, 6vw, 40px) clamp(15px, 4vw, 30px)',
           position: 'relative',
           border: '1px inset #c0c0c0'
         }}>
@@ -213,7 +214,7 @@ const LoginSignupCard: React.FC<LoginSignupCardProps> = ({
           background: '#f8f8f8',
           display: 'flex',
           flexDirection: 'column',
-          padding: '30px 25px',
+          padding: 'clamp(15px, 4vw, 30px) clamp(12px, 3vw, 25px)',
           border: '1px inset #c0c0c0',
           position: 'relative'
         }}>
@@ -247,8 +248,8 @@ const LoginSignupCard: React.FC<LoginSignupCardProps> = ({
             <div style={{
               background: 'white',
               border: '2px inset #c0c0c0',
-              padding: '15px',
-              fontSize: '11px',
+              padding: 'clamp(10px, 2.5vw, 15px)',
+              fontSize: 'clamp(10px, 2.2vw, 11px)',
               lineHeight: '1.6',
               color: '#333',
               height: 'calc(100% - 80px)',
@@ -256,8 +257,8 @@ const LoginSignupCard: React.FC<LoginSignupCardProps> = ({
               scrollbarWidth: 'thin'
             }}>
               <h3 style={{ 
-                marginBottom: '15px', 
-                fontSize: '13px', 
+                marginBottom: 'clamp(10px, 2.5vw, 15px)', 
+                fontSize: 'clamp(12px, 2.8vw, 13px)', 
                 fontWeight: 'bold',
                 color: '#000'
               }}>

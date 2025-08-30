@@ -81,13 +81,14 @@ const CarouselWindow: React.FC<CarouselWindowProps> = ({
       <div style={{
         background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)',
         color: 'white',
-        padding: '4px 8px',
-        fontSize: '11px',
+        padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
+        fontSize: 'clamp(9px, 2.5vw, 11px)',
         fontWeight: 'bold',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid #808080'
+        borderBottom: '1px solid #808080',
+        minHeight: 'clamp(20px, 5vw, 24px)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{
@@ -173,8 +174,8 @@ const CarouselWindow: React.FC<CarouselWindowProps> = ({
           <div style={{
             background: '#f0f0f0',
             border: '1px solid #d0d0d0',
-            padding: '4px 8px',
-            fontSize: '10px',
+            padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
+            fontSize: 'clamp(9px, 2vw, 10px)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
