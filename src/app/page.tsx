@@ -173,8 +173,6 @@ export default function Home() {
 
   // 開啟插畫資料夾
   const openIllustrationFolder = () => {
-    console.log('openIllustrationFolder 被調用！');
-    console.log('設置前 windowStates:', windowStates);
     setWindowStates(prev => ({
       ...prev,
       loginCard: { minimized: false, maximized: false, closed: false },
@@ -185,7 +183,6 @@ export default function Home() {
     setActiveWindow('loginCard'); // 預設第一個視窗為活動視窗
     setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
     setMobileMenuOpen(false); // 關閉手機選單
-    console.log('所有狀態設置完成！');
   };
 
   // 回到主頁
@@ -639,10 +636,7 @@ export default function Home() {
                     <span>🏠</span>
                     <span>回主頁</span>
                   </div>
-                                     <div onClick={() => {
-                     console.log('插畫被點擊！');
-                     openIllustrationFolder();
-                   }} style={{
+                                     <div onClick={openIllustrationFolder} style={{
                      padding: '12px 16px',
                      cursor: 'pointer',
                      borderBottom: '1px solid #808080',
@@ -786,11 +780,6 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  {/* 調試資訊 */}
-                  <div className="lg:hidden w-full bg-blue-500 text-white p-2 text-center" style={{ fontSize: '12px' }}>
-                    DEBUG: LoginCard closed={String(windowStates.loginCard.closed)} | showVerticalWindow={String(showVerticalWindow)}
-                  </div>
-                  
                   {/* LoginSignupCard 視窗 */}
                   {!windowStates.loginCard.closed && (
                     <div 
