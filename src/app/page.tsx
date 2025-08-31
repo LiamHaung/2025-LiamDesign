@@ -265,9 +265,18 @@ export default function Home() {
               border: '2px inset #c0c0c0',
               margin: '2px',
               overflow: 'auto',
-              maxHeight: 'calc(90vh - 120px)'
+              maxHeight: 'calc(90vh - 120px)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
             }}>
-              <div style={{ marginBottom: '24px' }}>
+              {/* 文字內容區域 */}
+              <div style={{ flex: '1' }}>
+                {/* 中文介紹 */}
+                <div style={{ 
+                  marginBottom: 'clamp(16px, 4vw, 24px)',
+                  fontSize: 'clamp(12px, 3vw, 18px)'
+                }}>
                 <p>
                   「冬山集合作社，來自土地的設計夥伴。<br/>
                   我們相信，好的品牌源於在地故事，設計<br/>
@@ -277,10 +286,11 @@ export default function Home() {
                 </p>
               </div>
               
+                {/* 英文介紹 */}
               <div style={{
                 borderTop: '3px solid white',
-                paddingTop: 'clamp(16px, 3vw, 24px)',
-                fontSize: 'clamp(12px, 3vw, 20px)'
+                  paddingTop: 'clamp(12px, 3vw, 20px)',
+                  fontSize: 'clamp(10px, 2.5vw, 16px)'
               }}>
                 <p>
                   &ldquo;Hello, I&rsquo;m Liam.<br/>
@@ -292,24 +302,25 @@ export default function Home() {
                   and every design carries the warmth of<br/>
                   hometown.&rdquo;
                 </p>
+                </div>
               </div>
 
               {/* Loading 進度條區域 */}
               <div style={{
-                position: 'absolute',
-                bottom: 'clamp(10px, 2vw, 20px)',
-                right: 'clamp(10px, 2vw, 20px)',
-                width: 'clamp(280px, 60vw, 400px)',
+                width: '100%',
                 background: 'transparent',
                 border: '2px inset #c0c0c0',
-                padding: 'clamp(8px, 2vw, 16px)'
+                padding: 'clamp(8px, 2vw, 16px)',
+                marginTop: 'clamp(16px, 4vw, 24px)',
+                flexShrink: 0
               }}>
                 <div style={{
                   fontSize: 'clamp(10px, 2.5vw, 14px)',
                   marginBottom: 'clamp(4px, 1vw, 8px)',
                   color: '#ffffff',
                   fontFamily: 'var(--font-press-start-2p), monospace',
-                  textShadow: '2px 2px 0px #000000'
+                  textShadow: '2px 2px 0px #000000',
+                  textAlign: 'center'
                 }}>
                   Loading... {Math.floor(loadingProgress)}%
                 </div>
@@ -398,9 +409,12 @@ export default function Home() {
             <div className="hero-grid-container">
 
 
-              <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+              <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }} className="hero-main-container">
                 <div className="flex flex-col items-center">
-                  <div className="relative w-[1134px] h-[1134px] max-w-full max-h-[80vh] flex items-center justify-center">
+                  <div className="relative w-full h-full max-w-full max-h-[80vh] flex items-center justify-center hero-content-container" style={{
+                    width: 'clamp(300px, 90vw, 1134px)',
+                    height: 'clamp(300px, 90vw, 1134px)'
+                  }}>
                     <div style={{
                       position:'relative', 
                       width:'100%', 
@@ -456,7 +470,7 @@ export default function Home() {
                           transition: 'bottom 0.5s ease-out, opacity 0.5s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           transitionDelay: showRight ? '0.6s' : '0s'
                         }}
-                        className={`${isTransitioning ? 'transition-fade' : ''} ${showRight ? 'enter-btn-bounce' : ''}`}
+                        className={`enter-button ${isTransitioning ? 'transition-fade' : ''} ${showRight ? 'enter-btn-bounce' : ''}`}
                         onMouseEnter={() => setIsEnterHovered(true)}
                         onMouseLeave={() => setIsEnterHovered(false)}
                         onClick={e => {
@@ -498,17 +512,17 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                    <div className={`absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)', left: 'calc(20% + 80px)' }}>
+                    <div className={`slogan-1 absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)', left: 'calc(20% + 80px)' }}>
                       <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                         品牌源自土地
                       </div>
                     </div>
-                    <div className={`absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.8s', zIndex: 10 }}>
+                    <div className={`slogan-2 absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.8s', zIndex: 10 }}>
                       <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                         越在地越國際
                       </div>
                     </div>
-                    <div className={`absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '2.0s', zIndex: 10 }}>
+                    <div className={`slogan-3 absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '2.0s', zIndex: 10 }}>
                       <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
                         設計藉由溝通
                       </div>
@@ -697,19 +711,19 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative w-full h-[100vh] flex flex-col lg:flex-row overflow-hidden">
+            <div className="relative w-full h-auto lg:h-[100vh] flex flex-col lg:flex-row overflow-auto lg:overflow-hidden">
               <div className={`h-auto lg:h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 lg:sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0 ${!showVerticalWindow ? 'hidden lg:block' : ''}`} style={{height: 'auto', minHeight: '60vh'}}>
                 <VerticalWindow 
                   width="100%" 
-                  height="auto"
+                  height="100vh"
                 />
               </div>
               <section 
-                className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-hidden desktop-area" 
+                className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-auto lg:overflow-hidden desktop-area desktop-section" 
                 style={{
                   background: '#2a2a2a',
                   backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")`,
-                  padding: 'clamp(10px, 3vw, 20px)',
+                  padding: '0',
                   minHeight: '40vh'
                 }}
                 onMouseMove={handleMouseMove}
@@ -906,14 +920,17 @@ Tel: 03-9XX-XXXX
                 </div>
 
                 {/* 響應式模式 - 一欄式布局 */}
-                <div className="lg:hidden h-auto overflow-y-auto">
+                <div className="lg:hidden h-auto overflow-y-auto" style={{ paddingBottom: '40px' }}>
                   <div style={{ 
                     display: 'flex', 
                     flexDirection: 'column', 
                     gap: 'clamp(15px, 4vw, 20px)',
-                    padding: 'clamp(10px, 3vw, 15px)'
+                    padding: '0',
+                    width: '100%'
                   }}>
-                    <LoginSignupCard 
+                    {/* 條件渲染手機版視窗 */}
+                    {!windowStates.loginCard.closed && (
+                      <LoginSignupCard 
                       title="來自土地的設計夥伴"
                       description="冬山集合作社，深耕宜蘭在地文化的設計工作室。我們相信好的品牌源於深度的溝通與理解，每一個設計都承載著故事與溫度。從品牌識別到印刷設計，我們用設計讓世界重新看見家鄉的美好。"
                       windowTitle="冬山集合作社 - 工作室介紹.exe"
@@ -921,8 +938,10 @@ Tel: 03-9XX-XXXX
                       width="100%"
                       height="clamp(280px, 50vw, 350px)"
                     />
+                    )}
                     
-                    <TextWindow 
+                    {!windowStates.textWindow.closed && (
+                      <TextWindow 
                       windowTitle="專案說明.txt"
                       width="100%"
                       height="clamp(250px, 45vw, 300px)"
@@ -951,8 +970,10 @@ Tel: 03-9XX-XXXX
 在地設計，國際視野
 讓設計成為溝通的橋樑`}
                     />
+                    )}
                     
-                    <CarouselWindow 
+                    {!windowStates.carouselWindow.closed && (
+                      <CarouselWindow 
                       windowTitle="作品集展示.exe"
                       width="100%"
                       height="clamp(280px, 50vw, 350px)"
@@ -967,6 +988,7 @@ Tel: 03-9XX-XXXX
                       autoPlay={true}
                       autoPlayInterval={5000}
                     />
+                    )}
                   </div>
                 </div>
               </section>
@@ -976,11 +998,157 @@ Tel: 03-9XX-XXXX
       </div>
 
       <style jsx>{`
+        /* 手機版滾動調整 */
+        @media (max-width: 1023px) {
+          * {
+            box-sizing: border-box;
+          }
+          
+          body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+          }
+          
+          /* 入口modal響應式調整 */
+          .win98-window {
+            max-height: 85vh !important;
+            margin: 20px 10px !important;
+          }
+          
+                     /* 首頁響應式調整 */
+           .hero-grid-container {
+             width: 100vw !important;
+             height: 100vh !important;
+             padding: 0 !important;
+             margin: 0 !important;
+           }
+           
+           .hero-main-container {
+             top: 50% !important;
+           }
+           
+           .hero-content-container {
+             width: 100vw;
+             height: clamp(70vh, 85vh, 90vh);
+             max-width: 100vw;
+             max-height: 90vh;
+           }
+           
+           /* 地圖和DS Logo響應式縮放 */
+           .hero-content-container img[alt="像素地圖"] {
+             transform: scale(1.0) !important;
+             max-width: 95vw !important;
+             max-height: 75vh !important;
+           }
+           
+           .hero-content-container img[alt="DS Logo"] {
+             transform: scale(1.0) !important;
+             max-width: 75vw !important;
+             position: absolute !important;
+             top: 10% !important;
+             left: 50% !important;
+             transform: translateX(-50%) scale(1.0) !important;
+           }
+           
+           /* 手機版隱藏所有標語 */
+           .slogan-1, .slogan-2, .slogan-3 {
+             display: none !important;
+           }
+          
+                     /* Enter按鈕響應式 */
+           .enter-button {
+             bottom: 25% !important;
+             transform: translateX(-50%);
+             width: clamp(100px, 28vw, 150px);
+             height: clamp(40px, 12vw, 60px);
+           }
+          .desktop-area {
+            overflow-y: auto !important;
+            max-height: none !important;
+            padding-bottom: 40px !important;
+          }
+          
+          .desktop-section {
+            padding: 0 !important;
+            width: 100vw !important;
+            margin: 0 !important;
+          }
+          
+          .mobile-window {
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            margin-bottom: 20px !important;
+            cursor: default !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
+          .mobile-window > *, .mobile-window > * > * {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          
+          .mobile-window .retro-card, .mobile-window .text-window, 
+          .mobile-window .carousel-window, .mobile-window .contact-form {
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+          }
+          
+          /* 強制手機版組件撐滿寬度 */
+          .lg\\:hidden .retro-card,
+          .lg\\:hidden .text-window,
+          .lg\\:hidden .carousel-window,
+          .lg\\:hidden .contact-form {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+          }
+        }
+
         /* 桌面版設置 */
         @media (min-width: 1024px) {
           /* 強制隱藏漢堡選單 */
           .block.lg\\:hidden {
             display: none !important;
+          }
+          
+          .desktop-section {
+            padding: clamp(10px, 3vw, 20px) !important;
+          }
+          
+          .mobile-window {
+            width: auto !important;
+          }
+          
+          .mobile-window .retro-card {
+            width: 600px !important;
+            max-width: 600px !important;
+          }
+          
+          .mobile-window .text-window {
+            width: 400px !important;
+            max-width: 400px !important;
+          }
+          
+          .mobile-window .carousel-window {
+            width: 450px !important;
+            max-width: 450px !important;
+          }
+          
+          .mobile-window .contact-form {
+            width: 500px !important;
+            max-width: 500px !important;
           }
         }
         .hero-grid-container {
