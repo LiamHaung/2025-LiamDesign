@@ -38,6 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/xmq1kqy.css" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${zpix.variable} antialiased`}
       >

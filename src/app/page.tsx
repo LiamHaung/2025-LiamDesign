@@ -441,7 +441,7 @@ export default function Home() {
                       />
                       {/* DS Logo 前景 */}
                                             <img
-                        src="/dslogo-v3.png"
+                        src="/ds-logov4.png"
                         alt="DS Logo"
                         className="absolute w-full object-contain ds-logo-bounce"
                         style={{
@@ -740,7 +740,7 @@ export default function Home() {
                       style={{ width: '60px' }}
                     >
                       <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
-                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <div style={{ fontSize: '54px', marginBottom: '4px' }}>📁</div>
                         <span style={{ 
                           fontSize: '10px', 
                           color: '#ffffff', 
@@ -760,7 +760,7 @@ export default function Home() {
                       style={{ width: '60px' }}
                     >
                       <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
-                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <div style={{ fontSize: '54px', marginBottom: '4px' }}>📁</div>
                         <span style={{ 
                           fontSize: '10px', 
                           color: '#ffffff', 
@@ -780,7 +780,7 @@ export default function Home() {
                       style={{ width: '60px' }}
                     >
                       <div className="flex flex-col items-center justify-center p-2 rounded hover:bg-white hover:bg-opacity-20 transition-colors">
-                        <div style={{ fontSize: '32px', marginBottom: '4px' }}>📁</div>
+                        <div style={{ fontSize: '54px', marginBottom: '4px' }}>📁</div>
                         <span style={{ 
                           fontSize: '10px', 
                           color: '#ffffff', 
@@ -794,7 +794,21 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  {/* LoginSignupCard 視窗 */}
+                  {/* DS Logo 背景裝飾 */}
+                  <div className="hidden lg:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ zIndex: 1 }}>
+                    <img
+                      src="/ds-logov4.png"
+                      alt="DS Logo Background"
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                        maxWidth: "500px",
+                        maxHeight: "500px",
+                        opacity: 0.6,
+                        objectFit: "contain"
+                      }}
+                    />
+                  </div>                  {/* LoginSignupCard 視窗 */}
                   {!windowStates.loginCard.closed && (
                     <div 
                       className="draggable-window"
