@@ -306,8 +306,8 @@ export default function Home() {
                   and every design carries the warmth of<br/>
                   hometown.&rdquo;
                 </p>
+                </div>
               </div>
-            </div>
 
               {/* Loading 進度條區域 */}
               <div style={{
@@ -327,7 +327,7 @@ export default function Home() {
                   textAlign: 'center'
                 }}>
                   Loading... {Math.floor(loadingProgress)}%
-          </div>
+                </div>
                 
                 {/* 分格式進度條 */}
                 <div style={{
@@ -430,7 +430,7 @@ export default function Home() {
                     }}>
                       {/* Pixel 地圖 */}
                       <img
-                        src="/yilan_mapv2.png"
+                        src="/pixel_map.png"
                         alt="像素地圖"
                         className={`w-full h-full object-contain ${isTransitioning ? 'transition-map' : ''}`}
                         style={{ 
@@ -445,7 +445,7 @@ export default function Home() {
                       />
                       {/* DS Logo 前景 */}
                                             <img
-                        src="/ds-logov6.png"
+                        src="/ds-logov4.png"
                         alt="DS Logo"
                         className="absolute w-full object-contain ds-logo-bounce"
                         style={{
@@ -711,7 +711,7 @@ export default function Home() {
 
             <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
               <div className="logo-block long">
-                <Image src="/ds-logov6.png" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
+                <Image src="/logo.svg" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
               </div>
             </div>
 
@@ -801,7 +801,7 @@ export default function Home() {
                   {/* DS Logo 背景裝飾 */}
                   <div className="hidden lg:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ zIndex: 1 }}>
                     <img
-                      src="/ds-logov6.png"
+                      src="/ds-logov4.png"
                       alt="DS Logo Background"
                       style={{
                         width: "auto",
@@ -935,127 +935,6 @@ Tel: 03-9XX-XXXX
                       />
                     </div>
                   )}
-
-                  {/* Windows 98 Style 插畫視窗 */}
-                  {!windowStates.illustrationWindow.closed && (
-                    <div 
-                      className="draggable-window"
-                      style={{ 
-                        position: 'absolute', 
-                        left: windowStates.illustrationWindow.maximized ? '0' : `${windowPositions.illustrationWindow.x}px`,
-                        top: windowStates.illustrationWindow.maximized ? '0' : `${windowPositions.illustrationWindow.y}px`,
-                        width: windowStates.illustrationWindow.maximized ? '100%' : 'auto',
-                        height: windowStates.illustrationWindow.maximized ? '100%' : 'auto',
-                        cursor: isDragging === 'illustrationWindow' ? 'grabbing' : 'grab',
-                        userSelect: 'none',
-                        zIndex: getWindowZIndex('illustrationWindow')
-                      }}
-                      onMouseDown={(e) => !windowStates.illustrationWindow.maximized && handleMouseDown(e, 'illustrationWindow')}
-                    >
-                      <div style={{
-                        background: '#000',
-                        border: '6px solid #fff',
-                        borderRadius: '0',
-                        padding: '0',
-                        boxShadow: '8px 8px 0px #666',
-                        fontFamily: 'var(--font-zpix), monospace',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        width: windowStates.illustrationWindow.maximized ? '100%' : '400px',
-                        height: windowStates.illustrationWindow.maximized ? '100%' : '300px'
-                      }}>
-                        <div style={{
-                          background: 'linear-gradient(to bottom, #333 0%, #000 100%)',
-                          borderBottom: '2px solid #fff',
-                          padding: '4px 8px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          color: '#fff'
-                        }}>
-                          <span>插畫作品展示</span>
-                          <div style={{ display: 'flex', gap: '4px' }}>
-                            <div 
-                              onClick={() => handleMinimize('illustrationWindow')}
-                              style={{
-                                width: '16px',
-                                height: '14px',
-                                background: '#333',
-                                border: '1px solid #666',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                color: '#fff'
-                              }}>_</div>
-                            <div 
-                              onClick={() => handleMaximize('illustrationWindow')}
-                              style={{
-                                width: '16px',
-                                height: '14px',
-                                background: '#333',
-                                border: '1px solid #666',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                color: '#fff'
-                              }}>□</div>
-                            <div 
-                              onClick={() => handleClose('illustrationWindow')}
-                              style={{
-                                width: '16px',
-                                height: '14px',
-                                background: '#333',
-                                border: '1px solid #666',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                color: '#fff'
-                              }}>×</div>
-                          </div>
-                        </div>
-                        <div style={{
-                          background: '#222',
-                          borderBottom: '1px solid #666',
-                          padding: '4px 8px',
-                          display: 'flex',
-                          gap: '8px',
-                          fontSize: '11px'
-                        }}>
-                          <span style={{ color: '#fff', fontWeight: 'bold' }}>作品</span>
-                          <span style={{ color: '#fff' }}>風格</span>
-                          <span style={{ color: '#fff' }}>技法</span>
-                          <span style={{ color: '#fff' }}>聯絡</span>
-                        </div>
-                        <div style={{ padding: '20px' }}>
-                          <h1 style={{
-                            fontSize: '24px',
-                            fontWeight: 'bold',
-                            color: '#fff',
-                            margin: '0 0 15px 0',
-                            textAlign: 'center',
-                            textTransform: 'uppercase',
-                            letterSpacing: '2px'
-                          }}>
-                            插畫作品展示
-                          </h1>
-                          <p style={{
-                            fontSize: '14px',
-                            lineHeight: '1.6',
-                            color: '#ccc',
-                            margin: '0',
-                            textAlign: 'justify'
-                          }}>
-                            探索創意與想像的無限可能，每一幅插畫都是故事的開始。從傳統手繪到數位創作，展現多元的藝術風格與表現手法。
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* 響應式模式 - 一欄式布局 */}
@@ -1128,60 +1007,7 @@ Tel: 03-9XX-XXXX
                       autoPlayInterval={5000}
                     />
                     )}
-
-                    {/* Windows 98 Style 插畫視窗 - 手機版 */}
-                    {!windowStates.illustrationWindow.closed && (
-                      <div style={{
-                        background: '#000',
-                        border: '6px solid #fff',
-                        borderRadius: '0',
-                        padding: '0',
-                        boxShadow: '8px 8px 0px #666',
-                        fontFamily: 'var(--font-zpix), monospace',
-                        width: '100%',
-                        height: 'clamp(250px, 45vw, 300px)'
-                      }}>
-                        <div style={{
-                          background: 'linear-gradient(to bottom, #333 0%, #000 100%)',
-                          borderBottom: '2px solid #fff',
-                          padding: '8px',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          color: '#fff'
-                        }}>
-                          插畫作品展示
-                        </div>
-                        <div style={{
-                          background: '#222',
-                          borderBottom: '1px solid #666',
-                          padding: '4px 8px',
-                          fontSize: '11px',
-                          color: '#fff'
-                        }}>
-                          作品 | 風格 | 技法 | 聯絡
-                        </div>
-                        <div style={{ padding: '20px' }}>
-                          <h1 style={{
-                            fontSize: '18px',
-                            fontWeight: 'bold',
-                            color: '#fff',
-                            margin: '0 0 15px 0',
-                            textAlign: 'center'
-                          }}>
-                            插畫作品展示
-                          </h1>
-                          <p style={{
-                            fontSize: '12px',
-                            lineHeight: '1.6',
-                            color: '#ccc',
-                            margin: '0',
-                            textAlign: 'center'
-                          }}>
-                            探索創意與想像的無限可能，每一幅插畫都是故事的開始。從傳統手繪到數位創作，展現多元的藝術風格與表現手法。
-                          </p>
-                        </div>
-                      </div>
-                    )}                  </div>
+                  </div>
                 </div>
               </section>
             </div>

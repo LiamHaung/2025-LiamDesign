@@ -7,7 +7,7 @@ const slogans = [
 
 export default function Hero() {
   return (
-    <section className="relative w-full h-[60vh] min-h-[400px] flex items-end bg-white overflow-hidden">
+    <section className="relative w-full h-[60vh] min-h-[400px] flex items-end bg-black overflow-hidden">
       {/* 左上標題 */}
       <h1 className="absolute left-8 top-8 text-3xl md:text-5xl font-black">
         Liam Design

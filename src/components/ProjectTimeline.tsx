@@ -9,7 +9,7 @@ const TimelineBlock = ({ title, description, bgColor }: {
 }) => (
   <div className="min-w-[100vw] h-screen flex items-center justify-center px-12" style={{ backgroundColor: bgColor }}>
     <div className="max-w-2xl w-full">
-      <div className="bg-white border-2 border-black rounded-xl p-8 shadow-lg">
+      <div className="bg-black border-2 border-black rounded-xl p-8 shadow-lg">
         <h3 className="text-4xl font-extrabold mb-6">{title}</h3>
         <p className="text-xl leading-relaxed">{description}</p>
       </div>

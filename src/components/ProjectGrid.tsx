@@ -55,12 +55,12 @@ export default function ProjectGrid() {
                 />
                 {/* 標題（右上角） */}
                 <div className="absolute top-6 right-6 z-10">
-                  <span className="font-extrabold text-lg text-gray-900 drop-shadow-lg bg-white/80 px-3 py-1 rounded-md">
+                  <span className="font-extrabold text-lg text-white drop-shadow-lg bg-white/80 px-3 py-1 rounded-md">
                     {proj.title}
                   </span>
                 </div>
                 {/* 標籤 */}
-                <div className={`absolute bottom-6 left-6 px-8 py-2 rounded-full font-bold text-lg text-black ${proj.color} shadow-md transition-all duration-300 group-hover:scale-110 z-10`}>{proj.tag}</div>
+                <div className={`absolute bottom-6 left-6 px-8 py-2 rounded-full font-bold text-lg text-white ${proj.color} shadow-md transition-all duration-300 group-hover:scale-110 z-10`}>{proj.tag}</div>
               </div>
             );
           })}
