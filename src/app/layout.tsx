@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P, Noto_Sans_TC } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -20,6 +20,13 @@ const pressStart2P = Press_Start_2P({
   display: "swap",
 });
 
+const notoSansTC = Noto_Sans_TC({
+  variable: "--font-noto-sans-tc",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
+});
+
 const zpix = localFont({
   src: "../../public/zpix.ttf",
   variable: "--font-zpix",
@@ -33,16 +40,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://use.typekit.net/xmq1kqy.css" />
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${zpix.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${notoSansTC.variable} ${zpix.variable} antialiased`}
       >
         {children}
       </body>
