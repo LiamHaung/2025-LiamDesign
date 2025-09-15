@@ -145,7 +145,7 @@ export default function TestPage() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [finalImageIndices, setFinalImageIndices] = useState([0, 0, 0]); // 三個滾輪的最終圖片索引
   const [spinKey, setSpinKey] = useState(0);
-  const [completedReels, setCompletedReels] = useState(0);
+  const [, setCompletedReels] = useState(0);
   const [screenWidth, setScreenWidth] = useState(1920); // 預設螢幕寬度
 
   // 監聽螢幕寬度變化
@@ -270,21 +270,24 @@ export default function TestPage() {
           transform: isSpinning ? 'none' : 'translateY(0)',
           minWidth: 'clamp(120px, 25vw, 160px)'
         }}
-        onMouseEnter={(e) => {
+        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
           if (!isSpinning) {
-            e.target.style.backgroundColor = '#002A8A'; // 深藍色懸停效果
-            e.target.style.transform = 'translateY(-2px)';
+            const target = e.currentTarget;
+            target.style.backgroundColor = '#002A8A'; // 深藍色懸停效果
+            target.style.transform = 'translateY(-2px)';
           }
         }}
-        onMouseLeave={(e) => {
+        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
           if (!isSpinning) {
-            e.target.style.backgroundColor = '#003EC3';
-            e.target.style.transform = 'translateY(0)';
+            const target = e.currentTarget;
+            target.style.backgroundColor = '#003EC3';
+            target.style.transform = 'translateY(0)';
           }
         }}
-        onMouseDown={(e) => {
+        onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => {
           if (!isSpinning) {
-            e.target.style.transform = 'translateY(0)';
+            const target = e.currentTarget;
+            target.style.transform = 'translateY(0)';
           }
         }}
       >

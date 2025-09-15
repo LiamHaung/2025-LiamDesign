@@ -9,7 +9,6 @@ import CarouselWindow from '../components/CarouselWindow';
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
   const [showRight, setShowRight] = useState(false);
-  const [isEnterHovered, setIsEnterHovered] = useState(false);
   const [entered, setEntered] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mapExpanding, setMapExpanding] = useState(false);
@@ -784,7 +783,6 @@ export default function Home() {
                           fontSize: '10px',
                   textAlign: 'center', 
                           color: '#ffffff', 
-                          textAlign: 'center',
                           fontFamily: 'var(--font-zpix), monospace',
                           /* 扁平化風格，無文字陰影 */
                           lineHeight: '1.2'
@@ -805,7 +803,6 @@ export default function Home() {
                           fontSize: '10px',
                   textAlign: 'center', 
                           color: '#ffffff', 
-                          textAlign: 'center',
                           fontFamily: 'var(--font-zpix), monospace',
                           /* 扁平化風格，無文字陰影 */
                           lineHeight: '1.2'
@@ -826,7 +823,6 @@ export default function Home() {
                           fontSize: '10px',
                   textAlign: 'center', 
                           color: '#ffffff', 
-                          textAlign: 'center',
                           fontFamily: 'var(--font-zpix), monospace',
                           /* 扁平化風格，無文字陰影 */
                           lineHeight: '1.2'
