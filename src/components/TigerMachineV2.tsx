@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-interface IconSlotMachineProps {
+interface TigerMachineV2Props {
   icons: [string, string, string]; // 三個圖標
   className?: string;
 }
 
-const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
+const TigerMachineV2: React.FC<TigerMachineV2Props> = ({
   icons = ['/liam-flow-02.png', '/liam-flow-03.png', '/liam-flow-04.png'],
   className = ''
 }) => {
@@ -24,7 +24,7 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     right: 'idle'
   });
 
-  // 所有可用的圖標（包含 liam-flow.png）
+  // 所有可用的圖標
   const allIcons = ['/liam-flow.png', '/liam-flow-02.png', '/liam-flow-03.png', '/liam-flow-04.png'];
 
   // 隨機選擇一個圖標
@@ -39,7 +39,7 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     setIsSpinning(true);
     setReelStates({ left: 'idle', middle: 'idle', right: 'idle' });
     
-    // 依序啟動三個滾輪 - 更慢的間隔時間，總共7秒時間軸
+    // 依序啟動三個滾輪
     setTimeout(() => {
       setReelStates(prev => ({ ...prev, left: 'spinning' }));
     }, 500);
@@ -52,7 +52,7 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
       setReelStates(prev => ({ ...prev, right: 'spinning' }));
     }, 1500);
 
-    // 旋轉過程中隨機切換圖標 - 使用貝茲曲線讓速度遞減，中間段再慢30%
+    // 旋轉過程中隨機切換圖標
     let startTime = Date.now();
     const spinDuration = 5000; // 5秒旋轉時間
     
@@ -60,10 +60,9 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / spinDuration, 1);
       
-      // 使用貝茲曲線計算間隔時間：從慢(195ms)到極慢(2636ms)
-      // 貝茲曲線: cubic-bezier(0.25, 0.1, 0.25, 1) 對應 ease-out
-      const bezierProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      const currentInterval = 195 + (2636 - 195) * bezierProgress; // 從195ms到2636ms（中間段再慢30%）
+      // 使用貝茲曲線計算間隔時間
+      const bezierProgress = 1 - Math.pow(1 - progress, 3);
+      const currentInterval = 195 + (2636 - 195) * bezierProgress;
       
       setCurrentIcons([
         getRandomIcon(),
@@ -71,17 +70,15 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
         getRandomIcon()
       ]);
       
-      // 如果旋轉時間結束，清除間隔
       if (elapsed >= spinDuration) {
         clearInterval(spinInterval);
       }
-    }, 195); // 初始間隔195ms
+    }, 195);
 
-    // 5秒後停止旋轉 - 總時間軸7秒，旋轉5秒
+    // 5秒後停止旋轉
     setTimeout(() => {
       clearInterval(spinInterval);
       
-      // 依序停止滾輪，但最終同時定格 - 更慢的停止間隔
       setTimeout(() => {
         setReelStates(prev => ({ ...prev, left: 'stopped' }));
         setCurrentIcons(prev => [icons[0], prev[1], prev[2]]);
@@ -100,9 +97,8 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     }, 5000);
   };
 
-  // 只播放一次，不循環 - 添加初始延遲讓動畫從靜止開始
+  // 只播放一次，不循環
   useEffect(() => {
-    // 延遲1秒後開始動畫，讓用戶先看到靜止狀態
     const initialDelay = setTimeout(() => {
       startSpin();
     }, 1000);
@@ -110,42 +106,69 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     return () => clearTimeout(initialDelay);
   }, []);
 
-  // 單個滾輪元件 - 使用貝茲曲線的上下輪轉動畫
+  // 單個滾輪元件 - 真正的滾輪效果
   const Reel: React.FC<{
     icon: string;
     state: 'idle' | 'spinning' | 'stopped';
-  }> = ({ icon, state }) => {
+    position: 'left' | 'middle' | 'right';
+  }> = ({ icon, state, position }) => {
+    // 根據位置設定不同的初始顯示比例
+    const getInitialClipPath = () => {
+      switch(position) {
+        case 'left': return 'inset(60% 0 0 0)';   // 顯示下方40%
+        case 'middle': return 'inset(40% 0 0 0)'; // 顯示下方60%
+        case 'right': return 'inset(20% 0 0 0)';  // 顯示下方80%
+        default: return 'inset(0 0 0 0)';
+      }
+    };
+
+    // 根據位置設定不同的動畫效果
+    const getAnimationY = () => {
+      if (state === 'spinning') {
+        // 滾動動畫：從上到下滾動
+        return [0, -100, 0]; // 可以調整滾動距離
+      }
+      return 0;
+    };
+
     return (
       <div className="reel-container">
-        <motion.div
-          className="reel-content"
-          animate={{
-            y: state === 'spinning' ? [-30, 30, -30] : 0, // 上下幅度30px
-          }}
-          transition={{
-            duration: state === 'spinning' ? 1.0 : 1.2,
-            repeat: state === 'spinning' ? Infinity : 0,
-            ease: [0.25, 0.1, 0.25, 1], // 貝茲曲線：從快到慢
-          }}
-        >
-          <div className="icon">
-            <Image
-              src={icon}
-              alt="Icon"
-              width={800} // 增加圖片原始尺寸
-              height={800} // 增加圖片原始尺寸
-              className="icon-image"
-            />
-          </div>
-        </motion.div>
+        <div className="reel-mask">
+          <motion.div
+            className="reel-content"
+            initial={{ 
+              clipPath: getInitialClipPath(),
+              y: 0
+            }}
+            animate={{
+              clipPath: state === 'spinning' ? 'inset(0 0 0 0)' : getInitialClipPath(),
+              y: getAnimationY()
+            }}
+            transition={{
+              duration: state === 'spinning' ? 2.0 : 1.0,
+              repeat: state === 'spinning' ? Infinity : 0,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
+            <div className="icon">
+              <Image
+                src={icon}
+                alt="Icon"
+                width={800}
+                height={800}
+                className="icon-image"
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
     );
   };
 
   return (
-    <div className={`icon-slot-machine ${className}`}>
+    <div className={`tiger-machine-v2 ${className}`}>
       <style jsx>{`
-        .icon-slot-machine {
+        .tiger-machine-v2 {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -156,102 +179,74 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
 
         .reel-container {
           position: relative;
-          width: 120px;
-          height: 120px;
+          width: 200px;
+          height: 200px;
           display: flex;
           justify-content: center;
           align-items: center;
+          border: 3px solid #333;
+          border-radius: 10px;
+          background: #f8f9fa;
+          box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .reel-mask {
+          width: 100%;
+          height: 100%;
           overflow: hidden;
+          border-radius: 7px;
         }
 
         .reel-content {
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
-          height: 100%;
         }
 
         .icon {
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
-          height: 100%;
         }
 
         .icon-image {
           width: 100% !important;
           height: 100% !important;
-          object-fit: contain !important;
+          object-fit: cover !important;
         }
 
-        /* 響應式設計 - 桌面版 */
+        /* 響應式設計 */
         @media (min-width: 1024px) {
           .reel-container {
-            width: 800px;
-            height: 800px;
-            gap: 120px;
-            padding: 120px;
+            width: 300px;
+            height: 300px;
           }
         }
 
-        /* 響應式設計 - 大桌面版 */
-        @media (min-width: 1440px) {
-          .reel-container {
-            width: 1000px;
-            height: 1000px;
-            gap: 150px;
-            padding: 150px;
-          }
-        }
-
-        /* 響應式設計 - 平板版 */
-        @media (max-width: 1023px) and (min-width: 769px) {
+        @media (max-width: 768px) {
           .reel-container {
             width: 150px;
             height: 150px;
-            gap: 30px;
-            padding: 20px;
           }
         }
 
-        /* 響應式設計 - 手機版 */
-        @media (max-width: 768px) {
-          .reel-container {
-            width: 100px;
-            height: 100px;
-            gap: 15px;
-            padding: 15px;
-          }
-        }
-
-        /* 響應式設計 - 小手機版 */
         @media (max-width: 480px) {
           .reel-container {
-            width: 80px;
-            height: 80px;
-            gap: 10px;
-            padding: 10px;
-          }
-        }
-
-        /* 響應式設計 - 超小手機版 */
-        @media (max-width: 360px) {
-          .reel-container {
-            width: 70px;
-            height: 70px;
-            gap: 8px;
-            padding: 8px;
+            width: 120px;
+            height: 120px;
           }
         }
       `}</style>
 
-      <Reel icon={currentIcons[0]} state={reelStates.left} />
-      <Reel icon={currentIcons[1]} state={reelStates.middle} />
-      <Reel icon={currentIcons[2]} state={reelStates.right} />
+      <Reel icon={currentIcons[0]} state={reelStates.left} position="left" />
+      <Reel icon={currentIcons[1]} state={reelStates.middle} position="middle" />
+      <Reel icon={currentIcons[2]} state={reelStates.right} position="right" />
     </div>
   );
 };
 
-export default IconSlotMachine;
+export default TigerMachineV2;

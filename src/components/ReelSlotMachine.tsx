@@ -3,17 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-interface IconSlotMachineProps {
+interface ReelSlotMachineProps {
   icons: [string, string, string]; // 三個圖標
   className?: string;
 }
 
-const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
+const ReelSlotMachine: React.FC<ReelSlotMachineProps> = ({
   icons = ['/liam-flow-02.png', '/liam-flow-03.png', '/liam-flow-04.png'],
   className = ''
 }) => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [currentIcons, setCurrentIcons] = useState<[string, string, string]>(icons);
   const [reelStates, setReelStates] = useState<{
     left: 'idle' | 'spinning' | 'stopped';
     middle: 'idle' | 'spinning' | 'stopped';
@@ -39,7 +38,7 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     setIsSpinning(true);
     setReelStates({ left: 'idle', middle: 'idle', right: 'idle' });
     
-    // 依序啟動三個滾輪 - 更慢的間隔時間，總共7秒時間軸
+    // 依序啟動三個滾輪
     setTimeout(() => {
       setReelStates(prev => ({ ...prev, left: 'spinning' }));
     }, 500);
@@ -52,49 +51,19 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
       setReelStates(prev => ({ ...prev, right: 'spinning' }));
     }, 1500);
 
-    // 旋轉過程中隨機切換圖標 - 使用貝茲曲線讓速度遞減，中間段再慢30%
-    let startTime = Date.now();
-    const spinDuration = 5000; // 5秒旋轉時間
-    
-    const spinInterval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / spinDuration, 1);
-      
-      // 使用貝茲曲線計算間隔時間：從慢(195ms)到極慢(2636ms)
-      // 貝茲曲線: cubic-bezier(0.25, 0.1, 0.25, 1) 對應 ease-out
-      const bezierProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      const currentInterval = 195 + (2636 - 195) * bezierProgress; // 從195ms到2636ms（中間段再慢30%）
-      
-      setCurrentIcons([
-        getRandomIcon(),
-        getRandomIcon(),
-        getRandomIcon()
-      ]);
-      
-      // 如果旋轉時間結束，清除間隔
-      if (elapsed >= spinDuration) {
-        clearInterval(spinInterval);
-      }
-    }, 195); // 初始間隔195ms
-
-    // 5秒後停止旋轉 - 總時間軸7秒，旋轉5秒
+    // 5秒後停止旋轉
     setTimeout(() => {
-      clearInterval(spinInterval);
-      
-      // 依序停止滾輪，但最終同時定格 - 更慢的停止間隔
+      // 依序停止滾輪
       setTimeout(() => {
         setReelStates(prev => ({ ...prev, left: 'stopped' }));
-        setCurrentIcons(prev => [icons[0], prev[1], prev[2]]);
       }, 500);
 
       setTimeout(() => {
         setReelStates(prev => ({ ...prev, middle: 'stopped' }));
-        setCurrentIcons(prev => [prev[0], icons[1], prev[2]]);
       }, 1000);
 
       setTimeout(() => {
         setReelStates(prev => ({ ...prev, right: 'stopped' }));
-        setCurrentIcons(icons);
         setIsSpinning(false);
       }, 1500);
     }, 5000);
@@ -102,7 +71,7 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
 
   // 只播放一次，不循環 - 添加初始延遲讓動畫從靜止開始
   useEffect(() => {
-    // 延遲1秒後開始動畫，讓用戶先看到靜止狀態
+    // 延遲1秒後開始動畫
     const initialDelay = setTimeout(() => {
       startSpin();
     }, 1000);
@@ -110,42 +79,65 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
     return () => clearTimeout(initialDelay);
   }, []);
 
-  // 單個滾輪元件 - 使用貝茲曲線的上下輪轉動畫
+  // 單個滾輪元件 - 真正的滾輪邏輯
   const Reel: React.FC<{
     icon: string;
     state: 'idle' | 'spinning' | 'stopped';
-  }> = ({ icon, state }) => {
+    position: 'left' | 'middle' | 'right';
+  }> = ({ icon, state, position }) => {
+    // 根據位置設定初始顯示比例
+    const getInitialY = () => {
+      switch(position) {
+        case 'left': return '60%';   // 露出下方40%
+        case 'middle': return '40%'; // 露出下方60%
+        case 'right': return '20%';  // 露出下方80%
+        default: return '0%';
+      }
+    };
+
+    // 滾輪動畫：從初始位置滾動到正常位置，然後上下移動
+    const getAnimateY = () => {
+      if (state === 'idle') {
+        return getInitialY(); // 保持初始位置
+      } else if (state === 'spinning') {
+        return [getInitialY(), '0%', '-20%', '20%', '-10%', '10%', '0%']; // 滾動 + 上下移動
+      } else {
+        return '0%'; // 停止在正常位置
+      }
+    };
+
     return (
       <div className="reel-container">
-        <motion.div
-          className="reel-content"
-          animate={{
-            y: state === 'spinning' ? [-30, 30, -30] : 0, // 上下幅度30px
-          }}
-          transition={{
-            duration: state === 'spinning' ? 1.0 : 1.2,
-            repeat: state === 'spinning' ? Infinity : 0,
-            ease: [0.25, 0.1, 0.25, 1], // 貝茲曲線：從快到慢
-          }}
-        >
-          <div className="icon">
-            <Image
-              src={icon}
-              alt="Icon"
-              width={800} // 增加圖片原始尺寸
-              height={800} // 增加圖片原始尺寸
-              className="icon-image"
-            />
-          </div>
-        </motion.div>
+        <div className="reel-mask">
+          <motion.div
+            className="reel-content"
+            initial={{ y: getInitialY() }}
+            animate={{ y: getAnimateY() }}
+            transition={{
+              duration: state === 'spinning' ? 0.8 : 1.2,
+              repeat: state === 'spinning' ? Infinity : 0,
+              ease: state === 'spinning' ? [0.25, 0.1, 0.25, 1] : [0.4, 0, 0.2, 1],
+            }}
+          >
+            <div className="reel-icon">
+              <Image
+                src={icon}
+                alt="Icon"
+                width={800}
+                height={800}
+                className="icon-image"
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
     );
   };
 
   return (
-    <div className={`icon-slot-machine ${className}`}>
+    <div className={`reel-slot-machine ${className}`}>
       <style jsx>{`
-        .icon-slot-machine {
+        .reel-slot-machine {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -161,29 +153,36 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
           display: flex;
           justify-content: center;
           align-items: center;
+        }
+
+        .reel-mask {
+          width: 100%;
+          height: 100%;
           overflow: hidden;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .reel-content {
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
-          height: 100%;
         }
 
-        .icon {
+        .reel-icon {
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
-          height: 100%;
         }
 
         .icon-image {
           width: 100% !important;
           height: 100% !important;
-          object-fit: contain !important;
+          object-fit: cover !important;
         }
 
         /* 響應式設計 - 桌面版 */
@@ -247,11 +246,11 @@ const IconSlotMachine: React.FC<IconSlotMachineProps> = ({
         }
       `}</style>
 
-      <Reel icon={currentIcons[0]} state={reelStates.left} />
-      <Reel icon={currentIcons[1]} state={reelStates.middle} />
-      <Reel icon={currentIcons[2]} state={reelStates.right} />
+      <Reel icon={icons[0]} state={reelStates.left} position="left" />
+      <Reel icon={icons[1]} state={reelStates.middle} position="middle" />
+      <Reel icon={icons[2]} state={reelStates.right} position="right" />
     </div>
   );
 };
 
-export default IconSlotMachine;
+export default ReelSlotMachine;
