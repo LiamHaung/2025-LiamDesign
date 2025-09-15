@@ -44,7 +44,7 @@ const TextWindow: React.FC<TextWindowProps> = ({
     >
       {/* Windows 98 標題列 */}
       <div style={{
-        background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 100%)',
+        background: 'linear-gradient(90deg, #003EC3 0%, #002A8A 100%)',
         color: 'white',
         padding: 'clamp(3px, 1vw, 4px) clamp(6px, 2vw, 8px)',
         fontSize: 'clamp(9px, 2.5vw, 11px)',
