@@ -178,25 +178,31 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
         marginBottom: '30px',
         fontFamily: 'var(--font-zpix), monospace',
         maxWidth: '100%',
-        padding: '0 10px'
+        padding: '0 20px', // 增加左右padding
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
         <div style={{
-          fontSize: 'clamp(20px, 4vw, 48px)',
+          fontSize: 'clamp(16px, 4vw, 48px)', // 調整最小字體從20px到16px
           fontWeight: 'bold',
           color: '#003EC3',
           marginBottom: '12px',
-          lineHeight: '1.3',
-          wordBreak: 'keep-all',
-          overflowWrap: 'break-word'
+          lineHeight: '1.4', // 調整行高以適應換行
+          wordBreak: 'break-all', // 改為允許任意位置斷行
+          overflowWrap: 'break-word',
+          whiteSpace: 'normal', // 確保可以換行
+          width: '100%'
         }}>
           ＃昨天已經過去，明天尚未到來，今天仍是未知！
         </div>
         <div style={{
-          fontSize: 'clamp(16px, 3vw, 24px)',
+          fontSize: 'clamp(14px, 3vw, 24px)', // 調整最小字體從16px到14px
           fontWeight: 'bold',
           color: '#666',
           letterSpacing: '1px',
-          lineHeight: '1.4'
+          lineHeight: '1.4',
+          wordBreak: 'break-word', // 英文也允許斷行
+          whiteSpace: 'normal'
         }}>
           ＃Own the Day ＃Go Live Today
         </div>
