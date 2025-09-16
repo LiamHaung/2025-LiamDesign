@@ -273,8 +273,64 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // 額外的結構化數據
+  const portfolioJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Liam Design Studio Portfolio",
+    "description": "展示品牌設計、插畫設計、數位設計等創意作品集",
+    "creator": {
+      "@type": "Organization",
+      "name": "Liam Design Studio"
+    },
+    "url": "https://2025-liam-design.vercel.app",
+    "image": [
+      "https://2025-liam-design.vercel.app/illustration_1.png",
+      "https://2025-liam-design.vercel.app/illustration_2.png",
+      "https://2025-liam-design.vercel.app/illustration_3.png",
+      "https://2025-liam-design.vercel.app/illustration_4.png"
+    ],
+    "keywords": "品牌設計作品集, 插畫作品, 視覺設計, 創意設計",
+    "dateCreated": "2024",
+    "inLanguage": "zh-TW"
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "首頁",
+        "item": "https://2025-liam-design.vercel.app"
+      },
+      {
+        "@type": "ListItem", 
+        "position": 2,
+        "name": "作品集",
+        "item": "https://2025-liam-design.vercel.app#portfolio"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "聯絡我們",
+        "item": "https://2025-liam-design.vercel.app#contact"
+      }
+    ]
+  };
+
   return (
     <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#FFFFF3' }}>
+      {/* 結構化數據 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Windows 98 風格介紹視窗 */}
       {showIntroModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
