@@ -1,10 +1,10 @@
 'use client';
 import Image from "next/image";
 import React, { useRef, useState, useEffect } from "react";
-import VerticalWindow from '../components/VerticalWindow';
 import LoginSignupCard from '../components/LoginSignupCard';
 import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
+import SlotMachine from '../components/SlotMachine';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -36,9 +36,12 @@ export default function Home() {
   // 視窗層級管理
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
   
+  // 滾動分段狀態管理
+  const [currentSection, setCurrentSection] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  
   // 手機版漢堡選單狀態
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showVerticalWindow, setShowVerticalWindow] = useState(true);
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -76,6 +79,30 @@ export default function Home() {
       return () => clearInterval(interval);
     }
   }, [showIntroModal]);
+
+  // 滾動監聽 - 分段變色效果
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!entered) return;
+      
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      
+      // 計算當前分段 (從桌面區域開始算)
+      const desktopHeight = windowHeight; // 桌面區域高度
+      const adjustedScrollTop = Math.max(0, scrollTop - desktopHeight);
+      const section = Math.floor(adjustedScrollTop / windowHeight);
+      const progress = (adjustedScrollTop % windowHeight) / windowHeight;
+      
+      setCurrentSection(section);
+      setScrollProgress(progress);
+    };
+
+    if (entered) {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [entered]);
 
   useEffect(() => {
     if (entered && casesRef.current) {
@@ -185,7 +212,7 @@ export default function Home() {
       contactForm: { minimized: false, maximized: false, closed: true }
     }));
     setActiveWindow('loginCard'); // 預設第一個視窗為活動視窗
-    setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
+    // setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
     setMobileMenuOpen(false); // 關閉手機選單
   };
 
@@ -199,7 +226,7 @@ export default function Home() {
     illustrationWindow: { minimized: false, maximized: false, closed: true },
       contactForm: { minimized: false, maximized: false, closed: true }
     }));
-    setShowVerticalWindow(true); // 顯示 VerticalWindow
+    // setShowVerticalWindow(true); // 顯示 VerticalWindow
     setMobileMenuOpen(false); // 關閉手機選單
   };
 
@@ -220,8 +247,31 @@ export default function Home() {
       carouselWindow: 20
     };
     
-    return baseZIndex[windowId as keyof typeof baseZIndex] || 20;
+    switch(windowId) {
+      case 'loginCard':
+        return baseZIndex.loginCard + (windowStates.loginCard.maximized ? 100 : 0);
+      case 'textWindow':
+        return baseZIndex.textWindow + (windowStates.textWindow.maximized ? 100 : 0);
+      case 'carouselWindow':
+        return baseZIndex.carouselWindow + (windowStates.carouselWindow.maximized ? 100 : 0);
+      default:
+        return 20;
+    }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 1024;
+      if (isMobile) {
+        // setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
+      } else {
+        // setShowVerticalWindow(true); // 顯示 VerticalWindow
+      }
+    };
+    handleResize(); // 設定初始值
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="relative min-h-screen w-full font-sans overflow-x-hidden" style={{ background: '#FFFFF3' }}>
@@ -418,7 +468,7 @@ export default function Home() {
                 alt="Liam Design Studio Logo"
                 className="hero-logo"
                 style={{
-                  width: 'clamp(120px, 25vw, 300px)',
+                  width: 'clamp(84px, 17.5vw, 210px)', // 縮小70%: 120*0.7=84, 25*0.7=17.5, 300*0.7=210
                   height: 'auto',
                   objectFit: 'contain',
                   filter: 'none'
@@ -443,7 +493,7 @@ export default function Home() {
                 alt="Yilan Map"
                 className="map-image"
                 style={{
-                  width: '70vw',
+                  width: 'clamp(300px, 65vw, 800px)',
                   height: 'auto',
                   objectFit: 'contain',
                   filter: 'none'
@@ -743,19 +793,19 @@ export default function Home() {
               )}
             </div>
 
-            <div className="fixed left-0 bottom-0 z-50 p-6" style={{ transform: 'scale(1.08)', transformOrigin: 'left bottom', zIndex: 10000 }}>
+            <div className="fixed right-0 bottom-0 z-50 p-6" style={{ 
+              transform: 'scale(1.5)', 
+              transformOrigin: 'right bottom', 
+              zIndex: 10000 
+            }}>
               <div className="logo-block long">
-                <Image src="/cursor-07.png" alt="Liam Design Logo" width={108} height={108} style={{ display: 'none' }} />
+                <Image src="/cursor-07.png" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
               </div>
             </div>
 
             <div className="relative w-full h-auto lg:h-[100vh] flex flex-col lg:flex-row overflow-auto lg:overflow-hidden">
-              <div className={`h-auto lg:h-full lg:w-1/3 w-full min-w-[320px] lg:max-w-[480px] flex-shrink-0 lg:sticky top-0 left-0 z-20 bg-transparent lg:border-r border-gray-200 p-0 m-0 ${!showVerticalWindow ? 'hidden lg:block' : ''}`} style={{height: 'auto', minHeight: '60vh'}}>
-                <VerticalWindow 
-                  width="100%" 
-                  height="100vh"
-                />
-              </div>
+              {/* 左側 VerticalWindow 已移除 */}
+              {/* 中右區域內容寬度改為全寬 */}
               <section 
                 className="flex-1 lg:w-2/3 w-full h-auto lg:h-full relative overflow-auto lg:overflow-hidden desktop-area desktop-section" 
                 style={{
@@ -770,7 +820,7 @@ export default function Home() {
                 {/* 桌面模式 - 可拖拽視窗 */}
                 <div className="hidden lg:block">
                   {/* 桌面圖示 - 僅桌面顯示 */}
-                  <div className="hidden lg:block absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15 }}>
+                  <div className="hidden lg:block absolute top-4 left-4 flex flex-col gap-4" style={{ zIndex: 15, display: 'none' }}>
                     {/* 插畫資料夾 */}
                     <div 
                       className="flex flex-col items-center cursor-pointer group"
@@ -970,6 +1020,8 @@ Tel: 03-9XX-XXXX
                     </div>
                   )}
 
+
+
                   {/* Windows 98 Style 插畫視窗 */}
                   {!windowStates.illustrationWindow.closed && (
                     <div 
@@ -1090,6 +1142,19 @@ Tel: 03-9XX-XXXX
                       </div>
                     </div>
                   )}
+
+                  {/* 桌面老虎機小工具 */}
+                  <div 
+                    style={{ 
+                      position: 'absolute', 
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 15
+                    }}
+                  >
+                    <SlotMachine />
+                  </div>
                 </div>
 
                 {/* 響應式模式 - 一欄式布局 */}
@@ -1215,10 +1280,210 @@ Tel: 03-9XX-XXXX
                           </p>
                         </div>
                       </div>
-                    )}                  </div>
+                    )}
+
+                    {/* 手機版老虎機小工具 */}
+                    <div style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      padding: '20px 0'
+                    }}>
+                      <SlotMachine />
+                    </div>                  </div>
                 </div>
               </section>
             </div>
+
+            {/* 四個滾動分段 */}
+            {/* Section 1: Design */}
+            <section className="scroll-section design-section" style={{ 
+              minHeight: '100vh', 
+              backgroundColor: (() => {
+                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
+                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
+                
+                // 使用 scrollProgress 在當前和下一個顏色之間插值
+                const currentColor = colors[currentSection];
+                const nextColor = colors[currentSection + 1];
+                
+                if (scrollProgress > 0.8) {
+                  // 接近底部時開始切換到下一個顏色
+                  return nextColor;
+                }
+                
+                return currentColor;
+              })(),
+              padding: '4rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              transition: 'background-color 0.3s ease'
+            }}>
+              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="text-content">
+                  <h1 className="text-4xl md:text-6xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    #Design
+                  </h1>
+                  <p className="text-lg md:text-xl text-black mb-8 leading-relaxed">
+                    我們相信設計不僅是視覺的美學，更是解決問題的工具。從品牌識別到數位介面，每一個設計決策都源於深度的用戶研究與市場洞察。我們創造的不只是美麗的設計，而是能夠與使用者產生共鳴、推動業務成長的設計解決方案。
+                  </p>
+                  <button 
+                    className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  >
+                    閱讀更多
+                  </button>
+                </div>
+                <div className="image-content">
+                  <img 
+                    src="/illustration_1.png" 
+                    alt="Design Portfolio" 
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section 2: Illustration */}
+            <section className="scroll-section illustration-section" style={{ 
+              minHeight: '100vh', 
+              backgroundColor: (() => {
+                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
+                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
+                const currentColor = colors[currentSection];
+                const nextColor = colors[currentSection + 1];
+                if (scrollProgress > 0.8) {
+                  return nextColor;
+                }
+                return currentColor;
+              })(),
+              padding: '4rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              transition: 'background-color 0.3s ease'
+            }}>
+              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="image-content lg:order-1">
+                  <img 
+                    src="/illustration_2.png" 
+                    alt="Illustration Portfolio" 
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                  />
+                </div>
+                <div className="text-content lg:order-2">
+                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    #Illustration
+                  </h1>
+                  <p className="text-lg md:text-xl text-white mb-8 leading-relaxed">
+                    插畫是我們表達創意最直接的方式。透過手繪與數位結合的技法，我們創造出富有故事性與情感溫度的視覺作品。每一幅插畫都承載著獨特的敘事，無論是品牌故事的視覺化呈現，還是產品概念的藝術詮釋，我們都用心雕琢每一個細節。
+                  </p>
+                  <button 
+                    className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  >
+                    閱讀更多
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 3: Brand */}
+            <section className="scroll-section brand-section" style={{ 
+              minHeight: '100vh', 
+              backgroundColor: (() => {
+                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
+                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
+                const currentColor = colors[currentSection];
+                const nextColor = colors[currentSection + 1];
+                if (scrollProgress > 0.8) {
+                  return nextColor;
+                }
+                return currentColor;
+              })(),
+              padding: '4rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              transition: 'background-color 0.3s ease'
+            }}>
+              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="text-content">
+                  <h1 className="text-4xl md:text-6xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    #Brand
+                  </h1>
+                  <p className="text-lg md:text-xl text-black mb-8 leading-relaxed">
+                    品牌建立是一個深度的策略過程。我們從品牌核心價值出發，透過視覺識別、品牌故事與使用者體驗的整合設計，打造具有獨特個性與市場競爭力的品牌形象。我們相信每個品牌都有其獨特的DNA，我們的任務就是將這份獨特性轉化為令人印象深刻的品牌體驗。
+                  </p>
+                  <button 
+                    className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  >
+                    閱讀更多
+                  </button>
+                </div>
+                <div className="image-content">
+                  <img 
+                    src="/illustration_3.png" 
+                    alt="Brand Portfolio" 
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section 4: Contact */}
+            <section className="scroll-section contact-section" style={{ 
+              minHeight: '100vh', 
+              backgroundColor: (() => {
+                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
+                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
+                const currentColor = colors[currentSection];
+                const nextColor = colors[currentSection + 1];
+                if (scrollProgress > 0.8) {
+                  return nextColor;
+                }
+                return currentColor;
+              })(),
+              padding: '4rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              transition: 'background-color 0.3s ease'
+            }}>
+              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="image-content lg:order-1">
+                  <img 
+                    src="/illustration_4.png" 
+                    alt="Contact Portfolio" 
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                  />
+                </div>
+                <div className="text-content lg:order-2">
+                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    #Contact
+                  </h1>
+                  <p className="text-lg md:text-xl text-white mb-8 leading-relaxed">
+                    準備好開始你的下一個專案了嗎？無論是品牌重塑、產品設計或是創意諮詢，我們都期待與你合作。讓我們一起創造出真正有影響力的設計作品。立即聯繫我們，開始你的設計之旅。
+                  </p>
+                  <button 
+                    className="bg-white text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  >
+                    立即聯繫
+                  </button>
+                </div>
+              </div>
+            </section>
           </>
         )}
       </div>

@@ -1,0 +1,10 @@
+                <p>
+                  &ldquo;Hello, I&rsquo;m Liam.<br/>
+                  Welcome to Liam Design Studio.<br/>
+                  We specialize in brand identity, visual design,<br/>
+                  and creative solutions that tell compelling stories.<br/>
+                  Our approach combines strategic thinking with<br/>
+                  artistic vision to create designs that resonate<br/>
+                  with audiences and drive meaningful connections<br/>
+                  between brands and their communities.<br/>
+                </p>
