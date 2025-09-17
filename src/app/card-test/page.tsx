@@ -2,6 +2,7 @@
 import React from "react";
 import TestCard from "@/components/TestCard";
 import TestCardAlt from "@/components/TestCardAlt";
+import IllustrationSplitCarousel from "@/components/IllustrationSplitCarousel";
 import { motion } from "framer-motion";
 
 export default function CardTestPage() {
@@ -29,6 +30,9 @@ export default function CardTestPage() {
   return (
     <div style={{ background: "#FFFFF3", minHeight: "100svh" }}>
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-16">
+        <div className="mb-12">
+          <IllustrationSplitCarousel />
+        </div>
         <motion.h1
           className="text-3xl md:text-5xl font-bold text-black mb-8"
           style={{ fontFamily: 'var(--font-zpix), monospace' }}
