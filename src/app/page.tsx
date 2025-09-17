@@ -6,6 +6,7 @@ import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
+import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -1449,50 +1450,8 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div className="image-content lg:order-1">
-                  <motion.img 
-                     src="/illustration_2.png" 
-                     alt="Illustration Portfolio" 
-                     className="w-full h-auto rounded-lg"
-                     style={{ maxHeight: '500px', objectFit: 'cover' }}
-                     initial={{ opacity: 0, y: 100 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                     viewport={{ once: true, amount: 0.35 }}
-                  />
-                </div>
-                <div className="text-content lg:order-2">
-                  <motion.h1
-                    className="text-4xl md:text-6xl font-bold text-white mb-6"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
-                    initial={{ opacity: 0, y: 80 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    #Illustration
-                  </motion.h1>
-                  <motion.p
-                    className="text-lg md:text-xl text-white mb-8 leading-relaxed"
-                    initial={{ opacity: 0, y: 150 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    插畫是我們表達創意最直接的方式。透過手繪與數位結合的技法，我們創造出富有故事性與情感溫度的視覺作品。每一幅插畫都承載著獨特的敘事，無論是品牌故事的視覺化呈現，還是產品概念的藝術詮釋，我們都用心雕琢每一個細節。
-                  </motion.p>
-                  <motion.button 
-                    className="bg-white text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
-                    initial={{ opacity: 0, y: 150 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    閱讀更多
-                  </motion.button>
-                </div>
+              <div className="max-w-6xl w-full mx-auto">
+                <IllustrationSplitCarousel />
               </div>
             </section>
 

@@ -175,11 +175,11 @@ export default function IllustrationSplitCarousel({
 
         {/* Right 35% */}
         <div className="md:basis-[35%] md:max-w-[35%]">
-          <div className="sticky top-6 p-6 rounded-xl bg-[#003EC3]">
-            <h3 className="text-xl md:text-2xl font-bold mb-3 text-[#FFFFF3]" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+          <div className="sticky top-6 p-6 rounded-xl border border-transparent bg-[#003EC3]">
+            <h3 className="text-xl md:text-2xl font-bold text-[#FFFFF3] mb-3" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
               插畫文字介紹
             </h3>
-            <p className="leading-relaxed mb-5 text-[#FFFFF3]">
+            <p className="leading-relaxed mb-5" style={{ color: '#FFFFF3' }}>
               我們透過插畫建立情感連結與敘事節奏，讓作品既有美感也能傳遞故事。想看更多完整案例與製作過程，歡迎延伸閱讀。
             </p>
             <a
