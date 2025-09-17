@@ -15,11 +15,16 @@ const displayImages = [...images, ...images, ...images, ...images];
 
 // 響應式滾輪格子的尺寸
 const getReelSize = (screenWidth: number) => {
-  const availableWidth = screenWidth - 40 - 20 - 20;
-  const reelWidth = Math.max(60, availableWidth / 3);
-  return { 
-    width: Math.round(reelWidth), 
-    height: Math.round(reelWidth) 
+  const isMobile = screenWidth <= 768;
+  // 手機版放大：減少預留邊距與容器padding，釋放更多寬度
+  const sidePadding = isMobile ? 24 : 40;       // 左右外邊距預留
+  const containerPadding = isMobile ? 12 : 20;  // 容器內邊距預留
+  const gapsTotal = isMobile ? 8 * 2 : 10 * 2;  // 三個滾輪兩個間距
+  const availableWidth = screenWidth - sidePadding - containerPadding - gapsTotal;
+  const reelWidth = Math.max(60, Math.floor(availableWidth / 3));
+  return {
+    width: reelWidth,
+    height: reelWidth
   };
 };
 
@@ -255,7 +260,10 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           gap: '10px',
           alignItems: 'center',
           justifyContent: 'center',
-          flexWrap: 'nowrap'
+          flexWrap: 'nowrap',
+          width: '100%',
+          maxWidth: 'min(100vw, 1134px)',
+          padding: '0 12px'
         }}>
           {[0, 1, 2].map((reelIndex) => (
             <SlotReel
