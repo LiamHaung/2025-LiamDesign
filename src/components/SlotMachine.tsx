@@ -288,7 +288,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           disabled={!isSpinning || stopRequested}
           className="slot-play-button"
           style={{
-            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#003EC3'
+            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#3AAF3A'
           }}
         >
           {stopRequested ? 'STOPPING...' : 'STOP'}
