@@ -144,30 +144,90 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
   const [finalImageIndices, setFinalImageIndices] = useState([0, 0, 0]);
   const [spinKey, setSpinKey] = useState(0);
   const [, setCompletedReels] = useState(0);
+  
+  // 新增：手動控制狀態
+  const [manualMode, setManualMode] = useState(false);
+  const [reelSpinning, setReelSpinning] = useState([false, false, false]);
+  const [reelStopped, setReelStopped] = useState([false, false, false]);
 
   const spinAllReels = () => {
-    if (isSpinning) return;
+    if (isSpinning && !manualMode) return;
 
     setIsSpinning(true);
     setSpinKey(prev => prev + 1);
     setCompletedReels(0);
 
-    const newIndices = [
-      Math.floor(Math.random() * images.length),
-      Math.floor(Math.random() * images.length),
-      Math.floor(Math.random() * images.length)
-    ];
-    setFinalImageIndices(newIndices);
+    if (manualMode) {
+      // 手動模式：啟動所有滾輪但不設定結束條件
+      setReelSpinning([true, true, true]);
+      setReelStopped([false, false, false]);
+      // 不預設最終結果，由用戶手動停止時決定
+    } else {
+      // 自動模式：保持原有邏輯
+      const newIndices = [
+        Math.floor(Math.random() * images.length),
+        Math.floor(Math.random() * images.length),
+        Math.floor(Math.random() * images.length)
+      ];
+      setFinalImageIndices(newIndices);
+    }
+  };
+
+  const stopReel = (reelIndex: number) => {
+    if (!manualMode || !reelSpinning[reelIndex] || reelStopped[reelIndex]) return;
+
+    // 生成該滾輪的隨機結果
+    const randomIndex = Math.floor(Math.random() * images.length);
+    setFinalImageIndices(prev => {
+      const newIndices = [...prev];
+      newIndices[reelIndex] = randomIndex;
+      return newIndices;
+    });
+
+    // 標記該滾輪為已停止
+    setReelStopped(prev => {
+      const newStopped = [...prev];
+      newStopped[reelIndex] = true;
+      return newStopped;
+    });
+
+    setReelSpinning(prev => {
+      const newSpinning = [...prev];
+      newSpinning[reelIndex] = false;
+      return newSpinning;
+    });
+
+    // 檢查是否所有滾輪都已停止
+    setReelStopped(currentStopped => {
+      const newStopped = [...currentStopped];
+      newStopped[reelIndex] = true;
+      
+      if (newStopped.every(stopped => stopped)) {
+        setIsSpinning(false);
+      }
+      
+      return newStopped;
+    });
   };
 
   const handleReelComplete = () => {
-    setCompletedReels(prev => {
-      const newCount = prev + 1;
-      if (newCount >= 3) {
-        setIsSpinning(false);
-      }
-      return newCount;
-    });
+    if (!manualMode) {
+      setCompletedReels(prev => {
+        const newCount = prev + 1;
+        if (newCount >= 3) {
+          setIsSpinning(false);
+        }
+        return newCount;
+      });
+    }
+  };
+
+  const toggleMode = () => {
+    if (isSpinning) return; // 運行中不允許切換模式
+    setManualMode(!manualMode);
+    // 重置狀態
+    setReelSpinning([false, false, false]);
+    setReelStopped([false, false, false]);
   };
 
   return (
@@ -208,36 +268,109 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
         </div>
       </div>
 
+      {/* 模式切換按鈕 */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '20px'
+      }}>
+        <button
+          onClick={toggleMode}
+          disabled={isSpinning}
+          style={{
+            backgroundColor: manualMode ? '#28a745' : '#6c757d',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            cursor: isSpinning ? 'not-allowed' : 'pointer',
+            opacity: isSpinning ? 0.6 : 1,
+            fontFamily: 'var(--font-zpix), monospace',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          {manualMode ? '手動模式' : '自動模式'}
+        </button>
+      </div>
+
       {/* 老虎機滾輪容器 */}
       <div style={{
         display: 'flex',
-        flexDirection: 'row',
-        gap: '10px',
+        flexDirection: 'column',
+        gap: '15px',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '20px',
-        flexWrap: 'nowrap'
+        marginBottom: '20px'
       }}>
-        {[0, 1, 2].map((reelIndex) => (
-          <SlotReel
-            key={reelIndex}
-            reelIndex={reelIndex}
-            isSpinning={isSpinning}
-            finalImageIndex={finalImageIndices[reelIndex]}
-            spinKey={spinKey}
-            onSpinComplete={handleReelComplete}
-          />
-        ))}
+        {/* 滾輪區域 */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '10px',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'nowrap'
+        }}>
+          {[0, 1, 2].map((reelIndex) => (
+            <SlotReel
+              key={reelIndex}
+              reelIndex={reelIndex}
+              isSpinning={manualMode ? reelSpinning[reelIndex] : isSpinning}
+              finalImageIndex={finalImageIndices[reelIndex]}
+              spinKey={spinKey}
+              onSpinComplete={handleReelComplete}
+            />
+          ))}
+        </div>
+
+        {/* 手動模式的STOP按鈕 */}
+        {manualMode && isSpinning && (
+          <div style={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {[0, 1, 2].map((reelIndex) => (
+              <button
+                key={reelIndex}
+                onClick={() => stopReel(reelIndex)}
+                disabled={reelStopped[reelIndex]}
+                style={{
+                  backgroundColor: reelStopped[reelIndex] ? '#28a745' : '#dc3545',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  cursor: reelStopped[reelIndex] ? 'not-allowed' : 'pointer',
+                  opacity: reelStopped[reelIndex] ? 0.6 : 1,
+                  fontFamily: 'var(--font-zpix), monospace',
+                  minWidth: '60px',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {reelStopped[reelIndex] ? '已停' : 'STOP'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 按鈕 */}
       <div className="slot-button-container">
         <button
           onClick={spinAllReels}
-          disabled={isSpinning}
+          disabled={isSpinning && manualMode && reelSpinning.some(spinning => spinning)}
           className="slot-play-button"
         >
-          {isSpinning ? 'SPINNING...' : 'PLAY'}
+          {isSpinning ? 
+            (manualMode ? 'RUNNING...' : 'SPINNING...') : 
+            (manualMode ? 'START' : 'PLAY')
+          }
         </button>
       </div>
       
