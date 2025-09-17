@@ -25,20 +25,16 @@ export default function WaveBoatTestPage() {
         margin: '0 0 16px 0'
       }}>Wave Boat Test（海浪半圓排版）</h1>
 
-      {/* 船的定位區（之後可放入船圖，預留空間不顯示） */}
-      <div style={{
-        width: '100%',
-        maxWidth: '1200px',
-        height: 'min(22vw, 200px)',
-        marginBottom: '10px',
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'center'
-      }}>
-        {/* 之後可在此放入 <img src="/your-boat.png" /> 或 next/image */}
+      {/* 船的定位區（放入船圖並加入動畫） */}
+      <div className="boat-stage">
+        <div className="boat-h">
+          <div className="boat-v">
+            <img src="/boat.png" alt="Boat" className="boat-img" />
+          </div>
+        </div>
       </div>
 
-      {/* 海浪區域（使用倒三角 clip-path 作為遮色片） */}
+      {/* 海浪區域（長方形遮色片） */}
       <div className="waves" aria-label="waves" role="img">
         <div className="wave-mask">
           {Array.from({ length: rows }).map((_, rIdx) => (
@@ -69,11 +65,12 @@ export default function WaveBoatTestPage() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          position: relative;
         }
         .wave-mask {
           width: 100%;
           /* 高度依半圓數與尺寸估算（3排半圓各佔半高，並加上行距） */
-          height: calc(var(--semi) * 3.0); /* 加高容器以配合更尖的三角形 */
+          height: calc(var(--semi) * 3.0); /* 長方形遮罩容器高度 */
           position: relative;
           overflow: hidden;
           /* 改為長方形遮罩（移除倒三角 clip-path） */
@@ -93,8 +90,8 @@ export default function WaveBoatTestPage() {
           animation: wave-left 6s linear infinite;
         }
         /* 第二、第三排使用不同速度與方向製造層次 */
-        .wave-strip.r-1 { animation: wave-right 8s linear infinite; opacity: 0.8; }
-        .wave-strip.r-2 { animation: wave-left 10s linear infinite; opacity: 0.6; }
+        .wave-strip.r-1 { animation: wave-right 8s linear infinite; opacity: 1; }
+        .wave-strip.r-2 { animation: wave-left 10s linear infinite; opacity: 1; }
 
         .wave-row {
           display: flex;
@@ -123,10 +120,52 @@ export default function WaveBoatTestPage() {
           100% { transform: translateX(0); }
         }
 
-        /* 手機優化：加大半圓，增加觀感，整體高度自適應 */
+        /* 船的舞台與動畫 */
+        .boat-stage {
+          width: 100%;
+          max-width: 1200px;
+          height: min(22vw, 200px);
+          margin: 0 0 0 0;
+          position: relative;
+          overflow: hidden; /* 船出入場隱藏 */
+        }
+        .boat-h {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 200%;
+          height: 100%;
+          animation: sail-rtl 18s linear infinite;
+          will-change: transform;
+        }
+        .boat-v {
+          position: absolute;
+          right: 0; /* 從最右側入場 */
+          bottom: calc(var(--semi) * 0.2); /* 船體略貼近海面 */
+          animation: bob 2.4s ease-in-out infinite;
+        }
+        .boat-img {
+          width: min(34vw, 360px);
+          height: auto;
+          display: block;
+          filter: none;
+        }
+
+        @keyframes sail-rtl {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(calc(var(--semi) * -0.12)); }
+        }
+
+        /* 手機優化：加大半圓，增加觀感，整體高度自適應；船速度稍微放慢 */
         @media (max-width: 768px) {
           .waves { --semi: min(9vw, 84px); }
           .wave-mask { height: calc(var(--semi) * 2.6); }
+          .boat-img { width: min(48vw, 360px); }
+          .boat-h { animation-duration: 22s; }
         }
       `}</style>
     </div>
