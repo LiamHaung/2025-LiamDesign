@@ -288,7 +288,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           disabled={!isSpinning || stopRequested}
           className="slot-play-button"
           style={{
-            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#dc3545'
+            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#003EC3'
           }}
         >
           {stopRequested ? 'STOPPING...' : 'STOP'}
@@ -330,17 +330,18 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
         @media (min-width: 769px) {
           .slot-button-container {
             margin-top: 40px;
+            gap: 20px;
           }
           
           .slot-play-button {
             padding: 18px 36px;
             border-radius: 12px;
             font-size: 24px;
-            transform: scale(1.5);
+            transform: none; /* 移除縮放，避免視覺重疊 */
           }
           
           .slot-play-button:hover:not(:disabled) {
-            transform: scale(1.55);
+            transform: scale(1.02);
           }
         }
       `}</style>
