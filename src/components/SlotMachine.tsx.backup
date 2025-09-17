@@ -145,14 +145,10 @@ interface SlotMachineProps {
 }
 
 export default function SlotMachine({ className, style }: SlotMachineProps) {
-    const [isSpinning, setIsSpinning] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
   const [finalImageIndices, setFinalImageIndices] = useState([0, 0, 0]);
   const [spinKey, setSpinKey] = useState(0);
   const [, setCompletedReels] = useState(0);
-  
-  // 彈出式視窗狀態
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
   
   // 手動控制狀態（固定為手動模式）
   const [reelSpinning, setReelSpinning] = useState([false, false, false]);
@@ -170,7 +166,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
     // 不預設最終結果，由用戶手動停止時決定
   };
 
-    const stopAllReels = () => {
+  const stopAllReels = () => {
     if (!isSpinning || stopRequested) return;
     
     setStopRequested(true);
@@ -193,35 +189,11 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           return newSpinning;
         });
 
-                                // 如果是最後一個滾輪，檢查結果並顯示彈窗
+        // 如果是最後一個滾輪，結束整個遊戲
         if (reelIndex === 2) {
           setTimeout(() => {
             setIsSpinning(false);
             setStopRequested(false);
-            
-            // 檢查三個滾輪是否相同
-            const randomIndex = Math.floor(Math.random() * images.length);
-            setFinalImageIndices(prev => {
-              const finalIndices = [...prev];
-              finalIndices[2] = randomIndex;
-              
-              // 檢查是否三個都相同
-              const allSame = finalIndices.every(index => index === finalIndices[0]);
-              const message = allSame ? 'Lucky Moment!' : 'Chin up!';
-              
-              // 1秒後顯示彈窗
-              setTimeout(() => {
-                setPopupMessage(message);
-                setShowPopup(true);
-                
-                // 1秒後自動關閉彈窗
-                setTimeout(() => {
-                  setShowPopup(false);
-                }, 1000);
-              }, 1000);
-              
-              return finalIndices;
-            });
           }, 100);
         }
       }, index * 800); // 每個滾輪間隔 800ms
@@ -232,60 +204,8 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
     // 在手動模式下，不使用自動完成邏輯
   };
 
-    return (
+  return (
     <div className={className} style={style}>
-      {/* 彈出式視窗 */}
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-          <div className="win98-window relative" style={{
-            width: '400px',
-            maxWidth: '95vw',
-            background: '#c0c0c0',
-            border: '2px outset #c0c0c0',
-            fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace',
-            overflow: 'hidden'
-          }}>
-            {/* Windows 98 標題列 */}
-            <div className="win98-titlebar" style={{
-              background: 'linear-gradient(90deg, #003EC3 0%, #002A8A 100%)',
-              color: 'white',
-              padding: '4px 6px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              fontSize: 'clamp(14px, 4vw, 18px)',
-              fontWeight: 'bold'
-            }}>
-              <div className="flex items-center space-x-2">
-                <div style={{
-                  width: '16px',
-                  height: '16px',
-                  background: 'white',
-                  border: '1px inset #c0c0c0'
-                }}></div>
-                <span>Slot Result</span>
-              </div>
-            </div>
-            
-            {/* Windows 98 內容區域 */}
-            <div style={{
-              background: '#2a2a2a',
-              color: 'white',
-              padding: 'clamp(20px, 4vw, 32px)',
-              fontSize: 'clamp(18px, 4vw, 28px)',
-              lineHeight: '1.4',
-              border: '2px inset #c0c0c0',
-              margin: '2px',
-              textAlign: 'center',
-              fontWeight: '800'
-            }}>
-              {popupMessage}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 精神標語 */}
       {/* 精神標語 */}
       <div style={{
         textAlign: 'center',
