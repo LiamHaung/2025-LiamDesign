@@ -38,59 +38,90 @@ export default function WaveBoatTestPage() {
         {/* 之後可在此放入 <img src="/your-boat.png" /> 或 next/image */}
       </div>
 
-      {/* 海浪區域 */}
+      {/* 海浪區域（使用倒三角 clip-path 作為遮色片） */}
       <div className="waves" aria-label="waves" role="img">
-        {Array.from({ length: rows }).map((_, rIdx) => (
-          <div key={rIdx} className="wave-row" style={{
-            // 交錯位移，讓波浪有錯位層次
-            transform: rIdx % 2 === 1 ? 'translateX(5%)' : 'translateX(0)'
-          }}>
-            {Array.from({ length: circlesPerRow }).map((__, i) => (
-              <div key={i} className="semi" />
-            ))}
-          </div>
-        ))}
+        <div className="wave-mask">
+          {Array.from({ length: rows }).map((_, rIdx) => (
+            <div key={rIdx} className={`wave-strip r-${rIdx}`}>
+              {/* 兩段相同內容首尾相接，做無縫循環 */}
+              <div className="wave-row">
+                {Array.from({ length: circlesPerRow }).map((__, i) => (
+                  <div key={i} className="semi" />
+                ))}
+              </div>
+              <div className="wave-row">
+                {Array.from({ length: circlesPerRow }).map((__, i) => (
+                  <div key={i} className="semi" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <style jsx>{`
         .waves {
+          /* 以 CSS 變數統一控制半圓大小 */
+          --semi: min(6.5vw, 70px);
           width: 100%;
           max-width: 1200px;
           display: flex;
           flex-direction: column;
-          gap: 10px; /* 行距 */
           align-items: center;
           justify-content: center;
         }
-        .wave-row {
+        .wave-mask {
           width: 100%;
-          display: grid;
-          grid-template-columns: repeat(${circlesPerRow}, 1fr);
-          place-items: end center;
-          gap: 0; /* 列內無縫接 */
+          /* 高度依半圓數與尺寸估算（3排半圓各佔半高，並加上行距） */
+          height: calc(var(--semi) * 2.2);
+          position: relative;
+          overflow: hidden;
+          /* 倒三角遮色片：上寬下尖 */
+          clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+          -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+          background: transparent;
+        }
+        .wave-strip {
+          position: absolute;
+          left: 0;
+          right: 0;
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--semi) * 0.25); /* 行距 */
+          width: 200%; /* 讓內部水平捲動更平順 */
+          will-change: transform;
+          animation: wave-left 6s linear infinite;
+        }
+        /* 第二、第三排使用不同速度與方向製造層次 */
+        .wave-strip.r-1 { animation: wave-right 8s linear infinite; opacity: 0.8; }
+        .wave-strip.r-2 { animation: wave-left 10s linear infinite; opacity: 0.6; }
+
+        .wave-row {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
         }
         .semi {
-          /* 半圓形：以寬為基準的一半高度 */
-          width: min(6.5vw, 70px);
-          height: calc(min(6.5vw, 70px) / 2);
+          width: var(--semi);
+          height: calc(var(--semi) / 2);
           background: #353535;
-          opacity: 0.9;
           border-top-left-radius: 9999px;
           border-top-right-radius: 9999px;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
         }
-        /* 第二、第三排降低不透明度，做層次 */
-        .wave-row:nth-child(2) .semi { opacity: 0.75; }
-        .wave-row:nth-child(3) .semi { opacity: 0.6; }
 
-        /* 手機優化：加大半圓，減少空隙 */
+        @keyframes wave-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-1 * var(--semi))); }
+        }
+        @keyframes wave-right {
+          0% { transform: translateX(calc(-1 * var(--semi))); }
+          100% { transform: translateX(0); }
+        }
+
+        /* 手機優化：加大半圓，增加觀感，整體高度自適應 */
         @media (max-width: 768px) {
-          .waves { gap: 8px; }
-          .semi {
-            width: min(9vw, 84px);
-            height: calc(min(9vw, 84px) / 2);
-          }
+          .waves { --semi: min(9vw, 84px); }
+          .wave-mask { height: calc(var(--semi) * 2.6); }
         }
       `}</style>
     </div>
