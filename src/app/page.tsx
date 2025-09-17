@@ -5,6 +5,7 @@ import LoginSignupCard from '../components/LoginSignupCard';
 import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -1331,6 +1332,30 @@ Tel: 03-9XX-XXXX
               </section>
             </div>
 
+            {/* Intro block before sections */}
+            <motion.div
+              initial={{ opacity: 0, y: 80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.35 }}
+              style={{
+                textAlign: 'center',
+                width: 'clamp(300px, 92vw, 1000px)',
+                margin: '0 auto',
+                padding: 'clamp(12px, 3vw, 24px) clamp(16px, 4vw, 32px)',
+                fontFamily: 'var(--font-zpix), monospace',
+                lineHeight: '1.6',
+                color: '#003EC3',
+                fontWeight: 800,
+                fontSize: 'clamp(16px, 2.2vw, 22px)'
+              }}
+            >
+              <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
+              <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
+              <p>I&#39;m Liam — I love turning ideas into designs that breathe.</p>
+              <p>Take it easy, look around, and maybe we&#39;ll start something together.</p>
+            </motion.div>
+
             {/* 四個滾動分段 */}
             {/* Section 1: Design */}
             <section className="scroll-section design-section" style={{ 
@@ -1359,25 +1384,46 @@ Tel: 03-9XX-XXXX
             }}>
               <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
-                  <h1 className="text-4xl md:text-6xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                  <motion.h1
+                    className="text-4xl md:text-6xl font-bold text-black mb-6"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 80 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.4 }}
+                  >
                     #Design
-                  </h1>
-                  <p className="text-lg md:text-xl text-black mb-8 leading-relaxed">
+                  </motion.h1>
+                  <motion.p
+                    className="text-lg md:text-xl text-black mb-8 leading-relaxed"
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
                     我們相信設計不僅是視覺的美學，更是解決問題的工具。從品牌識別到數位介面，每一個設計決策都源於深度的用戶研究與市場洞察。我們創造的不只是美麗的設計，而是能夠與使用者產生共鳴、推動業務成長的設計解決方案。
-                  </p>
-                  <button 
+                  </motion.p>
+                  <motion.button
                     className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   >
                     閱讀更多
-                  </button>
+                  </motion.button>
                 </div>
                 <div className="image-content">
-                  <img 
+                  <motion.img 
                     src="/illustration_1.png" 
                     alt="Design Portfolio" 
                     className="w-full h-auto rounded-lg"
                     style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    initial={{ opacity: 0, y: 100 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   />
                 </div>
               </div>
@@ -1405,26 +1451,47 @@ Tel: 03-9XX-XXXX
             }}>
               <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
-                  <img 
-                    src="/illustration_2.png" 
-                    alt="Illustration Portfolio" 
-                    className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                  <motion.img 
+                     src="/illustration_2.png" 
+                     alt="Illustration Portfolio" 
+                     className="w-full h-auto rounded-lg"
+                     style={{ maxHeight: '500px', objectFit: 'cover' }}
+                     initial={{ opacity: 0, y: 100 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                     viewport={{ once: true, amount: 0.35 }}
                   />
                 </div>
                 <div className="text-content lg:order-2">
-                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-                    #Illustration
-                  </h1>
-                  <p className="text-lg md:text-xl text-white mb-8 leading-relaxed">
-                    插畫是我們表達創意最直接的方式。透過手繪與數位結合的技法，我們創造出富有故事性與情感溫度的視覺作品。每一幅插畫都承載著獨特的敘事，無論是品牌故事的視覺化呈現，還是產品概念的藝術詮釋，我們都用心雕琢每一個細節。
-                  </p>
-                  <button 
-                    className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                  <motion.h1
+                    className="text-4xl md:text-6xl font-bold text-white mb-6"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 80 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
+                    #Illustration
+                  </motion.h1>
+                  <motion.p
+                    className="text-lg md:text-xl text-white mb-8 leading-relaxed"
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
+                    插畫是我們表達創意最直接的方式。透過手繪與數位結合的技法，我們創造出富有故事性與情感溫度的視覺作品。每一幅插畫都承載著獨特的敘事，無論是品牌故事的視覺化呈現，還是產品概念的藝術詮釋，我們都用心雕琢每一個細節。
+                  </motion.p>
+                  <motion.button 
+                    className="bg-white text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   >
                     閱讀更多
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </section>
@@ -1451,25 +1518,46 @@ Tel: 03-9XX-XXXX
             }}>
               <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
-                  <h1 className="text-4xl md:text-6xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                  <motion.h1
+                    className="text-4xl md:text-6xl font-bold text-black mb-6"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 80 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
                     #Brand
-                  </h1>
-                  <p className="text-lg md:text-xl text-black mb-8 leading-relaxed">
+                  </motion.h1>
+                  <motion.p
+                    className="text-lg md:text-xl text-black mb-8 leading-relaxed"
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
                     品牌建立是一個深度的策略過程。我們從品牌核心價值出發，透過視覺識別、品牌故事與使用者體驗的整合設計，打造具有獨特個性與市場競爭力的品牌形象。我們相信每個品牌都有其獨特的DNA，我們的任務就是將這份獨特性轉化為令人印象深刻的品牌體驗。
-                  </p>
-                  <button 
+                  </motion.p>
+                  <motion.button 
                     className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   >
                     閱讀更多
-                  </button>
+                  </motion.button>
                 </div>
                 <div className="image-content">
-                  <img 
+                  <motion.img 
                     src="/illustration_3.png" 
                     alt="Brand Portfolio" 
                     className="w-full h-auto rounded-lg"
                     style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    initial={{ opacity: 0, y: 100 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   />
                 </div>
               </div>
@@ -1497,26 +1585,46 @@ Tel: 03-9XX-XXXX
             }}>
               <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
-                  <img 
+                  <motion.img 
                     src="/illustration_4.png" 
                     alt="Contact Portfolio" 
                     className="w-full h-auto rounded-lg"
                     style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    initial={{ opacity: 0, y: 100 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   />
                 </div>
                 <div className="text-content lg:order-2">
-                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                  <motion.h1
+                    className="text-4xl md:text-6xl font-bold text-white mb-6"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 80 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
                     #Contact
-                  </h1>
-                  <p className="text-lg md:text-xl text-white mb-8 leading-relaxed">
+                  </motion.h1>
+                  <motion.p className="text-lg md:text-xl text-white mb-8 leading-relaxed"
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
                     準備好開始你的下一個專案了嗎？無論是品牌重塑、產品設計或是創意諮詢，我們都期待與你合作。讓我們一起創造出真正有影響力的設計作品。立即聯繫我們，開始你的設計之旅。
-                  </p>
-                  <button 
+                  </motion.p>
+                  <motion.button 
                     className="bg-white text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 150 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
                   >
                     立即聯繫
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </section>
@@ -1869,7 +1977,33 @@ Tel: 03-9XX-XXXX
           }
         }
 
-      `}</style>
+        /* Illustration read-more button (customizable via CSS variables) */
+        .illustration-section .illu-readmore-btn {
+          background-color: #FFFFFF;
+          color: #003EC3;
+          border: 2px solid #003EC3;
+          padding: 1rem 2rem;
+          border-radius: 0.5rem;
+          font-weight: 700;
+          font-size: 1.125rem; /* ~ text-lg */
+          transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .illustration-section .illu-readmore-btn:hover {
+          background-color: #3aaf3a;
+          color: #FFFFF3;
+          border-color: #3aaf3a;
+          transform: translateY(-2px);
+        }
+
+                    .illustration-section {
+                --illu-btn-bg: #FFFFFF;
+                --illu-btn-fg: #003EC3;
+                --illu-btn-border: #003EC3;
+                --illu-btn-hover-bg: #3aaf3a;
+                --illu-btn-hover-fg: #FFFFF3;
+                --illu-btn-hover-border: #3aaf3a;
+              }
+            `}</style>
     </div>
   );
 } 

@@ -1,0 +1,31 @@
+{
+  "name": "Liam Design Studio",
+  "short_name": "Liam Design",
+  "description": "專業品牌設計與視覺傳達工作室",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003EC3",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/DS-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/DS-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
