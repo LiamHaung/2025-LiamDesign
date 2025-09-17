@@ -73,12 +73,12 @@ export default function WaveBoatTestPage() {
         .wave-mask {
           width: 100%;
           /* 高度依半圓數與尺寸估算（3排半圓各佔半高，並加上行距） */
-          height: calc(var(--semi) * 2.2);
+          height: calc(var(--semi) * 3.0); /* 加高容器以配合更尖的三角形 */
           position: relative;
           overflow: hidden;
-          /* 倒三角遮色片：上寬下尖 */
-          clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-          -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+          /* 倒三角遮色片：上寬下尖（向下再拉） */
+          clip-path: polygon(0% 0%, 100% 0%, 50% 120%);
+          -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 120%);
           background: transparent;
         }
         .wave-strip {
@@ -104,9 +104,14 @@ export default function WaveBoatTestPage() {
         .semi {
           width: var(--semi);
           height: calc(var(--semi) / 2);
-          background: #353535;
+          background: #003EC3; /* 品牌藍 */
           border-top-left-radius: 9999px;
           border-top-right-radius: 9999px;
+          transform-origin: center;
+        }
+        /* 交錯：偶數個反轉為向下半圓 */
+        .semi:nth-child(even) {
+          transform: scaleY(-1);
         }
 
         @keyframes wave-left {
