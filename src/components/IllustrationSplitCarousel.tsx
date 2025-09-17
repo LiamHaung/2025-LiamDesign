@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export type SplitItem = {
   imageSrc: string;
@@ -62,14 +62,6 @@ export default function IllustrationSplitCarousel({
   const [progress, setProgress] = useState(0); // 0~1 on current slide
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // parallax refs
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start 80%", "end 20%"] });
-  const yImg = useTransform(scrollYProgress, [0, 1], [20, -20]);
-  const yText = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const yBar = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const yRight = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   // progress & autoplay
   useEffect(() => {
@@ -104,16 +96,15 @@ export default function IllustrationSplitCarousel({
   const currentItem = items[currentIndex];
 
   return (
-    <div ref={containerRef} className={className} style={style}>
+    <div className={className} style={style}>
       <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
         {/* Left 65% */}
         <div className="md:basis-[65%] md:flex-1 flex flex-col gap-4">
           {/* 1) Carousel */}
-          <motion.div
+          <div
             className="relative overflow-hidden rounded-xl aspect-[16/10] bg-[#f6f7fb]"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            style={{ y: yImg }}
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -134,17 +125,17 @@ export default function IllustrationSplitCarousel({
                 />
               </motion.div>
             </AnimatePresence>
-          </motion.div>
+          </div>
 
           {/* 2) Title + Description (sync to current slide) */}
-          <motion.div className="p-2 md:p-0" style={{ y: yText }}>
+          <div className="p-2 md:p-0">
             <motion.h2
               key={`t-${currentIndex}`}
               className="text-2xl md:text-4xl font-bold text-black mb-3"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
               {currentItem.title}
             </motion.h2>
@@ -153,14 +144,14 @@ export default function IllustrationSplitCarousel({
               className="text-gray-700 leading-relaxed"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
             >
               {currentItem.description}
             </motion.p>
-          </motion.div>
+          </div>
 
           {/* 3) Segmented progress (click to jump) */}
-          <motion.div className="flex items-center gap-2 select-none" style={{ y: yBar }}>
+          <div className="flex items-center gap-2 select-none">
             {items.map((_, i) => {
               const fill = i < currentIndex ? 1 : i === currentIndex ? progress : 0;
               return (
@@ -179,23 +170,16 @@ export default function IllustrationSplitCarousel({
                 </button>
               );
             })}
-          </motion.div>
+          </div>
         </div>
 
         {/* Right 35% */}
         <div className="md:basis-[35%] md:max-w-[35%]">
-          <motion.div
-            className="sticky top-6 p-6 rounded-xl border border-[#003EC3] bg-[#003EC3]"
-            style={{ y: yRight }}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-          >
-            <h3 className="text-xl md:text-2xl font-bold mb-3" style={{ fontFamily: 'var(--font-zpix), monospace', color: '#FFFFF3' }}>
+          <div className="sticky top-6 p-6 rounded-xl bg-[#003EC3]">
+            <h3 className="text-xl md:text-2xl font-bold mb-3 text-[#FFFFF3]" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
               插畫文字介紹
             </h3>
-            <p className="leading-relaxed mb-5" style={{ color: '#FFFFF3' }}>
+            <p className="leading-relaxed mb-5 text-[#FFFFF3]">
               我們透過插畫建立情感連結與敘事節奏，讓作品既有美感也能傳遞故事。想看更多完整案例與製作過程，歡迎延伸閱讀。
             </p>
             <a
@@ -205,7 +189,7 @@ export default function IllustrationSplitCarousel({
             >
               閱讀更多
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
