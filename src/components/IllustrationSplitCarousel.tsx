@@ -141,10 +141,11 @@ export default function IllustrationSplitCarousel({
             </motion.h2>
             <motion.p
               key={`d-${currentIndex}`}
-              className="text-gray-700 leading-relaxed"
+              className="leading-relaxed"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+              style={{ color: '#FFFFF3' }}
             >
               {currentItem.description}
             </motion.p>
@@ -164,7 +165,7 @@ export default function IllustrationSplitCarousel({
                   onMouseLeave={onMouseLeave}
                 >
                   <span
-                    className="absolute inset-y-0 left-0 bg-[#003EC3] group-hover:bg-[#3aaf3a] transition-colors"
+                    className="absolute inset-y-0 left-0 bg-[#3aaf3a] group-hover:bg-[#FFFFF3] transition-colors"
                     style={{ width: `${Math.min(100, Math.max(0, fill * 100))}%` }}
                   />
                 </button>
