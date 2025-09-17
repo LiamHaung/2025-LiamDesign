@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import TestCard from "@/components/TestCard";
+import TestCardAlt from "@/components/TestCardAlt";
 import { motion } from "framer-motion";
 
 export default function CardTestPage() {
@@ -43,6 +44,23 @@ export default function CardTestPage() {
           {cards.map((c, i) => (
             <TestCard key={i} title={c.title} subtitle={c.subtitle} imageSrc={c.imageSrc} tags={c.tags} />
           ))}
+        </div>
+
+        <div className="mt-16">
+          <motion.h2
+            className="text-2xl md:text-3xl font-bold text-black mb-6"
+            style={{ fontFamily: 'var(--font-zpix), monospace' }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Version B
+          </motion.h2>
+          <div className="space-y-6">
+            <TestCardAlt title="深色覆蓋・品牌主視覺" subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" imageSrc="/illustration_4.png" tag="#Brand" />
+            <TestCardAlt title="插畫場景・水平版卡片" subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" imageSrc="/illustration_5.png" tag="#Illustration" />
+          </div>
         </div>
       </div>
     </div>
