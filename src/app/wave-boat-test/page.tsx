@@ -76,9 +76,9 @@ export default function WaveBoatTestPage() {
           height: calc(var(--semi) * 3.0); /* 加高容器以配合更尖的三角形 */
           position: relative;
           overflow: hidden;
-          /* 倒三角遮色片：上寬下尖（向下再拉） */
-          clip-path: polygon(0% 0%, 100% 0%, 50% 120%);
-          -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 120%);
+          /* 改為長方形遮罩（移除倒三角 clip-path） */
+          clip-path: none;
+          -webkit-clip-path: none;
           background: transparent;
         }
         .wave-strip {
