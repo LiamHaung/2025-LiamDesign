@@ -11,9 +11,9 @@ export default function Home() {
   const [showRight, setShowRight] = useState(false);
   const [entered, setEntered] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [mapExpanding, setMapExpanding] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingProgress, setLoadingProgress] = useState(58);
+  const [boatExiting, setBoatExiting] = useState(false);
   
   // 拖拽功能狀態 - 支援多個視窗
   const [isDragging, setIsDragging] = useState<string | null>(null);
@@ -114,7 +114,7 @@ export default function Home() {
 
   const handleEnter = () => {
     setIsTransitioning(true);
-    setMapExpanding(true);
+    setBoatExiting(true);
     setTimeout(() => {
       setEntered(true);
     }, 1300);
@@ -497,20 +497,6 @@ export default function Home() {
       <div className="relative z-10">
         {!entered && (
           <>
-            {/* 地圖放大時的背景覆蓋層 */}
-            <div style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: '#FFFFF3',
-              opacity: mapExpanding ? 1 : 0,
-              zIndex: mapExpanding ? 9998 : -1,
-              transition: 'opacity 0.5s ease-in-out',
-              transitionDelay: mapExpanding ? '0.8s' : '0s'
-            }} />
-            
             <section className="hero-block-grid relative min-h-screen">
             <div className="hero-logo-container fixed top-0 left-0 w-full z-50 bg-[#FFFFF3] py-4" style={{
               opacity: showRight ? 1 : 0,
@@ -532,29 +518,23 @@ export default function Home() {
               />
             </div>
             <div className="hero-grid-container pt-24 flex flex-col items-center justify-center min-h-screen">
-            {/* 地圖區域 */}
-            <div className="map-container mb-8" style={{
-              opacity: showRight && !showIntroModal ? 1 : 0,
-              transform: mapExpanding ? 'translate(-50%, -50%) scale(3)' : `translateY(${showRight ? '0' : '20px'}) scale(${showRight && !showIntroModal ? '1' : '0.5'})`,
-              transition: mapExpanding ? 'all 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-              zIndex: mapExpanding ? 9999 : 10,
-              transitionDelay: mapExpanding ? '0s' : '2.2s',
-              position: mapExpanding ? 'fixed' : 'relative',
-              top: mapExpanding ? '50%' : 'auto',
-              left: mapExpanding ? '50%' : 'auto',
-              transformOrigin: 'center center'
+            {/* 船隻區域 - 替代原地圖 */}
+            <div className="boat-container mb-8" style={{
+              opacity: showRight && !showIntroModal ? (boatExiting ? 0 : 1) : 0,
+              transform: showRight && !showIntroModal
+                ? (boatExiting ? 'translateX(-100px)' : 'translateY(0)')
+                : 'translateY(20px)',
+              transition: 'transform 0.8s ease, opacity 0.8s ease',
+              transitionDelay: showRight && !showIntroModal ? '0.6s' : '0s',
+              zIndex: 10,
+              position: 'relative',
+              transformOrigin: 'center center',
+              width: 'clamp(300px, 65vw, 800px)',
+              height: 'clamp(200px, 40vw, 500px)'
             }}>
-              <img
-                src="/yilan_mapv2-10.png"
-                alt="Yilan Map"
-                className="map-image"
-                style={{
-                  width: 'clamp(300px, 65vw, 800px)',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  filter: 'none'
-                }}
-              />
+              <div className="boat-with-waves">
+                <img src="/boat.png" alt="Boat" className="boat-img" />
+              </div>
             </div>
             
             {/* ENTER 按鈕 */}
@@ -563,7 +543,7 @@ export default function Home() {
               transform: `translateY(${showRight ? '0' : '20px'}) scale(${showRight && !showIntroModal ? '1' : '0.8'})`,
               transition: 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)',
               zIndex: 999,
-              transitionDelay: '2.8s'
+              transitionDelay: showRight && !showIntroModal ? '0.8s' : '0s'
             }}>
               <button
                 onClick={(e) => {
@@ -1827,6 +1807,65 @@ Tel: 03-9XX-XXXX
           }
           50% {
             transform: translateX(-50%) translateY(-20px) scale(1.5);
+          }
+        }
+
+        /* 船隻元件樣式 */
+        .boat-container {
+          position: relative;
+        }
+        
+        .boat-with-waves {
+          position: absolute;
+          width: min(100vw, 600px);
+          z-index: 2;
+          animation: bob 2.6s ease-in-out infinite;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(1.2);
+          transform-origin: center center;
+        }
+        
+        .boat-with-waves::after {
+          content: '';
+          position: absolute;
+          bottom: -20px;
+          left: -50%;
+          width: 200%;
+          height: 60px;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 Q25,25 50,40 Q75,55 100,40 Q125,25 150,40 Q175,55 200,40 Q225,25 250,40 Q275,55 300,40 Q325,25 350,40 Q375,55 400,40 L400,100 L0,100 Z' fill='%23FFFFF3'/%3E%3C/svg%3E");
+          background-repeat: repeat-x;
+          background-size: 150px 100%;
+          animation: wave-move 8s linear infinite;
+          z-index: 3;
+        }
+
+        .boat-img { 
+          width: 100%;
+          height: auto;
+          display: block;
+          position: relative;
+          z-index: 2;
+        }
+        
+        @keyframes bob { 
+          0%, 100% { transform: translate(-50%, -50%) scale(1.2) translateY(0) rotate(0.5deg); } 
+          50% { transform: translate(-50%, -50%) scale(1.2) translateY(-3px) rotate(-0.5deg); } 
+        }
+        @keyframes wave-move {
+          0% { background-position-x: 0; }
+          100% { background-position-x: 150px; }
+        }
+
+        @media (max-width: 768px) {
+          .boat-with-waves { 
+            width: min(60vw, 250px);
+            animation: bob 2.6s ease-in-out infinite;
+          }
+          .boat-with-waves::after {
+            bottom: -15px;
+            height: 50px;
+            background-size: 120px 100%;
           }
         }
 

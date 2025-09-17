@@ -218,8 +218,8 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
       }}>
         <div style={{
           fontSize: 'clamp(16px, 4vw, 48px)', // 調整最小字體從20px到16px
-          fontWeight: 'bold',
-          color: '#003EC3',
+          fontWeight: 800,
+          color: '#000',
           marginBottom: '12px',
           lineHeight: '1.4', // 調整行高以適應換行
           wordBreak: 'break-all', // 改為允許任意位置斷行
@@ -232,7 +232,11 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
         <div style={{
           fontSize: 'clamp(14px, 3vw, 24px)', // 調整最小字體從16px到14px
           fontWeight: 'bold',
-          color: '#666',
+          color: '#FFFFF3',
+          backgroundColor: '#003EC3',
+          display: 'inline-block',
+          padding: '4px 8px',
+          borderRadius: '6px',
           letterSpacing: '1px',
           lineHeight: '1.4',
           wordBreak: 'break-word', // 英文也允許斷行
@@ -296,7 +300,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           disabled={!isSpinning || stopRequested}
           className="slot-play-button"
           style={{
-            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#3AAF3A'
+            backgroundColor: (!isSpinning || stopRequested) ? '#6c757d' : '#000'
           }}
         >
           {stopRequested ? 'STOPPING...' : 'STOP'}
@@ -322,7 +326,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           font-size: 16px;
           font-weight: bold;
           cursor: ${isSpinning ? 'not-allowed' : 'pointer'};
-          opacity: ${isSpinning ? 0.6 : 1};
+          opacity: 1;
           font-family: var(--font-zpix), monospace;
           transform: scale(1);
           transform-origin: center;
