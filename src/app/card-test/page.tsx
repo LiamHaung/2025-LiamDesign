@@ -29,7 +29,7 @@ export default function CardTestPage() {
 
   return (
     <div style={{ background: "#FFFFF3", minHeight: "100svh" }}>
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-16">
+      <div className="max-w-[90rem] mx-auto px-4 py-10 md:py-16">
         <div className="mb-12">
           <IllustrationSplitCarousel />
         </div>
