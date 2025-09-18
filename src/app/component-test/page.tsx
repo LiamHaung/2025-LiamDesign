@@ -241,7 +241,7 @@ export default function ComponentTestPage() {
               <ul className="ml-4 list-disc">
                 <li>animationColor: 動畫顏色 (預設: #003EC3)</li>
                 <li>animationSpeed: 動畫速度毫秒 (預設: 200ms)</li>
-                <li>direction: 動畫方向 'left-to-right' | 'right-to-left'</li>
+                <li>direction: 動畫方向 &apos;left-to-right&apos; | &apos;right-to-left&apos;</li>
                 <li>autoStart: 自動開始 (預設: true)</li>
                 <li>loop: 循環播放 (預設: true)</li>
                 <li><strong>注意：黑色格子會變色，白色格子保持不變</strong></li>
