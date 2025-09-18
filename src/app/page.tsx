@@ -8,8 +8,42 @@ import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
 import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 import TestCardAlt from '../components/TestCardAlt';
+import CardCarousel from '../components/CardCarousel';
 
 export default function Home() {
+  // 品牌案例數據
+  const brandCases = [
+    {
+      title: "品牌識別設計",
+      subtitle: "從 Logo 到色彩系統，建立完整的視覺識別體系。",
+      imageSrc: "/illustration_1.png",
+      tags: ["Brand", "Identity"]
+    },
+    {
+      title: "品牌應用設計",
+      subtitle: "將品牌元素延伸到各種應用場景，保持一致性。",
+      imageSrc: "/illustration_2.png",
+      tags: ["Brand", "Application"]
+    },
+    {
+      title: "品牌故事包裝",
+      subtitle: "透過視覺設計傳達品牌核心價值與故事。",
+      imageSrc: "/illustration_3.png",
+      tags: ["Brand", "Story"]
+    },
+    {
+      title: "品牌體驗設計",
+      subtitle: "從接觸點到使用者旅程，打造完整品牌體驗。",
+      imageSrc: "/illustration_4.png",
+      tags: ["Brand", "Experience"]
+    },
+    {
+      title: "品牌策略規劃",
+      subtitle: "深度分析市場定位，制定品牌發展策略。",
+      imageSrc: "/illustration_5.png",
+      tags: ["Brand", "Strategy"]
+    }
+  ];
   const [showLiam, setShowLiam] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const [entered, setEntered] = useState(false);
@@ -1373,7 +1407,15 @@ Tel: 03-9XX-XXXX
                   fontSize: "clamp(16px, 2.2vw, 22px)"
                 }}
               >
-                <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
+                {/* Character GIF 圖片 */}
+                <div className="mb-6 flex justify-center">
+                  <img 
+                    src="/chactor.gif" 
+                    alt="Character" 
+                    className="w-auto h-auto max-w-xs md:max-w-sm" 
+                    style={{ maxHeight: "200px" }} 
+                  />
+                </div>                <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
                 <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
                 <p>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
                 <p>Take it easy, look around, and maybe we&apos;ll start something together.</p>
@@ -1529,18 +1571,20 @@ Tel: 03-9XX-XXXX
                   </motion.button>
                 </div>
                 <div className="image-content">
-                  <motion.img 
-                    src="/illustration_3.png" 
-                    alt="Brand Portfolio" 
-                    className="w-full h-auto rounded-lg"
-                    style={{ height: 'auto', objectFit: 'contain' }}
+                  <motion.div
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
-                  />
-                </div>
-              </div>
+                    className="w-full"
+                  >
+                    <CardCarousel 
+                      cards={brandCases} 
+                      autoPlayInterval={4000} 
+                      className="h-96 md:h-80 lg:h-96"
+                    />
+                  </motion.div>
+                </div>              </div>
             </section>
 
             {/* Section 4: Contact */}

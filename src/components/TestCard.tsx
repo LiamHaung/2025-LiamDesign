@@ -20,7 +20,7 @@ export default function TestCard({ title, subtitle, imageSrc, href, tags, classN
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={`group rounded-xl overflow-hidden border border-[#003EC3]/30 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300 ${className ?? ""}`}
+      className={`group rounded-xl overflow-hidden border border-[#FFFFF3] bg-white/80 backdrop-blur-sm transition-all duration-300 ${className ?? ""}`}
       style={style}
     >
       <div className="relative w-full pt-[62%] bg-[#f6f7fb]">
