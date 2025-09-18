@@ -1354,31 +1354,31 @@ Tel: 03-9XX-XXXX
               </section>
             </div>
 
-            {/* Intro block before sections - wrapped in max-w-screen-2xl container */}
-            <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                viewport={{ once: true, amount: 0.35 }}
-                style={{
-                  textAlign: "center",
-                  width: "clamp(300px, 90vw, 1000px)",
-                  margin: "0 auto",
-                  padding: "clamp(12px, 3vw, 24px) clamp(16px, 4vw, 32px)",
-                  fontFamily: "var(--font-zpix), monospace",
-                  lineHeight: "1.6",
-                  color: "#003EC3",
-                  fontWeight: 800,
-                  fontSize: "clamp(16px, 2.2vw, 22px)"
-                }}
-              >
-                <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
-                <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
-                <p>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
-                <p>Take it easy, look around, and maybe we&apos;ll start something together.</p>
-              </motion.div>
-            </div>            {/* 四個滾動分段 */}
+            {/* Intro block before sections */}
+            <motion.div
+              initial={{ opacity: 0, y: 80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.35 }}
+              style={{
+                textAlign: 'center',
+                width: 'clamp(300px, 92vw, 1000px)',
+                margin: '0 auto',
+                padding: 'clamp(12px, 3vw, 24px) clamp(16px, 4vw, 32px)',
+                fontFamily: 'var(--font-zpix), monospace',
+                lineHeight: '1.6',
+                color: '#003EC3',
+                fontWeight: 800,
+                fontSize: 'clamp(16px, 2.2vw, 22px)'
+              }}
+            >
+              <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
+              <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
+              <p>I&#39;m Liam — I love turning ideas into designs that breathe.</p>
+              <p>Take it easy, look around, and maybe we&#39;ll start something together.</p>
+            </motion.div>
+
+            {/* 四個滾動分段 */}
             {/* Section 1: Design */}
             <section className="scroll-section design-section" style={{ 
               minHeight: '100vh', 
@@ -1404,7 +1404,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="max-w-none w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
@@ -1471,7 +1471,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10">
+              <div className="max-w-none w-full mx-auto px-6 md:px-10">
                 <IllustrationSplitCarousel />
               </div>
             </section>
@@ -1496,7 +1496,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="max-w-[1600px] w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
@@ -1565,11 +1565,11 @@ Tel: 03-9XX-XXXX
               transition: 'background-color 0.3s ease'
             }}>
               {/* Version B showcase from card-test */}
-                            <div className="max-w-screen-2xl w-full mx-auto mb-12 px-6 md:px-10 space-y-6">
+                            <div className="w-full mx-auto mb-12 px-6 md:px-10 space-y-6">
                 <TestCardAlt title="深色覆蓋・品牌主視覺" subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" imageSrc="/illustration_4.png" tag="#Brand" />
                 <TestCardAlt title="插畫場景・水平版卡片" subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" imageSrc="/illustration_5.png" tag="#Illustration" />
               </div>
-               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+               <div className="max-w-[1600px] w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
                   <motion.img 
                     src="/illustration_4.png" 
