@@ -8,6 +8,7 @@ import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
 import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 import TestCardAlt from '../components/TestCardAlt';
+import HeroOverlay from '../components/HeroOverlay';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -1357,6 +1358,9 @@ Tel: 03-9XX-XXXX
               <p>I&#39;m Liam — I love turning ideas into designs that breathe.</p>
               <p>Take it easy, look around, and maybe we&#39;ll start something together.</p>
             </motion.div>
+
+            {/* Hero Overlay */}
+            <HeroOverlay />
 
             {/* 四個滾動分段 */}
             {/* Section 1: Design */}
