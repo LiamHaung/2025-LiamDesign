@@ -1613,7 +1613,62 @@ Tel: 03-9XX-XXXX
                   </motion.button>
                 </div>
               </div>
-            </section>
+
+            {/* Footer */}
+            <footer className="bg-[#353535] text-white py-16">
+              <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                  {/* Logo */}
+                  <div className="flex justify-center md:justify-start">
+                    <img 
+                      src="/cursor-08.png" 
+                      alt="Liam Design Studio" 
+                      className="h-16 w-auto"
+                    />
+                  </div>
+                  
+                  {/* Contact Info */}
+                  <div className="text-center md:text-left space-y-4">
+                    <h3 className="text-xl font-bold mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                      聯絡我們
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center md:justify-start space-x-3">
+                        <span className="text-sm">📧</span>
+                        <span className="text-sm">hello@liamdesign.com</span>
+                      </div>
+                      <div className="flex items-center justify-center md:justify-start space-x-3">
+                        <span className="text-sm">📱</span>
+                        <span className="text-sm">@liamdesign</span>
+                      </div>
+                      <div className="flex items-center justify-center md:justify-start space-x-3">
+                        <span className="text-sm">💬</span>
+                        <span className="text-sm">@liamdesign</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Tagline */}
+                  <div className="text-center md:text-right">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                      Own the Day.<br />
+                      掌握今天。
+                    </h2>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      Design your moment before it passes.<br />
+                      在它溜走之前，設計屬於你的時刻。
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Copyright */}
+                <div className="border-t border-gray-600 mt-12 pt-8 text-center">
+                  <p className="text-sm text-gray-400">
+                    © 2025 Liam Design Studio. All rights reserved.
+                  </p>
+                </div>
+              </div>
+            </footer>            </section>
           </>
         )}
       </div>
@@ -1990,6 +2045,7 @@ Tel: 03-9XX-XXXX
                 --illu-btn-hover-border: #3aaf3a;
               }
             `}</style>
+
     </div>
   );
-} 
+}
