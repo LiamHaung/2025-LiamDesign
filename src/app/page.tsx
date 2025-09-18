@@ -7,6 +7,7 @@ import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
 import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
+import TestCardAlt from '../components/TestCardAlt';
 
 export default function Home() {
   const [showLiam, setShowLiam] = useState(false);
@@ -1383,7 +1384,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="max-w-none w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
@@ -1420,7 +1421,7 @@ Tel: 03-9XX-XXXX
                     src="/illustration_1.png" 
                     alt="Design Portfolio" 
                     className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    style={{ height: 'auto', objectFit: 'contain' }}
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -1450,7 +1451,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-6xl w-full mx-auto">
+              <div className="max-w-none w-full mx-auto px-6 md:px-10">
                 <IllustrationSplitCarousel />
               </div>
             </section>
@@ -1475,7 +1476,7 @@ Tel: 03-9XX-XXXX
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="max-w-[1600px] w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
@@ -1512,7 +1513,7 @@ Tel: 03-9XX-XXXX
                     src="/illustration_3.png" 
                     alt="Brand Portfolio" 
                     className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    style={{ height: 'auto', objectFit: 'contain' }}
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -1537,18 +1538,24 @@ Tel: 03-9XX-XXXX
               })(),
               padding: '4rem 2rem',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
               transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Version B showcase from card-test */}
+                            <div className="w-full mx-auto mb-12 px-6 md:px-10 space-y-6">
+                <TestCardAlt title="深色覆蓋・品牌主視覺" subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" imageSrc="/illustration_4.png" tag="#Brand" />
+                <TestCardAlt title="插畫場景・水平版卡片" subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" imageSrc="/illustration_5.png" tag="#Illustration" />
+              </div>
+               <div className="max-w-[1600px] w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
                   <motion.img 
                     src="/illustration_4.png" 
                     alt="Contact Portfolio" 
                     className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '500px', objectFit: 'cover' }}
+                    style={{ height: 'auto', objectFit: 'contain' }}
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
