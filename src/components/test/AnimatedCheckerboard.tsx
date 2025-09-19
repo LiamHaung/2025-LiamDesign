@@ -26,6 +26,8 @@ export default function AnimatedCheckerboard({
   autoStart = true,
   loop = true
 }: AnimatedCheckerboardProps) {
+  // 如果 cellSize 為 0，則動態計算格子大小
+  const actualCellSize = cellSize === 0 ? 0 : cellSize;
   const [activeCells, setActiveCells] = useState<Set<string>>(new Set());
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -92,12 +94,8 @@ export default function AnimatedCheckerboard({
       cells.push(
         <div
           key={cellKey}
-          className={`absolute border border-gray-300 transition-colors duration-200`}
+          className={`border border-gray-300 transition-colors duration-200`}
           style={{
-            left: col * cellSize,
-            top: row * cellSize,
-            width: cellSize,
-            height: cellSize,
             backgroundColor: isBlack 
               ? (isActive ? animationColor : '#000000')
               : '#FFFFFF',
@@ -107,12 +105,38 @@ export default function AnimatedCheckerboard({
     }
   }
 
+  // 計算正方形格子的尺寸
+  const calculateSquareSize = () => {
+    if (style.width && typeof style.width === 'string' && style.width.includes('px')) {
+      // 如果指定了像素寬度，計算每個格子的正方形尺寸
+      const containerWidth = parseFloat(style.width.replace('px', ''));
+      const squareSize = Math.floor(containerWidth / cols);
+      return {
+        cellSize: squareSize,
+        containerWidth: squareSize * cols,
+        containerHeight: squareSize * rows
+      };
+    } else {
+      // 使用預設的 cellSize 或百分比寬度
+      return {
+        cellSize: cellSize,
+        containerWidth: cols * cellSize,
+        containerHeight: rows * cellSize
+      };
+    }
+  };
+
+  const { cellSize: calculatedCellSize, containerWidth, containerHeight } = calculateSquareSize();
+
   return (
     <div 
       className={`relative ${className}`}
       style={{
-        width: cols * cellSize,
-        height: rows * cellSize,
+        width: containerWidth,
+        height: containerHeight,
+        display: 'grid',
+        gridTemplateColumns: `repeat(${cols}, ${calculatedCellSize}px)`,
+        gridTemplateRows: `repeat(${rows}, ${calculatedCellSize}px)`,
         ...style
       }}
     >

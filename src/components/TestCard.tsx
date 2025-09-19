@@ -30,7 +30,7 @@ export default function TestCard({ title, subtitle, imageSrc, href, tags, classN
       <div className="p-4">
         <div className="text-sm text-[#003EC3] font-bold tracking-wide mb-1">{tags?.join(" · ")}</div>
         <h3 className="text-xl font-bold text-black" style={{ fontFamily: 'var(--font-zpix), monospace' }}>{title}</h3>
-        {subtitle && <p className="text-gray-600 mt-2 text-sm leading-relaxed">{subtitle}</p>}
+        {subtitle && <p className="text-[#003EC3] mt-2 text-sm leading-relaxed">{subtitle}</p>}
         <div className="mt-4">
           <span className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-4 py-2 rounded-md font-bold text-sm group-hover:bg-[#3aaf3a] group-hover:text-[#FFFFF3] group-hover:border-[#3aaf3a] transition-colors">閱讀更多</span>
         </div>

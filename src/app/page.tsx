@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 import TestCardAlt from '../components/TestCardAlt';
 import CardCarousel from '../components/CardCarousel';
+import CharacterWindow from '../components/CharacterWindow';
+import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
 
 export default function Home() {
   // 品牌案例數據
@@ -73,9 +75,7 @@ export default function Home() {
   // 視窗層級管理
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
   
-  // 滾動分段狀態管理
-  const [currentSection, setCurrentSection] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // 滾動分段狀態管理 (已移除)
   
   // 手機版漢堡選單狀態
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -117,29 +117,7 @@ export default function Home() {
     }
   }, [showIntroModal]);
 
-  // 滾動監聽 - 分段變色效果
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!entered) return;
-      
-      const scrollTop = window.scrollY;
-      const windowHeight = window.innerHeight;
-      
-      // 計算當前分段 (從桌面區域開始算)
-      const desktopHeight = windowHeight; // 桌面區域高度
-      const adjustedScrollTop = Math.max(0, scrollTop - desktopHeight);
-      const section = Math.floor(adjustedScrollTop / windowHeight);
-      const progress = (adjustedScrollTop % windowHeight) / windowHeight;
-      
-      setCurrentSection(section);
-      setScrollProgress(progress);
-    };
-
-    if (entered) {
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-  }, [entered]);
+  // 滾動監聽 - 分段變色效果 (已移除)
 
   useEffect(() => {
     if (entered && casesRef.current) {
@@ -611,7 +589,6 @@ export default function Home() {
                   cursor: 'pointer',
                   fontFamily: 'var(--font-press-start-2p)',
                   /* 扁平化風格，無文字陰影 */
-                  transition: 'background-color 0.3s ease'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#002A8A'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#003EC3'}
@@ -1228,21 +1205,23 @@ Tel: 03-9XX-XXXX
                   >
                     <SlotMachine />
 
-                    {/* 追加兩條跑馬燈（桌面版） */}
-                    <div className="w-full bg-black py-3 overflow-hidden mt-4" style={{ borderRadius: '8px' }}>
+                    {/* 跑馬燈（桌面版） */}
+                    <div className="w-full py-4 overflow-hidden mt-4" style={{ backgroundColor: '#003EC3', borderRadius: '8px' }}>
                       <div className="animate-marquee whitespace-nowrap">
                         {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>
-                            Design that listens. Design that grows.
+                          <span key={i} className="text-white text-xl font-extrabold mx-8">
+                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
+                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
                           </span>
                         ))}
                       </div>
                     </div>
-                    <div className="w-full py-3 overflow-hidden mt-2" style={{ backgroundColor: '#003EC3', borderRadius: '8px' }}>
+                    <div className="w-full bg-black py-4 overflow-hidden mt-2" style={{ borderRadius: '8px' }}>
                       <div className="animate-marquee-reverse whitespace-nowrap">
                         {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>
-                            Design that listens. Design that grows.
+                          <span key={i} className="text-white text-xl font-extrabold mx-8">
+                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
+                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
                           </span>
                         ))}
                       </div>
@@ -1383,68 +1362,126 @@ Tel: 03-9XX-XXXX
                       padding: '20px 0'
                     }}>
                       <SlotMachine />
+                    </div>
+                    
+                    {/* 跑馬燈（手機版） */}
+                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+                      <div className="animate-marquee whitespace-nowrap">
+                        {Array(6).fill(null).map((_, i) => (
+                          <span key={i} className="text-white text-xl font-extrabold mx-8">
+                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
+                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="w-full bg-black py-4 overflow-hidden">
+                      <div className="animate-marquee-reverse whitespace-nowrap">
+                        {Array(6).fill(null).map((_, i) => (
+                          <span key={i} className="text-white text-xl font-extrabold mx-8">
+                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
+                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
+                          </span>
+                        ))}
+                      </div>
                     </div>                  </div>
                 </div>
               </section>
             </div>
 
             {/* Intro block before sections - wrapped in max-w-screen-2xl container */}
-            <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 py-16">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true, amount: 0.35 }}
-                style={{
-                  textAlign: "center",
-                  width: "clamp(300px, 90vw, 1000px)",
-                  margin: "0 auto",
-                  padding: "clamp(12px, 3vw, 24px) clamp(16px, 4vw, 32px)",
-                  fontFamily: "var(--font-zpix), monospace",
-                  lineHeight: "1.6",
-                  color: "#003EC3",
-                  fontWeight: 800,
-                  fontSize: "clamp(16px, 2.2vw, 22px)"
-                }}
+                className="w-full"
               >
-                {/* Character GIF 圖片 */}
-                <div className="mb-6 flex justify-center">
-                  <img 
-                    src="/chactor.gif" 
-                    alt="Character" 
-                    className="w-auto h-auto max-w-xs md:max-w-sm" 
-                    style={{ maxHeight: "200px" }} 
-                  />
-                </div>                <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
-                <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
-                <p>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
-                <p>Take it easy, look around, and maybe we&apos;ll start something together.</p>
+                {/* 統一上下排列：視窗在上，文字在下 */}
+                <div className="flex flex-col items-center gap-6 max-w-full">
+                  {/* Character 視窗 */}
+                  <div className="w-full max-w-md md:max-w-lg flex justify-center">
+                    <CharacterWindow 
+                      className="w-full"
+                      style={{ maxWidth: '100%' }}
+                    />
+                  </div>
+                  
+                  {/* 文字內容 */}
+                  <div 
+                    className="w-full max-w-xs md:max-w-sm flex flex-col text-center px-6"
+                    style={{
+                      fontFamily: "var(--font-zpix), monospace",
+                      lineHeight: "1.6",
+                      color: "#003EC3",
+                      fontWeight: 800,
+                      fontSize: "clamp(11px, 1.5vw, 16px)",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      wordWrap: "break-word",
+                      overflowWrap: "break-word",
+                      hyphens: "auto"
+                    }}
+                  >
+                    {/* 標籤 - 使用和老虎機相同的設定 */}
+                    <div style={{
+                      fontSize: 'clamp(14px, 3vw, 24px)',
+                      fontWeight: 'bold',
+                      color: '#FFFFF3',
+                      backgroundColor: '#003EC3',
+                      display: 'inline-block',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      letterSpacing: '1px',
+                      lineHeight: '1.4',
+                      wordBreak: 'break-word',
+                      whiteSpace: 'normal',
+                      marginBottom: '16px',
+                      marginTop: '20px' // 手機版增加與上方視窗的距離
+                    }}
+                    className="self-center">
+                      自我介紹 Ｉ About Liam
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
+                        <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
+                        <p>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
+                        <p>Take it easy, look around, and maybe we&apos;ll start something together.</p>
+                      </div>
+                      
+                      {/* 方格元件 - 撐滿整個右側容器 */}
+                      <div className="w-full flex justify-start items-end">
+                        <AnimatedCheckerboard 
+                          rows={2} 
+                          cols={40} 
+                          cellSize={20} 
+                          animationColor="#FF6B35" 
+                          direction="left-to-right" 
+                          animationSpeed={200}
+                          className="w-full"
+                          style={{ 
+                            width: '100%',
+                            minWidth: '100%'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </div>            {/* 四個滾動分段 */}
             {/* Section 1: Design */}
             <section className="scroll-section design-section" style={{ 
               minHeight: '100vh', 
-              backgroundColor: (() => {
-                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
-                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
-                
-                // 使用 scrollProgress 在當前和下一個顏色之間插值
-                const currentColor = colors[currentSection];
-                const nextColor = colors[currentSection + 1];
-                
-                if (scrollProgress > 0.8) {
-                  // 接近底部時開始切換到下一個顏色
-                  return nextColor;
-                }
-                
-                return currentColor;
-              })(),
+              backgroundColor: '#FFFFF3',
               padding: '4rem 2rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              transition: 'background-color 0.3s ease'
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
@@ -1496,49 +1533,42 @@ Tel: 03-9XX-XXXX
             {/* Section 2: Illustration */}
             <section className="scroll-section illustration-section" style={{ 
               minHeight: '100vh', 
-              backgroundColor: (() => {
-                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
-                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
-                const currentColor = colors[currentSection];
-                const nextColor = colors[currentSection + 1];
-                if (scrollProgress > 0.8) {
-                  return nextColor;
-                }
-                return currentColor;
-              })(),
+              backgroundColor: '#FFFFF3',
               padding: '4rem 2rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               position: 'relative',
-              transition: 'background-color 0.3s ease'
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10">
-                <IllustrationSplitCarousel />
+                <div className="mb-12">
+                  <IllustrationSplitCarousel />
+                </div>
               </div>
             </section>
 
             {/* Section 3: Brand */}
             <section className="scroll-section brand-section" style={{ 
               minHeight: '100vh', 
-              backgroundColor: (() => {
-                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
-                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
-                const currentColor = colors[currentSection];
-                const nextColor = colors[currentSection + 1];
-                if (scrollProgress > 0.8) {
-                  return nextColor;
-                }
-                return currentColor;
-              })(),
+              backgroundColor: '#FFFFF3',
+              backgroundImage: 'url(/bg.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               padding: '4rem 2rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              transition: 'background-color 0.3s ease'
             }}>
-              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* 背景圖片透明度遮罩 */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.45)', // 55% 透明度
+                zIndex: 1
+              }}></div>
+              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center" style={{ position: 'relative', zIndex: 2 }}>
                 <div className="text-content">
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
@@ -1590,23 +1620,13 @@ Tel: 03-9XX-XXXX
             {/* Section 4: Contact */}
             <section className="scroll-section contact-section" style={{ 
               minHeight: '100vh', 
-              backgroundColor: (() => {
-                const colors = ['#FFFFF3', '#003EC3', '#FFFFF3', '#353535'];
-                if (currentSection >= colors.length - 1) return colors[colors.length - 1];
-                const currentColor = colors[currentSection];
-                const nextColor = colors[currentSection + 1];
-                if (scrollProgress > 0.8) {
-                  return nextColor;
-                }
-                return currentColor;
-              })(),
+              backgroundColor: '#353535',
               padding: '4rem 2rem',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              transition: 'background-color 0.3s ease'
             }}>
               {/* Version B showcase from card-test */}
                             <div className="max-w-screen-2xl w-full mx-auto mb-12 px-6 md:px-10 space-y-6">

@@ -96,8 +96,8 @@ export default function IllustrationSplitCarousel({
   const currentItem = items[currentIndex];
 
   return (
-    <div className={className} style={style}>
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+    <div className={className} style={{ minHeight: '80vh', ...style }}>
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch h-full">
         {/* Left 65% */}
         <div className="md:basis-[65%] md:flex-1 flex flex-col gap-4">
           {/* 1) Carousel */}
@@ -131,7 +131,7 @@ export default function IllustrationSplitCarousel({
           <div className="p-2 md:p-0">
             <motion.h2
               key={`t-${currentIndex}`}
-              className="text-2xl md:text-4xl font-bold text-black mb-3"
+              className="text-2xl md:text-4xl font-bold text-[#003EC3] mb-3"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -145,7 +145,7 @@ export default function IllustrationSplitCarousel({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-              style={{ color: '#FFFFF3' }}
+              style={{ color: '#003EC3' }}
             >
               {currentItem.description}
             </motion.p>
@@ -176,7 +176,7 @@ export default function IllustrationSplitCarousel({
 
         {/* Right 35% */}
         <div className="md:basis-[35%] md:max-w-[35%]">
-          <div className="sticky top-6 p-6 rounded-xl border border-transparent bg-[#003EC3]">
+          <div className="sticky top-8 p-6 rounded-xl border border-transparent bg-[#003EC3]" style={{ zIndex: 10 }}>
             <h3 className="text-xl md:text-2xl font-bold text-[#FFFFF3] mb-3" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
               插畫文字介紹
             </h3>

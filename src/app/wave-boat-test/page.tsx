@@ -86,8 +86,8 @@ export default function WaveBoatTestPage() {
                 borderRadius: '10px',
                 transition: 'width 0.1s ease-out'
               }} />
-            </div>
-            
+        </div>
+
             <button 
               onClick={startProgress}
               disabled={isLoading}
@@ -109,7 +109,7 @@ export default function WaveBoatTestPage() {
             </button>
           </>
         )}
-      </div>
+        </div>
 
       {/* 船只区域 */}
       {showBoat && (
@@ -144,8 +144,8 @@ export default function WaveBoatTestPage() {
             
             {/* 波浪效果 */}
             <div className="wave-effect" />
-          </div>
-          
+        </div>
+
           {showBoat && !isMovingForward && (
             <div style={{
               position: 'absolute',
@@ -201,12 +201,12 @@ export default function WaveBoatTestPage() {
           0% { background-position-x: 0; }
           100% { background-position-x: 200px; }
         }
-        
+
         ${isMovingForward ? `
         .boat-container {
           animation: moveForward 2s ease-out forwards !important;
           will-change: transform, opacity;
-        }
+          }
         
         @keyframes moveForward {
           0% { 
