@@ -27,7 +27,7 @@ export default function AnimatedCheckerboard({
   loop = true
 }: AnimatedCheckerboardProps) {
   // 如果 cellSize 為 0，則動態計算格子大小
-  const actualCellSize = cellSize === 0 ? 0 : cellSize;
+  // const actualCellSize = cellSize === 0 ? 0 : cellSize;
   const [activeCells, setActiveCells] = useState<Set<string>>(new Set());
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -81,7 +81,7 @@ export default function AnimatedCheckerboard({
     if (autoStart) {
       startAnimation();
     }
-  }, [autoStart, direction, animationSpeed, loop]);
+  }, [autoStart, direction, animationSpeed, loop, startAnimation]);
 
   const cells = [];
   
