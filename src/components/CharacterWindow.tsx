@@ -49,7 +49,7 @@ const CharacterWindow: React.FC<CharacterWindowProps> = ({ className = '', style
       <div style={{
         background: '#2a2a2a',
         color: 'white',
-        padding: 'clamp(12px, 3vw, 20px)',
+        padding: 'clamp(8px, 2vw, 16px)',
         fontSize: 'clamp(10px, 2vw, 14px)',
         lineHeight: '1.4',
         border: '2px inset #c0c0c0',
@@ -58,7 +58,7 @@ const CharacterWindow: React.FC<CharacterWindowProps> = ({ className = '', style
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 'clamp(120px, 20vw, 180px)',
+        minHeight: 'clamp(100px, 15vw, 160px)',
         aspectRatio: '4/3'
       }}>
         {/* Character GIF 圖片 */}
@@ -69,7 +69,7 @@ const CharacterWindow: React.FC<CharacterWindowProps> = ({ className = '', style
           style={{ 
             maxHeight: "100%",
             maxWidth: "100%",
-            transform: "scale(1.2)"
+            transform: "scale(1.1)"
           }} 
         />
       </div>

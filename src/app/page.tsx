@@ -1390,7 +1390,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Intro block before sections - wrapped in max-w-screen-2xl container */}
-            <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-8 py-16">
+            <div className="w-full max-w-screen-2xl mx-auto px-2 md:px-8 py-12 md:py-16">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1399,9 +1399,9 @@ Tel: 03-9XX-XXXX
                 className="w-full"
               >
                 {/* 統一上下排列：視窗在上，文字在下 */}
-                <div className="flex flex-col items-center gap-6 max-w-full">
+                <div className="flex flex-col items-center gap-4 md:gap-6 max-w-full">
                   {/* Character 視窗 */}
-                  <div className="w-full max-w-md md:max-w-lg flex justify-center">
+                  <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex justify-center">
                     <CharacterWindow 
                       className="w-full"
                       style={{ maxWidth: '100%' }}
@@ -1410,13 +1410,13 @@ Tel: 03-9XX-XXXX
                   
                   {/* 文字內容 */}
                   <div 
-                    className="w-full max-w-xs md:max-w-sm flex flex-col text-center px-6"
+                    className="w-full max-w-sm md:max-w-md flex flex-col text-center px-4"
                     style={{
                       fontFamily: "var(--font-zpix), monospace",
                       lineHeight: "1.6",
                       color: "#003EC3",
                       fontWeight: 800,
-                      fontSize: "clamp(11px, 1.5vw, 16px)",
+                      fontSize: "clamp(12px, 1.8vw, 16px)",
                       alignItems: "center",
                       justifyContent: "center",
                       wordWrap: "break-word",
