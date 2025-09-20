@@ -1390,7 +1390,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Intro block before sections - wrapped in max-w-screen-2xl container */}
-            <div className="w-full max-w-screen-2xl mx-auto px-2 md:px-8 py-12 md:py-16">
+            <div className="w-full max-w-screen-2xl mx-auto px-1 md:px-8 py-12 md:py-16">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1410,18 +1410,19 @@ Tel: 03-9XX-XXXX
                   
                   {/* 文字內容 */}
                   <div 
-                    className="w-full max-w-sm md:max-w-md flex flex-col text-center px-4"
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md flex flex-col text-center px-2 sm:px-4"
                     style={{
                       fontFamily: "var(--font-zpix), monospace",
-                      lineHeight: "1.6",
+                      lineHeight: "1.5",
                       color: "#003EC3",
                       fontWeight: 800,
-                      fontSize: "clamp(12px, 1.8vw, 16px)",
+                      fontSize: "clamp(10px, 1.5vw, 14px)",
                       alignItems: "center",
                       justifyContent: "center",
                       wordWrap: "break-word",
                       overflowWrap: "break-word",
-                      hyphens: "auto"
+                      hyphens: "auto",
+                      maxWidth: "calc(100vw - 32px)"
                     }}
                   >
                     {/* 標籤 - 使用和老虎機相同的設定 */}
@@ -1444,12 +1445,12 @@ Tel: 03-9XX-XXXX
                       自我介紹 Ｉ About Liam
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div className="space-y-2">
-                        <p>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
-                        <p>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
-                        <p>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
-                        <p>Take it easy, look around, and maybe we&apos;ll start something together.</p>
+                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
+                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
+                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
+                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>Take it easy, look around, and maybe we&apos;ll start something together.</p>
                       </div>
                       
                       {/* 方格元件 - 撐滿整個右側容器 */}
