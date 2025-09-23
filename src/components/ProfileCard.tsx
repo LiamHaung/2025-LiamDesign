@@ -15,16 +15,24 @@ export default function ProfileCard({
 
   useEffect(() => {
     const checkScreenSize = () => {
-      const width = window.innerWidth;
-      const isDesktopSize = width >= 1024;
-      console.log('螢幕寬度:', width, '是否為桌面版本:', isDesktopSize);
-      setIsDesktop(isDesktopSize);
+      if (typeof window !== 'undefined') {
+        const width = window.innerWidth;
+        const isDesktopSize = width >= 1024;
+        console.log('螢幕寬度:', width, '是否為桌面版本:', isDesktopSize);
+        setIsDesktop(isDesktopSize);
+      }
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkScreenSize);
+    }
     
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', checkScreenSize);
+      }
+    };
   }, []);
   const cardContent = (
     <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
