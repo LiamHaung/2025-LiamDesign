@@ -4,25 +4,21 @@ import { motion } from 'framer-motion';
 
 interface ProfileCardProps {
   className?: string;
-  aspectRatio?: '4:3' | '16:9';
   animated?: boolean;
 }
 
 export default function ProfileCard({ 
   className = '', 
-  aspectRatio = '4:3',
   animated = true 
 }: ProfileCardProps) {
-  const aspectRatioClass = aspectRatio === '4:3' ? 'aspect-[4/3]' : 'aspect-[16/9]';
-  
   const cardContent = (
-    <div className={`bg-white border-2 border-black rounded-lg overflow-hidden ${aspectRatioClass} ${className}`}>
+    <div className={`bg-white border-2 border-black rounded-lg overflow-hidden ${className}`}>
       {/* 主要內容區域 */}
-      <div className="flex h-full">
+      <div className="flex min-h-[300px]">
         {/* 左側：角色區域 */}
         <div className="flex-1 flex flex-col justify-end relative border-r-4 border-black">
           {/* 角色圖片 */}
-          <div className="flex-1 flex items-center justify-center p-4">
+          <div className="flex-1 flex items-center justify-center p-4 min-h-[200px]">
             <img 
               src="/chactor.gif" 
               alt="Liam Character"

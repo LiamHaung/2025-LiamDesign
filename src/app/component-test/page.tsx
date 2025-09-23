@@ -564,22 +564,28 @@ export default function ComponentTestPage() {
           </h2>
           
           <div className="space-y-8">
-            {/* 4:3 比例 */}
+            {/* 基本版本 */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">4:3 比例版本</h3>
+              <h3 className="text-lg font-semibold mb-4">基本版本（內容自適應）</h3>
               <div className="flex justify-center">
                 <div className="w-96">
-                  <ProfileCard aspectRatio="4:3" />
+                  <ProfileCard />
                 </div>
               </div>
             </div>
 
-            {/* 16:9 比例 */}
+            {/* 不同寬度測試 */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">16:9 比例版本</h3>
-              <div className="flex justify-center">
-                <div className="w-96">
-                  <ProfileCard aspectRatio="16:9" />
+              <h3 className="text-lg font-semibold mb-4">不同寬度測試</h3>
+              <div className="space-y-4">
+                <div className="w-80 mx-auto">
+                  <ProfileCard />
+                </div>
+                <div className="w-96 mx-auto">
+                  <ProfileCard />
+                </div>
+                <div className="w-[500px] mx-auto">
+                  <ProfileCard />
                 </div>
               </div>
             </div>
@@ -589,13 +595,13 @@ export default function ComponentTestPage() {
               <h3 className="text-lg font-semibold mb-4">響應式測試</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="w-full">
-                  <ProfileCard aspectRatio="4:3" />
+                  <ProfileCard />
                 </div>
                 <div className="w-full">
-                  <ProfileCard aspectRatio="16:9" />
+                  <ProfileCard />
                 </div>
                 <div className="w-full">
-                  <ProfileCard aspectRatio="4:3" animated={false} />
+                  <ProfileCard animated={false} />
                 </div>
               </div>
             </div>
