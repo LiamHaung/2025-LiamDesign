@@ -568,7 +568,7 @@ export default function ComponentTestPage() {
             <div>
               <h3 className="text-lg font-semibold mb-4">響應式測試 (RWD)</h3>
               <div className="flex justify-center">
-                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-4xl xl:max-w-6xl">
+                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
                   <ProfileCard />
                 </div>
               </div>

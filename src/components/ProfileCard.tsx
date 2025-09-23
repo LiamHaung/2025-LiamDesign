@@ -39,7 +39,7 @@ export default function ProfileCard({
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
       <div className="flex min-h-[120px]">
         {/* 左側：角色區域 */}
-        <div className="w-24 sm:w-32 md:w-40 flex flex-col justify-center relative border-r-2 border-black">
+        <div className="w-2/5 flex flex-col justify-center relative border-r-2 border-black">
           {/* 角色圖片 */}
           <div className="flex-1 flex items-center justify-center p-3 min-h-[80px]">
             <img 
