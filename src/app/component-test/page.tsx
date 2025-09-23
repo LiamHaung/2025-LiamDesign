@@ -426,7 +426,7 @@ export default function ComponentTestPage() {
                        subtitle: '插畫設計',
                        description: '將創意想法轉化為視覺藝術，用色彩和線條訴說故事。',
                        imageUrl: '/illustration_1.png',
-                       rotation: -2
+                       rotation: 20
                      },
                      {
                        id: 'design',
@@ -434,7 +434,7 @@ export default function ComponentTestPage() {
                        subtitle: 'UI/UX 設計',
                        description: '創造直觀且美觀的使用者體驗，讓每個互動都充滿意義。',
                        imageUrl: '/illustration_2.png',
-                       rotation: 1
+                       rotation: -30
                      },
                      {
                        id: 'print',
@@ -442,7 +442,7 @@ export default function ComponentTestPage() {
                        subtitle: '印刷設計',
                        description: '將數位設計完美呈現於實體媒介，注重細節與質感。',
                        imageUrl: '/illustration_3.png',
-                       rotation: -1
+                       rotation: 30
                      },
                      {
                        id: 'brand',
@@ -450,7 +450,7 @@ export default function ComponentTestPage() {
                        subtitle: '品牌設計',
                        description: '打造獨特的品牌識別，讓每個品牌都有屬於自己的聲音。',
                        imageUrl: '/illustration_4.png',
-                       rotation: 2
+                       rotation: -20
                      }
                    ]}
                    className="max-w-6xl"
