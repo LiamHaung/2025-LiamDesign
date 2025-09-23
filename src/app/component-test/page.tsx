@@ -218,6 +218,144 @@ export default function ComponentTestPage() {
           </div>
         </section>
 
+        {/* Intro Section - 模擬主畫面 intro 版位 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{ 
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            Intro 版位測試區
+          </h2>
+          
+          <div className="bg-gray-100 p-8 rounded-lg mb-8">
+            <h3 className="text-lg font-semibold mb-4">主畫面 Intro 版位模擬</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* 左側：角色視窗 */}
+              <div className="flex justify-center">
+                <div className="bg-white border-2 border-gray-300 rounded-lg shadow-lg" style={{ width: '300px', height: '400px' }}>
+                  {/* 視窗標題欄 */}
+                  <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between">
+                    <span className="font-bold">Character.exe</span>
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  {/* 視窗內容 */}
+                  <div className="p-4 h-full bg-gray-800 flex items-center justify-center">
+                    <div className="text-center text-white">
+                      <div className="text-6xl mb-4">👨‍💻</div>
+                      <div className="text-sm">3D 角色動畫</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 右側：自我介紹內容 */}
+              <div className="space-y-6">
+                {/* 標題橫幅 */}
+                <div className="bg-blue-600 text-white px-6 py-3 rounded-lg">
+                  <h4 className="text-xl font-bold">自我介紹 I About Liam</h4>
+                </div>
+
+                {/* 中文介紹 */}
+                <div className="space-y-3">
+                  <p className="text-lg leading-relaxed">
+                    我是 <span className="font-bold text-blue-600">Liam</span>，喜歡把想法變成會呼吸的設計。
+                  </p>
+                  <p className="text-lg leading-relaxed text-gray-700">
+                    放輕鬆、慢慢逛，或許下一個專案就從這裡開始。
+                  </p>
+                </div>
+
+                {/* 英文介紹 */}
+                <div className="space-y-3">
+                  <p className="text-lg leading-relaxed">
+                    I'm <span className="font-bold text-blue-600">Liam</span> - I love turning ideas into designs that breathe.
+                  </p>
+                  <p className="text-lg leading-relaxed text-gray-700">
+                    Take it easy, look around, and maybe we'll start something together.
+                  </p>
+                </div>
+
+                {/* 裝飾性格子紋路 */}
+                <div className="flex justify-center">
+                  <div className="grid grid-cols-8 gap-1">
+                    {Array.from({ length: 16 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={`w-4 h-4 ${
+                          i < 8 
+                            ? (i % 2 === 0 ? 'bg-orange-400' : 'bg-white')
+                            : (i % 2 === 0 ? 'bg-black' : 'bg-white')
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 不同版本的 Intro 設計 */}
+          <div className="space-y-8">
+            <h3 className="text-lg font-semibold">不同版本的 Intro 設計</h3>
+            
+            {/* 版本 1：卡片式設計 */}
+            <div>
+              <h4 className="text-md font-medium mb-4">版本 1：卡片式設計</h4>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="歡迎來到我的作品集"
+                  subtitle="UI/UX Designer & Developer"
+                  description="我是 Liam，專注於創造美觀且實用的數位體驗。結合創意與技術，將想法轉化為會呼吸的設計。放輕鬆、慢慢逛，或許下一個專案就從這裡開始。"
+                  imageUrl="/illustration_1.png"
+                  buttonText="查看作品"
+                  onButtonClick={() => alert('查看作品！')}
+                  variant="detailed"
+                  size="large"
+                />
+              </div>
+            </div>
+
+            {/* 版本 2：簡約式設計 */}
+            <div>
+              <h4 className="text-md font-medium mb-4">版本 2：簡約式設計</h4>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="Liam"
+                  subtitle="Designer & Developer"
+                  description="把想法變成會呼吸的設計。"
+                  variant="minimal"
+                  size="medium"
+                />
+              </div>
+            </div>
+
+            {/* 版本 3：創意式設計 */}
+            <div>
+              <h4 className="text-md font-medium mb-4">版本 3：創意式設計</h4>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="Hello, I'm Liam"
+                  subtitle="Creative Designer"
+                  description="Turning ideas into designs that breathe. Let's create something amazing together!"
+                  imageUrl="/illustration_2.png"
+                  buttonText="Let's Talk"
+                  onButtonClick={() => alert('Let\'s Talk!')}
+                  className="border-4 border-blue-300 bg-gradient-to-br from-blue-50 to-indigo-100"
+                  style={{
+                    transform: 'rotate(-1deg)',
+                    boxShadow: '0 15px 35px rgba(59, 130, 246, 0.3)'
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Intro Card Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6" style={{ 
