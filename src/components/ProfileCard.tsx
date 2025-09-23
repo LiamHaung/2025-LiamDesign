@@ -16,7 +16,7 @@ export default function ProfileCard({
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
       <div className="flex min-h-[120px]">
         {/* 左側：角色區域 */}
-        <div className="w-40 flex flex-col justify-center relative border-r-4 border-black">
+        <div className="w-24 sm:w-32 md:w-40 flex flex-col justify-center relative border-r-4 border-black">
           {/* 角色圖片 */}
           <div className="flex-1 flex items-center justify-center p-3 min-h-[80px]">
             <img 
@@ -32,7 +32,7 @@ export default function ProfileCard({
             style={{ backgroundColor: '#003EC3' }}
           >
             <span 
-              className="text-white font-bold text-sm"
+              className="text-white font-bold text-xs sm:text-sm"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               Liam Huang
@@ -45,7 +45,7 @@ export default function ProfileCard({
           {/* 職業標題 */}
           <div className="border-b border-black pb-2">
             <h2 
-              className="text-xl font-bold text-black"
+              className="text-lg sm:text-xl font-bold text-black"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               平面設計師
@@ -55,7 +55,7 @@ export default function ProfileCard({
           {/* 技能標籤 */}
           <div className="border-b border-black pb-2">
             <p 
-              className="text-base text-black"
+              className="text-sm sm:text-base text-black"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               插畫、印刷、設計、品牌
@@ -65,7 +65,7 @@ export default function ProfileCard({
           {/* 座右銘 */}
           <div className="border-b border-black pb-2">
             <p 
-              className="text-sm text-black"
+              className="text-xs sm:text-sm text-black"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               今天可以休息就不要留給明天
@@ -75,7 +75,7 @@ export default function ProfileCard({
           {/* 自我介紹 */}
           <div className="pt-1">
             <p 
-              className="text-sm text-black leading-relaxed"
+              className="text-xs sm:text-sm text-black leading-relaxed"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               我是 <span className="font-bold">Liam</span>，喜歡把想法
@@ -93,7 +93,7 @@ export default function ProfileCard({
       {/* 底部 Slogan 區域 */}
       <div className="bg-black text-center py-3">
         <span 
-          className="text-white text-sm font-bold"
+          className="text-white text-xs sm:text-sm font-bold"
           style={{ fontFamily: 'var(--font-zpix), monospace' }}
         >
           #Own the Day #Go Live Today
