@@ -41,12 +41,19 @@ export default function ProfileCard({
         {/* 左側：角色區域 */}
         <div className="w-2/5 flex flex-col justify-center relative border-r-2 border-black">
           {/* 角色圖片 */}
-          <div className="flex-1 flex items-center justify-center p-3 min-h-[80px]">
-            <img 
-              src="/chactor.gif" 
-              alt="Liam Character"
-              className="w-full h-full object-contain"
-            />
+          <div className="flex-1 flex items-center justify-center p-3 min-h-[80px] overflow-hidden">
+            <div className="w-full h-full relative">
+              <img 
+                src="/chactor.gif" 
+                alt="Liam Character"
+                className="w-full h-full object-cover"
+                style={{ 
+                  objectPosition: 'center 20%',
+                  transform: 'scale(1.2)',
+                  transformOrigin: 'center top'
+                }}
+              />
+            </div>
           </div>
           
           {/* 藍色姓名條 */}
