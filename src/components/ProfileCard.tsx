@@ -15,7 +15,10 @@ export default function ProfileCard({
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      const width = window.innerWidth;
+      const isDesktopSize = width >= 1024;
+      console.log('螢幕寬度:', width, '是否為桌面版本:', isDesktopSize);
+      setIsDesktop(isDesktopSize);
     };
 
     checkScreenSize();
@@ -143,6 +146,19 @@ export default function ProfileCard({
         backgroundColor: isDesktop ? 'rgba(255, 0, 0, 0.1)' : 'transparent'
       }}
     >
+      {/* 調試信息 */}
+      <div style={{ 
+        position: 'absolute', 
+        top: '-30px', 
+        left: '0', 
+        background: 'yellow', 
+        padding: '5px', 
+        fontSize: '12px',
+        zIndex: 1000
+      }}>
+        螢幕寬度: {typeof window !== 'undefined' ? window.innerWidth : 'N/A'} | 
+        桌面版本: {isDesktop ? '是' : '否'}
+      </div>
       {cardContent}
     </div>
   );
