@@ -114,19 +114,19 @@ export default function ParallaxTestPage() {
       `}</style>
       <div ref={containerRef} style={{ background: "#FFFFF3", minHeight: "500vh", margin: 0, padding: 0 }}>
       {/* 背景圖片，RWD 響應式設計，滾動視差效果，根據顏色變化切換 */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-[calc(100vh-min(24vh,144px))] bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${currentBgImage})`,
-          transform: `translate(${heroX}, ${heroY})`,
-          opacity: heroOpacity,
-          zIndex: 1,
-        }}
-        key={currentBgImage}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: heroOpacity }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      />
+        <motion.div
+          className="fixed top-0 left-0 w-full h-[calc(100vh-min(24vh,144px))] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${currentBgImage})`,
+            transform: `translate(${heroX}, ${heroY})`,
+            opacity: heroOpacity,
+            zIndex: 1,
+          }}
+          key={currentBgImage}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        />
       
       {/* 標題區域 - RWD 響應式設計 */}
       <div className="fixed top-[10%] left-1/2 transform -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl">
