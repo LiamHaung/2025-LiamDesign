@@ -145,18 +145,9 @@ export default function ProfileCard({
     <div 
       className="relative shadow-none" 
       style={{ 
-        boxShadow: 'none',
-        transform: 'scale(1)',
-        transformOrigin: 'center center'
+        boxShadow: 'none'
       }}
     >
-      <style jsx>{`
-        @media (min-width: 1024px) {
-          div {
-            transform: scale(1.5) !important;
-          }
-        }
-      `}</style>
       {cardContent}
     </div>
   );

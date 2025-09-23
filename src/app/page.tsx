@@ -1413,7 +1413,9 @@ Tel: 03-9XX-XXXX
                 viewport={{ once: true, amount: 0.35 }}
                 className="w-full flex justify-center"
               >
-                <ProfileCard />
+                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
+                  <ProfileCard />
+                </div>
               </motion.div>
             </div>            {/* 四個滾動分段 */}
             {/* Section 1: Design */}
