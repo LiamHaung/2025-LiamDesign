@@ -11,6 +11,7 @@ import TestCardAlt from '../components/TestCardAlt';
 import CardCarousel from '../components/CardCarousel';
 import CharacterWindow from '../components/CharacterWindow';
 import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
+import ParallaxSection from '../components/ParallaxSection';
 
 export default function Home() {
   // 品牌案例數據
@@ -729,6 +730,11 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Parallax 效果區塊 - 在跑馬燈下方，使用條件顯示 */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <ParallaxSection show={true} />
+            </div>
+
             {/* 手機版漢堡選單 - 在跑馬燈和主內容之間 */}
             <div className="block lg:hidden w-full py-3 flex justify-center relative" style={{ 
               zIndex: 50, 
@@ -1355,6 +1361,14 @@ Tel: 03-9XX-XXXX
                     )}
 
                     {/* 手機版老虎機小工具 */}
+                    <div style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      padding: '20px 0'
+                    }}>
+                    </div>
+                    
                     <div style={{
                       width: '100%',
                       display: 'flex',
