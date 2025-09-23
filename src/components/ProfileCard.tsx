@@ -137,7 +137,10 @@ export default function ProfileCard({
         boxShadow: 'none',
         transform: isDesktop ? 'scale(1.5)' : 'scale(1)',
         transformOrigin: 'center center',
-        transition: 'transform 0.3s ease'
+        transition: 'transform 0.3s ease',
+        // 添加明顯的視覺效果來測試
+        border: isDesktop ? '5px solid red' : 'none',
+        backgroundColor: isDesktop ? 'rgba(255, 0, 0, 0.1)' : 'transparent'
       }}
     >
       {cardContent}
