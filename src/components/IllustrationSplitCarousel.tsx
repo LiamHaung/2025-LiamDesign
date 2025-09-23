@@ -96,7 +96,7 @@ export default function IllustrationSplitCarousel({
   const currentItem = items[currentIndex];
 
   return (
-    <div className={className} style={{ minHeight: '80vh', ...style }}>
+    <div className={className} style={{ minHeight: '60vh', ...style }}>
       <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch h-full">
         {/* Left 65% */}
         <div className="md:basis-[65%] md:flex-1 flex flex-col gap-4">
@@ -180,7 +180,7 @@ export default function IllustrationSplitCarousel({
               插畫文字介紹
             </h3>
             <p className="leading-relaxed mb-5" style={{ color: '#FFFFF3' }}>
-              我們透過插畫建立情感連結與敘事節奏，讓作品既有美感也能傳遞故事。想看更多完整案例與製作過程，歡迎延伸閱讀。
+              我們透過插畫建立情感連結與敘事節奏，讓作品既有美感也能傳遞故事。每一筆觸都承載著創作者的情感與思考，從構思到完成，我們注重細節的雕琢與風格的統一。插畫不只是視覺的呈現，更是與觀者心靈對話的橋樑。透過色彩、線條與構圖的巧妙運用，我們創造出獨特的視覺語言，讓每個專案都有屬於自己的故事。從商業插畫到藝術創作，我們致力於用最真誠的筆觸，描繪出最動人的畫面。想看更多完整案例與製作過程，歡迎延伸閱讀。
             </p>
             <a
               href="#"
