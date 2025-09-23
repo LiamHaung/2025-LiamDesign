@@ -35,7 +35,36 @@ export default function ProfileCard({
     };
   }, []);
   const cardContent = (
-    <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
+    <div className="w-full">
+      {/* 標題區域 */}
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '20px',
+        fontFamily: 'var(--font-zpix), monospace',
+        maxWidth: '100%',
+        padding: '0 20px',
+        width: '100%',
+        boxSizing: 'border-box'
+      }}>
+        <div style={{
+          fontSize: 'clamp(16px, 3vw, 32px)',
+          fontWeight: 'bold',
+          color: '#FFFFF3',
+          backgroundColor: '#003EC3',
+          display: 'inline-block',
+          padding: '8px 16px',
+          borderRadius: '6px',
+          letterSpacing: '1px',
+          lineHeight: '1.4',
+          wordBreak: 'break-word',
+          whiteSpace: 'normal'
+        }}>
+          #About Liam
+        </div>
+      </div>
+
+      {/* ProfileCard 內容 */}
+      <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
       <div className="flex h-96">
         {/* 左側：角色區域 */}
@@ -128,6 +157,7 @@ export default function ProfileCard({
         >
           #Own the Day #Go Live Today
         </span>
+      </div>
       </div>
     </div>
   );
