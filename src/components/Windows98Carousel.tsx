@@ -30,11 +30,11 @@ export default function Windows98Carousel({ windows, className = '' }: Windows98
   return (
     <div className={`w-full ${className}`}>
       {/* 桌面版：四欄位並排 */}
-      <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+      <div className="hidden lg:flex lg:justify-center lg:items-start lg:gap-8 lg:flex-wrap">
         {windows.map((window, index) => (
           <motion.div
             key={window.id}
-            className="relative"
+            className="relative flex-shrink-0"
             style={{ transform: `rotate(${window.rotation}deg)` }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
