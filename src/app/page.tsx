@@ -1477,7 +1477,6 @@ Tel: 03-9XX-XXXX
 
             {/* Section 2: Illustration */}
             <section className="scroll-section illustration-section" style={{ 
-              minHeight: '100vh', 
               backgroundColor: '#003EC3',
               padding: '4rem 2rem',
               position: 'relative',
