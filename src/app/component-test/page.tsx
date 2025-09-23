@@ -3,6 +3,7 @@ import React from 'react';
 import CheckerboardPattern from '../../components/test/CheckerboardPattern';
 import DigitalClock from '../../components/test/DigitalClock';
 import AnimatedCheckerboard from '../../components/test/AnimatedCheckerboard';
+import IntroCard from '../../components/IntroCard';
 
 export default function ComponentTestPage() {
   return (
@@ -217,6 +218,125 @@ export default function ComponentTestPage() {
           </div>
         </section>
 
+        {/* Intro Card Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{ 
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            Intro Card 元件
+          </h2>
+          
+          <div className="space-y-8">
+            {/* Default Variant */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">預設樣式</h3>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="歡迎來到我的作品集"
+                  subtitle="UI/UX 設計師"
+                  description="專注於創造美觀且實用的數位體驗，結合創意與技術實現用戶需求。"
+                  imageUrl="/illustration_1.png"
+                  buttonText="查看作品"
+                  onButtonClick={() => alert('點擊了查看作品按鈕！')}
+                />
+              </div>
+            </div>
+
+            {/* Minimal Variant */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">簡約樣式</h3>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="簡潔設計"
+                  subtitle="Minimal Style"
+                  description="乾淨簡潔的設計風格，專注於內容本身。"
+                  variant="minimal"
+                  size="small"
+                />
+              </div>
+            </div>
+
+            {/* Detailed Variant */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">詳細樣式</h3>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="專業服務"
+                  subtitle="Full-Stack Developer"
+                  description="提供完整的網站開發服務，從前端設計到後端架構，為您的業務創造數位價值。我們專注於用戶體驗和技術創新，確保每個項目都能達到最高標準。"
+                  imageUrl="/illustration_2.png"
+                  buttonText="立即諮詢"
+                  onButtonClick={() => alert('點擊了立即諮詢按鈕！')}
+                  variant="detailed"
+                  size="large"
+                />
+              </div>
+            </div>
+
+            {/* Different Sizes */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">不同尺寸</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <IntroCard
+                  title="小尺寸"
+                  subtitle="Small"
+                  description="適合側邊欄或小空間使用。"
+                  variant="minimal"
+                  size="small"
+                />
+                <IntroCard
+                  title="中尺寸"
+                  subtitle="Medium"
+                  description="標準尺寸，適合大部分使用場景。"
+                  size="medium"
+                />
+                <IntroCard
+                  title="大尺寸"
+                  subtitle="Large"
+                  description="大尺寸卡片，適合主要內容展示。"
+                  variant="detailed"
+                  size="large"
+                />
+              </div>
+            </div>
+
+            {/* Without Animation */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">無動畫版本</h3>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="靜態卡片"
+                  subtitle="No Animation"
+                  description="這個卡片沒有動畫效果，適合需要快速載入的場景。"
+                  animated={false}
+                  variant="minimal"
+                />
+              </div>
+            </div>
+
+            {/* Custom Styled */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">自訂樣式</h3>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="自訂樣式卡片"
+                  subtitle="Custom Style"
+                  description="可以透過 className 和 style 屬性完全自訂外觀。"
+                  imageUrl="/illustration_3.png"
+                  buttonText="自訂按鈕"
+                  onButtonClick={() => alert('自訂按鈕被點擊！')}
+                  className="border-4 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50"
+                  style={{
+                    transform: 'rotate(-2deg)',
+                    boxShadow: '0 10px 30px rgba(147, 51, 234, 0.3)'
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Component Info */}
         <section className="bg-gray-100 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4" style={{ 
@@ -256,6 +376,23 @@ export default function ComponentTestPage() {
                 <li>format24: 是否使用24小時制 (預設: true)</li>
                 <li>className: 自訂 CSS 類別</li>
                 <li>style: 自訂樣式</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold">IntroCard 介紹卡片元件：</h3>
+              <ul className="ml-4 list-disc">
+                <li>title: 主標題 (必填)</li>
+                <li>subtitle: 副標題 (必填)</li>
+                <li>description: 描述文字 (必填)</li>
+                <li>imageUrl: 圖片網址 (選填)</li>
+                <li>buttonText: 按鈕文字 (選填)</li>
+                <li>onButtonClick: 按鈕點擊事件 (選填)</li>
+                <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' (預設: 'default')</li>
+                <li>size: 尺寸 'small' | 'medium' | 'large' (預設: 'medium')</li>
+                <li>animated: 是否啟用動畫 (預設: true)</li>
+                <li>className: 自訂 CSS 類別</li>
+                <li>style: 自訂樣式</li>
+                <li><strong>特色：支援 Framer Motion 動畫、響應式設計、多種樣式變體</strong></li>
               </ul>
             </div>
           </div>
