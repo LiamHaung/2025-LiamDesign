@@ -37,11 +37,11 @@ export default function ProfileCard({
   const cardContent = (
     <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
-      <div className="flex h-48">
+      <div className="flex h-56">
         {/* 左側：角色區域 */}
         <div className="w-2/5 flex flex-col justify-center relative border-r-2 border-black">
           {/* 角色圖片 */}
-          <div className="flex-1 flex items-center justify-center p-3 h-32 overflow-hidden">
+          <div className="flex-1 flex items-center justify-center p-4 h-40 overflow-hidden">
             <div className="w-full h-full relative">
               <img 
                 src="/chactor.gif" 
@@ -58,7 +58,7 @@ export default function ProfileCard({
           
           {/* 藍色姓名條 */}
           <div 
-            className="px-2 py-2 text-center h-12 flex items-center justify-center"
+            className="px-3 py-3 text-center h-16 flex items-center justify-center"
             style={{ backgroundColor: '#003EC3' }}
           >
             <span 
@@ -71,7 +71,7 @@ export default function ProfileCard({
         </div>
 
         {/* 右側：文字內容區域 */}
-          <div className="flex-1 p-4 flex flex-col justify-center space-y-2 max-w-xs sm:max-w-sm md:max-w-md">
+          <div className="flex-1 p-5 flex flex-col justify-center space-y-3 max-w-xs sm:max-w-sm md:max-w-md">
           {/* 職業標題 */}
           <div className="border-b border-black pb-2">
             <h2 
@@ -121,7 +121,7 @@ export default function ProfileCard({
       </div>
 
         {/* 底部 Slogan 區域 */}
-        <div className="bg-black text-center py-3 h-12 flex items-center justify-center">
+        <div className="bg-black text-center py-4 h-16 flex items-center justify-center">
         <span 
           className="text-white text-xs sm:text-sm font-bold"
           style={{ fontFamily: 'var(--font-zpix), monospace' }}
