@@ -10,6 +10,7 @@ import RotationTest from '../../components/RotationTest';
 import RetroWindowLayout from '../../components/RetroWindowLayout';
 import SimpleRotationTest from '../../components/SimpleRotationTest';
 import ProfileCard from '../../components/ProfileCard';
+import BorderTest from '../../components/BorderTest';
 
 export default function ComponentTestPage() {
   return (
@@ -540,6 +541,17 @@ export default function ComponentTestPage() {
             復古視窗布局測試區
           </h2>
           <RetroWindowLayout />
+        </section>
+
+        {/* 邊框測試 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            邊框測試區
+          </h2>
+          <BorderTest />
         </section>
 
         {/* ProfileCard 測試 */}
