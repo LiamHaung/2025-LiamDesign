@@ -160,26 +160,28 @@ export default function ParallaxTestPage() {
         </motion.div>
       </div>
       
-      {/* 滾動進度指示器 */}
-      <div
-        style={{
-          position: "fixed",
-          top: "20px",
-          left: "20px",
-          zIndex: 100,
-          background: "rgba(0, 0, 0, 0.8)",
-          color: "white",
-          padding: "10px",
-          borderRadius: "5px",
-          fontSize: "14px",
-        }}
-      >
-        <div>滾動進度: {Math.round(scrollYProgress.get() * 100)}%</div>
-        <div>Hero X: {heroX.get()}</div>
-        <div>顏色區塊 Y: {colorBlockY.get()}</div>
-        <div>人物 Y: {characterY.get()}</div>
-        <div>背景顏色: {backgroundColor.get()}</div>
-      </div>
+      {/* 滾動進度指示器 - 已隱藏 */}
+      {false && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            left: "20px",
+            zIndex: 100,
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "white",
+            padding: "10px",
+            borderRadius: "5px",
+            fontSize: "14px",
+          }}
+        >
+          <div>滾動進度: {Math.round(scrollYProgress.get() * 100)}%</div>
+          <div>Hero X: {heroX.get()}</div>
+          <div>顏色區塊 Y: {colorBlockY.get()}</div>
+          <div>人物 Y: {characterY.get()}</div>
+          <div>背景顏色: {backgroundColor.get()}</div>
+        </div>
+      )}
 
       {/* hero＿滾動視差_工作區域 1 複本 3.png - 前景大圖，全螢幕背景 */}
       <motion.div

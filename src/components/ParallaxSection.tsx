@@ -188,27 +188,29 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
           </motion.div>
         </div>
         
-        {/* 滾動進度指示器 */}
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            left: "20px",
-            background: "rgba(0, 0, 0, 0.8)",
-            color: "white",
-            padding: "10px",
-            borderRadius: "5px",
-            fontSize: "12px",
-            fontFamily: "monospace",
-            zIndex: 1000,
-          }}
-        >
-          <div>滾動進度: {Math.round(scrollYProgress.get() * 100)}%</div>
-          <div>Hero X: {heroX.get()}</div>
-          <div>顏色區塊 Y: {colorBlockY.get()}</div>
-          <div>人物 Y: {characterY.get()}</div>
-          <div>背景顏色: {backgroundColor.get()}</div>
-        </div>
+        {/* 滾動進度指示器 - 已隱藏 */}
+        {false && (
+          <div
+            style={{
+              position: "fixed",
+              top: "20px",
+              left: "20px",
+              background: "rgba(0, 0, 0, 0.8)",
+              color: "white",
+              padding: "10px",
+              borderRadius: "5px",
+              fontSize: "12px",
+              fontFamily: "monospace",
+              zIndex: 1000,
+            }}
+          >
+            <div>滾動進度: {Math.round(scrollYProgress.get() * 100)}%</div>
+            <div>Hero X: {heroX.get()}</div>
+            <div>顏色區塊 Y: {colorBlockY.get()}</div>
+            <div>人物 Y: {characterY.get()}</div>
+            <div>背景顏色: {backgroundColor.get()}</div>
+          </div>
+        )}
 
         {/* 彩色區塊 - RWD 響應式設計，貼著網頁底部，進一步增高 */}
         <motion.div
