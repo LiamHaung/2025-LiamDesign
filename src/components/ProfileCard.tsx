@@ -48,8 +48,8 @@ export default function ProfileCard({
                 alt="Liam Character"
                 className="w-full h-full object-cover"
                 style={{ 
-                  objectPosition: 'center 20%',
-                  transform: 'scale(1.2)',
+                  objectPosition: 'center 30%',
+                  transform: 'scale(1.1)',
                   transformOrigin: 'center top'
                 }}
               />
