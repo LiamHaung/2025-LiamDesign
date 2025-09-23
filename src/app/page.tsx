@@ -766,8 +766,8 @@ export default function Home() {
                 <div className="win98-window relative" style={{
                   width: '320px',
                   maxWidth: '90vw',
-                  background: '#c0c0c0',
-                  border: '2px outset #c0c0c0',
+                  background: '#000000',
+                  border: '2px outset #333333',
                   fontFamily: 'var(--font-zpix), monospace',
                   overflow: 'hidden'
                 }}>
@@ -786,9 +786,9 @@ export default function Home() {
                     <button
                       onClick={() => setMobileMenuOpen(false)}
                       style={{
-                        background: '#c0c0c0',
-                        border: '1px outset #c0c0c0',
-                        color: 'black',
+                        background: '#333333',
+                        border: '1px outset #666666',
+                        color: 'white',
                         width: '16px',
                         height: '16px',
                         display: 'flex',
@@ -800,10 +800,10 @@ export default function Home() {
                       }}
                       onMouseDown={(e) => {
                         e.preventDefault();
-                        (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        (e.target as HTMLElement).style.border = '1px inset #666666';
                       }}
-                      onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                      onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                      onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #666666'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #666666'}
                     >
                       ×
                     </button>
@@ -821,8 +821,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
@@ -832,10 +833,10 @@ export default function Home() {
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                          (e.target as HTMLElement).style.border = '1px inset #333333';
                         }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
                       >
                         <span>🏠</span>
                         <span>返回 Return</span>
@@ -853,8 +854,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
@@ -864,10 +866,10 @@ export default function Home() {
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                          (e.target as HTMLElement).style.border = '1px inset #333333';
                         }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
                       >
                         <span>👤</span>
                         <span>關於 Liam</span>
@@ -885,8 +887,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
@@ -896,10 +899,10 @@ export default function Home() {
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                          (e.target as HTMLElement).style.border = '1px inset #333333';
                         }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #333333'}
                       >
                         <span>🎨</span>
                         <span>設計 Design</span>
@@ -917,8 +920,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
@@ -949,8 +953,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
@@ -981,8 +986,9 @@ export default function Home() {
                         }}
                         style={{
                           padding: '8px 12px',
-                          background: '#c0c0c0',
-                          border: '1px outset #c0c0c0',
+                          background: '#000000',
+                          border: '1px outset #333333',
+                          color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
