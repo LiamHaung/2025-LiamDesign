@@ -153,7 +153,7 @@ export default function ProfileCard({
       <style jsx>{`
         @media (min-width: 1024px) {
           div {
-            transform: scale(1.8) !important;
+            transform: scale(1.5) !important;
           }
         }
       `}</style>
