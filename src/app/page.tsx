@@ -944,12 +944,6 @@ export default function Home() {
                           (e.currentTarget as HTMLElement).style.background = '#000000';
                           (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
-                        }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
                       >
                         <span>🖼️</span>
                         <span>插畫 Illustration</span>
@@ -985,12 +979,6 @@ export default function Home() {
                           (e.currentTarget as HTMLElement).style.background = '#000000';
                           (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
-                        }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
                       >
                         <span>🏷️</span>
                         <span>品牌 Brand</span>
@@ -1026,12 +1014,6 @@ export default function Home() {
                           (e.currentTarget as HTMLElement).style.background = '#000000';
                           (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
-                        }}
-                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
                       >
                         <span>📧</span>
                         <span>聯繫 Liam</span>
