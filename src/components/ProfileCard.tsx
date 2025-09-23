@@ -121,7 +121,7 @@ export default function ProfileCard({
 
   return (
     <div 
-      className="relative hover:shadow-[8px_8px_0px_rgba(0,0,0,0.8)] transition-shadow duration-200"
+      className="relative hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-shadow duration-200"
     >
       {cardContent}
     </div>
