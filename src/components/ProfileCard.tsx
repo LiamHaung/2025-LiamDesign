@@ -41,7 +41,7 @@ export default function ProfileCard({
         </div>
 
         {/* 右側：文字內容區域 */}
-        <div className="flex-1 p-4 flex flex-col justify-center space-y-2">
+        <div className="flex-1 p-4 flex flex-col justify-center space-y-2 max-w-xs sm:max-w-sm md:max-w-md">
           {/* 職業標題 */}
           <div className="border-b border-black pb-2">
             <h2 
