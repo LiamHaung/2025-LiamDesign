@@ -12,7 +12,7 @@ export default function ProfileCard({
   animated = true 
 }: ProfileCardProps) {
   const cardContent = (
-    <div className={`bg-white border-2 border-black rounded-lg overflow-hidden ${className}`}>
+    <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
       <div className="flex min-h-[120px]">
         {/* 左側：角色區域 */}
@@ -120,7 +120,7 @@ export default function ProfileCard({
   }
 
   return (
-    <div className="relative">
+    <div className="relative shadow-none" style={{ boxShadow: 'none' }}>
       {cardContent}
     </div>
   );
