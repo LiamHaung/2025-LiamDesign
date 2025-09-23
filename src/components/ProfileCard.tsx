@@ -110,7 +110,6 @@ export default function ProfileCard({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         whileHover={{ 
-          boxShadow: '8px 8px 0px rgba(0, 0, 0, 0.8)',
           transition: { duration: 0.2 }
         }}
       >
