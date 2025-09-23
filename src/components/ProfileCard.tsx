@@ -32,7 +32,7 @@ export default function ProfileCard({
             style={{ backgroundColor: '#003EC3' }}
           >
             <span 
-              className="text-white font-bold text-xs sm:text-sm"
+              className="text-white font-bold text-lg sm:text-xl"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               Liam Huang
@@ -55,7 +55,7 @@ export default function ProfileCard({
           {/* 技能標籤 */}
           <div className="border-b border-black pb-2">
             <p 
-              className="text-sm sm:text-base text-black"
+              className="text-base sm:text-lg font-bold text-black"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               插畫、印刷、設計、品牌
@@ -65,7 +65,7 @@ export default function ProfileCard({
           {/* 座右銘 */}
           <div className="border-b border-black pb-2">
             <p 
-              className="text-xs sm:text-sm text-black"
+              className="text-base sm:text-lg font-bold text-black"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
             >
               今天可以休息就不要留給明天
