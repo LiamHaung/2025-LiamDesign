@@ -36,35 +36,36 @@ export default function Windows98MultiWindow({ windows, className = '' }: Window
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-            {/* 視窗標題欄 */}
-            <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '300px' }}>
-              <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-                {window.title}.exe
-              </span>
-            </div>
-            
-            {/* 視窗內容 */}
-            <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg" style={{ width: '300px' }}>
-              <div className="text-center space-y-4">
-                <h3 className="text-xl font-bold text-black" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-                  {window.subtitle}
-                </h3>
-                <p className="text-black text-sm leading-relaxed">
-                  {window.description}
-                </p>
-                {window.imageUrl && (
-                  <div className="flex justify-center">
-                    <img 
-                      src={window.imageUrl} 
-                      alt={window.subtitle}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  </div>
-                )}
+              {/* 視窗標題欄 */}
+              <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '300px' }}>
+                <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                  {window.title}.exe
+                </span>
               </div>
-            </div>
-          </motion.div>
-        ))}
+              
+              {/* 視窗內容 */}
+              <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg" style={{ width: '300px' }}>
+                <div className="text-center space-y-4">
+                  <h3 className="text-xl font-bold text-black" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    {window.subtitle}
+                  </h3>
+                  <p className="text-black text-sm leading-relaxed">
+                    {window.description}
+                  </p>
+                  {window.imageUrl && (
+                    <div className="flex justify-center">
+                      <img 
+                        src={window.imageUrl} 
+                        alt={window.subtitle}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* 手機版：垂直堆疊 */}
@@ -86,35 +87,36 @@ export default function Windows98MultiWindow({ windows, className = '' }: Window
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-            {/* 視窗標題欄 */}
-            <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0">
-              <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-                {window.title}.exe
-              </span>
-            </div>
-            
-            {/* 視窗內容 */}
-            <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg">
-              <div className="text-center space-y-4">
-                <h3 className="text-lg font-bold text-black" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-                  {window.subtitle}
-                </h3>
-                <p className="text-black text-sm leading-relaxed">
-                  {window.description}
-                </p>
-                {window.imageUrl && (
-                  <div className="flex justify-center">
-                    <img 
-                      src={window.imageUrl} 
-                      alt={window.subtitle}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                  </div>
-                )}
+              {/* 視窗標題欄 */}
+              <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0">
+                <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                  {window.title}.exe
+                </span>
               </div>
-            </div>
-          </motion.div>
-        ))}
+              
+              {/* 視窗內容 */}
+              <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg">
+                <div className="text-center space-y-4">
+                  <h3 className="text-lg font-bold text-black" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    {window.subtitle}
+                  </h3>
+                  <p className="text-black text-sm leading-relaxed">
+                    {window.description}
+                  </p>
+                  {window.imageUrl && (
+                    <div className="flex justify-center">
+                      <img 
+                        src={window.imageUrl} 
+                        alt={window.subtitle}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
