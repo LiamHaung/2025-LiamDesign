@@ -564,18 +564,12 @@ export default function ComponentTestPage() {
           </h2>
           
           <div className="space-y-8">
-            {/* 響應式測試 - 只保留 RWD 版本 */}
+            {/* 響應式測試 - 所有版本都只顯示一欄 */}
             <div>
               <h3 className="text-lg font-semibold mb-4">響應式測試 (RWD)</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="w-full">
+              <div className="flex justify-center">
+                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
                   <ProfileCard />
-                </div>
-                <div className="w-full">
-                  <ProfileCard />
-                </div>
-                <div className="w-full">
-                  <ProfileCard animated={false} />
                 </div>
               </div>
             </div>
