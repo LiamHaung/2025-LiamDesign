@@ -7,6 +7,7 @@ import IntroCard from '../../components/IntroCard';
 import Windows98Carousel from '../../components/Windows98Carousel';
 import Windows98MultiWindow from '../../components/Windows98MultiWindow';
 import RotationTest from '../../components/RotationTest';
+import RetroWindowLayout from '../../components/RetroWindowLayout';
 
 export default function ComponentTestPage() {
   return (
@@ -515,6 +516,17 @@ export default function ComponentTestPage() {
             旋轉效果測試區
           </h2>
           <RotationTest />
+        </section>
+
+        {/* 復古視窗布局測試 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            復古視窗布局測試區
+          </h2>
+          <RetroWindowLayout />
         </section>
 
         {/* Intro Card Section */}
