@@ -79,7 +79,8 @@ export default function Home() {
   
   // 滾動分段狀態管理 (已移除)
   
-  // 手機版漢堡選單狀態 (已移除)
+  // 手機版選單視窗狀態
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -752,13 +753,258 @@ export default function Home() {
                   e.currentTarget.style.transform = 'scale(1)';
                 }}
                 onClick={() => {
-                  // 暫時沒有功能，等整體網頁做好再串連
-                  console.log('Menu icon clicked - 功能待開發');
+                  setMobileMenuOpen(!mobileMenuOpen);
                 }}
               >
                 ☰
               </div>
             </div>
+
+            {/* 手機版選單視窗 */}
+            {mobileMenuOpen && (
+              <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ zIndex: 10001 }}>
+                <div className="win98-window relative" style={{
+                  width: '320px',
+                  maxWidth: '90vw',
+                  background: '#c0c0c0',
+                  border: '2px outset #c0c0c0',
+                  fontFamily: 'var(--font-zpix), monospace',
+                  overflow: 'hidden'
+                }}>
+                  {/* Windows 98 標題列 */}
+                  <div className="win98-titlebar" style={{
+                    background: 'linear-gradient(90deg, #003EC3 0%, #002A8A 100%)',
+                    color: 'white',
+                    padding: '4px 6px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                  }}>
+                    <span>選單 Menu</span>
+                    <button
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={{
+                        background: '#c0c0c0',
+                        border: '1px outset #c0c0c0',
+                        color: 'black',
+                        width: '16px',
+                        height: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        fontSize: '10px',
+                        fontFamily: 'var(--font-zpix), monospace'
+                      }}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                      }}
+                      onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  {/* 選單內容 */}
+                  <div style={{ padding: '8px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      {/* 返回 Return */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到頂部
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                      >
+                        <span>🏠</span>
+                        <span>返回 Return</span>
+                      </div>
+
+                      {/* 關於 Liam */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到 ProfileCard 區塊
+                          const profileSection = document.querySelector('.profile-section');
+                          if (profileSection) {
+                            profileSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                      >
+                        <span>👤</span>
+                        <span>關於 Liam</span>
+                      </div>
+
+                      {/* 設計 Design */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到設計區塊
+                          const designSection = document.querySelector('.design-section');
+                          if (designSection) {
+                            designSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                      >
+                        <span>🎨</span>
+                        <span>設計 Design</span>
+                      </div>
+
+                      {/* 插畫 Illustration */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到插畫區塊
+                          const illustrationSection = document.querySelector('.illustration-section');
+                          if (illustrationSection) {
+                            illustrationSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
+                      >
+                        <span>🖼️</span>
+                        <span>插畫 Illustration</span>
+                      </div>
+
+                      {/* 品牌 Brand */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到品牌區塊
+                          const brandSection = document.querySelector('.brand-section');
+                          if (brandSection) {
+                            brandSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
+                      >
+                        <span>🏷️</span>
+                        <span>品牌 Brand</span>
+                      </div>
+
+                      {/* 聯繫 Liam */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到聯絡區塊
+                          const contactSection = document.querySelector('.contact-section');
+                          if (contactSection) {
+                            contactSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#c0c0c0',
+                          border: '1px outset #c0c0c0',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.1s ease'
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          (e.target as HTMLElement).style.border = '1px inset #c0c0c0';
+                        }}
+                        onMouseUp={(e) => (e.target as HTMLElement).style.border = '1px outset #c0c0c0'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.border = '1px inset #c0c0c0'}
+                      >
+                        <span>📧</span>
+                        <span>聯繫 Liam</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="fixed right-0 bottom-0 z-50 p-6" style={{ 
               transform: 'scale(1.5)', 
@@ -1315,7 +1561,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* ProfileCard Intro 區塊 - 取代原本的自我介紹區塊 */}
-            <div className="w-full max-w-screen-2xl mx-auto px-1 md:px-8 py-12 md:py-16">
+            <div className="w-full max-w-screen-2xl mx-auto px-1 md:px-8 py-12 md:py-16 profile-section">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
