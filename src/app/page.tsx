@@ -1413,7 +1413,7 @@ Tel: 03-9XX-XXXX
                 viewport={{ once: true, amount: 0.35 }}
                 className="w-full flex justify-center"
               >
-                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
+                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-4xl xl:max-w-6xl">
                   <ProfileCard />
                 </div>
               </motion.div>
