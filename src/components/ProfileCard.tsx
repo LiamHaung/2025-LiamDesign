@@ -146,9 +146,7 @@ export default function ProfileCard({
       className="relative shadow-none" 
       style={{ 
         boxShadow: 'none',
-        border: '10px solid red',
-        backgroundColor: 'rgba(255, 0, 0, 0.2)',
-        transform: 'scale(1.2)',
+        transform: 'scale(1.5)',
         transformOrigin: 'center center'
       }}
     >
