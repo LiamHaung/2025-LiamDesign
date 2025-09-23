@@ -119,7 +119,22 @@ export default function ProfileCard({
   }
 
   return (
-    <div className="relative shadow-none md:scale-150" style={{ boxShadow: 'none' }}>
+    <div 
+      className="relative shadow-none" 
+      style={{ 
+        boxShadow: 'none',
+        transform: 'scale(1)',
+        transformOrigin: 'center center'
+      }}
+      // 使用 styled-jsx 來實現響應式放大
+    >
+      <style jsx>{`
+        @media (min-width: 768px) {
+          div {
+            transform: scale(1.5) !important;
+          }
+        }
+      `}</style>
       {cardContent}
     </div>
   );
