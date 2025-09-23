@@ -119,7 +119,7 @@ export default function ProfileCard({
   }
 
   return (
-    <div className="relative shadow-none" style={{ boxShadow: 'none' }}>
+    <div className="relative shadow-none md:scale-150" style={{ boxShadow: 'none' }}>
       {cardContent}
     </div>
   );
