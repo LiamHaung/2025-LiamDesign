@@ -822,14 +822,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -855,14 +863,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -888,14 +904,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -921,14 +945,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -954,14 +986,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -987,14 +1027,22 @@ export default function Home() {
                         style={{
                           padding: '8px 12px',
                           background: '#000000',
-                          border: '1px outset #333333',
+                          border: 'none',
                           color: 'white',
                           cursor: 'pointer',
                           fontSize: '12px',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          transition: 'all 0.1s ease'
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
