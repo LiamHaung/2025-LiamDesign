@@ -9,8 +9,8 @@ import { motion } from 'framer-motion';
 import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 import TestCardAlt from '../components/TestCardAlt';
 import CardCarousel from '../components/CardCarousel';
-import CharacterWindow from '../components/CharacterWindow';
-import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
+// import CharacterWindow from '../components/CharacterWindow';
+// import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
 import ParallaxSection from '../components/ParallaxSection';
 import ProfileCard from '../components/ProfileCard';
 
@@ -79,8 +79,7 @@ export default function Home() {
   
   // 滾動分段狀態管理 (已移除)
   
-  // 手機版漢堡選單狀態
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // 手機版漢堡選單狀態 (已移除)
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -230,22 +229,9 @@ export default function Home() {
     }));
     setActiveWindow('loginCard'); // 預設第一個視窗為活動視窗
     // setShowVerticalWindow(false); // 隱藏 VerticalWindow (手機版)
-    setMobileMenuOpen(false); // 關閉手機選單
   };
 
-  // 回到主頁
-  const goToHome = () => {
-    setWindowStates(prev => ({
-      ...prev,
-      loginCard: { minimized: false, maximized: false, closed: true },
-      textWindow: { minimized: false, maximized: false, closed: true },
-      carouselWindow: { minimized: false, maximized: false, closed: true },
-    illustrationWindow: { minimized: false, maximized: false, closed: true },
-      contactForm: { minimized: false, maximized: false, closed: true }
-    }));
-    // setShowVerticalWindow(true); // 顯示 VerticalWindow
-    setMobileMenuOpen(false); // 關閉手機選單
-  };
+  // 回到主頁 (已移除，等整體網頁做好再串連)
 
   // 計算視窗的 z-index
   const getWindowZIndex = (windowId: string) => {
@@ -736,118 +722,42 @@ export default function Home() {
               <ParallaxSection show={true} />
             </div>
 
-            {/* 手機版漢堡選單 - 在跑馬燈和主內容之間 */}
-            <div className="block lg:hidden w-full py-3 flex justify-center relative" style={{ 
-              zIndex: 50, 
-              background: '#2a2a2a',
-              minHeight: '60px',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(!mobileMenuOpen);
-                }}
+            {/* 手機版固定小圖示 */}
+            <div className="fixed top-4 right-4 z-50 lg:hidden" style={{ zIndex: 10000 }}>
+              <div
                 style={{
-                  width: '44px',
-                  height: '44px',
-                  background: '#c0c0c0',
-                  border: '2px outset #c0c0c0',
+                  width: '40px',
+                  height: '40px',
+                  background: '#003EC3',
+                  border: '2px solid #003EC3',
+                  borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                   fontFamily: 'var(--font-zpix), monospace',
-                  fontSize: '18px',
-                  position: 'relative',
-                  zIndex: 51
+                  fontSize: '16px',
+                  color: '#FFFFF3',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                  transition: 'all 0.2s ease'
                 }}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  (e.target as HTMLElement).style.border = '2px inset #c0c0c0';
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#3aaf3a';
+                  e.currentTarget.style.borderColor = '#3aaf3a';
+                  e.currentTarget.style.transform = 'scale(1.05)';
                 }}
-                onMouseUp={(e) => (e.target as HTMLElement).style.border = '2px outset #c0c0c0'}
-                onMouseLeave={(e) => (e.target as HTMLElement).style.border = '2px outset #c0c0c0'}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#003EC3';
+                  e.currentTarget.style.borderColor = '#003EC3';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+                onClick={() => {
+                  // 暫時沒有功能，等整體網頁做好再串連
+                  console.log('Menu icon clicked - 功能待開發');
+                }}
               >
                 ☰
-              </button>
-              {mobileMenuOpen && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: '#c0c0c0',
-                  border: '2px outset #c0c0c0',
-                  minWidth: '200px',
-                  zIndex: 52
-                }}>
-                  <div onClick={goToHome} style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>🏠</span>
-                    <span>回主頁</span>
-                  </div>
-                                     <div onClick={openIllustrationFolder} style={{
-                     padding: '12px 16px',
-                     cursor: 'pointer',
-                     borderBottom: '1px solid #808080',
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '8px',
-                     fontFamily: 'var(--font-zpix), monospace',
-                     fontSize: '12px'
-                   }}>
-                     <span>🎨</span>
-                     <span>插畫</span>
-                   </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>🎨</span>
-                    <span>設計</span>
-                  </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #808080',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>🏷️</span>
-                    <span>品牌</span>
-                  </div>
-                  <div style={{
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontFamily: 'var(--font-zpix), monospace',
-                    fontSize: '12px'
-                  }}>
-                    <span>📧</span>
-                    <span>聯絡我們</span>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
 
             <div className="fixed right-0 bottom-0 z-50 p-6" style={{ 
@@ -1882,10 +1792,8 @@ Tel: 03-9XX-XXXX
 
         /* 桌面版設置 */
         @media (min-width: 1024px) {
-          /* 強制隱藏漢堡選單 */
-          .block.lg\\:hidden {
-            display: none !important;
-          }
+          /* 桌面版樣式 */
+        }
           
           .desktop-section {
             padding: clamp(10px, 3vw, 20px) !important;
