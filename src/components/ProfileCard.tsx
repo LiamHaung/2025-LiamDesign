@@ -20,7 +20,7 @@ export default function ProfileCard({
       {/* 主要內容區域 */}
       <div className="flex h-full">
         {/* 左側：角色區域 */}
-        <div className="flex-1 flex flex-col justify-end relative">
+        <div className="flex-1 flex flex-col justify-end relative border-r-4 border-black">
           {/* 角色圖片 */}
           <div className="flex-1 flex items-center justify-center p-4">
             <img 
@@ -94,22 +94,14 @@ export default function ProfileCard({
         </div>
       </div>
 
-      {/* 底部 Hashtag */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-        <div className="flex justify-center space-x-4">
-          <span 
-            className="text-white text-sm font-bold"
-            style={{ fontFamily: 'var(--font-zpix), monospace' }}
-          >
-            #Own the Day
-          </span>
-          <span 
-            className="text-white text-sm font-bold"
-            style={{ fontFamily: 'var(--font-zpix), monospace' }}
-          >
-            #Go Live Today
-          </span>
-        </div>
+      {/* 底部 Slogan 區域 */}
+      <div className="bg-black text-center py-3">
+        <span 
+          className="text-white text-sm font-bold"
+          style={{ fontFamily: 'var(--font-zpix), monospace' }}
+        >
+          #Own the Day #Go Live Today
+        </span>
       </div>
     </div>
   );
