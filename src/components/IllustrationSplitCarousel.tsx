@@ -131,7 +131,7 @@ export default function IllustrationSplitCarousel({
           <div className="p-2 md:p-0">
             <motion.h2
               key={`t-${currentIndex}`}
-              className="text-2xl md:text-4xl font-bold text-[#003EC3] mb-3"
+              className="text-2xl md:text-4xl font-bold text-white mb-3"
               style={{ fontFamily: 'var(--font-zpix), monospace' }}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,11 +141,10 @@ export default function IllustrationSplitCarousel({
             </motion.h2>
             <motion.p
               key={`d-${currentIndex}`}
-              className="leading-relaxed"
+              className="leading-relaxed text-white"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-              style={{ color: '#003EC3' }}
             >
               {currentItem.description}
             </motion.p>
