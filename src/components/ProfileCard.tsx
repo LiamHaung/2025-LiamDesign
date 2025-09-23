@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface ProfileCardProps {
@@ -11,6 +11,18 @@ export default function ProfileCard({
   className = '', 
   animated = true 
 }: ProfileCardProps) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   const cardContent = (
     <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
@@ -120,10 +132,12 @@ export default function ProfileCard({
 
   return (
     <div 
-      className="relative shadow-none lg:scale-150" 
+      className="relative shadow-none" 
       style={{ 
         boxShadow: 'none',
-        transformOrigin: 'center center'
+        transform: isDesktop ? 'scale(1.5)' : 'scale(1)',
+        transformOrigin: 'center center',
+        transition: 'transform 0.3s ease'
       }}
     >
       {cardContent}
