@@ -120,23 +120,13 @@ export default function ProfileCard({
 
   return (
     <div 
-      className="relative shadow-none" 
+      className="relative shadow-none lg:scale-150" 
       style={{ 
         boxShadow: 'none',
-        transform: 'scale(1)',
         transformOrigin: 'center center'
       }}
     >
-      <style jsx global>{`
-        @media (min-width: 1024px) {
-          .profile-card-desktop-scale {
-            transform: scale(1.5) !important;
-          }
-        }
-      `}</style>
-      <div className="profile-card-desktop-scale">
-        {cardContent}
-      </div>
+      {cardContent}
     </div>
   );
 }
