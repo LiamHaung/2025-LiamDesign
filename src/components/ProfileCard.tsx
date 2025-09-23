@@ -146,27 +146,12 @@ export default function ProfileCard({
       className="relative shadow-none" 
       style={{ 
         boxShadow: 'none',
-        transform: isDesktop ? 'scale(1.5)' : 'scale(1)',
-        transformOrigin: 'center center',
-        transition: 'transform 0.3s ease',
-        // 添加明顯的視覺效果來測試
-        border: isDesktop ? '5px solid red' : 'none',
-        backgroundColor: isDesktop ? 'rgba(255, 0, 0, 0.1)' : 'transparent'
+        border: '10px solid red',
+        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+        transform: 'scale(1.2)',
+        transformOrigin: 'center center'
       }}
     >
-      {/* 調試信息 */}
-      <div style={{ 
-        position: 'absolute', 
-        top: '-30px', 
-        left: '0', 
-        background: 'yellow', 
-        padding: '5px', 
-        fontSize: '12px',
-        zIndex: 1000
-      }}>
-        螢幕寬度: {typeof window !== 'undefined' ? window.innerWidth : 'N/A'} | 
-        桌面版本: {isDesktop ? '是' : '否'}
-      </div>
       {cardContent}
     </div>
   );
