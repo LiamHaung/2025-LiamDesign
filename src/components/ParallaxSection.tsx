@@ -52,7 +52,6 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
   
   // 背景圖片切換狀態
   const [currentBgImage, setCurrentBgImage] = useState('/hero.png');
-  const bgImages = ['/hero.png', '/hero-2.png'];
   
   // 打字機效果狀態
   const [displayText, setDisplayText] = useState('');
