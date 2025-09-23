@@ -4,6 +4,7 @@ import CheckerboardPattern from '../../components/test/CheckerboardPattern';
 import DigitalClock from '../../components/test/DigitalClock';
 import AnimatedCheckerboard from '../../components/test/AnimatedCheckerboard';
 import IntroCard from '../../components/IntroCard';
+import Windows98Carousel from '../../components/Windows98Carousel';
 
 export default function ComponentTestPage() {
   return (
@@ -377,41 +378,85 @@ export default function ComponentTestPage() {
               </div>
             </div>
 
-            {/* 版本 5：Windows 98 視窗風格 */}
-            <div>
-              <h4 className="text-md font-medium mb-4">版本 5：Windows 98 視窗風格</h4>
-              <div className="flex justify-center">
-                <div className="relative" style={{ transform: 'rotate(1deg)' }}>
-                  {/* 視窗標題欄 */}
-                  <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '400px' }}>
-                    <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>Liam.exe</span>
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                  </div>
-                  
-                  {/* 視窗內容 */}
-                  <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg" style={{ width: '400px' }}>
-                    <IntroCard
-                      title="About Liam"
-                      subtitle="Designer & Developer"
-                      description="把想法變成會呼吸的設計。專注於創造美觀且實用的數位體驗。"
-                      variant="retro98"
-                      size="medium"
-                      animated={false}
-                      className="shadow-none border-0 bg-transparent"
-                      style={{
-                        transform: 'none',
-                        boxShadow: 'none',
-                        fontFamily: 'var(--font-zpix), monospace'
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+             {/* 版本 5：Windows 98 視窗風格 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">版本 5：Windows 98 視窗風格</h4>
+               <div className="flex justify-center">
+                 <div className="relative" style={{ transform: 'rotate(1deg)' }}>
+                   {/* 視窗標題欄 */}
+                   <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '400px' }}>
+                     <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>Liam.exe</span>
+                     <div className="flex space-x-2">
+                       <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                       <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                     </div>
+                   </div>
+
+                   {/* 視窗內容 */}
+                   <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg" style={{ width: '400px' }}>
+                     <IntroCard
+                       title="About Liam"
+                       subtitle="Designer & Developer"
+                       description="把想法變成會呼吸的設計。專注於創造美觀且實用的數位體驗。"
+                       variant="retro98"
+                       size="medium"
+                       animated={false}
+                       className="shadow-none border-0 bg-transparent"
+                       style={{
+                         transform: 'none',
+                         boxShadow: 'none',
+                         fontFamily: 'var(--font-zpix), monospace'
+                       }}
+                     />
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+             {/* 版本 6：Windows 98 四技能輪播 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">版本 6：Windows 98 四技能輪播</h4>
+               <div className="flex justify-center">
+                 <Windows98Carousel
+                   windows={[
+                     {
+                       id: 'illustration',
+                       title: 'Illustration',
+                       subtitle: '插畫設計',
+                       description: '將創意想法轉化為視覺藝術，用色彩和線條訴說故事。',
+                       imageUrl: '/illustration_1.png',
+                       rotation: -2
+                     },
+                     {
+                       id: 'design',
+                       title: 'Design',
+                       subtitle: 'UI/UX 設計',
+                       description: '創造直觀且美觀的使用者體驗，讓每個互動都充滿意義。',
+                       imageUrl: '/illustration_2.png',
+                       rotation: 1
+                     },
+                     {
+                       id: 'print',
+                       title: 'Print',
+                       subtitle: '印刷設計',
+                       description: '將數位設計完美呈現於實體媒介，注重細節與質感。',
+                       imageUrl: '/illustration_3.png',
+                       rotation: -1
+                     },
+                     {
+                       id: 'brand',
+                       title: 'Brand',
+                       subtitle: '品牌設計',
+                       description: '打造獨特的品牌識別，讓每個品牌都有屬於自己的聲音。',
+                       imageUrl: '/illustration_4.png',
+                       rotation: 2
+                     }
+                   ]}
+                   className="max-w-6xl"
+                 />
+               </div>
+             </div>
           </div>
         </section>
 
@@ -575,24 +620,36 @@ export default function ComponentTestPage() {
                 <li>style: 自訂樣式</li>
               </ul>
             </div>
-            <div>
-              <h3 className="font-semibold">IntroCard 介紹卡片元件：</h3>
-              <ul className="ml-4 list-disc">
-                <li>title: 主標題 (必填)</li>
-                <li>subtitle: 副標題 (必填)</li>
-                <li>description: 描述文字 (必填)</li>
-                <li>imageUrl: 圖片網址 (選填)</li>
-                <li>buttonText: 按鈕文字 (選填)</li>
-                <li>onButtonClick: 按鈕點擊事件 (選填)</li>
-                <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' | 'retro98' (預設: 'default')</li>
-                <li>size: 尺寸 'small' | 'medium' | 'large' (預設: 'medium')</li>
-                <li>animated: 是否啟用動畫 (預設: true)</li>
-                <li>className: 自訂 CSS 類別</li>
-                <li>style: 自訂樣式</li>
-                <li><strong>特色：支援 Framer Motion 動畫、響應式設計、多種樣式變體</strong></li>
-                <li><strong>retro98 變體：Windows 98 復古風格，包含像素裝飾和復古配色</strong></li>
-              </ul>
-            </div>
+       <div>
+         <h3 className="font-semibold">IntroCard 介紹卡片元件：</h3>
+         <ul className="ml-4 list-disc">
+           <li>title: 主標題 (必填)</li>
+           <li>subtitle: 副標題 (必填)</li>
+           <li>description: 描述文字 (必填)</li>
+           <li>imageUrl: 圖片網址 (選填)</li>
+           <li>buttonText: 按鈕文字 (選填)</li>
+           <li>onButtonClick: 按鈕點擊事件 (選填)</li>
+           <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' | 'retro98' (預設: 'default')</li>
+           <li>size: 尺寸 'small' | 'medium' | 'large' (預設: 'medium')</li>
+           <li>animated: 是否啟用動畫 (預設: true)</li>
+           <li>className: 自訂 CSS 類別</li>
+           <li>style: 自訂樣式</li>
+           <li><strong>特色：支援 Framer Motion 動畫、響應式設計、多種樣式變體</strong></li>
+           <li><strong>retro98 變體：Windows 98 復古風格，包含像素裝飾和復古配色</strong></li>
+         </ul>
+       </div>
+
+       <div className="mt-6">
+         <h3 className="font-semibold">Windows98Carousel 輪播元件：</h3>
+         <ul className="ml-4 list-disc">
+           <li>windows: 視窗資料陣列 (必填)</li>
+           <li>className: 自訂 CSS 類別 (選填)</li>
+           <li><strong>桌面版：四欄位並排顯示，每個視窗保持旋轉效果</strong></li>
+           <li><strong>手機版：重疊卡片輪播，底部中央按鈕切換</strong></li>
+           <li><strong>特色：響應式設計、Framer Motion 動畫、頁數指示器</strong></li>
+           <li><strong>視窗資料結構：id, title, subtitle, description, imageUrl, rotation</strong></li>
+         </ul>
+       </div>
           </div>
         </section>
       </div>
