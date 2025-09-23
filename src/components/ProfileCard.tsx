@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ProfileCardProps {
@@ -24,7 +24,7 @@ export default function ProfileCard({
   // ProfileCard 的滾動視差效果
   const cardY = useTransform(scrollYProgress, [0.2, 0.5], [100, 0]);
   const cardOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  // const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
