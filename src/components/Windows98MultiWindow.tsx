@@ -20,16 +20,22 @@ export default function Windows98MultiWindow({ windows, className = '' }: Window
   return (
     <div className={`w-full ${className}`}>
       {/* 桌面版：多個視窗並排 */}
-      <div className="hidden lg:flex lg:justify-center lg:items-start lg:gap-8 lg:flex-wrap">
-        {windows.map((window, index) => (
-          <motion.div
-            key={window.id}
-            className="relative flex-shrink-0"
-            style={{ transform: `rotate(${window.rotation}deg)` }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-          >
+      <div className="hidden lg:block lg:overflow-visible">
+        <div className="relative" style={{ height: '400px' }}>
+          {windows.map((window, index) => (
+            <motion.div
+              key={window.id}
+              className="absolute"
+              style={{ 
+                transform: `rotate(${window.rotation}deg)`,
+                left: `${index * 280}px`,
+                top: '50px',
+                transformOrigin: 'center center'
+              }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
             {/* 視窗標題欄 */}
             <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '300px' }}>
               <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
@@ -62,19 +68,24 @@ export default function Windows98MultiWindow({ windows, className = '' }: Window
       </div>
 
       {/* 手機版：垂直堆疊 */}
-      <div className="lg:hidden space-y-6">
-        {windows.map((window, index) => (
-          <motion.div
-            key={window.id}
-            className="relative mx-auto"
-            style={{ 
-              transform: `rotate(${window.rotation}deg)`,
-              width: '280px'
-            }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-          >
+      <div className="lg:hidden">
+        <div className="relative" style={{ height: '600px' }}>
+          {windows.map((window, index) => (
+            <motion.div
+              key={window.id}
+              className="absolute"
+              style={{ 
+                transform: `rotate(${window.rotation}deg)`,
+                left: '50%',
+                top: `${index * 120}px`,
+                transformOrigin: 'center center',
+                marginLeft: '-140px',
+                width: '280px'
+              }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
             {/* 視窗標題欄 */}
             <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0">
               <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
