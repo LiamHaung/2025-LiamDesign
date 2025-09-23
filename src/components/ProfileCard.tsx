@@ -129,7 +129,7 @@ export default function ProfileCard({
       // 使用 styled-jsx 來實現響應式放大
     >
       <style jsx>{`
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           div {
             transform: scale(1.5) !important;
           }
