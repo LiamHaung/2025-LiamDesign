@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ProfileCardProps {
@@ -24,29 +24,29 @@ export default function ProfileCard({
   // ProfileCard 的滾動視差效果
   const cardY = useTransform(scrollYProgress, [0.2, 0.5], [100, 0]);
   const cardOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  const [isDesktop, setIsDesktop] = useState(false);
+  // const [isDesktop, setIsDesktop] = useState(false); // 未使用，暫時註解
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      if (typeof window !== 'undefined') {
-        const width = window.innerWidth;
-        const isDesktopSize = width >= 1024;
-        console.log('螢幕寬度:', width, '是否為桌面版本:', isDesktopSize);
-        setIsDesktop(isDesktopSize);
-      }
-    };
+  // useEffect(() => {
+  //   const checkScreenSize = () => {
+  //     if (typeof window !== 'undefined') {
+  //       const width = window.innerWidth;
+  //       const isDesktopSize = width >= 1024;
+  //       console.log('螢幕寬度:', width, '是否為桌面版本:', isDesktopSize);
+  //       setIsDesktop(isDesktopSize);
+  //     }
+  //   };
 
-    checkScreenSize();
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', checkScreenSize);
-    }
+  //   checkScreenSize();
+  //   if (typeof window !== 'undefined') {
+  //     window.addEventListener('resize', checkScreenSize);
+  //   }
     
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', checkScreenSize);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (typeof window !== 'undefined') {
+  //       window.removeEventListener('resize', checkScreenSize);
+  //     }
+  //   };
+  // }, []); // 未使用，暫時註解
   const cardContent = (
     <div ref={containerRef} className="w-full">
       {/* 標題區域 - 滾動視差效果 */}

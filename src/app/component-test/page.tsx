@@ -280,10 +280,10 @@ export default function ComponentTestPage() {
                 {/* 英文介紹 */}
                 <div className="space-y-3">
                   <p className="text-lg leading-relaxed">
-                    I'm <span className="font-bold text-blue-600">Liam</span> - I love turning ideas into designs that breathe.
+                    I&apos;m <span className="font-bold text-blue-600">Liam</span> - I love turning ideas into designs that breathe.
                   </p>
                   <p className="text-lg leading-relaxed text-gray-700">
-                    Take it easy, look around, and maybe we'll start something together.
+                    Take it easy, look around, and maybe we&apos;ll start something together.
                   </p>
                 </div>
 
@@ -745,8 +745,8 @@ export default function ComponentTestPage() {
            <li>imageUrl: 圖片網址 (選填)</li>
            <li>buttonText: 按鈕文字 (選填)</li>
            <li>onButtonClick: 按鈕點擊事件 (選填)</li>
-           <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' | 'retro98' (預設: 'default')</li>
-           <li>size: 尺寸 'small' | 'medium' | 'large' (預設: 'medium')</li>
+           <li>variant: 樣式變體 &apos;default&apos; | &apos;minimal&apos; | &apos;detailed&apos; | &apos;retro98&apos; (預設: &apos;default&apos;)</li>
+           <li>size: 尺寸 &apos;small&apos; | &apos;medium&apos; | &apos;large&apos; (預設: &apos;medium&apos;)</li>
            <li>animated: 是否啟用動畫 (預設: true)</li>
            <li>className: 自訂 CSS 類別</li>
            <li>style: 自訂樣式</li>

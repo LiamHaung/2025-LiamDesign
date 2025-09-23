@@ -23,9 +23,9 @@ export default function Windows98Carousel({ windows, className = '' }: Windows98
     setCurrentIndex((prev) => (prev + 1) % windows.length);
   };
 
-  const prevWindow = () => {
-    setCurrentIndex((prev) => (prev - 1 + windows.length) % windows.length);
-  };
+  // const prevWindow = () => {
+  //   setCurrentIndex((prev) => (prev - 1 + windows.length) % windows.length);
+  // }; // 未使用，暫時註解
 
   return (
     <div className={`w-full ${className}`}>

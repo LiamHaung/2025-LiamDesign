@@ -88,12 +88,7 @@ export default function IntroCard({
     visible: { 
       opacity: 1, 
       y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        staggerChildren: 0.1
-      }
+      scale: 1
     }
   };
 
@@ -101,8 +96,7 @@ export default function IntroCard({
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
+      y: 0
     }
   };
 
