@@ -12,6 +12,7 @@ import CardCarousel from '../components/CardCarousel';
 import CharacterWindow from '../components/CharacterWindow';
 import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
 import ParallaxSection from '../components/ParallaxSection';
+import ProfileCard from '../components/ProfileCard';
 
 export default function Home() {
   // 品牌案例數據
@@ -1403,89 +1404,16 @@ Tel: 03-9XX-XXXX
               </section>
             </div>
 
-            {/* Intro block before sections - wrapped in max-w-screen-2xl container */}
+            {/* ProfileCard Intro 區塊 - 取代原本的自我介紹區塊 */}
             <div className="w-full max-w-screen-2xl mx-auto px-1 md:px-8 py-12 md:py-16">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true, amount: 0.35 }}
-                className="w-full"
+                className="w-full flex justify-center"
               >
-                {/* 統一上下排列：視窗在上，文字在下 */}
-                <div className="flex flex-col items-center gap-4 md:gap-6 max-w-full">
-                  {/* Character 視窗 */}
-                  <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex justify-center">
-                    <CharacterWindow 
-                      className="w-full"
-                      style={{ maxWidth: '100%' }}
-                    />
-                  </div>
-                  
-                  {/* 文字內容 */}
-                  <div 
-                    className="w-full max-w-xs sm:max-w-sm md:max-w-md flex flex-col text-center px-2 sm:px-4"
-                    style={{
-                      fontFamily: "var(--font-zpix), monospace",
-                      lineHeight: "1.5",
-                      color: "#003EC3",
-                      fontWeight: 800,
-                      fontSize: "clamp(10px, 1.5vw, 14px)",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      wordWrap: "break-word",
-                      overflowWrap: "break-word",
-                      hyphens: "auto",
-                      maxWidth: "calc(100vw - 32px)"
-                    }}
-                  >
-                    {/* 標籤 - 使用和老虎機相同的設定 */}
-                    <div style={{
-                      fontSize: 'clamp(14px, 3vw, 24px)',
-                      fontWeight: 'bold',
-                      color: '#FFFFF3',
-                      backgroundColor: '#003EC3',
-                      display: 'inline-block',
-                      padding: '4px 8px',
-                      borderRadius: '6px',
-                      letterSpacing: '1px',
-                      lineHeight: '1.4',
-                      wordBreak: 'break-word',
-                      whiteSpace: 'normal',
-                      marginBottom: '16px',
-                      marginTop: '20px' // 手機版增加與上方視窗的距離
-                    }}
-                    className="self-center">
-                      自我介紹 Ｉ About Liam
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <div className="space-y-2">
-                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>我是 Liam，喜歡把想法變成會呼吸的設計。</p>
-                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>放輕鬆、慢慢逛，或許下一個專案就從這裡開始。</p>
-                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>I&apos;m Liam — I love turning ideas into designs that breathe.</p>
-                        <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>Take it easy, look around, and maybe we&apos;ll start something together.</p>
-                      </div>
-                      
-                      {/* 方格元件 - 撐滿整個右側容器 */}
-                      <div className="w-full flex justify-start items-end">
-                        <AnimatedCheckerboard 
-                          rows={2} 
-                          cols={40} 
-                          cellSize={20} 
-                          animationColor="#FF6B35" 
-                          direction="left-to-right" 
-                          animationSpeed={200}
-                          className="w-full"
-                          style={{ 
-                            width: '100%',
-                            minWidth: '100%'
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ProfileCard />
               </motion.div>
             </div>            {/* 四個滾動分段 */}
             {/* Section 1: Design */}
