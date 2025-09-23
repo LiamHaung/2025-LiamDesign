@@ -353,6 +353,65 @@ export default function ComponentTestPage() {
                 />
               </div>
             </div>
+
+            {/* 版本 4：Windows 98 復古風格 */}
+            <div>
+              <h4 className="text-md font-medium mb-4">版本 4：Windows 98 復古風格</h4>
+              <div className="flex justify-center">
+                <IntroCard
+                  title="Welcome to Liam's Portfolio"
+                  subtitle="UI/UX Designer & Developer"
+                  description="我是 Liam，喜歡把想法變成會呼吸的設計。結合創意與技術，將想法轉化為會呼吸的設計。放輕鬆、慢慢逛，或許下一個專案就從這裡開始。"
+                  imageUrl="/illustration_3.png"
+                  buttonText="Enter Portfolio"
+                  onButtonClick={() => alert('Enter Portfolio!')}
+                  variant="retro98"
+                  size="large"
+                  className="relative"
+                  style={{
+                    transform: 'rotate(-2deg)',
+                    boxShadow: '8px 8px 0px rgba(0, 0, 0, 0.3)',
+                    fontFamily: 'var(--font-zpix), monospace'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* 版本 5：Windows 98 視窗風格 */}
+            <div>
+              <h4 className="text-md font-medium mb-4">版本 5：Windows 98 視窗風格</h4>
+              <div className="flex justify-center">
+                <div className="relative" style={{ transform: 'rotate(1deg)' }}>
+                  {/* 視窗標題欄 */}
+                  <div className="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex items-center justify-between mb-0" style={{ width: '400px' }}>
+                    <span className="font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>Liam.exe</span>
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  {/* 視窗內容 */}
+                  <div className="bg-gray-300 border-4 border-gray-400 p-6 rounded-b-lg" style={{ width: '400px' }}>
+                    <IntroCard
+                      title="About Liam"
+                      subtitle="Designer & Developer"
+                      description="把想法變成會呼吸的設計。專注於創造美觀且實用的數位體驗。"
+                      variant="retro98"
+                      size="medium"
+                      animated={false}
+                      className="shadow-none border-0 bg-transparent"
+                      style={{
+                        transform: 'none',
+                        boxShadow: 'none',
+                        fontFamily: 'var(--font-zpix), monospace'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -525,12 +584,13 @@ export default function ComponentTestPage() {
                 <li>imageUrl: 圖片網址 (選填)</li>
                 <li>buttonText: 按鈕文字 (選填)</li>
                 <li>onButtonClick: 按鈕點擊事件 (選填)</li>
-                <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' (預設: 'default')</li>
+                <li>variant: 樣式變體 'default' | 'minimal' | 'detailed' | 'retro98' (預設: 'default')</li>
                 <li>size: 尺寸 'small' | 'medium' | 'large' (預設: 'medium')</li>
                 <li>animated: 是否啟用動畫 (預設: true)</li>
                 <li>className: 自訂 CSS 類別</li>
                 <li>style: 自訂樣式</li>
                 <li><strong>特色：支援 Framer Motion 動畫、響應式設計、多種樣式變體</strong></li>
+                <li><strong>retro98 變體：Windows 98 復古風格，包含像素裝飾和復古配色</strong></li>
               </ul>
             </div>
           </div>

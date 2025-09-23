@@ -9,7 +9,7 @@ interface IntroCardProps {
   imageUrl?: string;
   buttonText?: string;
   onButtonClick?: () => void;
-  variant?: 'default' | 'minimal' | 'detailed';
+  variant?: 'default' | 'minimal' | 'detailed' | 'retro98';
   size?: 'small' | 'medium' | 'large';
   animated?: boolean;
   className?: string;
@@ -67,6 +67,13 @@ export default function IntroCard({
       subtitle: 'text-xl text-blue-600 font-semibold',
       description: 'text-gray-700 text-lg',
       button: 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'
+    },
+    retro98: {
+      card: 'bg-gray-300 border-4 border-gray-400 shadow-lg hover:shadow-xl',
+      title: 'text-2xl font-bold text-black',
+      subtitle: 'text-lg text-blue-800 font-bold',
+      description: 'text-black text-base',
+      button: 'bg-gray-200 hover:bg-gray-300 text-black border-2 border-gray-400 font-bold'
     }
   };
 
@@ -182,6 +189,45 @@ export default function IntroCard({
                 ease: "easeInOut"
               }}
             />
+          )}
+
+          {/* Windows 98 Style Decorative Elements */}
+          {variant === 'retro98' && (
+            <>
+              {/* Top-left corner decoration */}
+              <div className="absolute top-2 left-2 w-4 h-4 bg-gray-400 border-2 border-gray-500"></div>
+              {/* Top-right corner decoration */}
+              <div className="absolute top-2 right-2 w-4 h-4 bg-gray-400 border-2 border-gray-500"></div>
+              {/* Bottom-left corner decoration */}
+              <div className="absolute bottom-2 left-2 w-4 h-4 bg-gray-400 border-2 border-gray-500"></div>
+              {/* Bottom-right corner decoration */}
+              <div className="absolute bottom-2 right-2 w-4 h-4 bg-gray-400 border-2 border-gray-500"></div>
+              
+              {/* Animated pixel pattern */}
+              <motion.div
+                className="absolute top-6 right-6"
+                variants={itemVariants}
+                animate={{ 
+                  opacity: [0.3, 1, 0.3]
+                }}
+                transition={{ 
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="grid grid-cols-2 gap-1">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={`w-2 h-2 ${
+                        i % 2 === 0 ? 'bg-blue-600' : 'bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </>
           )}
         </motion.div>
       )}
