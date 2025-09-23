@@ -5,6 +5,7 @@ import DigitalClock from '../../components/test/DigitalClock';
 import AnimatedCheckerboard from '../../components/test/AnimatedCheckerboard';
 import IntroCard from '../../components/IntroCard';
 import Windows98Carousel from '../../components/Windows98Carousel';
+import Windows98MultiWindow from '../../components/Windows98MultiWindow';
 
 export default function ComponentTestPage() {
   return (
@@ -457,6 +458,50 @@ export default function ComponentTestPage() {
                  />
                </div>
              </div>
+
+             {/* 版本 7：Windows 98 多視窗並排（基於版本5） */}
+             <div>
+               <h4 className="text-md font-medium mb-4">版本 7：Windows 98 多視窗並排（基於版本5）</h4>
+               <div className="flex justify-center">
+                 <Windows98MultiWindow
+                   windows={[
+                     {
+                       id: 'illustration',
+                       title: 'Illustration',
+                       subtitle: '插畫設計',
+                       description: '將創意想法轉化為視覺藝術，用色彩和線條訴說故事。',
+                       imageUrl: '/illustration_1.png',
+                       rotation: 20
+                     },
+                     {
+                       id: 'design',
+                       title: 'Design',
+                       subtitle: 'UI/UX 設計',
+                       description: '創造直觀且美觀的使用者體驗，讓每個互動都充滿意義。',
+                       imageUrl: '/illustration_2.png',
+                       rotation: -30
+                     },
+                     {
+                       id: 'print',
+                       title: 'Print',
+                       subtitle: '印刷設計',
+                       description: '將數位設計完美呈現於實體媒介，注重細節與質感。',
+                       imageUrl: '/illustration_3.png',
+                       rotation: 30
+                     },
+                     {
+                       id: 'brand',
+                       title: 'Brand',
+                       subtitle: '品牌設計',
+                       description: '打造獨特的品牌識別，讓每個品牌都有屬於自己的聲音。',
+                       imageUrl: '/illustration_4.png',
+                       rotation: -20
+                     }
+                   ]}
+                   className="max-w-6xl"
+                 />
+               </div>
+             </div>
           </div>
         </section>
 
@@ -647,6 +692,18 @@ export default function ComponentTestPage() {
            <li><strong>桌面版：四欄位並排顯示，每個視窗保持旋轉效果</strong></li>
            <li><strong>手機版：重疊卡片輪播，底部中央按鈕切換</strong></li>
            <li><strong>特色：響應式設計、Framer Motion 動畫、頁數指示器</strong></li>
+           <li><strong>視窗資料結構：id, title, subtitle, description, imageUrl, rotation</strong></li>
+         </ul>
+       </div>
+
+       <div className="mt-6">
+         <h3 className="font-semibold">Windows98MultiWindow 多視窗元件：</h3>
+         <ul className="ml-4 list-disc">
+           <li>windows: 視窗資料陣列 (必填)</li>
+           <li>className: 自訂 CSS 類別 (選填)</li>
+           <li><strong>桌面版：多個視窗並排顯示，每個視窗保持旋轉效果</strong></li>
+           <li><strong>手機版：垂直堆疊顯示，保持旋轉效果</strong></li>
+           <li><strong>特色：基於版本5的單一視窗設計，確保旋轉效果正常</strong></li>
            <li><strong>視窗資料結構：id, title, subtitle, description, imageUrl, rotation</strong></li>
          </ul>
        </div>
