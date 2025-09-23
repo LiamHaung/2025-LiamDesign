@@ -564,35 +564,9 @@ export default function ComponentTestPage() {
           </h2>
           
           <div className="space-y-8">
-            {/* 固定寬度，高度自適應版本 */}
+            {/* 響應式測試 - 只保留 RWD 版本 */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">固定寬度，高度自適應版本</h3>
-              <div className="space-y-4">
-                <div className="w-80 mx-auto">
-                  <ProfileCard />
-                </div>
-                <div className="w-96 mx-auto">
-                  <ProfileCard />
-                </div>
-                <div className="w-[500px] mx-auto">
-                  <ProfileCard />
-                </div>
-              </div>
-            </div>
-
-            {/* 多個卡片並排 */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">多個卡片並排</h3>
-              <div className="space-y-3">
-                <ProfileCard />
-                <ProfileCard />
-                <ProfileCard animated={false} />
-              </div>
-            </div>
-
-            {/* 響應式測試 */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">響應式測試</h3>
+              <h3 className="text-lg font-semibold mb-4">響應式測試 (RWD)</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="w-full">
                   <ProfileCard />
