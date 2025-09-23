@@ -126,16 +126,17 @@ export default function ProfileCard({
         transform: 'scale(1)',
         transformOrigin: 'center center'
       }}
-      // 使用 styled-jsx 來實現響應式放大
     >
-      <style jsx>{`
+      <style jsx global>{`
         @media (min-width: 1024px) {
-          div {
+          .profile-card-desktop-scale {
             transform: scale(1.5) !important;
           }
         }
       `}</style>
-      {cardContent}
+      <div className="profile-card-desktop-scale">
+        {cardContent}
+      </div>
     </div>
   );
 }
