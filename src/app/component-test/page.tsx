@@ -564,19 +564,9 @@ export default function ComponentTestPage() {
           </h2>
           
           <div className="space-y-8">
-            {/* 基本版本 */}
+            {/* 信用卡橫幅版本 */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">基本版本（內容自適應）</h3>
-              <div className="flex justify-center">
-                <div className="w-96">
-                  <ProfileCard />
-                </div>
-              </div>
-            </div>
-
-            {/* 不同寬度測試 */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">不同寬度測試</h3>
+              <h3 className="text-lg font-semibold mb-4">信用卡橫幅版本</h3>
               <div className="space-y-4">
                 <div className="w-80 mx-auto">
                   <ProfileCard />
@@ -590,10 +580,20 @@ export default function ComponentTestPage() {
               </div>
             </div>
 
+            {/* 多個橫幅並排 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">多個橫幅並排</h3>
+              <div className="space-y-2">
+                <ProfileCard />
+                <ProfileCard />
+                <ProfileCard animated={false} />
+              </div>
+            </div>
+
             {/* 響應式測試 */}
             <div>
               <h3 className="text-lg font-semibold mb-4">響應式測試</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="w-full">
                   <ProfileCard />
                 </div>
