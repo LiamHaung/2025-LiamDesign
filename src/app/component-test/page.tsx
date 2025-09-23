@@ -9,6 +9,7 @@ import Windows98MultiWindow from '../../components/Windows98MultiWindow';
 import RotationTest from '../../components/RotationTest';
 import RetroWindowLayout from '../../components/RetroWindowLayout';
 import SimpleRotationTest from '../../components/SimpleRotationTest';
+import ProfileCard from '../../components/ProfileCard';
 
 export default function ComponentTestPage() {
   return (
@@ -539,6 +540,54 @@ export default function ComponentTestPage() {
             復古視窗布局測試區
           </h2>
           <RetroWindowLayout />
+        </section>
+
+        {/* ProfileCard 測試 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            ProfileCard 個人資料卡片測試區
+          </h2>
+          
+          <div className="space-y-8">
+            {/* 4:3 比例 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">4:3 比例版本</h3>
+              <div className="flex justify-center">
+                <div className="w-96">
+                  <ProfileCard aspectRatio="4:3" />
+                </div>
+              </div>
+            </div>
+
+            {/* 16:9 比例 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">16:9 比例版本</h3>
+              <div className="flex justify-center">
+                <div className="w-96">
+                  <ProfileCard aspectRatio="16:9" />
+                </div>
+              </div>
+            </div>
+
+            {/* 響應式測試 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">響應式測試</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="w-full">
+                  <ProfileCard aspectRatio="4:3" />
+                </div>
+                <div className="w-full">
+                  <ProfileCard aspectRatio="16:9" />
+                </div>
+                <div className="w-full">
+                  <ProfileCard aspectRatio="4:3" animated={false} />
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Intro Card Section */}
