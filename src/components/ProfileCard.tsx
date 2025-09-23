@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface ProfileCardProps {
   className?: string;
@@ -11,6 +11,19 @@ export default function ProfileCard({
   className = '', 
   animated = true 
 }: ProfileCardProps) {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // 標題的滾動視差效果
+  const titleY = useTransform(scrollYProgress, [0, 0.3], [100, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
+  // ProfileCard 的滾動視差效果
+  const cardY = useTransform(scrollYProgress, [0.2, 0.5], [100, 0]);
+  const cardOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -35,17 +48,21 @@ export default function ProfileCard({
     };
   }, []);
   const cardContent = (
-    <div className="w-full">
-      {/* 標題區域 */}
-      <div style={{
-        textAlign: 'center',
-        marginBottom: '20px',
-        fontFamily: 'var(--font-zpix), monospace',
-        maxWidth: '100%',
-        padding: '0 20px',
-        width: '100%',
-        boxSizing: 'border-box'
-      }}>
+    <div ref={containerRef} className="w-full">
+      {/* 標題區域 - 滾動視差效果 */}
+      <motion.div 
+        style={{
+          textAlign: 'center',
+          marginBottom: '20px',
+          fontFamily: 'var(--font-zpix), monospace',
+          maxWidth: '100%',
+          padding: '0 20px',
+          width: '100%',
+          boxSizing: 'border-box',
+          y: titleY,
+          opacity: titleOpacity
+        }}
+      >
         <div style={{
           fontSize: 'clamp(16px, 3vw, 32px)',
           fontWeight: 'bold',
@@ -61,10 +78,17 @@ export default function ProfileCard({
         }}>
           #About Liam
         </div>
-      </div>
+      </motion.div>
 
-      {/* ProfileCard 內容 */}
-      <div className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} style={{ boxShadow: 'none' }}>
+      {/* ProfileCard 內容 - 滾動視差效果 */}
+      <motion.div 
+        className={`bg-white border-2 border-black rounded-lg overflow-hidden shadow-none ${className}`} 
+        style={{ 
+          boxShadow: 'none',
+          y: cardY,
+          opacity: cardOpacity
+        }}
+      >
       {/* 主要內容區域 - 固定寬度，高度自適應 */}
       <div className="flex h-96">
         {/* 左側：角色區域 */}
@@ -158,7 +182,7 @@ export default function ProfileCard({
           #Own the Day #Go Live Today
         </span>
       </div>
-      </div>
+      </motion.div>
     </div>
   );
 
