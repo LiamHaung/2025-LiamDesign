@@ -56,6 +56,10 @@ export default function Home() {
   const [loadingProgress, setLoadingProgress] = useState(58);
   const [boatExiting, setBoatExiting] = useState(false);
   
+  // 打字機效果狀態
+  const [typewriterText, setTypewriterText] = useState('');
+  const [showTypewriter, setShowTypewriter] = useState(false);
+  
   // 拖拽功能狀態 - 支援多個視窗
   const [isDragging, setIsDragging] = useState<string | null>(null);
   const [windowPositions, setWindowPositions] = useState({
@@ -97,6 +101,25 @@ export default function Home() {
       clearTimeout(t3);
     };
   }, []);
+
+  // 打字機效果
+  useEffect(() => {
+    if (showRight && !showIntroModal) {
+      const fullText = "#Own the Day #Go Live Today";
+      let currentIndex = 0;
+      
+      const typewriterInterval = setInterval(() => {
+        if (currentIndex <= fullText.length) {
+          setTypewriterText(fullText.substring(0, currentIndex));
+          currentIndex++;
+        } else {
+          clearInterval(typewriterInterval);
+        }
+      }, 100); // 每100ms打一個字
+      
+      return () => clearInterval(typewriterInterval);
+    }
+  }, [showRight, showIntroModal]);
 
   // Loading 進度條動畫
   useEffect(() => {
@@ -541,6 +564,27 @@ export default function Home() {
               </div>
             </div>
             
+            {/* 打字機效果標題 */}
+            <div className="typewriter-container mb-6" style={{
+              opacity: showRight && !showIntroModal ? 1 : 0,
+              transform: `translateY(${showRight ? '0' : '20px'})`,
+              transition: 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              zIndex: 10,
+              transitionDelay: showRight && !showIntroModal ? '1.0s' : '0s'
+            }}>
+              <h3 
+                className="text-2xl md:text-3xl font-bold text-center"
+                style={{ 
+                  fontFamily: 'var(--font-zpix), monospace',
+                  color: '#003EC3',
+                  minHeight: '2.5rem'
+                }}
+              >
+                {typewriterText}
+                <span className="animate-pulse">|</span>
+              </h3>
+            </div>
+            
             {/* ENTER 按鈕 */}
             <div className="enter-button-container" style={{
               opacity: showRight && !showIntroModal ? 1 : 0,
@@ -636,21 +680,6 @@ export default function Home() {
                         }}
                       />
                       
-                    </div>
-                    <div className={`slogan-1 absolute left-[20%] top-[15%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.6s', zIndex: 10, top: 'calc(15% + 20px)', left: 'calc(20% + 80px)' }}>
-                      <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
-                        品牌源自土地
-                      </div>
-                    </div>
-                    <div className={`slogan-2 absolute right-[35%] top-[10%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '1.8s', zIndex: 10 }}>
-                      <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
-                        越在地越國際
-                      </div>
-                    </div>
-                    <div className={`slogan-3 absolute left-[45%] top-[40%] group cursor-pointer transition-all duration-500 opacity-0 translate-y-[-20px] ${showRight && !showIntroModal ? 'opacity-100 translate-y-0' : ''} ${isTransitioning ? 'transition-up' : ''}`} style={{ transitionDelay: '2.0s', zIndex: 10 }}>
-                      <div className="bg-black text-white px-3 py-2 rounded-xl text-lg font-bold [writing-mode:vertical-rl] [text-orientation:upright] [letter-spacing:0.3em] transition-transform duration-300 group-hover:-translate-y-1">
-                        設計藉由溝通
-                      </div>
                     </div>
                   </div>
                 </div>
