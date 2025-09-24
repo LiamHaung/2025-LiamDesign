@@ -58,7 +58,6 @@ export default function Home() {
   
   // 打字機效果狀態
   const [typewriterText, setTypewriterText] = useState('');
-  const [showTypewriter, setShowTypewriter] = useState(false);
   
   // 拖拽功能狀態 - 支援多個視窗
   const [isDragging, setIsDragging] = useState<string | null>(null);
