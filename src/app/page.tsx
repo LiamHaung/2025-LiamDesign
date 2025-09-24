@@ -544,6 +544,31 @@ export default function Home() {
               />
             </div>
             <div className="hero-grid-container pt-24 flex flex-col items-center justify-center min-h-screen">
+            {/* 打字機效果標題 - 移到船的上方 */}
+            <div className="typewriter-container mb-8" style={{
+              opacity: showRight && !showIntroModal ? 1 : 0,
+              transform: `translateY(${showRight ? '0' : '20px'})`,
+              transition: 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              zIndex: 1,
+              transitionDelay: showRight && !showIntroModal ? '0.8s' : '0s',
+              position: 'relative',
+              marginBottom: 'clamp(20px, 4vw, 40px)',
+              paddingTop: 'clamp(10px, 2vw, 20px)',
+              paddingBottom: 'clamp(10px, 2vw, 20px)'
+            }}>
+              <h3 
+                className="text-2xl md:text-3xl font-bold text-center"
+                style={{ 
+                  fontFamily: 'var(--font-zpix), monospace',
+                  color: '#003EC3',
+                  minHeight: '2.5rem'
+                }}
+              >
+                {typewriterText}
+                <span className="animate-pulse">|</span>
+              </h3>
+            </div>
+            
             {/* 船隻區域 - 替代原地圖 */}
             <div className="boat-container mb-8" style={{
               opacity: showRight && !showIntroModal ? (boatExiting ? 0 : 1) : 0,
@@ -561,27 +586,6 @@ export default function Home() {
               <div className="boat-with-waves">
                 <img src="/boat.png" alt="Boat" className="boat-img" />
               </div>
-            </div>
-            
-            {/* 打字機效果標題 */}
-            <div className="typewriter-container mb-6" style={{
-              opacity: showRight && !showIntroModal ? 1 : 0,
-              transform: `translateY(${showRight ? '0' : '20px'})`,
-              transition: 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)',
-              zIndex: 10,
-              transitionDelay: showRight && !showIntroModal ? '1.0s' : '0s'
-            }}>
-              <h3 
-                className="text-2xl md:text-3xl font-bold text-center"
-                style={{ 
-                  fontFamily: 'var(--font-zpix), monospace',
-                  color: '#003EC3',
-                  minHeight: '2.5rem'
-                }}
-              >
-                {typewriterText}
-                <span className="animate-pulse">|</span>
-              </h3>
             </div>
             
             {/* ENTER 按鈕 */}

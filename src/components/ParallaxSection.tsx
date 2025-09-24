@@ -174,7 +174,7 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
           {/* 小標 - 打字機效果 */}
           <motion.div 
             className="font-medium
-              text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl
+              text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl
               leading-relaxed"
             style={{ color: '#003EC3' }}
             initial={{ opacity: 0 }}
