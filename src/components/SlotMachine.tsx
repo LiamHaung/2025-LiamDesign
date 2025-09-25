@@ -206,7 +206,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
               finalIndices[2] = randomIndex;
               
               // 不論結果如何，都顯示相同的訊息
-              const message = '管他呢，衝就對了！\nWhatever happens, keep going.';
+              const message = '別被影響 去做你想做的事吧！\nwhatever happens keep going';
               
               // 1秒後顯示彈窗
               setTimeout(() => {
@@ -301,11 +301,12 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           fontWeight: 800,
           color: '#000',
           marginBottom: '12px',
-          lineHeight: '1.4', // 調整行高以適應換行
-          wordBreak: 'break-all', // 改為允許任意位置斷行
-          overflowWrap: 'break-word',
-          whiteSpace: 'normal', // 確保可以換行
-          width: '100%'
+          lineHeight: '1.4',
+          whiteSpace: 'nowrap', // 強制不換行，保持橫排
+          overflow: 'hidden', // 隱藏溢出內容
+          textOverflow: 'ellipsis', // 如果文字太長顯示省略號
+          width: '100%',
+          fontFamily: 'Noto Sans, sans-serif'
         }}>
           ＃昨天已經過去，明天尚未到來，今天仍是未知！
         </div>
@@ -319,10 +320,11 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           borderRadius: '6px',
           letterSpacing: '1px',
           lineHeight: '1.4',
-          wordBreak: 'break-word', // 英文也允許斷行
-          whiteSpace: 'normal'
+          whiteSpace: 'nowrap', // 強制不換行，保持橫排
+          overflow: 'hidden', // 隱藏溢出內容
+          textOverflow: 'ellipsis' // 如果文字太長顯示省略號
         }}>
-          ＃Own the Day ＃Go Live Today
+          三個都一樣的話 會有幸運的一天？
         </div>
       </div>
 

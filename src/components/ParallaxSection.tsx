@@ -11,8 +11,12 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
   
   // 監控滾動位置，當滾動超過一定範圍時隱藏
   const [isVisible, setIsVisible] = useState(true);
+  
+  // Slogan 顯示狀態
+  const [showSlogan, setShowSlogan] = useState(false);
 
   // 監控滾動進度，當超過 60% 時開始淡出，超過 75% 時完全隱藏
+  // 當滾動完成時顯示 slogan
   useEffect(() => {
     const unsubscribe = scrollYProgress.onChange((progress) => {
       if (progress > 0.75) {
@@ -22,6 +26,13 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
         setIsVisible(true);
       } else {
         setIsVisible(true);
+      }
+      
+      // 當 ParallaxSection 滾動完成時顯示 slogan，但在 "Open today like a gift" 前消失
+      if (progress >= 0.75 && progress <= 0.9) {
+        setShowSlogan(true);
+      } else {
+        setShowSlogan(false);
       }
     });
 
@@ -157,7 +168,7 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
         />
         
         {/* 標題區域 - RWD 響應式設計 */}
-        <div className="fixed top-[10%] left-1/2 transform -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl">
+        <div className="fixed top-[15%] md:top-[5%] left-1/2 transform -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl">
           {/* 大標 */}
           <motion.h1 
             className="font-bold mb-4
@@ -259,6 +270,49 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
             />
           </motion.div>
         </motion.div>
+      </motion.div>
+      
+      {/* Slogan - 在 ParallaxSection 結束後顯示 */}
+      <motion.div
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center px-4 w-full max-w-4xl"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: showSlogan ? 1 : 0,
+          y: showSlogan ? 0 : 20
+        }}
+        transition={{ 
+          duration: 0.8, 
+          ease: "easeOut",
+          delay: showSlogan ? 0.3 : 0
+        }}
+      >
+        <div 
+          style={{
+            fontFamily: 'var(--font-zpix), monospace',
+            fontSize: 'clamp(18px, 4vw, 36px)',
+            fontWeight: 600,
+            color: '#353535',
+            lineHeight: '1.4',
+            textAlign: 'center',
+            background: 'rgba(255, 255, 255, 0.9)',
+            padding: 'clamp(16px, 4vw, 32px)',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+        >
+          <div style={{ marginBottom: '8px' }}>
+            願下一步，不再著急
+          </div>
+          <div style={{ 
+            fontSize: 'clamp(14px, 3vw, 24px)',
+            color: '#003EC3',
+            fontWeight: 500,
+            fontFamily: 'var(--font-zpix), monospace'
+          }}>
+            Slow down, just a little.
+          </div>
+        </div>
       </motion.div>
     </>
   );

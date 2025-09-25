@@ -689,7 +689,7 @@ export default function Home() {
               transitionDelay: '1.3s'
             }}>
               <div className="w-full bg-black py-4 overflow-hidden">
-                <div className="animate-marquee whitespace-nowrap">
+                <div className="animate-marquee-reverse whitespace-nowrap">
                   {Array(12).fill(null).map((_, i) => (
                     <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>進入工作室  Step In →</span>
                   ))}
@@ -725,21 +725,6 @@ export default function Home() {
                   transform: 'scale(0.72)'
                 }}
               />
-              <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
-                <div className="animate-marquee whitespace-nowrap">
-                  {Array(12).fill(null).map((_, i) => (
-                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>#BrandCompanion</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: "#003EC3", position: "relative", zIndex: 10 }} className="w-full py-4 overflow-hidden">
-              <div className="animate-marquee-reverse whitespace-nowrap">
-                        {Array(12).fill(null).map((_, i) => (
-                  <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>#有溫度的設計  #品牌配速員</span>
-                ))}
-              </div>
             </div>
 
             {/* Parallax 效果區塊 - 在跑馬燈下方，使用條件顯示 */}
@@ -1088,6 +1073,15 @@ export default function Home() {
               </div>
             </div>
 
+            {/* 老虎機區塊上方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>嘗試老虎機 Try a slot machine</span>
+                ))}
+              </div>
+            </div>
+
             <div className="relative w-full h-auto lg:h-[100vh] flex flex-col lg:flex-row overflow-auto lg:overflow-hidden">
               {/* 左側 VerticalWindow 已移除 */}
               {/* 中右區域內容寬度改為全寬 */}
@@ -1428,14 +1422,6 @@ Tel: 03-9XX-XXXX
                     </div>
                   )}
 
-                  {/* 老虎機上方跑馬燈 */}
-                  <div className="w-full py-4 overflow-hidden" style={{ position: 'absolute', top: '20%', left: '0', zIndex: 14, backgroundColor: '#FFFFF3' }}>
-                    <div className="animate-marquee whitespace-nowrap">
-                      {Array(12).fill(null).map((_, i) => (
-                        <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* 桌面老虎機小工具 */}
                   <div 
@@ -1450,14 +1436,6 @@ Tel: 03-9XX-XXXX
                     <SlotMachine />
                   </div>
 
-                  {/* 老虎機下方跑馬燈 */}
-                  <div className="w-full py-4 overflow-hidden" style={{ position: 'absolute', bottom: '20%', left: '0', zIndex: 14, backgroundColor: '#FFFFF3' }}>
-                    <div className="animate-marquee-reverse whitespace-nowrap">
-                      {Array(12).fill(null).map((_, i) => (
-                        <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* 響應式模式 - 一欄式布局 */}
@@ -1594,14 +1572,6 @@ Tel: 03-9XX-XXXX
                     }}>
                     </div>
                     
-                    {/* 手機版老虎機上方跑馬燈 */}
-                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#FFFFF3' }}>
-                      <div className="animate-marquee whitespace-nowrap">
-                        {Array(12).fill(null).map((_, i) => (
-                          <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
-                        ))}
-                      </div>
-                    </div>
 
                     <div style={{
                       width: '100%',
@@ -1612,18 +1582,19 @@ Tel: 03-9XX-XXXX
                       <SlotMachine />
                     </div>
 
-                    {/* 手機版老虎機下方跑馬燈 */}
-                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#FFFFF3' }}>
-                      <div className="animate-marquee-reverse whitespace-nowrap">
-                        {Array(12).fill(null).map((_, i) => (
-                          <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
-                        ))}
-                      </div>
-                    </div>
                     
                   </div>
                 </div>
               </section>
+            </div>
+
+            {/* ProfileCard 上方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>#About Liam #設計師 #品牌夥伴 #創意夥伴</span>
+                ))}
+              </div>
             </div>
 
             {/* ProfileCard Intro 區塊 - 取代原本的自我介紹區塊 */}
@@ -1729,7 +1700,7 @@ Tel: 03-9XX-XXXX
 
             {/* Illustration 上方跑馬燈 */}
             <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
-              <div className="animate-marquee whitespace-nowrap">
+              <div className="animate-marquee-reverse whitespace-nowrap">
                 {Array(12).fill(null).map((_, i) => (
                   <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>插畫拉近人的距離｜Illustration brings brands closer</span>
                 ))}
