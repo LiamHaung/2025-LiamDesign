@@ -168,7 +168,7 @@ export default function ParallaxSection({ show = true }: { show?: boolean }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            ＃昨天已經過去，明天尚未到來，今天仍是未知！
+            ＃不論用何種方式，一起慢慢前進吧！
           </motion.h1>
           
           {/* 小標 - 打字機效果 */}

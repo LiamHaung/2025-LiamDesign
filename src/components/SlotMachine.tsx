@@ -205,9 +205,8 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
               const finalIndices = [...prev];
               finalIndices[2] = randomIndex;
               
-              // 檢查是否三個都相同
-              const allSame = finalIndices.every(index => index === finalIndices[0]);
-              const message = allSame ? 'Lucky Moment!' : 'Chin up!';
+              // 不論結果如何，都顯示相同的訊息
+              const message = '管他呢，衝就對了！\nWhatever happens, keep going.';
               
               // 1秒後顯示彈窗
               setTimeout(() => {
@@ -277,7 +276,8 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
               border: '2px inset #c0c0c0',
               margin: '2px',
               textAlign: 'center',
-              fontWeight: '800'
+              fontWeight: '800',
+              whiteSpace: 'pre-line'
             }}>
               {popupMessage}
             </div>

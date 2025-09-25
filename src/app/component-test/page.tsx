@@ -10,7 +10,11 @@ import RotationTest from '../../components/RotationTest';
 import RetroWindowLayout from '../../components/RetroWindowLayout';
 import SimpleRotationTest from '../../components/SimpleRotationTest';
 import ProfileCard from '../../components/ProfileCard';
+import ProfileCardCarousel from '../../components/ProfileCardCarousel';
 import BorderTest from '../../components/BorderTest';
+import AboutLiamTag from '../../components/AboutLiamTag';
+import ImageCarouselCard from '../../components/ImageCarouselCard';
+import MarqueeTest from '../../components/MarqueeTest';
 
 export default function ComponentTestPage() {
   return (
@@ -576,6 +580,86 @@ export default function ComponentTestPage() {
           </div>
         </section>
 
+        {/* ProfileCardCarousel 輪播式個人資料卡片測試 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6" style={{
+            fontFamily: 'var(--font-zpix), monospace',
+            color: '#003EC3'
+          }}>
+            ProfileCardCarousel 輪播式個人資料卡片測試區
+          </h2>
+          
+          <div className="space-y-8">
+            {/* 基本版本 - 自動播放 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">基本版本（自動播放，5秒間隔）</h3>
+              <div className="flex justify-center">
+                <div className="w-full max-w-4xl">
+                  <ProfileCardCarousel />
+                </div>
+              </div>
+            </div>
+
+            {/* 手動控制版本 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">手動控制版本（關閉自動播放）</h3>
+              <div className="flex justify-center">
+                <div className="w-full max-w-3xl">
+                  <ProfileCardCarousel 
+                    autoPlay={false}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 快速切換版本 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">快速切換版本（2秒間隔）</h3>
+              <div className="flex justify-center">
+                <div className="w-full max-w-2xl">
+                  <ProfileCardCarousel 
+                    autoPlay={true}
+                    autoPlayInterval={2000}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 慢速切換版本 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">慢速切換版本（8秒間隔）</h3>
+              <div className="flex justify-center">
+                <div className="w-full max-w-4xl">
+                  <ProfileCardCarousel 
+                    autoPlay={true}
+                    autoPlayInterval={8000}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+            <h3 className="font-semibold mb-2">ProfileCardCarousel 元件參數：</h3>
+            <ul className="ml-4 list-disc text-sm">
+              <li>className: 自訂 CSS 類別 (選填)</li>
+              <li>autoPlay: 自動播放 (預設: true)</li>
+              <li>autoPlayInterval: 自動播放間隔毫秒 (預設: 5000)</li>
+              <li><strong>特色：四種不同面向展示、平滑過渡動畫、手動/自動控制、進度條、指示器、響應式設計</strong></li>
+            </ul>
+            
+            <div className="mt-4">
+              <h4 className="font-semibold mb-2">四種面向展示：</h4>
+              <ul className="ml-4 list-disc text-sm">
+                <li><strong>設計師 Liam</strong> - 品牌設計與視覺傳達</li>
+                <li><strong>插畫家 Liam</strong> - 手繪插畫與故事敘事</li>
+                <li><strong>品牌夥伴 Liam</strong> - 品牌策略與創意指導</li>
+                <li><strong>在地創作者 Liam</strong> - 在地文化與社區連結</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Intro Card Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6" style={{ 
@@ -777,6 +861,260 @@ export default function ComponentTestPage() {
            <li><strong>特色：基於版本5的單一視窗設計，確保旋轉效果正常</strong></li>
            <li><strong>視窗資料結構：id, title, subtitle, description, imageUrl, rotation</strong></li>
          </ul>
+       </div>
+
+       {/* AboutLiamTag 測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">AboutLiamTag 標籤元件測試</h2>
+         
+         <div className="space-y-8">
+           {/* 基本版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">基本版本（預設樣式）</h3>
+             <AboutLiamTag />
+           </div>
+
+           {/* 無動畫版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">無動畫版本</h3>
+             <AboutLiamTag animated={false} />
+           </div>
+
+           {/* 自訂顏色版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">自訂顏色版本</h3>
+             <AboutLiamTag 
+               backgroundColor="#FF8603" 
+               textColor="#FFFFFF"
+             />
+           </div>
+
+           {/* 小字級版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">小字級版本</h3>
+             <AboutLiamTag 
+               fontSize="clamp(12px, 2vw, 20px)"
+             />
+           </div>
+
+           {/* 大字級版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">大字級版本</h3>
+             <AboutLiamTag 
+               fontSize="clamp(20px, 4vw, 40px)"
+             />
+           </div>
+
+           {/* 不同背景測試 */}
+           <div style={{ backgroundColor: '#003EC3', padding: '20px', borderRadius: '8px' }}>
+             <h3 className="text-lg font-semibold mb-2" style={{ color: 'white' }}>藍色背景測試</h3>
+             <AboutLiamTag 
+               backgroundColor="#FFFFF3" 
+               textColor="#003EC3"
+             />
+           </div>
+
+           <div style={{ backgroundColor: '#FF8603', padding: '20px', borderRadius: '8px' }}>
+             <h3 className="text-lg font-semibold mb-2" style={{ color: 'white' }}>橘色背景測試</h3>
+             <AboutLiamTag 
+               backgroundColor="#FFFFFF" 
+               textColor="#FF8603"
+             />
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">AboutLiamTag 元件參數：</h3>
+           <ul className="ml-4 list-disc">
+             <li>className: 自訂 CSS 類別 (選填)</li>
+             <li>animated: 是否啟用動畫 (預設: true)</li>
+             <li>backgroundColor: 背景顏色 (預設: &apos;#003EC3&apos;)</li>
+             <li>textColor: 文字顏色 (預設: &apos;#FFFFF3&apos;)</li>
+             <li>fontSize: 字級大小 (預設: &apos;clamp(16px, 3vw, 32px)&apos;)</li>
+             <li><strong>特色：響應式設計、可自訂顏色、支援動畫開關</strong></li>
+           </ul>
+         </div>
+       </div>
+
+       {/* ImageCarouselCard 輪播卡片測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">ImageCarouselCard 輪播卡片元件測試</h2>
+         
+         <div className="space-y-8">
+           {/* 基本版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">基本版本（預設設定）</h3>
+             <ImageCarouselCard />
+           </div>
+
+           {/* 自訂標語版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">自訂標語版本</h3>
+             <ImageCarouselCard 
+               slogan="#設計 #品牌 #視覺 #陪你一起長大"
+             />
+           </div>
+
+           {/* 關閉自動播放版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">手動控制版本（關閉自動播放）</h3>
+             <ImageCarouselCard 
+               autoPlay={false}
+               slogan="#Own the Day #Go Live Today"
+             />
+           </div>
+
+           {/* 自訂圖片版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">自訂圖片版本</h3>
+             <ImageCarouselCard 
+               images={[
+                 '/hero.png',
+                 '/hero-2.png',
+                 '/boat.png'
+               ]}
+               slogan="#Custom Images #輪播測試"
+               autoPlayInterval={2000}
+             />
+           </div>
+
+           {/* 響應式測試 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">響應式測試（不同尺寸）</h3>
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+               <ImageCarouselCard 
+                 slogan="#小尺寸"
+                 className="max-w-xs"
+               />
+               <ImageCarouselCard 
+                 slogan="#中尺寸"
+                 className="max-w-sm"
+               />
+               <ImageCarouselCard 
+                 slogan="#大尺寸"
+                 className="max-w-md"
+               />
+             </div>
+           </div>
+
+           {/* 新功能測試 - 標籤元件 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">標籤元件測試</h3>
+             <ImageCarouselCard 
+               slogan="#Own the Day #Go Live Today"
+               showTag={true}
+               tagText="#設計展示 #輪播功能 #互動體驗"
+               autoPlayInterval={3000}
+             />
+           </div>
+
+           {/* 新功能測試 - 內文描述 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">內文描述測試</h3>
+             <ImageCarouselCard 
+               slogan="#設計作品集"
+               showDescription={true}
+               description="這是一個展示設計作品的輪播卡片，包含多張精心製作的插畫作品。每張作品都經過精心設計，展現不同的風格和創意。通過輪播功能，可以讓觀看者欣賞到完整的作品集，體驗設計的多元性和創意性。"
+               autoPlayInterval={4000}
+             />
+           </div>
+
+           {/* 新功能測試 - 進度條 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">進度條測試</h3>
+             <ImageCarouselCard 
+               slogan="#進度展示"
+               showProgressBar={true}
+               autoPlayInterval={5000}
+             />
+           </div>
+
+           {/* 新功能測試 - 完整功能 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">完整功能測試（標籤+內文+進度條）</h3>
+             <ImageCarouselCard 
+               slogan="#完整展示 #所有功能"
+               showTag={true}
+               tagText="#設計 #品牌 #視覺 #完整功能"
+               showDescription={true}
+               description="這是一個功能完整的輪播卡片展示，包含標籤元件、詳細內文描述和即時進度條。標籤可以快速傳達主題，內文提供詳細說明，進度條讓用戶了解當前播放狀態。所有功能都可以獨立開關，提供靈活的客製化選項。"
+               showProgressBar={true}
+               autoPlayInterval={6000}
+               className="max-w-lg"
+             />
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">ImageCarouselCard 元件參數：</h3>
+           <ul className="ml-4 list-disc">
+             <li>images: 圖片陣列 (預設: illustration_1-6.png)</li>
+             <li>slogan: 標語文字 (預設: &apos;#Own the Day #Go Live Today&apos;)</li>
+             <li>autoPlay: 自動播放 (預設: true)</li>
+             <li>autoPlayInterval: 自動播放間隔毫秒 (預設: 3000)</li>
+             <li>className: 自訂 CSS 類別 (選填)</li>
+             <li><strong>新功能參數：</strong></li>
+             <li>showTag: 顯示標籤元件 (預設: false)</li>
+             <li>tagText: 標籤文字內容 (預設: &apos;#輪播展示 #圖片切換&apos;)</li>
+             <li>showDescription: 顯示內文描述 (預設: false)</li>
+             <li>description: 內文描述內容 (預設: 輪播卡片說明文字)</li>
+             <li>showProgressBar: 顯示進度條 (預設: false)</li>
+             <li><strong>特色：響應式設計、平滑過渡動畫、手動/自動控制、導航箭頭、指示器、標籤元件、內文描述、進度條</strong></li>
+           </ul>
+         </div>
+       </div>
+
+       {/* MarqueeTest 跑馬燈測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">MarqueeTest 跑馬燈元件測試</h2>
+         
+         <div className="space-y-8">
+           {/* 入口頁跑馬燈 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">🚪 入口頁跑馬燈 (Hero 區域)</h3>
+             <MarqueeTest variant="classic" />
+           </div>
+
+           {/* Hero 版位頂部跑馬燈 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">🎨 Hero 版位頂部跑馬燈 (ParallaxSection 上方)</h3>
+             <MarqueeTest variant="modern" />
+           </div>
+
+           {/* 老虎機下面跑馬燈 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">🎰 老虎機下面跑馬燈 (SlotMachine 下方)</h3>
+             <MarqueeTest variant="creative" />
+           </div>
+
+           {/* 響應式測試 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-2">響應式測試（不同寬度）</h3>
+             <div className="space-y-4">
+               <div className="max-w-md">
+                 <h4 className="text-sm font-medium mb-2">小尺寸 (max-w-md)</h4>
+                 <MarqueeTest variant="classic" />
+               </div>
+               <div className="max-w-2xl">
+                 <h4 className="text-sm font-medium mb-2">中尺寸 (max-w-2xl)</h4>
+                 <MarqueeTest variant="modern" />
+               </div>
+               <div className="max-w-4xl">
+                 <h4 className="text-sm font-medium mb-2">大尺寸 (max-w-4xl)</h4>
+                 <MarqueeTest variant="creative" />
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">MarqueeTest 元件參數：</h3>
+           <ul className="ml-4 list-disc">
+             <li>variant: 跑馬燈款式 (&apos;classic&apos; | &apos;modern&apos; | &apos;creative&apos;)</li>
+             <li>className: 自訂 CSS 類別 (選填)</li>
+             <li><strong>特色：每款都有藍黑兩條跑馬燈、不同文字內容、響應式設計、平滑動畫</strong></li>
+           </ul>
+         </div>
        </div>
           </div>
         </section>

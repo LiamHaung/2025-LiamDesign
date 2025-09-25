@@ -173,15 +173,35 @@ export default function ProfileCard({
         </div>
       </div>
 
-        {/* 底部 Slogan 區域 */}
-        <div className="bg-black text-center py-5 h-20 flex items-center justify-center">
-        <span 
-          className="text-white text-xs sm:text-sm font-bold"
-          style={{ fontFamily: 'var(--font-zpix), monospace' }}
-        >
-          #Own the Day #Go Live Today
-        </span>
-      </div>
+        {/* 底部 Slogan 區域 - 跑馬燈效果 */}
+        <div className="bg-black py-5 h-20 flex items-center justify-center overflow-hidden relative marquee-container">
+          <div 
+            className="flex items-center whitespace-nowrap"
+            style={{
+              animation: 'marquee 4s linear infinite',
+              fontFamily: 'var(--font-zpix), monospace',
+              fontSize: 'clamp(14px, 2.5vw, 18px)',
+              fontWeight: 'bold',
+              color: 'white'
+            }}
+          >
+            <span className="mr-8">#Own the Day #Go Live Today</span>
+            <span className="mr-8">#Own the Day #Go Live Today</span>
+            <span>#Own the Day #Go Live Today</span>
+          </div>
+          
+          {/* CSS 動畫樣式 */}
+          <style jsx>{`
+            @keyframes marquee {
+              0% { transform: translateX(100%); }
+              100% { transform: translateX(-100%); }
+            }
+            
+            .marquee-container:hover div {
+              animation-play-state: paused;
+            }
+          `}</style>
+        </div>
       </motion.div>
     </div>
   );

@@ -176,12 +176,34 @@ export default function IllustrationSplitCarousel({
         {/* Right 35% */}
         <div className="md:basis-[35%] md:max-w-[35%]">
           <div className="sticky top-8 p-6 rounded-xl border border-transparent bg-[#003EC3]" style={{ zIndex: 10 }}>
-            <h3 className="text-xl md:text-2xl font-bold text-[#FFFFF3] mb-3" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-              插畫文字介紹
+            {/* 標籤 */}
+            <div className="mb-4">
+              <div 
+                className="text-sm font-bold text-[#353535] bg-[#FFFFF3] px-3 py-2 rounded-lg inline-block"
+                style={{ fontFamily: 'var(--font-zpix), monospace' }}
+              >
+                #插畫 #親手製作 #在地感 #溫度設計
+              </div>
+            </div>
+
+            {/* 大標題 */}
+            <h2 className="text-2xl md:text-3xl font-black text-[#FFFFF3] mb-3" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}>
+              Illustration with Heart｜有溫度的插畫
+            </h2>
+
+            {/* 副標題 */}
+            <h3 className="text-lg md:text-xl font-medium text-[#FFFFF3] mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+              Handmade lines, heartfelt stories.｜親手畫下，心裡的故事
             </h3>
-            <p className="leading-relaxed mb-5" style={{ color: '#FFFFF3' }}>
-              我們透過插畫建立情感連結與敘事節奏，讓作品既有美感也能傳遞故事。每一筆觸都承載著創作者的情感與思考，從構思到完成，我們注重細節的雕琢與風格的統一。插畫不只是視覺的呈現，更是與觀者心靈對話的橋樑。透過色彩、線條與構圖的巧妙運用，我們創造出獨特的視覺語言，讓每個專案都有屬於自己的故事。從商業插畫到藝術創作，我們致力於用最真誠的筆觸，描繪出最動人的畫面。想看更多完整案例與製作過程，歡迎延伸閱讀。
+
+            {/* 內文 */}
+            <p className="leading-relaxed mb-5 text-sm md:text-base" style={{ color: '#FFFFF3' }}>
+              每一筆一劃，能承載記憶、能創造連結。<br/>
+              我喜歡把宜蘭的風、地方的小故事、品牌的日常，<br/>
+              透過線條與色彩，讓人感到親近。<br/>
+              是一種邀請，邀請民眾靠近，聽見品牌的故事，感受到這裡的生活氣息。
             </p>
+
             <a
               href="#"
               className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-6 py-3 rounded-md font-bold text-sm hover:bg-[#3aaf3a] hover:text-[#FFFFF3] hover:border-[#3aaf3a] transition-colors"
@@ -189,6 +211,8 @@ export default function IllustrationSplitCarousel({
             >
               閱讀更多
             </a>
+
+            {/* 插圖區域已移至背景滿版顯示 */}
           </div>
         </div>
       </div>

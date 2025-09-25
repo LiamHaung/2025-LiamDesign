@@ -6,13 +6,14 @@ import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
-import IllustrationSplitCarousel from '../components/IllustrationSplitCarousel';
 import TestCardAlt from '../components/TestCardAlt';
 import CardCarousel from '../components/CardCarousel';
 // import CharacterWindow from '../components/CharacterWindow';
 // import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
 import ParallaxSection from '../components/ParallaxSection';
 import ProfileCard from '../components/ProfileCard';
+import AboutLiamTag from '../components/AboutLiamTag';
+import ImageCarouselCard from '../components/ImageCarouselCard';
 
 export default function Home() {
   // 品牌案例數據
@@ -413,14 +414,11 @@ export default function Home() {
                 <div style={{ 
                   marginBottom: 'clamp(16px, 4vw, 24px)',
                   textAlign: 'center',
-                  fontSize: 'clamp(12px, 3vw, 18px)'
+                  fontSize: 'clamp(14px, 3.5vw, 22px)'
                 }}>
                 <p>
-                  「Liam Design Studio，專注於品牌設計與視覺傳達。<br/>
-                  我們相信，好的設計源於深入的理解與溝通，<br/>
-                  每一個專案都承載著獨特的故事與價值。<br/>
-                  在這裡，我們不只是設計師，更是創意夥伴，<br/>
-                  一起打造令人印象深刻的品牌體驗。」
+                  設計不是等待靈感，而是立刻開始。<br/>
+                  點進來，讓我們今天就動手。
                 </p>
               </div>
               
@@ -429,17 +427,11 @@ export default function Home() {
                 borderTop: '3px solid white',
                   paddingTop: 'clamp(12px, 3vw, 20px)',
                   textAlign: 'center',
-                  fontSize: 'clamp(10px, 2.5vw, 16px)'
+                  fontSize: 'clamp(12px, 3vw, 20px)'
               }}>
                 <p>
-                  &ldquo;Hello, I&rsquo;m Liam.ldquo;Welcome to Liam Design Studio.ldquo;Welcome to Liam Design Studio.<br/>
-                  We specialize in brand identity, visual design,<br/>
-                  and creative solutions that tell compelling stories.<br/>
-                  Our approach combines strategic thinking with<br/>
-                  artistic vision to create designs that resonate<br/>
-                  with audiences and drive meaningful connections<br/>
-                  between brands and their communities.between brands and their communities.and every design carries the warmth ofrdquo;rdquo;<br/>
-                  
+                  Design isn&rsquo;t about waiting for inspiration.<br/>
+                  Click in — let&rsquo;s start today.
                 </p>
               </div>
             </div>
@@ -698,16 +690,16 @@ export default function Home() {
             }}>
               <div className="w-full bg-black py-4 overflow-hidden">
                 <div className="animate-marquee whitespace-nowrap">
-                  {Array(4).fill(null).map((_, i) => (
-                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Design that listens. Design that grows.</span>
+                  {Array(12).fill(null).map((_, i) => (
+                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>進入工作室  Step In →</span>
                   ))}
                 </div>
               </div>
 
               <div style={{ backgroundColor: "#003EC3" }} className="w-full py-4 overflow-hidden">
                 <div className="animate-marquee-reverse whitespace-nowrap">
-                  {Array(4).fill(null).map((_, i) => (
-                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Design that listens. Design that grows.</span>
+                  {Array(12).fill(null).map((_, i) => (
+                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>進入工作室  Step In →</span>
                   ))}
                 </div>
               </div>
@@ -735,8 +727,8 @@ export default function Home() {
               />
               <div className="w-full bg-black py-4 overflow-hidden" style={{ position: 'relative', zIndex: 10 }}>
                 <div className="animate-marquee whitespace-nowrap">
-                  {Array(4).fill(null).map((_, i) => (
-                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Design that listens. Design that grows.</span>
+                  {Array(12).fill(null).map((_, i) => (
+                    <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>#BrandCompanion</span>
                   ))}
                 </div>
               </div>
@@ -744,8 +736,8 @@ export default function Home() {
 
             <div style={{ backgroundColor: "#003EC3", position: "relative", zIndex: 10 }} className="w-full py-4 overflow-hidden">
               <div className="animate-marquee-reverse whitespace-nowrap">
-                {Array(4).fill(null).map((_, i) => (
-                  <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Design that listens. Design that grows.</span>
+                        {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-white text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>#有溫度的設計  #品牌配速員</span>
                 ))}
               </div>
             </div>
@@ -753,6 +745,36 @@ export default function Home() {
             {/* Parallax 效果區塊 - 在跑馬燈下方，使用條件顯示 */}
             <div style={{ position: "relative", zIndex: 1 }}>
               <ParallaxSection show={true} />
+            </div>
+
+            {/* 蝴蝶頁 Slogan - 在 ParallaxSection 和老虎機之間 */}
+            <div 
+              style={{ 
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#FFFFF3',
+                position: 'relative',
+                zIndex: 5
+              }}
+            >
+              <div 
+                style={{
+                  textAlign: 'center',
+                  fontFamily: 'var(--font-zpix), monospace',
+                  fontSize: 'clamp(16px, 4vw, 32px)',
+                  fontWeight: 'bold',
+                  color: '#353535',
+                  lineHeight: '1.6',
+                  maxWidth: '90%',
+                  padding: '0 20px'
+                }}
+              >
+                <div>Open today like a gift.</div>
+                <div style={{ marginTop: 'clamp(8px, 2vw, 16px)' }}>打開今天，就像拆一份禮物。</div>
+              </div>
             </div>
 
             {/* 手機版固定小圖示 */}
@@ -1406,6 +1428,15 @@ Tel: 03-9XX-XXXX
                     </div>
                   )}
 
+                  {/* 老虎機上方跑馬燈 */}
+                  <div className="w-full py-4 overflow-hidden" style={{ position: 'absolute', top: '20%', left: '0', zIndex: 14, backgroundColor: '#FFFFF3' }}>
+                    <div className="animate-marquee whitespace-nowrap">
+                      {Array(12).fill(null).map((_, i) => (
+                        <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* 桌面老虎機小工具 */}
                   <div 
                     style={{ 
@@ -1417,27 +1448,14 @@ Tel: 03-9XX-XXXX
                     }}
                   >
                     <SlotMachine />
+                  </div>
 
-                    {/* 跑馬燈（桌面版） */}
-                    <div className="w-full py-4 overflow-hidden mt-4" style={{ backgroundColor: '#003EC3', borderRadius: '8px' }}>
-                      <div className="animate-marquee whitespace-nowrap">
-                        {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8">
-                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
-                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="w-full bg-black py-4 overflow-hidden mt-2" style={{ borderRadius: '8px' }}>
-                      <div className="animate-marquee-reverse whitespace-nowrap">
-                        {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8">
-                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
-                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
-                          </span>
-                        ))}
-                      </div>
+                  {/* 老虎機下方跑馬燈 */}
+                  <div className="w-full py-4 overflow-hidden" style={{ position: 'absolute', bottom: '20%', left: '0', zIndex: 14, backgroundColor: '#FFFFF3' }}>
+                    <div className="animate-marquee-reverse whitespace-nowrap">
+                      {Array(12).fill(null).map((_, i) => (
+                        <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -1576,6 +1594,15 @@ Tel: 03-9XX-XXXX
                     }}>
                     </div>
                     
+                    {/* 手機版老虎機上方跑馬燈 */}
+                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#FFFFF3' }}>
+                      <div className="animate-marquee whitespace-nowrap">
+                        {Array(12).fill(null).map((_, i) => (
+                          <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
+                        ))}
+                      </div>
+                    </div>
+
                     <div style={{
                       width: '100%',
                       display: 'flex',
@@ -1584,28 +1611,17 @@ Tel: 03-9XX-XXXX
                     }}>
                       <SlotMachine />
                     </div>
-                    
-                    {/* 跑馬燈（手機版） */}
-                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
-                      <div className="animate-marquee whitespace-nowrap">
-                        {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8">
-                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
-                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
-                          </span>
+
+                    {/* 手機版老虎機下方跑馬燈 */}
+                    <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#FFFFF3' }}>
+                      <div className="animate-marquee-reverse whitespace-nowrap">
+                        {Array(12).fill(null).map((_, i) => (
+                          <span key={i} className="text-black text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>Try it !</span>
                         ))}
                       </div>
                     </div>
-                    <div className="w-full bg-black py-4 overflow-hidden">
-                      <div className="animate-marquee-reverse whitespace-nowrap">
-                        {Array(6).fill(null).map((_, i) => (
-                          <span key={i} className="text-white text-xl font-extrabold mx-8">
-                            <span style={{ fontFamily: 'var(--font-press-start-2p)' }}>Start your brand journey here.</span>
-                            <span style={{ fontFamily: 'var(--font-zpix), monospace' }}>｜從這裡開始你的品牌旅程</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>                  </div>
+                    
+                  </div>
                 </div>
               </section>
             </div>
@@ -1636,16 +1652,33 @@ Tel: 03-9XX-XXXX
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="text-content">
+                  {/* AboutLiamTag - Design 區塊 */}
+                  <div className="mb-6">
+                    <AboutLiamTag />
+                  </div>
+                  
                   <motion.h1
-                    className="text-4xl md:text-6xl font-bold text-black mb-6"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    className="text-4xl md:text-6xl font-black text-black mb-4"
+                    style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}
                     initial={{ opacity: 0, y: 80 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.4 }}
                   >
-                    #Design
+                    Design that Listens｜傾聽的設計
                   </motion.h1>
+                  
+                  <motion.h2
+                    className="text-xl md:text-2xl font-medium text-gray-700 mb-6"
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    initial={{ opacity: 0, y: 100 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, amount: 0.35 }}
+                  >
+                    We turn your ideas into visuals that breathe.｜把想法變成會呼吸的設計
+                  </motion.h2>
+                  
                   <motion.p
                     className="text-lg md:text-xl text-black mb-8 leading-relaxed"
                     initial={{ opacity: 0, y: 150 }}
@@ -1653,7 +1686,8 @@ Tel: 03-9XX-XXXX
                     transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
                   >
-                    我們相信設計不僅是視覺的美學，更是解決問題的工具。從品牌識別到數位介面，每一個設計決策都源於深度的用戶研究與市場洞察。我們創造的不只是美麗的設計，而是能夠與使用者產生共鳴、推動業務成長的設計解決方案。
+                    我們相信設計不是炫技，而是解決問題的工具。<br/>
+                    從品牌識別、菜單、活動文宣到社群圖像，專注於讓設計能貼近生活，幫助品牌長出下一步。
                   </motion.p>
                   <motion.button
                     className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
@@ -1667,19 +1701,40 @@ Tel: 03-9XX-XXXX
                   </motion.button>
                 </div>
                 <div className="image-content">
-                  <motion.img 
-                    src="/illustration_1.png" 
-                    alt="Design Portfolio" 
-                    className="w-full h-auto rounded-lg"
-                    style={{ height: 'auto', objectFit: 'contain' }}
+                  <motion.div
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
-                  />
+                    className="w-full flex justify-center"
+                  >
+                    <ImageCarouselCard 
+                      images={[
+                        '/illustration_1.png',
+                        '/illustration_2.png',
+                        '/illustration_3.png',
+                        '/illustration_4.png',
+                        '/illustration_5.png',
+                        '/illustration_6.png'
+                      ]}
+                      slogan="#設計 #品牌 #視覺 #陪你一起長大"
+                      autoPlay={true}
+                      autoPlayInterval={4000}
+                      className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl"
+                    />
+                  </motion.div>
                 </div>
               </div>
             </section>
+
+            {/* Illustration 上方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>插畫拉近人的距離｜Illustration brings brands closer</span>
+                ))}
+              </div>
+            </div>
 
             {/* Section 2: Illustration */}
             <section className="scroll-section illustration-section" style={{ 
@@ -1688,11 +1743,81 @@ Tel: 03-9XX-XXXX
               position: 'relative',
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10">
-                <div className="mb-12">
-                  <IllustrationSplitCarousel />
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch h-full">
+                  {/* 左側 65% - ImageCarouselCard */}
+                  <div className="md:basis-[65%] md:flex-1 flex flex-col gap-4">
+                    <div className="w-full h-full">
+                      <ImageCarouselCard 
+                        images={[
+                          '/illustration_1.png',
+                          '/illustration_2.png',
+                          '/illustration_3.png',
+                          '/illustration_4.png',
+                          '/illustration_5.png',
+                          '/illustration_6.png'
+                        ]}
+                        slogan="#插畫 #親手製作 #在地感 #溫度設計"
+                        showTag={false}
+                        showDescription={false}
+                        showProgressBar={true}
+                        autoPlayInterval={4000}
+                        className="w-full h-full max-w-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* 右側 35% - 文字內容 */}
+                  <div className="md:basis-[35%] md:max-w-[35%]">
+                    <div className="sticky top-8 p-6 rounded-xl border border-transparent bg-[#003EC3]" style={{ zIndex: 10 }}>
+                      {/* 標籤 */}
+                      <div className="mb-4">
+                        <div 
+                          className="text-sm font-bold text-[#353535] bg-[#FFFFF3] px-3 py-2 rounded-lg inline-block"
+                          style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                        >
+                          #插畫 #親手製作 #在地感 #溫度設計
+                        </div>
+                      </div>
+
+                      {/* 大標題 */}
+                      <h2 className="text-2xl md:text-3xl font-black text-[#FFFFF3] mb-3" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}>
+                        Illustration with Heart｜有溫度的插畫
+                      </h2>
+
+                      {/* 副標題 */}
+                      <h3 className="text-lg md:text-xl font-medium text-[#FFFFF3] mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                        Handmade lines, heartfelt stories.｜親手畫下，心裡的故事
+                      </h3>
+
+                      {/* 內文 */}
+                      <p className="leading-relaxed mb-5 text-sm md:text-base" style={{ color: '#FFFFF3' }}>
+                        每一筆一劃，能承載記憶、能創造連結。<br/>
+                        我喜歡把宜蘭的風、地方的小故事、品牌的日常，<br/>
+                        透過線條與色彩，讓人感到親近。<br/>
+                        是一種邀請，邀請民眾靠近，聽見品牌的故事，感受到這裡的生活氣息。
+                      </p>
+
+                      <a
+                        href="#"
+                        className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-6 py-3 rounded-md font-bold text-sm hover:bg-[#3aaf3a] hover:text-[#FFFFF3] hover:border-[#3aaf3a] transition-colors"
+                        style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                      >
+                        閱讀更多
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
+
+            {/* Illustration 下方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>插畫拉近人的距離｜Illustration brings brands closer</span>
+                ))}
+              </div>
+            </div>
 
             {/* Section 3: Brand */}
             <section className="scroll-section brand-section" style={{ 
@@ -1720,6 +1845,11 @@ Tel: 03-9XX-XXXX
               }}></div>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center" style={{ position: 'relative', zIndex: 2 }}>
                 <div className="text-content">
+                  {/* AboutLiamTag - Brand 區塊 */}
+                  <div className="mb-6">
+                    <AboutLiamTag />
+                  </div>
+                  
                   <motion.h1
                     className="text-4xl md:text-6xl font-bold text-black mb-6"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
