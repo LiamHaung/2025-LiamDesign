@@ -95,9 +95,9 @@ export default function ProfileCardCarousel({
     );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  // const goToSlide = (index: number) => {
+  //   setCurrentIndex(index);
+  // };
 
   const currentProfile = profileVariants[currentIndex];
 

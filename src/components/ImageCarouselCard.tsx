@@ -73,9 +73,9 @@ export default function ImageCarouselCard({
     );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  // const goToSlide = (index: number) => {
+  //   setCurrentIndex(index);
+  // };
 
   return (
     <div className={`w-full max-w-md mx-auto ${className}`}>
