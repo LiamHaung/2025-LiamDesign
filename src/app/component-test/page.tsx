@@ -14,6 +14,7 @@ import ProfileCardCarousel from '../../components/ProfileCardCarousel';
 import BorderTest from '../../components/BorderTest';
 import AboutLiamTag from '../../components/AboutLiamTag';
 import ImageCarouselCard from '../../components/ImageCarouselCard';
+import BrandImageCarouselCard from '../../components/BrandImageCarouselCard';
 import MarqueeTest from '../../components/MarqueeTest';
 
 export default function ComponentTestPage() {
@@ -1061,6 +1062,284 @@ export default function ComponentTestPage() {
              <li>showProgressBar: 顯示進度條 (預設: false)</li>
              <li><strong>特色：響應式設計、平滑過渡動畫、手動/自動控制、導航箭頭、指示器、標籤元件、內文描述、進度條</strong></li>
            </ul>
+         </div>
+       </div>
+
+       {/* Brand 品牌服務區塊測試 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">Brand 品牌服務區塊測試</h2>
+         
+         <div className="space-y-8">
+           {/* 60% 40% 橫幅版位測試 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-4">35% 65% 橫幅版位測試</h3>
+             
+             {/* 桌面版：35% 65% 布局 */}
+             <div className="hidden md:flex gap-8 items-start">
+               {/* 左側：文字內容 (35%) */}
+               <div className="flex-1" style={{ flex: '0 0 35%' }}>
+                 <div className="space-y-6">
+                   {/* 大標 */}
+                   <h2 style={{
+                     fontSize: 'clamp(24px, 4vw, 48px)',
+                     fontWeight: 900,
+                     color: '#353535',
+                     lineHeight: '1.2',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     Brand that Speaks｜會說話的品牌
+                   </h2>
+
+                   {/* 內文 - 齊頭段落 */}
+                   <div style={{
+                     fontSize: 'clamp(14px, 2vw, 18px)',
+                     lineHeight: '1.8',
+                     color: '#555',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     <p className="mb-4">
+                       每個品牌都有獨特的故事等待被訴說。我們不只是設計 Logo，更是打造完整的品牌體驗。
+                     </p>
+                     <p className="mb-4">
+                       從品牌策略到視覺識別，從網站設計到印刷品，我們幫助你建立與目標客群的情感連結。
+                     </p>
+                     <p>
+                       讓你的品牌不只是被看見，更是被記住。
+                     </p>
+                   </div>
+                 </div>
+               </div>
+
+               {/* 右側：圖片導覽 (65%) */}
+               <div className="flex-1" style={{ flex: '0 0 65%' }}>
+                 <BrandImageCarouselCard 
+                   autoPlay={true}
+                   autoPlayInterval={4000}
+                   className="w-full h-full"
+                 />
+               </div>
+             </div>
+
+             {/* 手機版：垂直堆疊 */}
+             <div className="md:hidden space-y-6">
+               {/* 文字內容 */}
+               <div className="space-y-4">
+                 {/* 大標 - 加粗 */}
+                 <h2 style={{
+                   fontSize: 'clamp(20px, 5vw, 32px)',
+                   fontWeight: 900,
+                   color: '#353535',
+                   lineHeight: '1.2',
+                   fontFamily: 'Noto Sans, sans-serif'
+                 }}>
+                   Brand that Speaks｜會說話的品牌
+                 </h2>
+
+                 {/* 內文 - 手機版保持橫排 */}
+                 <div style={{
+                   fontSize: 'clamp(12px, 2.5vw, 16px)',
+                   lineHeight: '1.6',
+                   color: '#555',
+                   fontFamily: 'Noto Sans, sans-serif'
+                 }}>
+                   <p className="mb-3">
+                     每個品牌都有獨特的故事等待被訴說。我們不只是設計 Logo，更是打造完整的品牌體驗。
+                   </p>
+                   <p>
+                     從品牌策略到視覺識別，我們幫助你建立與目標客群的情感連結。
+                   </p>
+                 </div>
+               </div>
+
+               {/* 圖片導覽 */}
+               <div>
+                 <BrandImageCarouselCard 
+                   autoPlay={true}
+                   autoPlayInterval={4000}
+                   className="w-full"
+                 />
+               </div>
+             </div>
+           </div>
+
+           {/* 不同比例測試 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-4">不同比例測試</h3>
+             
+             {/* 50% 50% 測試 */}
+             <div className="hidden md:flex gap-8 items-start mb-6">
+               <div className="flex-1" style={{ flex: '0 0 50%' }}>
+                 <div className="space-y-4">
+                   <div style={{
+                     fontSize: 'clamp(14px, 2vw, 18px)',
+                     fontWeight: 'bold',
+                     color: '#FFFFF3',
+                     backgroundColor: '#FF8603',
+                     display: 'inline-block',
+                     padding: '6px 12px',
+                     borderRadius: '6px',
+                     fontFamily: 'var(--font-zpix), monospace'
+                   }}>
+                     #50% 50% 測試
+                   </div>
+                   <h3 style={{
+                     fontSize: 'clamp(20px, 3vw, 32px)',
+                     fontWeight: 700,
+                     color: '#353535',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     平衡布局測試
+                   </h3>
+                   <p style={{
+                     fontSize: 'clamp(12px, 2vw, 16px)',
+                     lineHeight: '1.5',
+                     color: '#666',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     這是一個 50% 50% 的平衡布局測試，左右兩側內容均等分配空間。
+                   </p>
+                 </div>
+               </div>
+               <div className="flex-1" style={{ flex: '0 0 50%' }}>
+                 <ImageCarouselCard 
+                   slogan="#50% 50% 測試"
+                   showTag={true}
+                   tagText="#平衡 #布局 #測試"
+                   autoPlayInterval={2000}
+                   className="w-full"
+                 />
+               </div>
+             </div>
+
+             {/* 70% 30% 測試 */}
+             <div className="hidden md:flex gap-8 items-start">
+               <div className="flex-1" style={{ flex: '0 0 70%' }}>
+                 <div className="space-y-4">
+                   <div style={{
+                     fontSize: 'clamp(14px, 2vw, 18px)',
+                     fontWeight: 'bold',
+                     color: '#FFFFF3',
+                     backgroundColor: '#28a745',
+                     display: 'inline-block',
+                     padding: '6px 12px',
+                     borderRadius: '6px',
+                     fontFamily: 'var(--font-zpix), monospace'
+                   }}>
+                     #70% 30% 測試
+                   </div>
+                   <h3 style={{
+                     fontSize: 'clamp(20px, 3vw, 32px)',
+                     fontWeight: 700,
+                     color: '#353535',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     文字重點布局測試
+                   </h3>
+                   <p style={{
+                     fontSize: 'clamp(12px, 2vw, 16px)',
+                     lineHeight: '1.5',
+                     color: '#666',
+                     fontFamily: 'Noto Sans, sans-serif'
+                   }}>
+                     這是一個 70% 30% 的布局測試，左側文字內容佔主要空間，右側圖片作為輔助展示。適合文字內容較多的場景。
+                   </p>
+                 </div>
+               </div>
+               <div className="flex-1" style={{ flex: '0 0 30%' }}>
+                 <ImageCarouselCard 
+                   slogan="#70% 30% 測試"
+                   showTag={true}
+                   tagText="#文字 #重點 #布局"
+                   autoPlayInterval={2500}
+                   className="w-full"
+                 />
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">Brand 品牌服務區塊特色：</h3>
+           <ul className="ml-4 list-disc">
+             <li><strong>響應式設計：</strong>桌面版 60% 40% 布局，手機版垂直堆疊</li>
+             <li><strong>完整文字內容：</strong>標籤、大標、副標、內文、閱讀更多按鈕</li>
+             <li><strong>圖片導覽：</strong>使用 BrandImageCarouselCard 展示品牌作品</li>
+             <li><strong>靈活比例：</strong>支援 50% 50%、60% 40%、70% 30% 等不同比例</li>
+             <li><strong>品牌色彩：</strong>使用品牌藍 #003EC3 和溫暖白 #FFFFF3</li>
+             <li><strong>字體系統：</strong>Noto Sans 無襯線字體，確保可讀性</li>
+           </ul>
+         </div>
+
+         {/* BrandImageCarouselCard 獨立測試 */}
+         <div className="mt-8">
+           <h3 className="text-lg font-semibold mb-4">BrandImageCarouselCard 獨立測試</h3>
+           
+           <div className="space-y-8">
+             {/* 基本版本 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">基本版本（預設設定）</h4>
+               <div className="flex justify-center">
+                 <BrandImageCarouselCard />
+               </div>
+             </div>
+
+             {/* 自訂圖片版本 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">自訂圖片版本</h4>
+               <div className="flex justify-center">
+                 <BrandImageCarouselCard 
+                   images={[
+                     '/hero.png',
+                     '/hero-2.png',
+                     '/boat.png',
+                     '/illustration_1.png',
+                     '/illustration_2.png'
+                   ]}
+                   autoPlayInterval={3000}
+                 />
+               </div>
+             </div>
+
+             {/* 關閉自動播放版本 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">手動控制版本（關閉自動播放）</h4>
+               <div className="flex justify-center">
+                 <BrandImageCarouselCard 
+                   autoPlay={false}
+                 />
+               </div>
+             </div>
+
+             {/* 響應式測試 */}
+             <div>
+               <h4 className="text-md font-medium mb-4">響應式測試（不同尺寸）</h4>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                 <BrandImageCarouselCard 
+                   className="max-w-xs"
+                 />
+                 <BrandImageCarouselCard 
+                   className="max-w-sm"
+                 />
+                 <BrandImageCarouselCard 
+                   className="max-w-md"
+                 />
+               </div>
+             </div>
+           </div>
+
+           <div className="mt-6">
+             <h4 className="font-semibold">BrandImageCarouselCard 元件特色：</h4>
+             <ul className="ml-4 list-disc text-sm">
+               <li><strong>深灰色外框：</strong>現代化卡片設計</li>
+               <li><strong>響應式圖片區域：</strong>aspect-[4/3] 比例，直接顯示圖片</li>
+               <li><strong>左上角標籤：</strong># Brand（深灰色背景，溫暖白文字）</li>
+               <li><strong>右上角情緒 emoji：</strong>隨輪播切換（😊😢😠😍😮）</li>
+               <li><strong>底部橫幅：</strong>#品牌 #視覺 #陪你一起長大（藍色背景，溫暖白文字）</li>
+               <li><strong>下方文字面板：</strong>深灰色背景，包含大標、小標、內文</li>
+               <li><strong>輪播功能：</strong>整張卡片輪播，4秒間隔</li>
+               <li><strong>導航箭頭：</strong>左右切換按鈕</li>
+             </ul>
+           </div>
          </div>
        </div>
 

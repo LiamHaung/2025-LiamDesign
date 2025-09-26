@@ -14,6 +14,7 @@ import ParallaxSection from '../components/ParallaxSection';
 import ProfileCard from '../components/ProfileCard';
 import AboutLiamTag from '../components/AboutLiamTag';
 import ImageCarouselCard from '../components/ImageCarouselCard';
+import BrandServiceSection from '../components/BrandServiceSection';
 
 export default function Home() {
   // 品牌案例數據
@@ -1791,82 +1792,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Section 3: Brand */}
-            <section className="scroll-section brand-section" style={{ 
-              minHeight: '100vh', 
-              backgroundColor: '#FFFFF3',
-              backgroundImage: 'url(/bg.jpg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              padding: '4rem 2rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-            }}>
-              {/* 背景圖片透明度遮罩 */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(255, 255, 255, 0.45)', // 55% 透明度
-                zIndex: 1
-              }}></div>
-              <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center" style={{ position: 'relative', zIndex: 2 }}>
-                <div className="text-content">
-                  {/* AboutLiamTag - Brand 區塊 */}
-                  <div className="mb-6">
-                    <AboutLiamTag />
-                  </div>
-                  
-                  <motion.h1
-                    className="text-4xl md:text-6xl font-bold text-black mb-6"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
-                    initial={{ opacity: 0, y: 80 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    #Brand
-                  </motion.h1>
-                  <motion.p
-                    className="text-lg md:text-xl text-black mb-8 leading-relaxed"
-                    initial={{ opacity: 0, y: 150 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    品牌建立是一個深度的策略過程。我們從品牌核心價值出發，透過視覺識別、品牌故事與使用者體驗的整合設計，打造具有獨特個性與市場競爭力的品牌形象。我們相信每個品牌都有其獨特的DNA，我們的任務就是將這份獨特性轉化為令人印象深刻的品牌體驗。
-                  </motion.p>
-                  <motion.button 
-                    className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
-                    initial={{ opacity: 0, y: 150 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                  >
-                    閱讀更多
-                  </motion.button>
-                </div>
-                <div className="image-content">
-                  <motion.div
-                    initial={{ opacity: 0, y: 100 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                    viewport={{ once: true, amount: 0.35 }}
-                    className="w-full"
-                  >
-                    <CardCarousel 
-                      cards={brandCases} 
-                      autoPlayInterval={4000} 
-                      className="h-96 md:h-80 lg:h-96"
-                    />
-                  </motion.div>
-                </div>              </div>
-            </section>
+            <BrandServiceSection />
 
             {/* Section 4: Contact */}
             <section className="scroll-section contact-section" style={{ 
