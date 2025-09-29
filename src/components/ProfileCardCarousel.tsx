@@ -18,7 +18,7 @@ const profileVariants = [
     skills: "插畫、印刷、設計、品牌",
     motto: "今天可以休息就不要留給明天",
     description: "我是 Liam,喜歡把想法變成會呼吸的設計。放輕鬆、慢慢逛,或許下一個專案就從這裡開始。",
-    image: "/hero＿滾動視差-02.png"
+    image: "/profilecard.png"
   },
   {
     id: 2,
@@ -116,7 +116,7 @@ export default function ProfileCardCarousel({
         <div className="flex flex-col md:flex-row gap-6">
           {/* 左側 - 人物頭像 */}
           <div className="flex-shrink-0 flex justify-center md:justify-start">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#003EC3]">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-[#003EC3] bg-[#003EC3]">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentIndex}

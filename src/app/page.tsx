@@ -7,6 +7,7 @@ import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
 import TestCardAlt from '../components/TestCardAlt';
+import ReadMoreModal from '../components/ReadMoreModal';
 // import CardCarousel from '../components/CardCarousel';
 // import CharacterWindow from '../components/CharacterWindow';
 // import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
@@ -60,6 +61,10 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'contact' | 'pricing' | null>(null);
   const [profileIntroOpen, setProfileIntroOpen] = useState(false);
+  const [designModalOpen, setDesignModalOpen] = useState(false);
+  const [illustrationModalOpen, setIllustrationModalOpen] = useState(false);
+  const [brandModalOpen, setBrandModalOpen] = useState(false);
+  const [testCardModalOpen, setTestCardModalOpen] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(58);
   const [boatExiting, setBoatExiting] = useState(false);
   
@@ -1645,11 +1650,12 @@ Tel: 03-9XX-XXXX
                       className="w-48 h-48 rounded-full overflow-hidden"
                       style={{ 
                         border: '4px solid #000000',
+                        backgroundColor: '#003EC3',
                         clipPath: 'circle(50% at 50% 50%)'
                       }}
                     >
                       <Image
-                        src="/hero＿滾動視差-02.png"
+                        src="/profilecard.png"
                         alt="Liam 個人頭像"
                         width={192}
                         height={192}
@@ -1740,6 +1746,7 @@ Tel: 03-9XX-XXXX
                     從品牌識別、菜單、活動文宣到社群圖像，專注於讓設計能貼近生活，幫助品牌長出下一步。
                   </motion.p>
                   <motion.button
+                    onClick={() => setDesignModalOpen(true)}
                     className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
                     initial={{ opacity: 0, y: 150 }}
@@ -1847,13 +1854,13 @@ Tel: 03-9XX-XXXX
                         是一種邀請，邀請民眾靠近，聽見品牌的故事，感受到這裡的生活氣息。
                       </p>
 
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => setIllustrationModalOpen(true)}
                         className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-6 py-3 rounded-md font-bold text-sm hover:bg-[#3aaf3a] hover:text-[#FFFFF3] hover:border-[#3aaf3a] transition-colors"
                         style={{ fontFamily: 'var(--font-zpix), monospace' }}
                       >
                         閱讀更多
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1870,7 +1877,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Section 3: Brand */}
-            <BrandServiceSection />
+            <BrandServiceSection onReadMore={() => setBrandModalOpen(true)} />
 
             {/* Section 4: Contact */}
             <section className="scroll-section contact-section" style={{ 
@@ -1885,8 +1892,20 @@ Tel: 03-9XX-XXXX
             }}>
               {/* Version B showcase from card-test */}
                             <div className="max-w-screen-2xl w-full mx-auto mb-12 px-6 md:px-10 space-y-6">
-                <TestCardAlt title="深色覆蓋・品牌主視覺" subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" imageSrc="/illustration_4.png" tag="#Brand" />
-                <TestCardAlt title="插畫場景・水平版卡片" subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" imageSrc="/illustration_5.png" tag="#Illustration" />
+                <TestCardAlt 
+                  title="深色覆蓋・品牌主視覺" 
+                  subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" 
+                  imageSrc="/illustration_4.png" 
+                  tag="#Brand"
+                  onReadMore={() => setTestCardModalOpen(true)}
+                />
+                <TestCardAlt 
+                  title="插畫場景・水平版卡片" 
+                  subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" 
+                  imageSrc="/illustration_5.png" 
+                  tag="#Illustration"
+                  onReadMore={() => setTestCardModalOpen(true)}
+                />
               </div>
                <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
@@ -2401,6 +2420,135 @@ Tel: 03-9XX-XXXX
           onClose={() => setProfileIntroOpen(false)}
         />
       </div>
+
+      {/* ReadMoreModal 組件 */}
+      {/* Design 設計服務區塊 Modal */}
+      <ReadMoreModal
+        open={designModalOpen}
+        onClose={() => setDesignModalOpen(false)}
+        title="Design Services｜設計服務"
+        images={[
+          { src: "/illustration_1.png", alt: "品牌識別設計案例" },
+          { src: "/illustration_2.png", alt: "印刷品設計案例" },
+          { src: "/illustration_3.png", alt: "數位介面設計案例" },
+          { src: "/illustration_4.png", alt: "活動文宣設計案例" },
+          { src: "/illustration_5.png", alt: "社群圖像設計案例" }
+        ]}
+        initialIndex={0}
+        meta={
+          <ul className="space-y-1">
+            <li>Service: 平面設計服務</li>
+            <li>Scope: 品牌識別、印刷品、數位介面、活動文宣</li>
+            <li>Location: 宜蘭、台北、線上服務</li>
+            <li>Year: 2024</li>
+            <li>Category: Design, Branding, Print</li>
+          </ul>
+        }
+      >
+        我們相信設計不是炫技，而是解決問題的工具。從品牌識別、菜單、活動文宣到社群圖像，專注於讓設計能貼近生活，幫助品牌長出下一步。
+
+        我們的設計服務涵蓋完整的視覺識別體系建立，從 Logo 設計到色彩系統，從字體選擇到應用規範，確保品牌在各種媒介上都能保持一致的視覺形象。在印刷品設計方面，我們注重材質選擇與印刷工藝的結合，讓每一份實體作品都能傳達品牌的質感與溫度。
+
+        數位介面設計則著重於使用者體驗的優化，從網站架構到互動流程，都經過精心規劃，確保使用者能夠直觀、流暢地完成目標任務。活動文宣與社群圖像則結合當下趨勢與品牌調性，創造具有話題性與傳播力的視覺內容。
+      </ReadMoreModal>
+
+      {/* Illustration 插畫服務區塊 Modal */}
+      <ReadMoreModal
+        open={illustrationModalOpen}
+        onClose={() => setIllustrationModalOpen(false)}
+        title="Illustration Services｜插畫服務"
+        images={[
+          { src: "/illustration_1.png", alt: "手繪插畫作品" },
+          { src: "/illustration_2.png", alt: "數位插畫作品" },
+          { src: "/illustration_3.png", alt: "在地文化插畫" },
+          { src: "/illustration_4.png", alt: "品牌插畫應用" },
+          { src: "/illustration_5.png", alt: "故事插畫創作" }
+        ]}
+        initialIndex={0}
+        meta={
+          <ul className="space-y-1">
+            <li>Service: 插畫創作服務</li>
+            <li>Scope: 手繪插畫、數位插畫、品牌插畫、故事創作</li>
+            <li>Location: 宜蘭在地、全台服務</li>
+            <li>Year: 2024</li>
+            <li>Category: Illustration, Handmade, Local Culture</li>
+          </ul>
+        }
+      >
+        每一筆一劃，能承載記憶、能創造連結。我喜歡把宜蘭的風、地方的小故事、品牌的日常，透過線條與色彩，讓人感到親近。
+
+        手繪插畫是我最愛的創作方式，每一筆都帶著手的溫度與心的情感。從鉛筆草稿到水彩上色，從墨線勾勒到色彩渲染，每個步驟都充滿了創作的樂趣與挑戰。數位插畫則提供了更多可能性，從 Procreate 到 Photoshop，從向量圖到點陣圖，讓創意能夠更自由地揮灑。
+
+        在地文化的插畫創作是我特別專精的領域，透過深入了解宜蘭的歷史、地理、人文特色，將這些元素轉化為具有故事性的視覺作品。無論是傳統建築、在地美食、自然景觀，都能在我的筆下重新詮釋，讓更多人認識並愛上這片土地。
+
+        品牌插畫則需要更精準的定位與策略思考，從品牌調性分析到目標客群研究，確保插畫風格能夠與品牌形象完美融合，同時具有獨特的識別度與記憶點。
+      </ReadMoreModal>
+
+      {/* Brand 品牌服務區塊 Modal */}
+      <ReadMoreModal
+        open={brandModalOpen}
+        onClose={() => setBrandModalOpen(false)}
+        title="Brand Services｜品牌服務"
+        images={[
+          { src: "/illustration_1.png", alt: "品牌識別設計" },
+          { src: "/illustration_2.png", alt: "品牌策略規劃" },
+          { src: "/illustration_3.png", alt: "品牌應用設計" },
+          { src: "/illustration_4.png", alt: "品牌視覺系統" },
+          { src: "/illustration_5.png", alt: "品牌故事創作" }
+        ]}
+        initialIndex={0}
+        meta={
+          <ul className="space-y-1">
+            <li>Service: 品牌策略與視覺設計</li>
+            <li>Scope: 品牌策略、視覺識別、應用設計、故事創作</li>
+            <li>Location: 全台服務、線上諮詢</li>
+            <li>Year: 2024</li>
+            <li>Category: Brand Strategy, Visual Identity, Brand Story</li>
+          </ul>
+        }
+      >
+        每個品牌都有獨特的故事等待被訴說。我們不只是設計 Logo，更是打造完整的品牌體驗。從品牌策略到視覺識別，從網站設計到印刷品，我們幫助你建立與目標客群的情感連結。
+
+        品牌策略是整個品牌建設的基石，我們會深入了解你的企業文化、目標客群、市場定位，制定出符合品牌調性的策略方向。這包括品牌定位、核心價值、品牌個性、目標客群畫像等關鍵要素的定義。
+
+        視覺識別系統則是品牌策略的具體呈現，從 Logo 設計到色彩系統，從字體選擇到圖像風格，每個視覺元素都經過精心設計，確保能夠準確傳達品牌的核心價值與個性特質。我們還會建立完整的品牌應用規範，確保品牌在各種媒介上都能保持一致的視覺形象。
+
+        品牌故事創作則是讓品牌更有溫度的關鍵，透過文字與視覺的結合，創造出能夠打動人心的品牌敘事。無論是品牌起源故事、產品開發歷程，還是與客戶的互動體驗，都能成為品牌故事的重要素材。
+      </ReadMoreModal>
+
+      {/* TestCardAlt 卡片展示區塊 Modal */}
+      <ReadMoreModal
+        open={testCardModalOpen}
+        onClose={() => setTestCardModalOpen(false)}
+        title="Portfolio Showcase｜作品展示"
+        images={[
+          { src: "/illustration_1.png", alt: "品牌主視覺設計" },
+          { src: "/illustration_2.png", alt: "插畫場景創作" },
+          { src: "/illustration_3.png", alt: "角色插畫風格" },
+          { src: "/illustration_4.png", alt: "品牌應用小物" },
+          { src: "/illustration_5.png", alt: "創意設計探索" }
+        ]}
+        initialIndex={0}
+        meta={
+          <ul className="space-y-1">
+            <li>Client: 多元客戶案例</li>
+            <li>Scope: 品牌設計、插畫創作、視覺識別</li>
+            <li>Location: 宜蘭、台北、線上合作</li>
+            <li>Year: 2023-2024</li>
+            <li>Category: Portfolio, Case Studies, Creative Works</li>
+          </ul>
+        }
+      >
+        這裡展示了我們在不同領域的創作成果，從品牌主視覺設計到插畫場景創作，每一件作品都承載著獨特的故事與創意。
+
+        深色覆蓋的設計風格讓文字在複雜背景中依然保持清晰可讀，同時保留了背景影像的質感與層次。這種設計手法特別適合需要突出文字內容的場景，如海報設計、網站橫幅、社群圖像等。
+
+        插畫場景的創作則注重故事性的營造，透過精心構圖與色彩搭配，創造出具有沉浸感的視覺體驗。水平版卡片的設計讓資訊呈現更加緊湊，適合需要展示多個元素的場合。
+
+        角色插畫風格的探索展現了我們在插畫創作上的多樣性，從可愛卡通風格到寫實描繪，從簡約線條到豐富色彩，每一種風格都有其獨特的魅力與應用場景。
+
+        品牌應用小物的設計則體現了我們對細節的關注，從名片到包裝，從貼紙到周邊商品，每個接觸點都是品牌體驗的重要環節。
+      </ReadMoreModal>
     </div>
   );
 }

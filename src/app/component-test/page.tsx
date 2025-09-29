@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import CheckerboardPattern from '../../components/test/CheckerboardPattern';
 import DigitalClock from '../../components/test/DigitalClock';
 import AnimatedCheckerboard from '../../components/test/AnimatedCheckerboard';
@@ -18,6 +19,7 @@ import BrandImageCarouselCard from '../../components/BrandImageCarouselCard';
 import MarqueeTest from '../../components/MarqueeTest';
 import PricingTable from '../../components/PricingTable';
 import ContactLiam from '../../components/ContactLiam';
+import ReadMoreModal from '../../components/ReadMoreModal';
 import IntroWindow from '../../components/IntroWindow';
 import ProfileIntroWindow from '../../components/ProfileIntroWindow';
 import MapNavigation from '../../components/MapNavigation';
@@ -26,6 +28,9 @@ export default function ComponentTestPage() {
   const [showIntroWindow, setShowIntroWindow] = useState(false);
   const [introType, setIntroType] = useState<'default' | 'custom' | 'minimal'>('default');
   const [showProfileIntro, setShowProfileIntro] = useState(false);
+  const [showReadMoreModal, setShowReadMoreModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const introConfigs = {
     default: {
@@ -57,6 +62,38 @@ export default function ComponentTestPage() {
     }
   };
 
+  const tabs = [
+    { id: 'all', label: '全部元件', icon: '🧩' },
+    { id: 'animation', label: '動畫元件', icon: '✨' },
+    { id: 'layout', label: '布局元件', icon: '📐' },
+    { id: 'interactive', label: '互動元件', icon: '🎮' },
+    { id: 'display', label: '展示元件', icon: '🖼️' }
+  ];
+
+  const components = [
+    { id: 'checkerboard', name: '靜態格子紋路', category: 'display', description: '靜態格子紋路元件' },
+    { id: 'animated-checkerboard', name: '動畫格子紋路', category: 'animation', description: '動畫格子紋路元件' },
+    { id: 'digital-clock', name: '電子時鐘', category: 'display', description: '電子時鐘元件' },
+    { id: 'intro-card', name: 'Intro 卡片', category: 'layout', description: '介紹卡片元件' },
+    { id: 'profile-card', name: '個人資料卡片', category: 'display', description: '個人資料卡片' },
+    { id: 'carousel', name: '輪播元件', category: 'interactive', description: '輪播式個人資料卡片' },
+    { id: 'image-carousel', name: '圖片輪播', category: 'interactive', description: '圖片輪播卡片' },
+    { id: 'marquee', name: '跑馬燈', category: 'animation', description: '跑馬燈元件' },
+    { id: 'pricing-table', name: '價目表', category: 'display', description: '價目表元件' },
+    { id: 'contact-modal', name: '聯絡視窗', category: 'interactive', description: '聯絡 Liam 元件' },
+    { id: 'intro-window', name: '介紹視窗', category: 'interactive', description: '介紹視窗元件' },
+    { id: 'profile-intro', name: '個人介紹視窗', category: 'interactive', description: '個人介紹視窗' },
+    { id: 'map-navigation', name: '地圖導航', category: 'interactive', description: '地圖導航元件' },
+    { id: 'read-more-modal', name: '作品介紹視窗', category: 'interactive', description: '作品介紹視窗' }
+  ];
+
+  const filteredComponents = components.filter(component => {
+    const matchesTab = activeTab === 'all' || component.category === activeTab;
+    const matchesSearch = component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         component.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
+
   return (
     <div style={{ 
       background: '#FFFFF3', 
@@ -64,12 +101,68 @@ export default function ComponentTestPage() {
       padding: '2rem'
     }}>
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center" style={{ 
-          fontFamily: 'var(--font-zpix), monospace',
-          color: '#003EC3'
-        }}>
-          元件測試頁面
-        </h1>
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-4xl font-bold" style={{ 
+              fontFamily: 'var(--font-zpix), monospace',
+              color: '#003EC3'
+            }}>
+              元件測試頁面
+            </h1>
+            <Link 
+              href="/test-site"
+              className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+              style={{ 
+                fontFamily: 'var(--font-zpix), monospace',
+                color: '#000000',
+                textShadow: '1px 1px 0px #ffffff'
+              }}
+            >
+              🏠 返回測試網站
+            </Link>
+          </div>
+          
+          {/* Search and Filter */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              {/* Search */}
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="搜尋元件..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                />
+              </div>
+              
+              {/* Tabs */}
+              <div className="flex flex-wrap gap-2">
+                {tabs.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`px-4 py-2 rounded-lg font-bold transition-all duration-150 ${
+                      activeTab === tab.id
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  >
+                    {tab.icon} {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Stats */}
+            <div className="mt-4 text-sm text-gray-600">
+              顯示 {filteredComponents.length} / {components.length} 個元件
+            </div>
+          </div>
+        </div>
 
         {/* Static Checkerboard Pattern Section */}
         <section className="mb-12">
@@ -1799,6 +1892,103 @@ export default function ComponentTestPage() {
            </ul>
          </div>
        </div>
+
+       {/* ReadMoreModal 測試區域 */}
+       <section className="mb-12">
+         <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-300">
+           <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+             📄 ReadMoreModal 作品介紹視窗測試區域
+           </h2>
+           <p className="text-gray-600 mb-6">
+             測試「閱讀更多」按鈕點擊後彈出的作品介紹視窗，支援圖片輪播和詳細介紹。
+           </p>
+
+           <div className="space-y-4">
+             <div className="p-4 bg-gray-100 rounded-lg">
+               <h3 className="font-semibold mb-2">Jurassic Menu Rebranding 專案</h3>
+               <p className="text-sm text-gray-600 mb-3">
+                 以「冬山鄉藏寶圖」為概念的菜單與餐墊重製，結合在地文化與現代設計美學...
+               </p>
+               <button
+                 onClick={() => setShowReadMoreModal(true)}
+                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200"
+               >
+                 閱讀更多 →
+               </button>
+             </div>
+           </div>
+
+           <div className="mt-6">
+             <h3 className="font-semibold">ReadMoreModal 元件特色：</h3>
+             <ul className="ml-4 list-disc">
+               <li><strong>圖片輪播：</strong>支援多張圖片展示，可左右切換</li>
+               <li><strong>Windows 98 風格：</strong>復古視窗設計，與整體風格一致</li>
+               <li><strong>響應式設計：</strong>桌面版左右佈局，手機版上下佈局</li>
+               <li><strong>Meta 資訊：</strong>顯示客戶、範圍、地點等專案資訊</li>
+               <li><strong>圖片指示器：</strong>底部圓點顯示當前圖片位置</li>
+               <li><strong>導航按鈕：</strong>左右箭頭按鈕切換圖片</li>
+               <li><strong>內容插槽：</strong>支援自定義介紹文字內容</li>
+               <li><strong>關閉功能：</strong>點擊背景或關閉按鈕關閉視窗</li>
+             </ul>
+           </div>
+
+           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+             <h4 className="font-semibold mb-2">使用方式：</h4>
+             <pre className="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`<ReadMoreModal
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Jurassic Menu Rebranding"
+  images={[
+    { src: "/demo-1.jpg", alt: "key visual" },
+    { src: "/demo-2.jpg", alt: "menu spread" },
+    { src: "/demo-3.jpg", alt: "poster" },
+  ]}
+  initialIndex={0}
+  meta={
+    <ul className="space-y-1">
+      <li>Client: Jurassic Steakhouse</li>
+      <li>Scope: Menu, Placemat, Poster</li>
+      <li>Location: Yilan, Taiwan</li>
+    </ul>
+  }
+>
+  {以「冬山鄉藏寶圖」為概念的菜單與餐墊重製…}
+</ReadMoreModal>`}
+             </pre>
+           </div>
+         </div>
+       </section>
+
+       {/* ReadMoreModal 元件 */}
+       <ReadMoreModal
+         open={showReadMoreModal}
+         onClose={() => setShowReadMoreModal(false)}
+         title="Jurassic Menu Rebranding"
+         images={[
+           { src: "/illustration_1.png", alt: "key visual" },
+           { src: "/illustration_2.png", alt: "menu spread" },
+           { src: "/illustration_3.png", alt: "poster" },
+           { src: "/illustration_4.png", alt: "branding" },
+           { src: "/illustration_5.png", alt: "application" },
+         ]}
+         initialIndex={0}
+         meta={
+           <ul className="space-y-1">
+             <li>Client: Jurassic Steakhouse</li>
+             <li>Scope: Menu, Placemat, Poster</li>
+             <li>Location: Yilan, Taiwan</li>
+             <li>Year: 2024</li>
+             <li>Category: Branding, Print Design</li>
+           </ul>
+         }
+       >
+         以「冬山鄉藏寶圖」為概念的菜單與餐墊重製，結合在地文化與現代設計美學。透過手繪插畫風格呈現宜蘭冬山鄉的在地特色，將傳統農村的溫暖氛圍融入現代餐廳空間。
+
+         設計重點在於創造視覺層次感，使用溫暖的色調和親切的插畫元素，讓顧客在用餐時能感受到在地文化的魅力。菜單設計採用折頁式結構，展開後呈現完整的視覺故事，餐墊則作為品牌延伸，強化整體用餐體驗。
+
+         專案包含主視覺設計、菜單版面設計、餐墊設計、海報設計等，從概念發想到最終印刷製作，全程參與並確保設計品質與品牌一致性。
+       </ReadMoreModal>
           </div>
         </section>
       </div>

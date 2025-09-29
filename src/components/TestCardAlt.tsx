@@ -11,9 +11,10 @@ export type TestCardAltProps = {
   tag?: string;
   className?: string;
   style?: React.CSSProperties;
+  onReadMore?: () => void;
 };
 
-export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, className, style }: TestCardAltProps) {
+export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, className, style, onReadMore }: TestCardAltProps) {
   const body = (
     <motion.article
       initial={{ opacity: 0, y: 30 }}
@@ -36,7 +37,12 @@ export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, clas
           <h3 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>{title}</h3>
           {subtitle && <p className="text-sm md:text-base mt-2 text-white/85 leading-relaxed max-w-prose">{subtitle}</p>}
           <div className="mt-4">
-            <span className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-4 py-2 rounded-md font-bold text-sm group-hover:bg-[#3aaf3a] group-hover:text-[#FFFFF3] group-hover:border-[#3aaf3a] transition-colors">閱讀更多</span>
+            <button
+              onClick={onReadMore}
+              className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-4 py-2 rounded-md font-bold text-sm group-hover:bg-[#3aaf3a] group-hover:text-[#FFFFF3] group-hover:border-[#3aaf3a] transition-colors"
+            >
+              閱讀更多
+            </button>
           </div>
         </div>
         <div className="md:col-span-2 min-h-[180px] md:min-h-[220px]" />

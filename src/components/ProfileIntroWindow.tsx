@@ -56,7 +56,7 @@ export default function ProfileIntroWindow({
   ];
 
   // 固定頭像
-  const fixedImage = "/hero＿滾動視差-02.png";
+  const fixedImage = "/profilecard.png";
   // 固定品牌藍色
   const brandColor = "#003EC3";
 
@@ -149,6 +149,7 @@ export default function ProfileIntroWindow({
                   className="w-48 h-48 md:w-[300px] md:h-[300px] rounded-full overflow-hidden"
                   style={{ 
                     border: '4px solid #000000',
+                    backgroundColor: '#003EC3',
                     clipPath: 'circle(50% at 50% 50%)'
                   }}
                 >
@@ -332,6 +333,7 @@ export default function ProfileIntroWindow({
                       <div className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg"
                            style={{ 
                              borderColor: brandColor,
+                             backgroundColor: brandColor,
                              clipPath: 'circle(50% at 50% 50%)'
                            }}>
                         <Image

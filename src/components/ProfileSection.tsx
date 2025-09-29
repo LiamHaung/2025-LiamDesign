@@ -11,8 +11,8 @@ export default function ProfileSection() {
         <div className="flex flex-row w-full gap-4 items-center mb-6">
           {/* 頭貼 50% */}
           <div className="w-1/2 flex justify-center">
-            <div className="w-96 h-96 rounded-[96px] bg-black flex items-center justify-center overflow-hidden border-2 border-black">
-              <img src="/chactor.gif" alt="頭貼" className="w-full h-full object-cover" />
+            <div className="w-96 h-96 rounded-[96px] bg-[#003EC3] flex items-center justify-center overflow-hidden border-2 border-black">
+              <img src="/profilecard.png" alt="頭貼" className="w-full h-full object-cover" />
             </div>
           </div>
           {/* 標題與關鍵詞 50% */}

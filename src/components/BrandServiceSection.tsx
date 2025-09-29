@@ -2,7 +2,11 @@
 import React from 'react';
 import BrandImageCarouselCard from './BrandImageCarouselCard';
 
-export default function BrandServiceSection() {
+interface BrandServiceSectionProps {
+  onReadMore?: () => void;
+}
+
+export default function BrandServiceSection({ onReadMore }: BrandServiceSectionProps = {}) {
   return (
     <section className="w-full py-16 md:py-24" style={{ backgroundColor: '#FFFFF3' }}>
       <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
@@ -45,11 +49,24 @@ export default function BrandServiceSection() {
                 <p className="mb-4">
                   從品牌策略到視覺識別，從網站設計到印刷品，我們幫助你建立與目標客群的情感連結。
                 </p>
-                <p>
-                  讓你的品牌不只是被看見，更是被記住。
-                </p>
-              </div>
+              <p>
+                讓你的品牌不只是被看見，更是被記住。
+              </p>
             </div>
+
+            {/* 閱讀更多按鈕 */}
+            {onReadMore && (
+              <div className="mt-6">
+                <button
+                  onClick={onReadMore}
+                  className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                  style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                >
+                  閱讀更多
+                </button>
+              </div>
+            )}
+          </div>
           </div>
 
           {/* 右側：圖片導覽 (65%) */}
@@ -104,6 +121,19 @@ export default function BrandServiceSection() {
                 讓你的品牌不只是被看見，更是被記住。
               </p>
             </div>
+
+            {/* 閱讀更多按鈕 */}
+            {onReadMore && (
+              <div className="mt-6">
+                <button
+                  onClick={onReadMore}
+                  className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                  style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                >
+                  閱讀更多
+                </button>
+              </div>
+            )}
           </div>
 
           {/* 圖片導覽 */}
