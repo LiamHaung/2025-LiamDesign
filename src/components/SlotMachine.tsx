@@ -70,7 +70,7 @@ const SlotReel = ({
     <div style={{
       width: reelSize.width,
       height: reelSize.height,
-      border: 'none',
+      border: '6px solid #003EC3',
       overflow: 'hidden',
       position: 'relative',
       borderRadius: '8px',
@@ -124,8 +124,8 @@ const SlotReel = ({
             <Image 
               src={src} 
               alt={`Slot Icon ${index}`} 
-              width={reelSize.width - 6} 
-              height={reelSize.height - 6} 
+              width={reelSize.width - 16} 
+              height={reelSize.height - 16} 
               style={{ 
                 objectFit: 'contain',
                 borderRadius: '4px'
@@ -348,7 +348,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           justifyContent: 'center',
           flexWrap: 'nowrap',
           width: '100%',
-          maxWidth: 'min(100vw, 1134px)',
+          maxWidth: 'min(100vw, 1080px)',
           padding: '0 12px'
         }}>
           {[0, 1, 2].map((reelIndex) => (

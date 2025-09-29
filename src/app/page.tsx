@@ -11,11 +11,12 @@ import TestCardAlt from '../components/TestCardAlt';
 // import CharacterWindow from '../components/CharacterWindow';
 // import AnimatedCheckerboard from '../components/test/AnimatedCheckerboard';
 import ParallaxSection from '../components/ParallaxSection';
-import ProfileCard from '../components/ProfileCard';
+import ProfileIntroWindow from '../components/ProfileIntroWindow';
 import AboutLiamTag from '../components/AboutLiamTag';
 import ImageCarouselCard from '../components/ImageCarouselCard';
 import BrandServiceSection from '../components/BrandServiceSection';
 import ContactModal from '../components/ContactModal';
+import MapNavigation from '../components/MapNavigation';
 
 export default function Home() {
   // 品牌案例數據 - 暫時註解掉未使用的變數
@@ -58,6 +59,7 @@ export default function Home() {
   const [showIntroModal, setShowIntroModal] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'contact' | 'pricing' | null>(null);
+  const [profileIntroOpen, setProfileIntroOpen] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(58);
   const [boatExiting, setBoatExiting] = useState(false);
   
@@ -1603,6 +1605,20 @@ Tel: 03-9XX-XXXX
               </section>
             </div>
 
+            {/* 地圖導覽區跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>進入地圖導覽區 →</span>
+                ))}
+              </div>
+            </div>
+
+            {/* MapNavigation 地圖導覽元件 */}
+            <div className="w-full max-w-screen-2xl mx-auto px-4 py-8">
+              <MapNavigation />
+            </div>
+
             {/* ProfileCard 上方跑馬燈 */}
             <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
               <div className="animate-marquee-reverse whitespace-nowrap">
@@ -1612,20 +1628,68 @@ Tel: 03-9XX-XXXX
               </div>
             </div>
 
-            {/* ProfileCard Intro 區塊 - 取代原本的自我介紹區塊 */}
+            {/* About Liam 區塊 - 響應式設計 */}
             <div className="w-full max-w-screen-2xl mx-auto px-1 md:px-8 py-12 md:py-16 profile-section">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true, amount: 0.35 }}
-                className="w-full flex justify-center"
+                className="w-full"
               >
-                <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
-                  <ProfileCard />
+                {/* 手機版：圓圈頭貼 + 按鈕 */}
+                <div className="md:hidden flex flex-col items-center justify-center space-y-6">
+                  {/* 圓圈頭貼 */}
+                  <div className="relative">
+                    <div 
+                      className="w-48 h-48 rounded-full overflow-hidden"
+                      style={{ 
+                        border: '4px solid #000000',
+                        clipPath: 'circle(50% at 50% 50%)'
+                      }}
+                    >
+                      <Image
+                        src="/hero＿滾動視差-02.png"
+                        alt="Liam 個人頭像"
+                        width={192}
+                        height={192}
+                        className="w-full h-full object-cover"
+                        style={{ objectPosition: 'center' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Windows 98 風格按鈕 */}
+                  <button
+                    onClick={() => setProfileIntroOpen(true)}
+                    className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
+                    style={{ 
+                      fontFamily: 'var(--font-zpix), monospace',
+                      color: '#000000',
+                      textShadow: '1px 1px 0px #ffffff'
+                    }}
+                  >
+                    👤 開啟個人介紹
+                  </button>
+                </div>
+
+                {/* 桌面版：內嵌式 ProfileIntroWindow */}
+                <div className="hidden md:flex md:justify-center md:items-center">
+                  <ProfileIntroWindow 
+                    isOpen={true}
+                    onClose={() => {}}
+                    embedded={true}
+                  />
                 </div>
               </motion.div>
-            </div>            {/* 四個滾動分段 */}
+            </div>
+
+            {/* 分隔線 */}
+            <div className="w-full max-w-screen-2xl mx-auto px-4 py-8">
+              <div className="border-t-2 border-gray-600"></div>
+            </div>
+
+            {/* 四個滾動分段 */}
             {/* Section 1: Design */}
             <section className="scroll-section design-section" style={{ 
               minHeight: '100vh', 
@@ -2329,6 +2393,14 @@ Tel: 03-9XX-XXXX
         onClose={closeModal}
         type={modalType}
       />
+
+      {/* Profile Intro Window - 僅手機版 */}
+      <div className="md:hidden">
+        <ProfileIntroWindow 
+          isOpen={profileIntroOpen}
+          onClose={() => setProfileIntroOpen(false)}
+        />
+      </div>
     </div>
   );
 }

@@ -74,9 +74,9 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
   };
 
   return (
-    <div className={`w-full max-w-4xl mx-auto ${className}`}>
+    <div className={`w-full max-w-[1440px] mx-auto ${className}`}>
       {/* 桌面版地圖容器 */}
-      <div className="hidden md:block relative w-full bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg border-2 border-gray-200">
+      <div className="hidden md:block relative w-full rounded-2xl p-8">
         {/* 地圖標題 */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
@@ -86,15 +86,13 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
         </div>
 
         {/* 地圖背景區域 */}
-        <div className="relative w-full h-96 bg-gradient-to-br from-[#FFFFF3] to-[#f0f8ff] rounded-xl border-2 border-gray-300 overflow-hidden">
-          {/* 背景裝飾元素 */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-4 left-4 w-8 h-8 bg-blue-300 rounded-full"></div>
-            <div className="absolute top-12 right-8 w-6 h-6 bg-green-300 rounded-full"></div>
-            <div className="absolute bottom-8 left-8 w-10 h-10 bg-orange-300 rounded-full"></div>
-            <div className="absolute bottom-4 right-4 w-7 h-7 bg-purple-300 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-300 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-          </div>
+        <div className="relative w-full aspect-[2.08/1] rounded-xl overflow-hidden">
+          {/* 地圖底圖 */}
+          <img 
+            src="/liam-nav-map.png" 
+            alt="Liam Design Studio 導航地圖" 
+            className="w-full h-full object-cover"
+          />
 
           {/* 版位標註區域 - 用於設計參考 */}
           <div className="absolute inset-0 pointer-events-none z-0 hidden">
@@ -199,7 +197,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
                 left: area.position.left,
                 width: area.size.width,
                 height: area.size.height,
-                backgroundColor: hoveredArea === area.id ? `${area.color}20` : 'transparent'
+                backgroundColor: hoveredArea === area.id ? '#FFFFF3' : 'transparent'
               }}
               onMouseEnter={() => setHoveredArea(area.id)}
               onMouseLeave={() => setHoveredArea(null)}
@@ -215,7 +213,6 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
                 {/* 圖標 */}
                 <div 
                   className="text-3xl mb-2 transition-transform duration-300 group-hover:scale-110"
-                  style={{ filter: hoveredArea === area.id ? 'drop-shadow(0 0 8px rgba(0,0,0,0.3))' : 'none' }}
                 >
                   {area.icon}
                 </div>
@@ -225,7 +222,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
                   <h3 
                     className="font-bold text-sm mb-1 transition-colors duration-300"
                     style={{ 
-                      color: hoveredArea === area.id ? area.color : '#353535',
+                      color: hoveredArea === area.id ? area.color : '#FFFFF3',
                       fontFamily: 'var(--font-zpix), monospace'
                     }}
                   >
@@ -239,8 +236,8 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
               <div
                 className="absolute inset-0 rounded-lg border-2 pointer-events-none"
                 style={{ 
-                  borderColor: area.color,
-                  opacity: hoveredArea === area.id ? 0.6 : 0
+                  borderColor: '#003EC3',
+                  opacity: hoveredArea === area.id ? 1 : 0
                 }}
               />
             </div>
@@ -255,116 +252,66 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
           </p>
         </div>
 
-        {/* 版位座標說明 - 用於設計地圖 PNG */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-          <h3 className="font-bold text-lg mb-3 text-gray-800" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-            📐 版位座標參考（用於設計地圖 PNG）
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                <span className="font-semibold">👤 Intro 自我介紹：</span>
-                <span className="text-gray-600">top: 15%, left: 20%, 25% × 20%</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-green-500 rounded"></div>
-                <span className="font-semibold">🎨 Design 設計服務：</span>
-                <span className="text-gray-600">top: 35%, left: 10%, 25% × 20%</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-orange-500 rounded"></div>
-                <span className="font-semibold">🖼️ Illustration 插畫：</span>
-                <span className="text-gray-600">top: 55%, left: 30%, 25% × 20%</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-purple-500 rounded"></div>
-                <span className="font-semibold">🏷️ Brand 品牌服務：</span>
-                <span className="text-gray-600">top: 25%, left: 60%, 25% × 20%</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-red-500 rounded"></div>
-                <span className="font-semibold">📞 Contact 聯絡：</span>
-                <span className="text-gray-600">top: 55%, left: 70%, 25% × 20%</span>
-              </div>
-              <div className="text-gray-500 text-xs mt-2">
-                💡 地圖尺寸建議：800px × 384px (2.08:1 比例)
-                <br />
-                📐 實際容器尺寸：地圖區域為 100% 寬度，高度 384px (24rem)
-                <br />
-                🎨 建議設計尺寸：1200px × 576px (高解析度) 或 800px × 384px (標準)
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* 手機版卡片式導航 */}
-      <div className="md:hidden space-y-4">
+      {/* 手機版表格式導航 */}
+      <div className="md:hidden">
         {/* 標題 */}
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
             🗺️ 服務導航
           </h2>
-          <p className="text-sm text-gray-600">點擊下方卡片探索不同服務</p>
+          <p className="text-sm text-gray-600">點擊下方項目探索不同服務</p>
         </div>
 
-        {/* 卡片網格 */}
-        <div className="grid grid-cols-1 gap-4">
-          {mapAreas.map((area) => (
-            <motion.a
+        {/* 表格式導航列表 */}
+        <div className="space-y-3">
+          {mapAreas.map((area, index) => (
+            <motion.div
               key={area.id}
-              href={area.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleAreaClick(area.href);
-              }}
-              className="block p-4 rounded-xl border-2 border-gray-200 bg-white shadow-md hover:shadow-lg transition-all duration-300"
+              className="group border-2 border-gray-400 bg-[#FFFFF3] hover:bg-blue-600 hover:text-[#FFFFF3] transition-all duration-200 rounded"
               whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="flex items-center space-x-4">
-                {/* 圖標 */}
-                <div 
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                  style={{ backgroundColor: `${area.color}20` }}
-                >
-                  {area.icon}
-                </div>
-                
-                {/* 內容 */}
-                <div className="flex-1">
-                  <h3 
-                    className="font-bold text-lg mb-1"
-                    style={{ 
-                      color: area.color,
-                      fontFamily: 'var(--font-zpix), monospace'
-                    }}
-                  >
-                    {area.name}
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {area.description}
-                  </p>
-                </div>
-                
-                {/* 箭頭 */}
-                <div className="text-gray-400">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAreaClick(area.href);
+                }}
+                className="block p-4 cursor-pointer"
+              >
+                <div className="flex items-center space-x-4">
+                  {/* 圖標 */}
+                  <div className="text-2xl">
+                    {area.icon}
+                  </div>
+                  
+                  {/* 服務資訊 */}
+                  <div className="flex-1">
+                    <div className="group-hover:text-[#FFFFF3] text-[#353535] font-bold text-lg" style={{ fontWeight: 800 }}>
+                      {area.name}
+                    </div>
+                    <div className="group-hover:text-[#FFFFF3] text-[#353535] text-sm mt-1">
+                      {area.description}
+                    </div>
+                  </div>
+                  
+                  {/* 箭頭圖標 */}
+                  <div className="text-lg group-hover:text-[#FFFFF3] text-[#353535]">
+                    →
+                  </div>
                 </div>
               </div>
-            </motion.a>
+            </motion.div>
           ))}
         </div>
 
         {/* 底部說明 */}
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-600">
-            💡 點擊上方卡片快速跳轉到對應的服務區塊
+            💡 點擊上方項目快速跳轉到對應的服務區塊
           </p>
         </div>
       </div>

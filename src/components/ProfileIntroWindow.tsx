@@ -7,12 +7,14 @@ interface ProfileIntroWindowProps {
   isOpen: boolean;
   onClose: () => void;
   className?: string;
+  embedded?: boolean;
 }
 
 export default function ProfileIntroWindow({ 
   isOpen, 
   onClose, 
-  className = ''
+  className = '',
+  embedded = false
 }: ProfileIntroWindowProps) {
   const [currentProfile, setCurrentProfile] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +87,155 @@ export default function ProfileIntroWindow({
 
   const currentData = profileData[currentProfile];
 
+  // 內嵌模式：直接返回內容，不使用 modal
+  if (embedded) {
+    return (
+      <div className={`win98-window relative ${className}`} style={{
+        width: '100%',
+        maxWidth: '900px',
+        background: '#c0c0c0',
+        border: '2px outset #c0c0c0',
+        fontFamily: 'var(--font-zpix), var(--font-press-start-2p), monospace',
+        overflow: 'hidden'
+      }}>
+        {/* Windows 98 標題列（固定品牌藍色） */}
+        <div className="win98-titlebar" style={{
+          background: `linear-gradient(90deg, ${brandColor} 0%, ${brandColor}dd 100%)`,
+          color: 'white',
+          padding: '4px 6px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: '11px',
+          fontWeight: 'bold',
+          borderBottom: '1px solid #808080'
+        }}>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 bg-white bg-opacity-20 rounded-sm flex items-center justify-center">
+              <span className="text-xs">👤</span>
+            </div>
+            <span>Profile Intro - Liam Huang</span>
+          </div>
+          <div className="flex space-x-1">
+            <button
+              onClick={onClose}
+              className="w-4 h-4 bg-gray-300 border border-gray-500 flex items-center justify-center hover:bg-red-500 hover:border-red-600 transition-colors duration-200"
+              title="關閉視窗"
+            >
+              <span className="text-xs">×</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 內容區域 */}
+        <div style={{ 
+          backgroundColor: '#FFFFF3', 
+          padding: '20px',
+          minHeight: '400px',
+          color: '#353535'
+        }}>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full mx-auto mb-4"></div>
+                <p style={{ color: '#353535', fontSize: '14px' }}>載入中...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {/* 上方：固定頭像 */}
+              <div className="flex justify-center">
+                <div 
+                  className="w-48 h-48 md:w-[300px] md:h-[300px] rounded-full overflow-hidden"
+                  style={{ 
+                    border: '4px solid #000000',
+                    clipPath: 'circle(50% at 50% 50%)'
+                  }}
+                >
+                  <Image
+                    src={fixedImage}
+                    alt="Liam 個人頭像"
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center' }}
+                  />
+                </div>
+              </div>
+
+              {/* 下方：輪播內容 */}
+              <div className="w-full">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentProfile}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2" style={{ color: '#353535' }}>
+                        {currentData.name}
+                      </h2>
+                      <div className="w-full h-1 mb-3" style={{ backgroundColor: brandColor }}></div>
+                      <h3 className="text-lg font-semibold mb-3" style={{ color: '#353535' }}>
+                        {currentData.title}
+                      </h3>
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>技能專長</h4>
+                      <p className="text-sm" style={{ color: '#353535' }}>{currentData.skills}</p>
+                    </div>
+                    <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>座右銘</h4>
+                      <p className="text-sm italic" style={{ color: '#353535' }}>
+                        &ldquo;{currentData.motto}&rdquo;
+                      </p>
+                    </div>
+                    <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>個人簡介</h4>
+                      <p className="text-sm leading-relaxed" style={{ color: '#353535' }}>
+                        {currentData.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* 底部導航指示器 */}
+                <div className="flex justify-center space-x-2 mt-6">
+                  {profileData.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentProfile(index)}
+                      className={`w-8 h-8 rounded-full text-sm font-bold transition-all duration-200 ${
+                        index === currentProfile
+                          ? 'text-white'
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                      style={{
+                        backgroundColor: index === currentProfile ? brandColor : '#e5e5e5',
+                        color: index === currentProfile ? '#FFFFF3' : '#353535'
+                      }}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Modal 模式：原有的彈出式視窗
   return (
     <AnimatePresence>
       {isOpen && (
@@ -175,8 +326,8 @@ export default function ProfileIntroWindow({
                 </div>
               ) : (
                 <div className="flex flex-col lg:flex-row gap-6">
-                  {/* 左側：固定頭像區域（無動畫） */}
-                  <div className="flex-shrink-0 flex justify-center lg:justify-start">
+                  {/* 左側：固定頭像區域（僅桌面版顯示） */}
+                  <div className="hidden lg:flex flex-shrink-0 justify-center lg:justify-start">
                     <div className="relative w-32 h-32 lg:w-40 lg:h-40">
                       <div className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg"
                            style={{ 
