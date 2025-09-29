@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import CheckerboardPattern from '../../components/test/CheckerboardPattern';
 import DigitalClock from '../../components/test/DigitalClock';
 import AnimatedCheckerboard from '../../components/test/AnimatedCheckerboard';
@@ -16,8 +16,47 @@ import AboutLiamTag from '../../components/AboutLiamTag';
 import ImageCarouselCard from '../../components/ImageCarouselCard';
 import BrandImageCarouselCard from '../../components/BrandImageCarouselCard';
 import MarqueeTest from '../../components/MarqueeTest';
+import PricingTable from '../../components/PricingTable';
+import ContactLiam from '../../components/ContactLiam';
+import IntroWindow from '../../components/IntroWindow';
+import ProfileIntroWindow from '../../components/ProfileIntroWindow';
+import MapNavigation from '../../components/MapNavigation';
 
 export default function ComponentTestPage() {
+  const [showIntroWindow, setShowIntroWindow] = useState(false);
+  const [introType, setIntroType] = useState<'default' | 'custom' | 'minimal'>('default');
+  const [showProfileIntro, setShowProfileIntro] = useState(false);
+
+  const introConfigs = {
+    default: {
+      title: "Liam Design Studio - Intro",
+      content: {
+        chinese: "設計不是等待靈感，而是立刻開始。\n點進來，讓我們今天就動手。",
+        english: "Design isn't about waiting for inspiration.\nClick in — let's start today."
+      },
+      showProgress: true,
+      progressDuration: 3000
+    },
+    custom: {
+      title: "歡迎來到測試區域 - Welcome",
+      content: {
+        chinese: "這裡是元件測試區域！\n我們可以在這裡測試各種 Windows 98 風格的元件。",
+        english: "This is the component test area!\nWe can test various Windows 98 style components here."
+      },
+      showProgress: true,
+      progressDuration: 2000
+    },
+    minimal: {
+      title: "簡潔版 - Minimal",
+      content: {
+        chinese: "簡潔的介紹視窗\n沒有進度條，直接顯示內容。",
+        english: "Minimal intro window\nNo progress bar, direct content display."
+      },
+      showProgress: false,
+      progressDuration: 0
+    }
+  };
+
   return (
     <div style={{ 
       background: '#FFFFF3', 
@@ -1392,6 +1431,371 @@ export default function ComponentTestPage() {
              <li>variant: 跑馬燈款式 (&apos;classic&apos; | &apos;modern&apos; | &apos;creative&apos;)</li>
              <li>className: 自訂 CSS 類別 (選填)</li>
              <li><strong>特色：每款都有藍黑兩條跑馬燈、不同文字內容、響應式設計、平滑動畫</strong></li>
+           </ul>
+         </div>
+       </div>
+
+       {/* PricingTable 價目表測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">PricingTable 價目表測試</h2>
+         
+         <div className="space-y-8">
+           {/* 基本版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-4">基本版本（預設設定）</h3>
+             <PricingTable />
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">PricingTable 元件特色：</h3>
+           <ul className="ml-4 list-disc text-sm">
+             <li><strong>Windows 98 風格：</strong>復古視窗設計，包含標題列、邊框、按鈕</li>
+             <li><strong>響應式表格：</strong>桌面版橫排，手機版直排卡片式</li>
+             <li><strong>互動效果：</strong>hover 放大、換底色改白字</li>
+             <li><strong>服務項目：</strong>13 項設計服務，包含價格和報價項目</li>
+             <li><strong>合約說明：</strong>中英文雙語說明，桌面版橫排，手機版直排</li>
+             <li><strong>動畫效果：</strong>漸入動畫，每行延遲 0.05 秒</li>
+             <li><strong>完整報價：</strong>社群代管、團體服設計、印刷諮詢改為「加賴私訊報價」</li>
+           </ul>
+         </div>
+       </div>
+
+       {/* ContactLiam 聯繫 Liam 測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">ContactLiam 聯繫 Liam 測試</h2>
+         
+         <div className="space-y-8">
+           {/* 基本版本 */}
+           <div>
+             <h3 className="text-lg font-semibold mb-4">基本版本（預設設定）</h3>
+             <ContactLiam />
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">ContactLiam 元件特色：</h3>
+           <ul className="ml-4 list-disc text-sm">
+             <li><strong>Windows 98 風格：</strong>復古視窗設計，包含標題列、邊框、關閉按鈕</li>
+             <li><strong>中英文切換：</strong>支援中文和英文界面切換</li>
+             <li><strong>聯絡方式：</strong>Email、LINE、Instagram 三種聯絡方式</li>
+             <li><strong>互動效果：</strong>hover 放大、換底色改溫暖白字</li>
+             <li><strong>點擊連結：</strong>每個聯絡方式都可點擊直接開啟對應應用</li>
+             <li><strong>響應式設計：</strong>適配各種螢幕尺寸</li>
+             <li><strong>動畫效果：</strong>漸入動畫，每項延遲 0.1 秒</li>
+             <li><strong>關閉功能：</strong>右上角 X 按鈕可關閉視窗</li>
+           </ul>
+         </div>
+       </div>
+
+       {/* IntroWindow 介紹視窗測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">IntroWindow 介紹視窗測試區域</h2>
+         
+         {/* 控制按鈕 */}
+         <div className="mb-6 space-y-4">
+           <div className="flex flex-wrap gap-4">
+             <button
+               onClick={() => {
+                 setIntroType('default');
+                 setShowIntroWindow(true);
+               }}
+               className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+               style={{ 
+                 fontFamily: 'var(--font-zpix), monospace',
+                 color: '#000000',
+                 textShadow: '1px 1px 0px #ffffff'
+               }}
+             >
+               🎯 預設版本
+             </button>
+             
+             <button
+               onClick={() => {
+                 setIntroType('custom');
+                 setShowIntroWindow(true);
+               }}
+               className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+               style={{ 
+                 fontFamily: 'var(--font-zpix), monospace',
+                 color: '#000000',
+                 textShadow: '1px 1px 0px #ffffff'
+               }}
+             >
+               🛠️ 自訂版本
+             </button>
+             
+             <button
+               onClick={() => {
+                 setIntroType('minimal');
+                 setShowIntroWindow(true);
+               }}
+               className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+               style={{ 
+                 fontFamily: 'var(--font-zpix), monospace',
+                 color: '#000000',
+                 textShadow: '1px 1px 0px #ffffff'
+               }}
+             >
+               ✨ 簡潔版本
+             </button>
+           </div>
+           
+           <div className="text-sm text-gray-600">
+             <p><strong>目前選擇：</strong>{introType === 'default' ? '預設版本' : introType === 'custom' ? '自訂版本' : '簡潔版本'}</p>
+           </div>
+         </div>
+
+         {/* IntroWindow 元件 */}
+         <IntroWindow
+           isOpen={showIntroWindow}
+           onClose={() => setShowIntroWindow(false)}
+           {...introConfigs[introType]}
+         />
+
+         <div className="mt-6">
+           <h3 className="font-semibold">IntroWindow 元件特色：</h3>
+           <ul className="ml-4 list-disc">
+             <li><strong>Windows 98 風格：</strong>完整的復古視窗設計，包含標題列、邊框、陰影</li>
+             <li><strong>可自訂內容：</strong>標題、中英文內容、進度條設定都可自訂</li>
+             <li><strong>進度條動畫：</strong>可選的載入進度條，支援自訂動畫時間</li>
+             <li><strong>多種版本：</strong>預設版、自訂版、簡潔版三種不同配置</li>
+             <li><strong>背景遮罩：</strong>半透明背景遮罩，點擊可關閉</li>
+             <li><strong>動畫效果：</strong>淡入淡出、縮放動畫，提升使用者體驗</li>
+             <li><strong>響應式設計：</strong>適配不同螢幕尺寸，字體和間距自動調整</li>
+             <li><strong>關閉方式：</strong>右上角 X 按鈕、背景遮罩點擊、完成後按鈕</li>
+           </ul>
+         </div>
+
+         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+           <h4 className="font-semibold mb-2">使用方式：</h4>
+           <pre className="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`<IntroWindow
+  isOpen={showIntroWindow}
+  onClose={() => setShowIntroWindow(false)}
+  title="自訂標題"
+  content={{
+    chinese: "中文內容\\n支援換行",
+    english: "English content\\nSupports line breaks"
+  }}
+  showProgress={true}
+  progressDuration={3000}
+/>`}
+           </pre>
+         </div>
+       </div>
+
+       {/* ProfileIntroWindow 個人介紹視窗測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">ProfileIntroWindow 個人介紹視窗測試區域</h2>
+         
+         {/* 控制按鈕 */}
+         <div className="mb-6 space-y-4">
+           <div className="flex flex-wrap gap-4">
+             <button
+               onClick={() => setShowProfileIntro(true)}
+               className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+               style={{ 
+                 fontFamily: 'var(--font-zpix), monospace',
+                 color: '#000000',
+                 textShadow: '1px 1px 0px #ffffff'
+               }}
+             >
+               👤 開啟個人介紹
+             </button>
+           </div>
+           
+           <div className="text-sm text-gray-600">
+             <p><strong>功能：</strong>Windows 98 風格的個人介紹視窗，包含輪播功能</p>
+           </div>
+         </div>
+
+         {/* ProfileIntroWindow 元件 */}
+         <ProfileIntroWindow
+           isOpen={showProfileIntro}
+           onClose={() => setShowProfileIntro(false)}
+         />
+
+         <div className="mt-6">
+           <h3 className="font-semibold">ProfileIntroWindow 元件特色：</h3>
+           <ul className="ml-4 list-disc">
+             <li><strong>Windows 98 風格：</strong>完整的復古視窗設計，標題列會根據內容變色</li>
+             <li><strong>多面向展示：</strong>4 個不同的個人面向（平面設計師、插畫創作者、品牌夥伴、在地創作者）</li>
+             <li><strong>自動輪播：</strong>每 4 秒自動切換到下一個面向</li>
+             <li><strong>手動控制：</strong>底部圓點指示器可手動切換</li>
+             <li><strong>動畫效果：</strong>頭像、文字內容都有淡入淡出動畫</li>
+             <li><strong>載入動畫：</strong>開啟時有載入畫面</li>
+             <li><strong>響應式設計：</strong>適配不同螢幕尺寸</li>
+             <li><strong>色彩主題：</strong>每個面向都有專屬的主題色彩</li>
+             <li><strong>完整資訊：</strong>姓名、職稱、技能、座右銘、自我介紹</li>
+           </ul>
+         </div>
+
+         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+           <h4 className="font-semibold mb-2">使用方式：</h4>
+           <pre className="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`<ProfileIntroWindow
+  isOpen={showProfileIntro}
+  onClose={() => setShowProfileIntro(false)}
+/>`}
+           </pre>
+         </div>
+
+         <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+           <h4 className="font-semibold mb-2">個人資料內容：</h4>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+             <div>
+               <h5 className="font-semibold text-blue-600 mb-2">1. 平面設計師</h5>
+               <p className="text-gray-700">技能：插畫、印刷、設計、品牌</p>
+               <p className="text-gray-700">座右銘：今天可以休息就不要留給明天</p>
+             </div>
+             <div>
+               <h5 className="font-semibold text-green-600 mb-2">2. 插畫創作者</h5>
+               <p className="text-gray-700">技能：手繪、數位、故事、在地</p>
+               <p className="text-gray-700">座右銘：每一筆一劃都承載著記憶與情感</p>
+             </div>
+             <div>
+               <h5 className="font-semibold text-orange-600 mb-2">3. 品牌夥伴</h5>
+               <p className="text-gray-700">技能：策略、創意、陪伴、成長</p>
+               <p className="text-gray-700">座右銘：每個品牌都有獨特的故事</p>
+             </div>
+             <div>
+               <h5 className="font-semibold text-purple-600 mb-2">4. 在地創作者</h5>
+               <p className="text-gray-700">技能：文化、傳承、連結、溫度</p>
+               <p className="text-gray-700">座右銘：越在地，越國際</p>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       {/* MapNavigation 地圖導航測試區域 */}
+       <div className="mt-8">
+         <h2 className="text-2xl font-bold mb-4">MapNavigation 地圖導航測試區域</h2>
+         
+         {/* 控制按鈕 */}
+         <div className="mb-6 space-y-4">
+           <div className="flex flex-wrap gap-4">
+             <button
+               onClick={() => {
+                 // 滾動到對應的測試區域
+                 const element = document.querySelector('#map-test');
+                 if (element) {
+                   element.scrollIntoView({ behavior: 'smooth' });
+                 }
+               }}
+               className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-4 py-2 font-bold transition-all duration-150 shadow-md"
+               style={{ 
+                 fontFamily: 'var(--font-zpix), monospace',
+                 color: '#000000',
+                 textShadow: '1px 1px 0px #ffffff'
+               }}
+             >
+               🗺️ 查看地圖導航
+             </button>
+           </div>
+           
+           <div className="text-sm text-gray-600">
+             <p><strong>功能：</strong>互動式地圖導航，點擊區域跳轉到對應版位</p>
+           </div>
+         </div>
+
+         {/* MapNavigation 元件 */}
+         <div id="map-test">
+           <MapNavigation />
+         </div>
+
+         {/* 模擬的版位區塊（用於測試錨點跳轉） */}
+         <div className="mt-12 space-y-16">
+           {/* Intro 自我介紹區塊 */}
+           <div id="intro" className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl">
+             <h3 className="text-3xl font-bold text-blue-800 mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+               👤 Intro 自我介紹區塊
+             </h3>
+             <p className="text-lg text-blue-700">
+               這裡是 Liam 的個人介紹區域，包含個人故事、背景經歷等內容。
+             </p>
+           </div>
+
+           {/* Design 設計服務區塊 */}
+           <div id="design" className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl">
+             <h3 className="text-3xl font-bold text-green-800 mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+               🎨 Design 設計服務區塊
+             </h3>
+             <p className="text-lg text-green-700">
+               這裡是平面設計服務區域，包含設計作品展示、服務項目等內容。
+             </p>
+           </div>
+
+           {/* Illustration 插畫服務區塊 */}
+           <div id="illustration" className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-xl">
+             <h3 className="text-3xl font-bold text-orange-800 mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+               🖼️ Illustration 插畫服務區塊
+             </h3>
+             <p className="text-lg text-orange-700">
+               這裡是插畫服務區域，包含插畫作品展示、創作理念等內容。
+             </p>
+           </div>
+
+           {/* Brand 品牌服務區塊 */}
+           <div id="brand" className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl">
+             <h3 className="text-3xl font-bold text-purple-800 mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+               🏷️ Brand 品牌服務區塊
+             </h3>
+             <p className="text-lg text-purple-700">
+               這裡是品牌服務區域，包含品牌案例、策略規劃等內容。
+             </p>
+           </div>
+
+           {/* Contact 聯絡區塊 */}
+           <div id="contact" className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-xl">
+             <h3 className="text-3xl font-bold text-red-800 mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+               📞 Contact 聯絡區塊
+             </h3>
+             <p className="text-lg text-red-700">
+               這裡是聯絡區域，包含聯繫方式、合作洽談等內容。
+             </p>
+           </div>
+         </div>
+
+         <div className="mt-6">
+           <h3 className="font-semibold">MapNavigation 元件特色：</h3>
+           <ul className="ml-4 list-disc">
+             <li><strong>響應式設計：</strong>桌面版顯示互動地圖，手機版顯示卡片式導航</li>
+             <li><strong>互動式地圖：</strong>桌面版視覺化的導航介面，直觀易用</li>
+             <li><strong>卡片式導航：</strong>手機版垂直排列的卡片，易於觸控操作</li>
+             <li><strong>錨點跳轉：</strong>點擊區域平滑滾動到對應版位</li>
+             <li><strong>Hover 效果：</strong>桌面版滑鼠懸停時顯示區域資訊和動畫</li>
+             <li><strong>視覺回饋：</strong>點擊時有縮放動畫效果</li>
+             <li><strong>色彩區分：</strong>每個區域都有專屬的主題色彩</li>
+             <li><strong>圖標識別：</strong>使用 emoji 圖標快速識別不同服務</li>
+             <li><strong>描述提示：</strong>顯示詳細描述和服務說明</li>
+           </ul>
+         </div>
+
+         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+           <h4 className="font-semibold mb-2">使用方式：</h4>
+           <pre className="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`<MapNavigation className="max-w-4xl mx-auto" />
+
+// 確保頁面中有對應的錨點 ID
+<div id="intro">Intro 自我介紹區塊</div>
+<div id="design">Design 設計服務區塊</div>
+<div id="illustration">Illustration 插畫服務區塊</div>
+<div id="brand">Brand 品牌服務區塊</div>
+<div id="contact">Contact 聯絡區塊</div>`}
+           </pre>
+         </div>
+
+         <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+           <h4 className="font-semibold mb-2">技術實現：</h4>
+           <ul className="text-sm space-y-1">
+             <li>• <strong>響應式設計：</strong>使用 <code>hidden md:block</code> 和 <code>md:hidden</code> 控制顯示</li>
+             <li>• <strong>絕對定位：</strong>桌面版使用 CSS 絕對定位覆蓋可點擊區域</li>
+             <li>• <strong>卡片佈局：</strong>手機版使用 Flexbox 和 Grid 佈局</li>
+             <li>• <strong>Framer Motion：</strong>提供流暢的動畫效果</li>
+             <li>• <strong>錨點跳轉：</strong>使用 <code>scrollIntoView</code> 實現平滑滾動</li>
+             <li>• <strong>狀態管理：</strong>使用 useState 管理 hover 狀態</li>
+             <li>• <strong>觸控優化：</strong>手機版卡片設計適合手指點擊</li>
            </ul>
          </div>
        </div>

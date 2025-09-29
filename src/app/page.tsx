@@ -15,6 +15,7 @@ import ProfileCard from '../components/ProfileCard';
 import AboutLiamTag from '../components/AboutLiamTag';
 import ImageCarouselCard from '../components/ImageCarouselCard';
 import BrandServiceSection from '../components/BrandServiceSection';
+import ContactModal from '../components/ContactModal';
 
 export default function Home() {
   // 品牌案例數據 - 暫時註解掉未使用的變數
@@ -55,6 +56,8 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'contact' | 'pricing' | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(58);
   const [boatExiting, setBoatExiting] = useState(false);
   
@@ -159,6 +162,17 @@ export default function Home() {
     setTimeout(() => {
       setEntered(true);
     }, 1300);
+  };
+
+  // Modal 處理函數
+  const openModal = (type: 'contact' | 'pricing') => {
+    setModalType(type);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalType(null);
   };
 
   // 拖拽處理函數 - 支援多個視窗
@@ -1842,16 +1856,40 @@ Tel: 03-9XX-XXXX
                   >
                     準備好開始你的下一個專案了嗎？無論是品牌重塑、產品設計或是創意諮詢，我們都期待與你合作。讓我們一起創造出真正有影響力的設計作品。立即聯繫我們，開始你的設計之旅。
                   </motion.p>
-                  <motion.button 
-                    className="bg-white text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                  {/* Windows 98 風格按鈕組 */}
+                  <motion.div 
+                    className="flex flex-col sm:flex-row gap-4"
                     initial={{ opacity: 0, y: 150 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
                   >
-                    立即聯繫
-                  </motion.button>
+                    {/* 立即聯繫按鈕 */}
+                    <button 
+                      onClick={() => openModal('contact')}
+                      className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
+                      style={{ 
+                        fontFamily: 'var(--font-zpix), monospace',
+                        color: '#000000',
+                        textShadow: '1px 1px 0px #ffffff'
+                      }}
+                    >
+                      📧 立即聯繫
+                    </button>
+
+                    {/* 價目表按鈕 */}
+                    <button 
+                      onClick={() => openModal('pricing')}
+                      className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
+                      style={{ 
+                        fontFamily: 'var(--font-zpix), monospace',
+                        color: '#000000',
+                        textShadow: '1px 1px 0px #ffffff'
+                      }}
+                    >
+                      💰 價目表
+                    </button>
+                  </motion.div>
                 </div>
               </div>
 
@@ -2285,6 +2323,12 @@ Tel: 03-9XX-XXXX
               }
             `}</style>
 
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={modalOpen}
+        onClose={closeModal}
+        type={modalType}
+      />
     </div>
   );
 }
