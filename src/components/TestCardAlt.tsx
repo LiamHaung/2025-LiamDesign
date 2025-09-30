@@ -29,13 +29,13 @@ export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, clas
         <div className="absolute inset-0 bg-black/45 group-hover:bg-black/30 transition-colors" />
       </div>
 
-      <div className="relative grid grid-cols-1 md:grid-cols-5 gap-0">
-        <div className="md:col-span-3 p-5 md:p-6">
+      <div className="relative flex flex-col justify-center h-full min-h-[200px] md:min-h-[250px]">
+        <div className="p-5 md:p-6 text-center">
           {tag && (
             <span className="inline-block text-xs font-bold tracking-wide text-[#FFFFF3] bg-[#003EC3] px-2 py-1 rounded mb-3">{tag}</span>
           )}
-          <h3 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--font-zpix), monospace' }}>{title}</h3>
-          {subtitle && <p className="text-sm md:text-base mt-2 text-white/85 leading-relaxed max-w-prose">{subtitle}</p>}
+          <h3 className="text-2xl md:text-3xl font-bold mb-3" style={{ fontFamily: 'var(--font-zpix), monospace' }}>{title}</h3>
+          {subtitle && <p className="text-sm md:text-base text-white/85 leading-relaxed max-w-2xl mx-auto mb-4">{subtitle}</p>}
           <div className="mt-4">
             <button
               onClick={onReadMore}
@@ -45,7 +45,6 @@ export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, clas
             </button>
           </div>
         </div>
-        <div className="md:col-span-2 min-h-[180px] md:min-h-[220px]" />
       </div>
     </motion.article>
   );

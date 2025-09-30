@@ -106,11 +106,28 @@ export default function TestSitePage() {
         '性能測試'
       ],
       path: '/wave-boat-test'
+    },
+    {
+      id: 'waterfall-portfolio',
+      title: '瀑布流作品牆',
+      subtitle: 'Waterfall Portfolio',
+      description: '測試瀑布流作品展示與詳細介紹彈窗功能',
+      icon: '🖼️',
+      color: '#E74C3C',
+      features: [
+        '瀑布流布局',
+        '作品卡片展示',
+        '分類篩選功能',
+        '詳細介紹彈窗',
+        '響應式設計',
+        '互動動畫效果'
+      ],
+      path: '/waterfall-portfolio'
     }
   ];
 
   const stats = [
-    { label: '測試頁面', value: '5', icon: '📄' },
+    { label: '測試頁面', value: '6', icon: '📄' },
     { label: '測試元件', value: '50+', icon: '🧩' },
     { label: '動畫效果', value: '30+', icon: '✨' },
     { label: '響應式斷點', value: '4', icon: '📱' }

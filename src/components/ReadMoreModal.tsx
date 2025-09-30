@@ -134,38 +134,102 @@ export default function ReadMoreModal({
                       />
                     </div>
 
-                    {/* 圖片導航按鈕 */}
+                    {/* 圖片導航按鈕 - Windows 98 風格 */}
                     {images.length > 1 && (
                       <>
                         <button
                           onClick={prevImage}
-                          className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gray-300 border border-gray-500 flex items-center justify-center hover:bg-gray-400 transition-colors duration-200"
+                          className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 flex items-center justify-center transition-all duration-200 z-10"
+                          style={{
+                            background: 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
+                            border: '2px solid #808080',
+                            borderTopColor: '#ffffff',
+                            borderLeftColor: '#ffffff',
+                            borderRightColor: '#404040',
+                            borderBottomColor: '#404040',
+                            boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
+                            color: '#000000',
+                            textShadow: '1px 1px 0px #ffffff'
+                          }}
+                          onMouseDown={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
+                          }}
+                          onMouseUp={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                          }}
                           title="上一張"
                         >
-                          <span className="text-sm">‹</span>
+                          <span className="text-sm font-bold">‹</span>
                         </button>
                         <button
                           onClick={nextImage}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gray-300 border border-gray-500 flex items-center justify-center hover:bg-gray-400 transition-colors duration-200"
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 flex items-center justify-center transition-all duration-200 z-10"
+                          style={{
+                            background: 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
+                            border: '2px solid #808080',
+                            borderTopColor: '#ffffff',
+                            borderLeftColor: '#ffffff',
+                            borderRightColor: '#404040',
+                            borderBottomColor: '#404040',
+                            boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
+                            color: '#000000',
+                            textShadow: '1px 1px 0px #ffffff'
+                          }}
+                          onMouseDown={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
+                          }}
+                          onMouseUp={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                          }}
                           title="下一張"
                         >
-                          <span className="text-sm">›</span>
+                          <span className="text-sm font-bold">›</span>
                         </button>
                       </>
                     )}
 
-                    {/* 圖片指示器 */}
+                    {/* 圖片指示器 - Windows 98 風格 */}
                     {images.length > 1 && (
                       <div className="flex justify-center space-x-2 mt-4">
                         {images.map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                              index === currentImageIndex
-                                ? 'bg-blue-600'
-                                : 'bg-gray-400 hover:bg-gray-500'
-                            }`}
+                            className="w-4 h-4 transition-all duration-200"
+                            style={{
+                              background: index === currentImageIndex
+                                ? 'linear-gradient(135deg, #000080 0%, #0000ff 100%)'
+                                : 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
+                              border: '1px solid #808080',
+                              borderTopColor: '#ffffff',
+                              borderLeftColor: '#ffffff',
+                              borderRightColor: '#404040',
+                              borderBottomColor: '#404040',
+                              boxShadow: index === currentImageIndex
+                                ? 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040'
+                                : 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040'
+                            }}
+                            onMouseDown={(e) => {
+                              if (index !== currentImageIndex) {
+                                e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
+                              }
+                            }}
+                            onMouseUp={(e) => {
+                              if (index !== currentImageIndex) {
+                                e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (index !== currentImageIndex) {
+                                e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                              }
+                            }}
                             title={`圖片 ${index + 1}`}
                           />
                         ))}
