@@ -129,16 +129,16 @@ export default function ProfileIntroWindow({
 
         {/* 內容區域 */}
         <div style={{ 
-          backgroundColor: '#FFFFF3', 
+          backgroundColor: '#003EC3', 
           padding: '20px',
           minHeight: '400px',
-          color: '#353535'
+          color: '#FFFFF3'
         }}>
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
                 <div className="animate-spin w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full mx-auto mb-4"></div>
-                <p style={{ color: '#353535', fontSize: '14px' }}>載入中...</p>
+                <p style={{ color: '#FFFFF3', fontSize: '14px' }}>載入中...</p>
               </div>
             </div>
           ) : (
@@ -176,32 +176,32 @@ export default function ProfileIntroWindow({
                     className="space-y-4"
                   >
                     <div>
-                      <h2 className="text-2xl font-bold mb-2" style={{ color: '#353535' }}>
+                      <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFF3' }}>
                         {currentData.name}
                       </h2>
-                      <div className="w-full h-1 mb-3" style={{ backgroundColor: brandColor }}></div>
-                      <h3 className="text-lg font-semibold mb-3" style={{ color: '#353535' }}>
+                      <div className="w-full h-1 mb-3" style={{ backgroundColor: '#FFFFF3' }}></div>
+                      <h3 className="text-lg font-semibold mb-3" style={{ color: '#FFFFF3' }}>
                         {currentData.title}
                       </h3>
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>技能專長</h4>
-                      <p className="text-sm" style={{ color: '#353535' }}>{currentData.skills}</p>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#FFFFF3' }}>技能專長</h4>
+                      <p className="text-sm" style={{ color: '#FFFFF3' }}>{currentData.skills}</p>
                     </div>
-                    <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+                    <div className="w-full h-0.5 bg-white mb-3"></div>
 
                     <div>
-                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>座右銘</h4>
-                      <p className="text-sm italic" style={{ color: '#353535' }}>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#FFFFF3' }}>座右銘</h4>
+                      <p className="text-sm italic" style={{ color: '#FFFFF3' }}>
                         &ldquo;{currentData.motto}&rdquo;
                       </p>
                     </div>
-                    <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+                    <div className="w-full h-0.5 bg-white mb-3"></div>
 
                     <div>
-                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#353535' }}>個人簡介</h4>
-                      <p className="text-sm leading-relaxed" style={{ color: '#353535' }}>
+                      <h4 className="text-sm font-semibold mb-2" style={{ color: '#FFFFF3' }}>個人簡介</h4>
+                      <p className="text-sm leading-relaxed" style={{ color: '#FFFFF3' }}>
                         {currentData.description}
                       </p>
                     </div>
@@ -220,8 +220,8 @@ export default function ProfileIntroWindow({
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                       style={{
-                        backgroundColor: index === currentProfile ? brandColor : '#e5e5e5',
-                        color: index === currentProfile ? '#FFFFF3' : '#353535'
+                        backgroundColor: index === currentProfile ? '#FFFFF3' : '#e5e5e5',
+                        color: index === currentProfile ? '#003EC3' : '#353535'
                       }}
                     >
                       {index + 1}
@@ -305,8 +305,8 @@ export default function ProfileIntroWindow({
             
             {/* Windows 98 內容區域 */}
             <div style={{
-              background: '#FFFFF3',
-              color: '#353535',
+              background: '#003EC3',
+              color: '#FFFFF3',
               padding: 'clamp(16px, 4vw, 24px)',
               fontSize: 'clamp(12px, 2.5vw, 16px)',
               lineHeight: '1.4',
@@ -322,7 +322,7 @@ export default function ProfileIntroWindow({
                 <div className="flex items-center justify-center h-64">
                   <div className="text-center">
                     <div className="animate-spin w-8 h-8 border-2 border-[#353535] border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <p style={{ fontFamily: 'var(--font-press-start-2p), monospace', color: '#353535' }}>Loading Profile...</p>
+                    <p style={{ fontFamily: 'var(--font-press-start-2p), monospace', color: '#FFFFF3' }}>Loading Profile...</p>
                   </div>
                 </div>
               ) : (
@@ -362,11 +362,11 @@ export default function ProfileIntroWindow({
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h2 className="text-2xl lg:text-3xl font-bold mb-2" style={{ color: brandColor }}>
+                        <h2 className="text-2xl lg:text-3xl font-bold mb-2" style={{ color: '#FFFFF3' }}>
                           {currentData.name}
                         </h2>
-                        <div className="w-full h-1 mb-3" style={{ backgroundColor: brandColor }}></div>
-                        <h3 className="text-lg lg:text-xl font-semibold mb-4">
+                        <div className="w-full h-1 mb-3" style={{ backgroundColor: '#FFFFF3' }}></div>
+                        <h3 className="text-lg lg:text-xl font-semibold mb-4" style={{ color: '#FFFFF3' }}>
                           {currentData.title}
                         </h3>
                       </motion.div>
@@ -382,10 +382,10 @@ export default function ProfileIntroWindow({
                         transition={{ duration: 0.3, delay: 0.1 }}
                       >
                         <div className="mb-3">
-                          <p className="text-sm text-gray-500 mb-2">Skills / 技能</p>
-                          <p className="text-base lg:text-lg">{currentData.skills}</p>
+                          <p className="text-sm mb-2" style={{ color: '#FFFFF3' }}>Skills / 技能</p>
+                          <p className="text-base lg:text-lg" style={{ color: '#FFFFF3' }}>{currentData.skills}</p>
                         </div>
-                        <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+                        <div className="w-full h-0.5 bg-white mb-3"></div>
                       </motion.div>
                     </AnimatePresence>
 
@@ -399,12 +399,12 @@ export default function ProfileIntroWindow({
                         transition={{ duration: 0.3, delay: 0.2 }}
                       >
                         <div className="mb-3">
-                          <p className="text-sm text-gray-500 mb-2">Motto / 座右銘</p>
-                          <p className="text-base lg:text-lg font-semibold" style={{ color: brandColor }}>
+                          <p className="text-sm mb-2" style={{ color: '#FFFFF3' }}>Motto / 座右銘</p>
+                          <p className="text-base lg:text-lg font-semibold" style={{ color: '#FFFFF3' }}>
                             &ldquo;{currentData.motto}&rdquo;
                           </p>
                         </div>
-                        <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
+                        <div className="w-full h-0.5 bg-white mb-3"></div>
                       </motion.div>
                     </AnimatePresence>
 
@@ -418,8 +418,8 @@ export default function ProfileIntroWindow({
                         transition={{ duration: 0.3, delay: 0.3 }}
                       >
                         <div>
-                          <p className="text-sm text-gray-500 mb-2">About / 關於我</p>
-                          <p className="text-sm lg:text-base leading-relaxed">
+                          <p className="text-sm mb-2" style={{ color: '#FFFFF3' }}>About / 關於我</p>
+                          <p className="text-sm lg:text-base leading-relaxed" style={{ color: '#FFFFF3' }}>
                             {currentData.description}
                           </p>
                         </div>
@@ -432,7 +432,7 @@ export default function ProfileIntroWindow({
               {/* 底部導航指示器（數字版本） */}
               {!isLoading && (
                 <motion.div
-                  className="flex justify-center space-x-3 mt-6 pt-4 border-t border-gray-400"
+                  className="flex justify-center space-x-3 mt-6 pt-4 border-t border-white"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
@@ -447,8 +447,8 @@ export default function ProfileIntroWindow({
                           : 'hover:scale-105'
                       }`}
                       style={{
-                        backgroundColor: index === currentProfile ? brandColor : '#e5e5e5',
-                        color: index === currentProfile ? '#FFFFF3' : '#353535'
+                        backgroundColor: index === currentProfile ? '#FFFFF3' : '#e5e5e5',
+                        color: index === currentProfile ? '#003EC3' : '#353535'
                       }}
                     >
                       {index + 1}
