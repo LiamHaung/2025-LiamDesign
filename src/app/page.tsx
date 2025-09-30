@@ -633,16 +633,27 @@ export default function Home() {
                   padding: 'clamp(12px, 3vw, 20px) clamp(24px, 6vw, 40px)',
                   fontSize: 'clamp(14px, 3.5vw, 20px)',
                   fontWeight: 'bold',
-                  color: 'white',
-                  backgroundColor: '#003EC3',
-                  border: 'none',
-                  borderRadius: '8px',
+                  color: '#ffffff',
+                  background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
+                  border: '2px solid #808080',
+                  borderTopColor: '#ffffff',
+                  borderLeftColor: '#ffffff',
+                  borderRightColor: '#404040',
+                  borderBottomColor: '#404040',
+                  boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
                   cursor: 'pointer',
                   fontFamily: 'var(--font-press-start-2p)',
-                  /* 扁平化風格，無文字陰影 */
+                  textShadow: '1px 1px 0px #000000'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#002A8A'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#003EC3'}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                }}
               >
                 ENTER
               </button>
@@ -1751,12 +1762,33 @@ Tel: 03-9XX-XXXX
                   </motion.p>
                   <motion.button
                     onClick={() => setDesignModalOpen(true)}
-                    className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
-                    style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                    className="px-8 py-4 font-bold text-lg transition-all duration-150"
+                    style={{ 
+                      fontFamily: 'var(--font-zpix), monospace',
+                      background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
+                      border: '2px solid #808080',
+                      borderTopColor: '#ffffff',
+                      borderLeftColor: '#ffffff',
+                      borderRightColor: '#404040',
+                      borderBottomColor: '#404040',
+                      boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
+                      color: '#ffffff',
+                      textShadow: '1px 1px 0px #000000',
+                      cursor: 'pointer'
+                    }}
                     initial={{ opacity: 0, y: 150 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
+                    onMouseDown={(e) => {
+                      e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
+                    }}
                   >
                     閱讀更多
                   </motion.button>
