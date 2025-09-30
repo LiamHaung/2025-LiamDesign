@@ -3265,11 +3265,11 @@ const WaterfallPortfolioSection = () => {
   const [isMobile, setIsMobile] = useState(false);
   
   // 每頁顯示的作品數量（響應式）
-  const itemsPerPage = {
-    mobile: 21,   // 手機版顯示全部21個作品
-    tablet: 12,   // 平板版每頁12個
-    desktop: 8    // 桌面版初始8個，載入更多後：8→12→16→21
-  };
+  // const itemsPerPage = {
+  //   mobile: 21,   // 手機版顯示全部21個作品
+  //   tablet: 12,   // 平板版每頁12個
+  //   desktop: 8    // 桌面版初始8個，載入更多後：8→12→16→21
+  // };
 
   // 檢測是否為手機版
   useEffect(() => {

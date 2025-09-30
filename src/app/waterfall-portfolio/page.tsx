@@ -773,7 +773,6 @@ const MobileCategoryCard = ({
           borderBottomColor: '#404040'
         }}
         whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.2 }}
         initial={{ 
           opacity: 0,
           y: -100
