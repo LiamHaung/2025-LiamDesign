@@ -102,7 +102,7 @@ export default function ProfileIntroWindow({
         <div className="win98-titlebar" style={{
           background: `linear-gradient(90deg, ${brandColor} 0%, ${brandColor}dd 100%)`,
           color: 'white',
-          padding: '4px 6px',
+          padding: '20px 6px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -276,7 +276,7 @@ export default function ProfileIntroWindow({
             <div className="win98-titlebar" style={{
               background: `linear-gradient(90deg, ${brandColor} 0%, ${brandColor}dd 100%)`,
               color: 'white',
-              padding: '4px 6px',
+              padding: '20px 6px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',

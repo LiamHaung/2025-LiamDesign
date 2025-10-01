@@ -6,7 +6,7 @@ import TextWindow from '../components/TextWindow';
 import CarouselWindow from '../components/CarouselWindow';
 import SlotMachine from '../components/SlotMachine';
 import { motion } from 'framer-motion';
-import TestCardAlt from '../components/TestCardAlt';
+import TestCardCarousel from '../components/TestCardCarousel';
 import ReadMoreModal from '../components/ReadMoreModal';
 // import CardCarousel from '../components/CardCarousel';
 // import CharacterWindow from '../components/CharacterWindow';
@@ -922,12 +922,47 @@ export default function Home() {
                         <span>關於 Liam</span>
                       </div>
 
-                      {/* 設計 Design */}
+                      {/* 全部作品 All Works */}
+                      <div
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          // 滾動到作品集區塊
+                          const portfolioSection = document.querySelector('#portfolio');
+                          if (portfolioSection) {
+                            portfolioSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        style={{
+                          padding: '8px 12px',
+                          background: '#000000',
+                          border: 'none',
+                          color: 'white',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
+                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = '#000000';
+                          (e.currentTarget as HTMLElement).style.color = 'white';
+                        }}
+                      >
+                        <span>🎯</span>
+                        <span>全部作品 All Works</span>
+                      </div>
+
+                      {/* 設計服務 Design Services */}
                       <div
                         onClick={() => {
                           setMobileMenuOpen(false);
                           // 滾動到設計區塊
-                          const designSection = document.querySelector('.design-section');
+                          const designSection = document.querySelector('#design');
                           if (designSection) {
                             designSection.scrollIntoView({ behavior: 'smooth' });
                           }
@@ -954,15 +989,15 @@ export default function Home() {
                         }}
                       >
                         <span>🎨</span>
-                        <span>設計 Design</span>
+                        <span>設計服務 Design Services</span>
                       </div>
 
-                      {/* 插畫 Illustration */}
+                      {/* 插畫服務 Illustration Services */}
                       <div
                         onClick={() => {
                           setMobileMenuOpen(false);
                           // 滾動到插畫區塊
-                          const illustrationSection = document.querySelector('.illustration-section');
+                          const illustrationSection = document.querySelector('#illustration');
                           if (illustrationSection) {
                             illustrationSection.scrollIntoView({ behavior: 'smooth' });
                           }
@@ -989,50 +1024,16 @@ export default function Home() {
                         }}
                       >
                         <span>🖼️</span>
-                        <span>插畫 Illustration</span>
+                        <span>插畫服務 Illustration Services</span>
                       </div>
 
-                      {/* 品牌 Brand */}
-                      <div
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          // 滾動到品牌區塊
-                          const brandSection = document.querySelector('.brand-section');
-                          if (brandSection) {
-                            brandSection.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        }}
-                        style={{
-                          padding: '8px 12px',
-                          background: '#000000',
-                          border: 'none',
-                          color: 'white',
-                          cursor: 'pointer',
-                          fontSize: '12px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          transition: 'all 0.15s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.background = '#003EC3';
-                          (e.currentTarget as HTMLElement).style.color = '#FFFFF3';
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.background = '#000000';
-                          (e.currentTarget as HTMLElement).style.color = 'white';
-                        }}
-                      >
-                        <span>🏷️</span>
-                        <span>品牌 Brand</span>
-                      </div>
 
                       {/* 聯繫 Liam */}
                       <div
                         onClick={() => {
                           setMobileMenuOpen(false);
                           // 滾動到聯絡區塊
-                          const contactSection = document.querySelector('.contact-section');
+                          const contactSection = document.querySelector('#contact');
                           if (contactSection) {
                             contactSection.scrollIntoView({ behavior: 'smooth' });
                           }
@@ -1602,7 +1603,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* MapNavigation 地圖導覽元件 */}
-            <div className="w-full max-w-screen-2xl mx-auto px-4 py-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 py-12">
               <MapNavigation />
             </div>
 
@@ -1616,7 +1617,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* About Liam 區塊 - 響應式設計 */}
-            <div className="w-full max-w-screen-2xl mx-auto px-6 md:px-10 py-12 md:py-16 profile-section">
+            <div id="intro" className="w-full max-w-screen-2xl mx-auto px-6 md:px-10 py-12 md:py-16 profile-section">
               <motion.div
                 initial={{ opacity: 0, y: 80 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1669,12 +1670,14 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* 分隔線 */}
-            <div className="w-full max-w-screen-2xl mx-auto px-6 md:px-10 py-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-6 md:px-10 py-6">
               <div className="border-t-2 border-gray-600"></div>
             </div>
 
             {/* 瀑布流作品牆 - 完整功能版本 */}
-            <WaterfallPortfolioSection />
+            <div id="portfolio">
+              <WaterfallPortfolioSection />
+            </div>
 
             {/* 四個滾動分段 */}
             {/* Design 上方跑馬燈 */}
@@ -1687,8 +1690,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Section 1: Design */}
-            <section className="scroll-section design-section" style={{ 
-              minHeight: '100vh', 
+            <section id="design" className="scroll-section design-section" style={{ 
               backgroundColor: '#003EC3',
               padding: '4rem 2rem',
               display: 'flex',
@@ -1817,8 +1819,7 @@ Tel: 03-9XX-XXXX
             </div>
 
             {/* Section 2: Illustration */}
-            <section className="scroll-section illustration-section" style={{ 
-              minHeight: '100vh', 
+            <section id="illustration" className="scroll-section illustration-section" style={{ 
               backgroundColor: '#003EC3',
               padding: '4rem 2rem',
               display: 'flex',
@@ -1854,13 +1855,12 @@ Tel: 03-9XX-XXXX
                   <div className="md:basis-[50%] md:max-w-[50%]">
                     <div className="sticky top-8 p-6 rounded-xl border border-transparent bg-[#003EC3]" style={{ zIndex: 10 }}>
                       {/* 標籤 */}
-                      <div className="mb-4">
-                        <div 
-                          className="text-sm font-bold text-[#353535] bg-[#FFFFF3] px-3 py-2 rounded-lg inline-block"
-                          style={{ fontFamily: 'var(--font-zpix), monospace' }}
-                        >
-                          #插畫 #親手製作 #在地感 #溫度設計
-                        </div>
+                      <div className="mb-6">
+                        <AboutLiamTag 
+                          text="#插畫 #親手製作 #在地感 #溫度設計"
+                          backgroundColor="#FFFFF3"
+                          textColor="#003EC3"
+                        />
                       </div>
 
                       {/* 大標題 */}
@@ -1925,7 +1925,6 @@ Tel: 03-9XX-XXXX
 
             {/* Section 3: Contact */}
             <section className="scroll-section contact-section" style={{ 
-              minHeight: '100vh', 
               backgroundColor: '#353535',
               padding: '4rem 2rem',
               display: 'flex',
@@ -1936,36 +1935,58 @@ Tel: 03-9XX-XXXX
             }}>
               {/* Version B showcase from card-test */}
               <div className="max-w-screen-2xl w-full mx-auto mb-12 px-6 md:px-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <TestCardAlt 
-                    title="深色覆蓋・品牌主視覺" 
-                    subtitle="以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。" 
-                    imageSrc="/illustration_4.png" 
-                    tag="#Brand"
-                    onReadMore={() => setTestCardModalOpen(true)}
-                  />
-                  <TestCardAlt 
-                    title="插畫場景・水平版卡片" 
-                    subtitle="水平排版讓資訊更緊湊，適合長文引導與外部連結。" 
-                    imageSrc="/illustration_5.png" 
-                    tag="#Illustration"
-                    onReadMore={() => setTestCardModalOpen(true)}
-                  />
-                  <TestCardAlt 
-                    title="設計系統・組件展示" 
-                    subtitle="展示設計系統的組件化思維，確保視覺一致性和開發效率。" 
-                    imageSrc="/illustration_6.png" 
-                    tag="#Design"
-                    onReadMore={() => setTestCardModalOpen(true)}
-                  />
-                  <TestCardAlt 
-                    title="品牌應用・多元場景" 
-                    subtitle="將品牌元素應用到各種場景，展現品牌的靈活性和適應性。" 
-                    imageSrc="/illustration_1.png" 
-                    tag="#Brand"
-                    onReadMore={() => setTestCardModalOpen(true)}
-                  />
-                </div>
+                <TestCardCarousel 
+                  cards={[
+                    {
+                      id: 1,
+                      title: "深色覆蓋・品牌主視覺",
+                      subtitle: "以深色罩層保持文字可讀性，背景仍保留影像質感，適合大圖敘事。",
+                      imageSrc: "/illustration_4.png",
+                      tag: "#Brand",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    },
+                    {
+                      id: 2,
+                      title: "插畫場景・水平版卡片",
+                      subtitle: "水平排版讓資訊更緊湊，適合長文引導與外部連結。",
+                      imageSrc: "/illustration_5.png",
+                      tag: "#Illustration",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    },
+                    {
+                      id: 3,
+                      title: "設計系統・組件展示",
+                      subtitle: "展示設計系統的組件化思維，確保視覺一致性和開發效率。",
+                      imageSrc: "/illustration_6.png",
+                      tag: "#Design",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    },
+                    {
+                      id: 4,
+                      title: "品牌應用・多元場景",
+                      subtitle: "將品牌元素應用到各種場景，展現品牌的靈活性和適應性。",
+                      imageSrc: "/illustration_1.png",
+                      tag: "#Brand",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    },
+                    {
+                      id: 5,
+                      title: "創意探索・實驗性設計",
+                      subtitle: "不斷嘗試新的設計語言和表現手法，探索視覺設計的無限可能。",
+                      imageSrc: "/illustration_2.png",
+                      tag: "#Creative",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    },
+                    {
+                      id: 6,
+                      title: "使用者體驗・介面設計",
+                      subtitle: "以使用者為中心的設計思維，創造直觀且美觀的數位體驗。",
+                      imageSrc: "/illustration_3.png",
+                      tag: "#UX",
+                      onReadMore: () => setTestCardModalOpen(true)
+                    }
+                  ]}
+                />
               </div>
                <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="image-content lg:order-1">
@@ -2008,22 +2029,28 @@ Tel: 03-9XX-XXXX
                     viewport={{ once: true, amount: 0.35 }}
                   >
                     {/* 立即聯繫按鈕 */}
-                    <ModernButton 
-                      onClick={() => openModal('contact')}
-                      variant="primary"
-                      size="lg"
-                    >
-                      📧 立即聯繫
-                    </ModernButton>
+                    <div id="contact" className="flex-1">
+                      <ModernButton 
+                        onClick={() => openModal('contact')}
+                        variant="primary"
+                        size="lg"
+                        fullWidth
+                      >
+                        📧 立即聯繫
+                      </ModernButton>
+                    </div>
 
                     {/* 價目表按鈕 */}
-                    <ModernButton 
-                      onClick={() => openModal('pricing')}
-                      variant="secondary"
-                      size="lg"
-                    >
-                      💰 價目表
-                    </ModernButton>
+                    <div className="flex-1">
+                      <ModernButton 
+                        onClick={() => openModal('pricing')}
+                        variant="secondary"
+                        size="lg"
+                        fullWidth
+                      >
+                        💰 價目表
+                      </ModernButton>
+                    </div>
                   </motion.div>
                 </div>
               </div>
@@ -3370,12 +3397,17 @@ const WaterfallPortfolioSection = () => {
         <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
           {/* 標題 */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-              🖼️ 作品集
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+              一起完成的設計 | Works We Made Together
             </h2>
-            <p className="text-lg text-gray-700" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-              瀑布流作品展示與詳細介紹
-            </p>
+            {/* 標籤元件 */}
+            <div className="flex justify-center">
+              <AboutLiamTag 
+                text="#LittleByLittle  #KeepGoing" 
+                backgroundColor="#003EC3" 
+                textColor="#FFFFF3"
+              />
+            </div>
           </div>
 
           {/* 篩選按鈕 */}

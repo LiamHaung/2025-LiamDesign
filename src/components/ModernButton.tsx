@@ -87,16 +87,16 @@ const ModernButton: React.FC<ModernButtonProps> = ({
       },
     },
     secondary: {
-      backgroundColor: '#6B7280',
+      backgroundColor: '#ff8c00',
       color: '#FFFFFF',
       boxShadow: 'none',
       '&:hover': {
-        backgroundColor: '#4B5563',
+        backgroundColor: '#e67e00',
         boxShadow: 'none',
         transform: 'translateY(-1px)',
       },
       '&:active': {
-        backgroundColor: '#374151',
+        backgroundColor: '#cc6b00',
         transform: 'translateY(0)',
       },
     },
@@ -178,6 +178,8 @@ const ModernButton: React.FC<ModernButtonProps> = ({
       button.style.color = '#FFFFFF';
     } else if (variant === 'ghost') {
       button.style.backgroundColor = 'rgba(0, 62, 195, 0.1)';
+    } else if (variant === 'secondary') {
+      button.style.backgroundColor = '#e67e00';
     } else {
       button.style.backgroundColor = variantStyles[variant]['&:hover'].backgroundColor;
     }
@@ -207,7 +209,7 @@ const ModernButton: React.FC<ModernButtonProps> = ({
     <motion.button
       type={type}
       className={className}
-      style={buttonStyles}
+      style={buttonStyles as React.CSSProperties}
       onClick={disabled || loading ? undefined : onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

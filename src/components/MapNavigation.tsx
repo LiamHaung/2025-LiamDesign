@@ -15,8 +15,8 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
       id: 'intro',
       name: 'Intro 自我介紹',
       href: '#intro',
-      position: { top: '15%', left: '25%' },
-      size: { width: '18%', height: '18%' },
+      position: { top: '20%', left: '30%' },
+      size: { width: '22%', height: '22%' },
       color: '#003EC3',
       icon: '👤',
       description: '了解 Liam 的個人故事'
@@ -25,8 +25,8 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
       id: 'design',
       name: 'Design 設計服務',
       href: '#design',
-      position: { top: '35%', left: '15%' },
-      size: { width: '18%', height: '18%' },
+      position: { top: '40%', left: '20%' },
+      size: { width: '22%', height: '22%' },
       color: '#3aaf3a',
       icon: '🎨',
       description: '平面設計與視覺創作'
@@ -35,28 +35,28 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
       id: 'illustration',
       name: 'Illustration 插畫服務',
       href: '#illustration',
-      position: { top: '55%', left: '35%' },
-      size: { width: '18%', height: '18%' },
+      position: { top: '50%', left: '40%' },
+      size: { width: '22%', height: '22%' },
       color: '#ff6b35',
       icon: '🖼️',
       description: '手繪插畫與數位創作'
     },
     {
-      id: 'brand',
-      name: 'Brand 品牌服務',
-      href: '#brand',
-      position: { top: '25%', left: '65%' },
-      size: { width: '18%', height: '18%' },
+      id: 'portfolio',
+      name: 'All Works 全部作品',
+      href: '#portfolio',
+      position: { top: '25%', left: '55%' },
+      size: { width: '22%', height: '22%' },
       color: '#8b5cf6',
-      icon: '🏷️',
-      description: '品牌識別與策略規劃'
+      icon: '🎯',
+      description: '查看完整作品集展示'
     },
     {
       id: 'contact',
       name: 'Contact 聯絡區塊',
       href: '#contact',
-      position: { top: '55%', left: '75%' },
-      size: { width: '18%', height: '18%' },
+      position: { top: '55%', left: '65%' },
+      size: { width: '22%', height: '22%' },
       color: '#e74c3c',
       icon: '📞',
       description: '聯繫方式與合作洽談'
@@ -79,10 +79,22 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
       <div className="hidden md:block relative w-full rounded-2xl p-8">
         {/* 地圖標題 */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-            🗺️ Liam Design Studio 導航地圖
+          <h2 className="text-4xl md:text-5xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+            一起展開一段設計旅程｜Let's Start a Design Journey
           </h2>
-          <p className="text-gray-600">點擊下方區域探索不同服務</p>
+          {/* 標籤元件 */}
+          <div className="flex justify-center">
+            <div 
+              className="px-4 py-2 rounded-lg font-bold text-sm"
+              style={{ 
+                backgroundColor: '#003EC3', 
+                color: '#FFFFF3',
+                fontFamily: 'var(--font-zpix), monospace'
+              }}
+            >
+              #LittleByLittle  #KeepGoing
+            </div>
+          </div>
         </div>
 
         {/* 地圖背景區域 */}
@@ -100,10 +112,10 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
             <div 
               className="absolute border-2 border-blue-500 bg-blue-100/30 rounded-lg flex items-center justify-center"
               style={{
-                top: '15%',
-                left: '25%',
-                width: '18%',
-                height: '18%'
+                top: '20%',
+                left: '30%',
+                width: '22%',
+                height: '22%'
               }}
             >
               <div className="text-center">
@@ -117,10 +129,10 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
             <div 
               className="absolute border-2 border-green-500 bg-green-100/30 rounded-lg flex items-center justify-center"
               style={{
-                top: '35%',
-                left: '15%',
-                width: '18%',
-                height: '18%'
+                top: '40%',
+                left: '20%',
+                width: '22%',
+                height: '22%'
               }}
             >
               <div className="text-center">
@@ -134,10 +146,10 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
             <div 
               className="absolute border-2 border-orange-500 bg-orange-100/30 rounded-lg flex items-center justify-center"
               style={{
-                top: '55%',
-                left: '35%',
-                width: '18%',
-                height: '18%'
+                top: '50%',
+                left: '40%',
+                width: '22%',
+                height: '22%'
               }}
             >
               <div className="text-center">
@@ -147,20 +159,20 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
               </div>
             </div>
 
-            {/* Brand 品牌服務區塊標註 */}
+            {/* All Works 全部作品區塊標註 */}
             <div 
               className="absolute border-2 border-purple-500 bg-purple-100/30 rounded-lg flex items-center justify-center"
               style={{
                 top: '25%',
-                left: '65%',
-                width: '18%',
-                height: '18%'
+                left: '55%',
+                width: '22%',
+                height: '22%'
               }}
             >
               <div className="text-center">
-                <div className="text-2xl mb-1">🏷️</div>
-                <div className="text-xs font-bold text-purple-800">Brand</div>
-                <div className="text-xs text-purple-600">品牌服務</div>
+                <div className="text-2xl mb-1">🎯</div>
+                <div className="text-xs font-bold text-purple-800">All Works</div>
+                <div className="text-xs text-purple-600">全部作品</div>
               </div>
             </div>
 
@@ -169,9 +181,9 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
               className="absolute border-2 border-red-500 bg-red-100/30 rounded-lg flex items-center justify-center"
               style={{
                 top: '55%',
-                left: '75%',
-                width: '18%',
-                height: '18%'
+                left: '65%',
+                width: '22%',
+                height: '22%'
               }}
             >
               <div className="text-center">
@@ -191,7 +203,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
           {mapAreas.map((area, index) => (
             <div
               key={`${area.id}-${index}`}
-              className="absolute cursor-pointer group transition-all duration-300 rounded-lg border-2 border-transparent hover:border-white/50 z-10"
+              className="absolute cursor-pointer group transition-all duration-300 rounded-lg border-2 border-transparent hover:border-white/70 z-10"
               style={{
                 top: area.position.top,
                 left: area.position.left,
@@ -209,26 +221,25 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
               }}
             >
               {/* 區域內容 */}
-              <div className="w-full h-full flex flex-col items-center justify-center p-2">
+              <div className="w-full h-full flex flex-col items-center justify-center p-1">
                 {/* 圖標 */}
                 <div 
-                  className="text-4xl mb-2 transition-transform duration-300 group-hover:scale-105"
+                  className="text-3xl mb-1 transition-transform duration-300 group-hover:scale-105"
                 >
                   {area.icon}
                 </div>
                 
                 {/* 區域名稱 */}
-                <div className="text-center">
+                <div className="text-center px-1">
                   <h3 
-                    className="font-bold text-base mb-1 transition-colors duration-300"
+                    className="font-bold text-xl leading-tight transition-colors duration-300"
                     style={{ 
-                      color: hoveredArea === area.id ? area.color : '#FFFFF3',
+                      color: hoveredArea === area.id ? '#003EC3' : '#FFFFFF',
                       fontFamily: 'var(--font-zpix), monospace'
                     }}
                   >
                     {area.name}
                   </h3>
-                  
                 </div>
               </div>
 
@@ -258,10 +269,22 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
       <div className="md:hidden">
         {/* 標題 */}
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-            🗺️ 服務導航
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+            一起展開一段設計旅程｜Let's Start a Design Journey
           </h2>
-          <p className="text-sm text-gray-600">點擊下方項目探索不同服務</p>
+          {/* 標籤元件 */}
+          <div className="flex justify-center">
+            <div 
+              className="px-3 py-1 rounded-lg font-bold text-xs"
+              style={{ 
+                backgroundColor: '#003EC3', 
+                color: '#FFFFF3',
+                fontFamily: 'var(--font-zpix), monospace'
+              }}
+            >
+              #LittleByLittle  #KeepGoing
+            </div>
+          </div>
         </div>
 
         {/* 表格式導航列表 */}
@@ -269,7 +292,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
           {mapAreas.map((area, index) => (
             <motion.div
               key={area.id}
-              className="group border-2 border-gray-400 bg-[#FFFFF3] hover:bg-blue-600 hover:text-[#FFFFF3] transition-all duration-200 rounded"
+              className="group border-2 border-gray-400 bg-[#FFFFF3] hover:bg-[#003EC3] hover:text-[#FFFFF3] transition-all duration-200 rounded"
               whileHover={{ scale: 1.01 }}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

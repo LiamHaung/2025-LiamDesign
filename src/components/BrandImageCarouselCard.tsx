@@ -173,19 +173,21 @@ export default function BrandImageCarouselCard({
 
         {/* 下方文字資訊面板 */}
         <div 
-          className="bg-gray-800 p-6"
+          className="p-6"
           style={{
             height: '40%',
-            minHeight: '200px'
+            minHeight: '200px',
+            backgroundColor: '#FFFFF3'
           }}
         >
           {/* 大標 */}
           <h2 
-            className="text-white font-bold mb-3"
+            className="font-bold mb-3"
             style={{
               fontSize: 'clamp(18px, 3vw, 24px)',
               fontFamily: 'Noto Sans, sans-serif',
-              lineHeight: '1.3'
+              lineHeight: '1.3',
+              color: '#003EC3'
             }}
           >
             Bring Your Brand to Life｜讓品牌活起來
@@ -193,11 +195,12 @@ export default function BrandImageCarouselCard({
 
           {/* 小標 */}
           <h3 
-            className="text-gray-300 mb-4"
+            className="mb-4"
             style={{
               fontSize: 'clamp(14px, 2vw, 16px)',
               fontFamily: 'Noto Sans, sans-serif',
-              lineHeight: '1.4'
+              lineHeight: '1.4',
+              color: '#003EC3'
             }}
           >
             幫品牌找到自己的符號
@@ -205,12 +208,13 @@ export default function BrandImageCarouselCard({
 
           {/* 內文 */}
           <div 
-            className="text-gray-300 leading-relaxed p-4 rounded-lg"
+            className="leading-relaxed p-4 rounded-lg"
             style={{
               fontSize: 'clamp(12px, 1.8vw, 14px)',
               fontFamily: 'Noto Sans, sans-serif',
               lineHeight: '1.6',
-              backgroundColor: '#000000'
+              backgroundColor: '#F0F0F0',
+              color: '#003EC3'
             }}
           >
             <p className="mb-3">

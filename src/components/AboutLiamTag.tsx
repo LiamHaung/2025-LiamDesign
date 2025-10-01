@@ -8,6 +8,7 @@ interface AboutLiamTagProps {
   backgroundColor?: string;
   textColor?: string;
   fontSize?: string;
+  text?: string;
 }
 
 export default function AboutLiamTag({ 
@@ -15,7 +16,8 @@ export default function AboutLiamTag({
   animated = true,
   backgroundColor = '#003EC3',
   textColor = '#FFFFF3',
-  fontSize = 'clamp(16px, 3vw, 32px)'
+  fontSize = 'clamp(16px, 3vw, 32px)',
+  text = '#設計 #品牌 #視覺 #陪你一起長大'
 }: AboutLiamTagProps) {
   const tagContent = (
     <div 
@@ -42,7 +44,7 @@ export default function AboutLiamTag({
         wordBreak: 'break-word',
         whiteSpace: 'normal'
       }}>
-        #設計 #品牌 #視覺 #陪你一起長大
+        {text}
       </div>
     </div>
   );
