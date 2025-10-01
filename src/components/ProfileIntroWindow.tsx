@@ -148,7 +148,7 @@ export default function ProfileIntroWindow({
                 <div 
                   className="w-48 h-48 md:w-[300px] md:h-[300px] rounded-full overflow-hidden"
                   style={{ 
-                    border: '4px solid #FFFFFF',
+                    border: '6px solid #FFFFFF',
                     backgroundColor: '#003EC3',
                     clipPath: 'circle(50% at 50% 50%)'
                   }}
@@ -330,7 +330,7 @@ export default function ProfileIntroWindow({
                   {/* 左側：固定頭像區域（僅桌面版顯示） */}
                   <div className="hidden lg:flex flex-shrink-0 justify-center lg:justify-start">
                     <div className="relative w-32 h-32 lg:w-40 lg:h-40">
-                      <div className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg"
+                      <div className="w-full h-full rounded-full overflow-hidden border-8 shadow-lg"
                            style={{ 
                              borderColor: '#FFFFFF',
                              backgroundColor: brandColor,
