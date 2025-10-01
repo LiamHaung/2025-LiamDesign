@@ -80,7 +80,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
         {/* 地圖標題 */}
         <div className="text-center mb-6">
           <h2 className="text-4xl md:text-5xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-            一起展開一段設計旅程｜Let's Start a Design Journey
+            一起展開一段設計旅程｜Let&apos;s Start a Design Journey
           </h2>
           {/* 標籤元件 */}
           <div className="flex justify-center">
@@ -270,7 +270,7 @@ export default function MapNavigation({ className = '' }: MapNavigationProps) {
         {/* 標題 */}
         <div className="text-center mb-6">
           <h2 className="text-3xl md:text-4xl font-bold text-black mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
-            一起展開一段設計旅程｜Let's Start a Design Journey
+            一起展開一段設計旅程｜Let&apos;s Start a Design Journey
           </h2>
           {/* 標籤元件 */}
           <div className="flex justify-center">

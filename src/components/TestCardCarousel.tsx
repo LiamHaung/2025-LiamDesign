@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TestCardAlt from './TestCardAlt';
-import ModernButton from './ModernButton';
+// import ModernButton from './ModernButton';
 
 export type TestCardData = {
   id: number;
@@ -73,7 +73,6 @@ export default function TestCardCarousel({ cards, className = "" }: TestCardCaro
 
   const currentCards = getCurrentPageCards();
   const totalPages = getTotalPages();
-  const hasMorePages = currentPage < totalPages;
 
   return (
     <div className={`w-full ${className}`}>
