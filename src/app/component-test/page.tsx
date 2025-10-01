@@ -23,6 +23,7 @@ import ReadMoreModal from '../../components/ReadMoreModal';
 import IntroWindow from '../../components/IntroWindow';
 import ProfileIntroWindow from '../../components/ProfileIntroWindow';
 import MapNavigation from '../../components/MapNavigation';
+import ModernButton from '../../components/ModernButton';
 
 export default function ComponentTestPage() {
   const [showIntroWindow, setShowIntroWindow] = useState(false);
@@ -1989,6 +1990,209 @@ export default function ComponentTestPage() {
 
          專案包含主視覺設計、菜單版面設計、餐墊設計、海報設計等，從概念發想到最終印刷製作，全程參與並確保設計品質與品牌一致性。
        </ReadMoreModal>
+          </div>
+        </section>
+
+        {/* ModernButton 現代化按鈕測試區域 */}
+        <section className="mb-12">
+          <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-300">
+            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+              🔘 ModernButton 現代化按鈕元件測試區域
+            </h2>
+            <p className="text-gray-600 mb-6">
+              測試統一的現代化按鈕系統，包含多種變體、尺寸和狀態，使用像素字體和圓角設計。
+            </p>
+
+            {/* 基本變體測試 */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">基本變體測試</h3>
+                <div className="flex flex-wrap gap-4">
+                  <ModernButton variant="primary" onClick={() => alert('Primary 按鈕被點擊！')}>
+                    Primary 按鈕
+                  </ModernButton>
+                  <ModernButton variant="secondary" onClick={() => alert('Secondary 按鈕被點擊！')}>
+                    Secondary 按鈕
+                  </ModernButton>
+                  <ModernButton variant="outline" onClick={() => alert('Outline 按鈕被點擊！')}>
+                    Outline 按鈕
+                  </ModernButton>
+                  <ModernButton variant="ghost" onClick={() => alert('Ghost 按鈕被點擊！')}>
+                    Ghost 按鈕
+                  </ModernButton>
+                  <ModernButton variant="danger" onClick={() => alert('Danger 按鈕被點擊！')}>
+                    Danger 按鈕
+                  </ModernButton>
+                </div>
+              </div>
+
+              {/* 尺寸測試 */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">尺寸測試</h3>
+                <div className="flex flex-wrap items-center gap-4">
+                  <ModernButton size="sm" variant="primary">
+                    Small 按鈕
+                  </ModernButton>
+                  <ModernButton size="md" variant="primary">
+                    Medium 按鈕
+                  </ModernButton>
+                  <ModernButton size="lg" variant="primary">
+                    Large 按鈕
+                  </ModernButton>
+                  <ModernButton size="xl" variant="primary">
+                    Extra Large 按鈕
+                  </ModernButton>
+                </div>
+              </div>
+
+              {/* 狀態測試 */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">狀態測試</h3>
+                <div className="flex flex-wrap gap-4">
+                  <ModernButton variant="primary">
+                    正常狀態
+                  </ModernButton>
+                  <ModernButton variant="primary" disabled>
+                    禁用狀態
+                  </ModernButton>
+                  <ModernButton variant="primary" loading>
+                    載入狀態
+                  </ModernButton>
+                  <ModernButton variant="outline" disabled>
+                    禁用 Outline
+                  </ModernButton>
+                </div>
+              </div>
+
+              {/* 全寬度測試 */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">全寬度測試</h3>
+                <div className="space-y-4">
+                  <ModernButton variant="primary" fullWidth>
+                    全寬度 Primary 按鈕
+                  </ModernButton>
+                  <ModernButton variant="outline" fullWidth>
+                    全寬度 Outline 按鈕
+                  </ModernButton>
+                </div>
+              </div>
+
+              {/* 響應式測試 */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">響應式測試</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <ModernButton variant="primary" className="w-full">
+                    響應式按鈕 1
+                  </ModernButton>
+                  <ModernButton variant="secondary" className="w-full">
+                    響應式按鈕 2
+                  </ModernButton>
+                  <ModernButton variant="outline" className="w-full">
+                    響應式按鈕 3
+                  </ModernButton>
+                </div>
+              </div>
+
+              {/* 實際應用場景測試 */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">實際應用場景測試</h3>
+                <div className="space-y-6">
+                  {/* 表單按鈕組 */}
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <h4 className="font-semibold mb-3">表單按鈕組</h4>
+                    <div className="flex gap-3">
+                      <ModernButton type="submit" variant="primary">
+                        提交表單
+                      </ModernButton>
+                      <ModernButton type="button" variant="outline">
+                        取消
+                      </ModernButton>
+                      <ModernButton type="button" variant="ghost">
+                        儲存草稿
+                      </ModernButton>
+                    </div>
+                  </div>
+
+                  {/* 導航按鈕組 */}
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <h4 className="font-semibold mb-3">導航按鈕組</h4>
+                    <div className="flex gap-3">
+                      <ModernButton variant="primary" size="lg">
+                        🏠 返回首頁
+                      </ModernButton>
+                      <ModernButton variant="outline" size="lg">
+                        📁 查看作品集
+                      </ModernButton>
+                      <ModernButton variant="ghost" size="lg">
+                        📞 聯絡我們
+                      </ModernButton>
+                    </div>
+                  </div>
+
+                  {/* 操作按鈕組 */}
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <h4 className="font-semibold mb-3">操作按鈕組</h4>
+                    <div className="flex gap-3">
+                      <ModernButton variant="primary" size="sm">
+                        ✏️ 編輯
+                      </ModernButton>
+                      <ModernButton variant="outline" size="sm">
+                        👁️ 預覽
+                      </ModernButton>
+                      <ModernButton variant="ghost" size="sm">
+                        📋 複製
+                      </ModernButton>
+                      <ModernButton variant="danger" size="sm">
+                        🗑️ 刪除
+                      </ModernButton>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="font-semibold">ModernButton 元件特色：</h3>
+              <ul className="ml-4 list-disc">
+                <li><strong>統一設計：</strong>圓角設計、像素字體、現代化陰影效果</li>
+                <li><strong>多種變體：</strong>Primary、Secondary、Outline、Ghost、Danger</li>
+                <li><strong>多種尺寸：</strong>Small、Medium、Large、Extra Large</li>
+                <li><strong>狀態支援：</strong>正常、禁用、載入狀態</li>
+                <li><strong>響應式設計：</strong>支援全寬度和自訂寬度</li>
+                <li><strong>動畫效果：</strong>Framer Motion 懸停和點擊動畫</li>
+                <li><strong>無障礙支援：</strong>鍵盤導航和螢幕閱讀器友好</li>
+                <li><strong>TypeScript：</strong>完整的類型定義和智能提示</li>
+              </ul>
+            </div>
+
+            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+              <h4 className="font-semibold mb-2">使用方式：</h4>
+              <pre className="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+{`<ModernButton
+  variant="primary"
+  size="md"
+  onClick={() => console.log('按鈕被點擊')}
+  disabled={false}
+  loading={false}
+  fullWidth={false}
+>
+  按鈕文字
+</ModernButton>`}
+              </pre>
+            </div>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+              <h4 className="font-semibold mb-2">設計規範：</h4>
+              <ul className="text-sm space-y-1">
+                <li>• <strong>字體：</strong>使用 var(--font-zpix) 像素字體</li>
+                <li>• <strong>圓角：</strong>統一使用 8px 圓角</li>
+                <li>• <strong>主色調：</strong>品牌藍 #003EC3</li>
+                <li>• <strong>陰影：</strong>現代化 box-shadow 效果</li>
+                <li>• <strong>動畫：</strong>0.2s ease 過渡動畫</li>
+                <li>• <strong>懸停：</strong>向上移動 1px + 陰影加深</li>
+                <li>• <strong>點擊：</strong>縮放至 98%</li>
+              </ul>
+            </div>
           </div>
         </section>
       </div>

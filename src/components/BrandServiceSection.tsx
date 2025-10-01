@@ -59,29 +59,8 @@ export default function BrandServiceSection({ onReadMore }: BrandServiceSectionP
               <div className="mt-6">
                 <button
                   onClick={onReadMore}
-                  className="px-8 py-4 font-bold text-lg transition-all duration-150"
-                  style={{ 
-                    fontFamily: 'var(--font-zpix), monospace',
-                    background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
-                    border: '2px solid #808080',
-                    borderTopColor: '#ffffff',
-                    borderLeftColor: '#ffffff',
-                    borderRightColor: '#404040',
-                    borderBottomColor: '#404040',
-                    boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                    color: '#ffffff',
-                    textShadow: '1px 1px 0px #000000',
-                    cursor: 'pointer'
-                  }}
-                  onMouseDown={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-                  }}
-                  onMouseUp={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }}
+                  className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                  style={{ fontFamily: 'var(--font-zpix), monospace' }}
                 >
                   閱讀更多
                 </button>
@@ -148,29 +127,8 @@ export default function BrandServiceSection({ onReadMore }: BrandServiceSectionP
               <div className="mt-6">
                 <button
                   onClick={onReadMore}
-                  className="px-8 py-4 font-bold text-lg transition-all duration-150"
-                  style={{ 
-                    fontFamily: 'var(--font-zpix), monospace',
-                    background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
-                    border: '2px solid #808080',
-                    borderTopColor: '#ffffff',
-                    borderLeftColor: '#ffffff',
-                    borderRightColor: '#404040',
-                    borderBottomColor: '#404040',
-                    boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                    color: '#ffffff',
-                    textShadow: '1px 1px 0px #000000',
-                    cursor: 'pointer'
-                  }}
-                  onMouseDown={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-                  }}
-                  onMouseUp={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }}
+                  className="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors"
+                  style={{ fontFamily: 'var(--font-zpix), monospace' }}
                 >
                   閱讀更多
                 </button>

@@ -148,7 +148,7 @@ export default function ProfileIntroWindow({
                 <div 
                   className="w-48 h-48 md:w-[300px] md:h-[300px] rounded-full overflow-hidden"
                   style={{ 
-                    border: '4px solid #000000',
+                    border: '4px solid #FFFFFF',
                     backgroundColor: '#003EC3',
                     clipPath: 'circle(50% at 50% 50%)'
                   }}
@@ -332,7 +332,7 @@ export default function ProfileIntroWindow({
                     <div className="relative w-32 h-32 lg:w-40 lg:h-40">
                       <div className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg"
                            style={{ 
-                             borderColor: brandColor,
+                             borderColor: '#FFFFFF',
                              backgroundColor: brandColor,
                              clipPath: 'circle(50% at 50% 50%)'
                            }}>

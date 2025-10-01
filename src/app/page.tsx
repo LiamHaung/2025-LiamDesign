@@ -15,9 +15,10 @@ import ParallaxSection from '../components/ParallaxSection';
 import ProfileIntroWindow from '../components/ProfileIntroWindow';
 import AboutLiamTag from '../components/AboutLiamTag';
 import ImageCarouselCard from '../components/ImageCarouselCard';
-import BrandServiceSection from '../components/BrandServiceSection';
+import BrandImageCarouselCard from '../components/BrandImageCarouselCard';
 import ContactModal from '../components/ContactModal';
 import MapNavigation from '../components/MapNavigation';
+import ModernButton from '../components/ModernButton';
 import { useInView } from 'framer-motion';
 
 export default function Home() {
@@ -64,7 +65,6 @@ export default function Home() {
   const [profileIntroOpen, setProfileIntroOpen] = useState(false);
   const [designModalOpen, setDesignModalOpen] = useState(false);
   const [illustrationModalOpen, setIllustrationModalOpen] = useState(false);
-  const [brandModalOpen, setBrandModalOpen] = useState(false);
   const [testCardModalOpen, setTestCardModalOpen] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(58);
   const [boatExiting, setBoatExiting] = useState(false);
@@ -611,52 +611,22 @@ export default function Home() {
               zIndex: 999,
               transitionDelay: showRight && !showIntroModal ? '0.8s' : '0s'
             }}>
-              <button
-                onClick={(e) => {
-                  // 點擊效果
-                  const button = e.currentTarget;
-                  button.style.transform = 'scale(0.95)';
-                  button.style.transition = 'transform 0.1s ease';
-                  
-                  setTimeout(() => {
-                    button.style.transform = 'scale(1)';
-                    button.style.transition = 'transform 0.2s ease';
-                  }, 100);
-                  
+              <ModernButton
+                onClick={() => {
                   // 延遲執行進入功能
                   setTimeout(() => {
                     handleEnter();
                   }, 200);
                 }}
-                className="enter-btn"
+                variant="primary"
+                size="lg"
                 style={{
                   padding: 'clamp(12px, 3vw, 20px) clamp(24px, 6vw, 40px)',
                   fontSize: 'clamp(14px, 3.5vw, 20px)',
-                  fontWeight: 'bold',
-                  color: '#ffffff',
-                  background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
-                  border: '2px solid #808080',
-                  borderTopColor: '#ffffff',
-                  borderLeftColor: '#ffffff',
-                  borderRightColor: '#404040',
-                  borderBottomColor: '#404040',
-                  boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-press-start-2p)',
-                  textShadow: '1px 1px 0px #000000'
-                }}
-                onMouseDown={(e) => {
-                  e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-                }}
-                onMouseUp={(e) => {
-                  e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
                 }}
               >
                 ENTER
-              </button>
+              </ModernButton>
             </div>
 
 
@@ -1677,18 +1647,14 @@ Tel: 03-9XX-XXXX
                     </div>
                   </div>
 
-                  {/* Windows 98 風格按鈕 */}
-                  <button
+                  {/* 現代化按鈕 */}
+                  <ModernButton
                     onClick={() => setProfileIntroOpen(true)}
-                    className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
-                    style={{ 
-                      fontFamily: 'var(--font-zpix), monospace',
-                      color: '#000000',
-                      textShadow: '1px 1px 0px #ffffff'
-                    }}
+                    variant="primary"
+                    size="lg"
                   >
                     👤 開啟個人介紹
-                  </button>
+                  </ModernButton>
                 </div>
 
                 {/* 桌面版：內嵌式 ProfileIntroWindow */}
@@ -1711,10 +1677,19 @@ Tel: 03-9XX-XXXX
             <WaterfallPortfolioSection />
 
             {/* 四個滾動分段 */}
+            {/* Design 上方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>設計傾聽你的聲音｜Design that Listens</span>
+                ))}
+              </div>
+            </div>
+
             {/* Section 1: Design */}
             <section className="scroll-section design-section" style={{ 
               minHeight: '100vh', 
-              backgroundColor: '#FFFFF3',
+              backgroundColor: '#003EC3',
               padding: '4rem 2rem',
               display: 'flex',
               alignItems: 'center',
@@ -1722,14 +1697,17 @@ Tel: 03-9XX-XXXX
               position: 'relative',
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div className="text-content">
+                <div className="text-content lg:basis-1/2">
                   {/* AboutLiamTag - Design 區塊 */}
                   <div className="mb-6">
-                    <AboutLiamTag />
+                    <AboutLiamTag 
+                      backgroundColor="#FFFFF3"
+                      textColor="#003EC3"
+                    />
                   </div>
                   
                   <motion.h1
-                    className="text-4xl md:text-6xl font-black text-black mb-4"
+                    className="text-3xl md:text-5xl font-black text-[#FFFFF3] mb-4"
                     style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}
                     initial={{ opacity: 0, y: 80 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -1740,7 +1718,7 @@ Tel: 03-9XX-XXXX
                   </motion.h1>
                   
                   <motion.h2
-                    className="text-xl md:text-2xl font-medium text-gray-700 mb-6"
+                    className="text-xl md:text-2xl font-medium text-[#FFFFF3] mb-6"
                     style={{ fontFamily: 'var(--font-zpix), monospace' }}
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -1751,7 +1729,7 @@ Tel: 03-9XX-XXXX
                   </motion.h2>
                   
                   <motion.p
-                    className="text-lg md:text-xl text-black mb-8 leading-relaxed"
+                    className="text-base md:text-lg text-[#FFFFF3] mb-8 leading-relaxed"
                     initial={{ opacity: 0, y: 150 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -1760,40 +1738,42 @@ Tel: 03-9XX-XXXX
                     我們相信設計不是炫技，而是解決問題的工具。<br/>
                     從品牌識別、菜單、活動文宣到社群圖像，專注於讓設計能貼近生活，幫助品牌長出下一步。
                   </motion.p>
-                  <motion.button
-                    onClick={() => setDesignModalOpen(true)}
-                    className="px-8 py-4 font-bold text-lg transition-all duration-150"
-                    style={{ 
-                      fontFamily: 'var(--font-zpix), monospace',
-                      background: 'linear-gradient(135deg, #003EC3 0%, #002A8A 100%)',
-                      border: '2px solid #808080',
-                      borderTopColor: '#ffffff',
-                      borderLeftColor: '#ffffff',
-                      borderRightColor: '#404040',
-                      borderBottomColor: '#404040',
-                      boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                      color: '#ffffff',
-                      textShadow: '1px 1px 0px #000000',
-                      cursor: 'pointer'
-                    }}
+                  <motion.div
                     initial={{ opacity: 0, y: 150 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, amount: 0.35 }}
-                    onMouseDown={(e) => {
-                      e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-                    }}
-                    onMouseUp={(e) => {
-                      e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                    }}
                   >
-                    閱讀更多
-                  </motion.button>
+                    <button
+                      onClick={() => setDesignModalOpen(true)}
+                      style={{
+                        backgroundColor: '#FFFFF3',
+                        color: '#003EC3',
+                        border: '2px solid #003EC3',
+                        borderRadius: '8px',
+                        padding: '12px 24px',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        fontFamily: 'var(--font-zpix), monospace',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#3aaf3a';
+                        e.currentTarget.style.color = '#FFFFF3';
+                        e.currentTarget.style.borderColor = '#3aaf3a';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FFFFF3';
+                        e.currentTarget.style.color = '#003EC3';
+                        e.currentTarget.style.borderColor = '#003EC3';
+                      }}
+                    >
+                      閱讀更多
+                    </button>
+                  </motion.div>
                 </div>
-                <div className="image-content">
+                <div className="image-content lg:basis-1/2">
                   <motion.div
                     initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -1801,24 +1781,31 @@ Tel: 03-9XX-XXXX
                     viewport={{ once: true, amount: 0.35 }}
                     className="w-full flex justify-center"
                   >
-                    <ImageCarouselCard 
+                    <BrandImageCarouselCard 
                       images={[
                         '/illustration_1.png',
                         '/illustration_2.png',
                         '/illustration_3.png',
                         '/illustration_4.png',
-                        '/illustration_5.png',
-                        '/illustration_6.png'
+                        '/illustration_5.png'
                       ]}
-                      slogan="#設計 #品牌 #視覺 #陪你一起長大"
                       autoPlay={true}
                       autoPlayInterval={4000}
-                      className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl"
+                      className="w-full h-full"
                     />
                   </motion.div>
                 </div>
               </div>
             </section>
+
+            {/* Design 下方跑馬燈 */}
+            <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
+              <div className="animate-marquee-reverse whitespace-nowrap">
+                {Array(12).fill(null).map((_, i) => (
+                  <span key={i} className="text-[#FFFFF3] text-2xl font-extrabold mx-8" style={{ fontFamily: 'var(--font-press-start-2p)' }}>設計傾聽你的聲音｜Design that Listens</span>
+                ))}
+              </div>
+            </div>
 
             {/* Illustration 上方跑馬燈 */}
             <div className="w-full py-4 overflow-hidden" style={{ backgroundColor: '#003EC3' }}>
@@ -1831,14 +1818,18 @@ Tel: 03-9XX-XXXX
 
             {/* Section 2: Illustration */}
             <section className="scroll-section illustration-section" style={{ 
+              minHeight: '100vh', 
               backgroundColor: '#003EC3',
               padding: '4rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               position: 'relative',
             }}>
               <div className="max-w-screen-2xl w-full mx-auto px-6 md:px-10">
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch h-full">
-                  {/* 左側 65% - ImageCarouselCard */}
-                  <div className="md:basis-[65%] md:flex-1 flex flex-col gap-4">
+                  {/* 左側 50% - ImageCarouselCard */}
+                  <div className="md:basis-[50%] md:flex-1 flex flex-col gap-4">
                     <div className="w-full h-full">
                       <ImageCarouselCard 
                         images={[
@@ -1859,8 +1850,8 @@ Tel: 03-9XX-XXXX
                     </div>
                   </div>
 
-                  {/* 右側 35% - 文字內容 */}
-                  <div className="md:basis-[35%] md:max-w-[35%]">
+                  {/* 右側 50% - 文字內容 */}
+                  <div className="md:basis-[50%] md:max-w-[50%]">
                     <div className="sticky top-8 p-6 rounded-xl border border-transparent bg-[#003EC3]" style={{ zIndex: 10 }}>
                       {/* 標籤 */}
                       <div className="mb-4">
@@ -1873,17 +1864,17 @@ Tel: 03-9XX-XXXX
                       </div>
 
                       {/* 大標題 */}
-                      <h2 className="text-2xl md:text-3xl font-black text-[#FFFFF3] mb-3" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}>
+                      <h2 className="text-3xl md:text-5xl font-black text-[#FFFFF3] mb-3" style={{ fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif' }}>
                         Illustration with Heart｜有溫度的插畫
                       </h2>
 
                       {/* 副標題 */}
-                      <h3 className="text-lg md:text-xl font-medium text-[#FFFFF3] mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                      <h3 className="text-xl md:text-2xl font-medium text-[#FFFFF3] mb-4" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
                         Handmade lines, heartfelt stories.｜親手畫下，心裡的故事
                       </h3>
 
                       {/* 內文 */}
-                      <p className="leading-relaxed mb-5 text-sm md:text-base" style={{ color: '#FFFFF3' }}>
+                      <p className="leading-relaxed mb-5 text-base md:text-lg" style={{ color: '#FFFFF3' }}>
                         每一筆一劃，能承載記憶、能創造連結。<br/>
                         我喜歡把宜蘭的風、地方的小故事、品牌的日常，<br/>
                         透過線條與色彩，讓人感到親近。<br/>
@@ -1892,8 +1883,28 @@ Tel: 03-9XX-XXXX
 
                       <button
                         onClick={() => setIllustrationModalOpen(true)}
-                        className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-6 py-3 rounded-md font-bold text-sm hover:bg-[#3aaf3a] hover:text-[#FFFFF3] hover:border-[#3aaf3a] transition-colors"
-                        style={{ fontFamily: 'var(--font-zpix), monospace' }}
+                        style={{
+                          backgroundColor: '#FFFFF3',
+                          color: '#003EC3',
+                          border: '2px solid #003EC3',
+                          borderRadius: '8px',
+                          padding: '12px 24px',
+                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#3aaf3a';
+                          e.currentTarget.style.color = '#FFFFF3';
+                          e.currentTarget.style.borderColor = '#3aaf3a';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#FFFFF3';
+                          e.currentTarget.style.color = '#003EC3';
+                          e.currentTarget.style.borderColor = '#003EC3';
+                        }}
                       >
                         閱讀更多
                       </button>
@@ -1912,10 +1923,7 @@ Tel: 03-9XX-XXXX
               </div>
             </div>
 
-            {/* Section 3: Brand */}
-            <BrandServiceSection onReadMore={() => setBrandModalOpen(true)} />
-
-            {/* Section 4: Contact */}
+            {/* Section 3: Contact */}
             <section className="scroll-section contact-section" style={{ 
               minHeight: '100vh', 
               backgroundColor: '#353535',
@@ -2000,30 +2008,22 @@ Tel: 03-9XX-XXXX
                     viewport={{ once: true, amount: 0.35 }}
                   >
                     {/* 立即聯繫按鈕 */}
-                    <button 
+                    <ModernButton 
                       onClick={() => openModal('contact')}
-                      className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
-                      style={{ 
-                        fontFamily: 'var(--font-zpix), monospace',
-                        color: '#000000',
-                        textShadow: '1px 1px 0px #ffffff'
-                      }}
+                      variant="primary"
+                      size="lg"
                     >
                       📧 立即聯繫
-                    </button>
+                    </ModernButton>
 
                     {/* 價目表按鈕 */}
-                    <button 
+                    <ModernButton 
                       onClick={() => openModal('pricing')}
-                      className="bg-gray-300 border-2 border-gray-400 hover:bg-gray-400 hover:border-gray-500 active:bg-gray-500 active:border-gray-600 px-6 py-3 font-bold text-lg transition-all duration-150 shadow-md"
-                      style={{ 
-                        fontFamily: 'var(--font-zpix), monospace',
-                        color: '#000000',
-                        textShadow: '1px 1px 0px #ffffff'
-                      }}
+                      variant="secondary"
+                      size="lg"
                     >
                       💰 價目表
-                    </button>
+                    </ModernButton>
                   </motion.div>
                 </div>
               </div>
@@ -2536,38 +2536,6 @@ Tel: 03-9XX-XXXX
         品牌插畫則需要更精準的定位與策略思考，從品牌調性分析到目標客群研究，確保插畫風格能夠與品牌形象完美融合，同時具有獨特的識別度與記憶點。
       </ReadMoreModal>
 
-      {/* Brand 品牌服務區塊 Modal */}
-      <ReadMoreModal
-        open={brandModalOpen}
-        onClose={() => setBrandModalOpen(false)}
-        title="Brand Services｜品牌服務"
-        images={[
-          { src: "/illustration_1.png", alt: "品牌識別設計" },
-          { src: "/illustration_2.png", alt: "品牌策略規劃" },
-          { src: "/illustration_3.png", alt: "品牌應用設計" },
-          { src: "/illustration_4.png", alt: "品牌視覺系統" },
-          { src: "/illustration_5.png", alt: "品牌故事創作" }
-        ]}
-        initialIndex={0}
-        meta={
-          <ul className="space-y-1">
-            <li>Service: 品牌策略與視覺設計</li>
-            <li>Scope: 品牌策略、視覺識別、應用設計、故事創作</li>
-            <li>Location: 全台服務、線上諮詢</li>
-            <li>Year: 2024</li>
-            <li>Category: Brand Strategy, Visual Identity, Brand Story</li>
-          </ul>
-        }
-      >
-        每個品牌都有獨特的故事等待被訴說。我們不只是設計 Logo，更是打造完整的品牌體驗。從品牌策略到視覺識別，從網站設計到印刷品，我們幫助你建立與目標客群的情感連結。
-
-        品牌策略是整個品牌建設的基石，我們會深入了解你的企業文化、目標客群、市場定位，制定出符合品牌調性的策略方向。這包括品牌定位、核心價值、品牌個性、目標客群畫像等關鍵要素的定義。
-
-        視覺識別系統則是品牌策略的具體呈現，從 Logo 設計到色彩系統，從字體選擇到圖像風格，每個視覺元素都經過精心設計，確保能夠準確傳達品牌的核心價值與個性特質。我們還會建立完整的品牌應用規範，確保品牌在各種媒介上都能保持一致的視覺形象。
-
-        品牌故事創作則是讓品牌更有溫度的關鍵，透過文字與視覺的結合，創造出能夠打動人心的品牌敘事。無論是品牌起源故事、產品開發歷程，還是與客戶的互動體驗，都能成為品牌故事的重要素材。
-      </ReadMoreModal>
-
       {/* TestCardAlt 卡片展示區塊 Modal */}
       <ReadMoreModal
         open={testCardModalOpen}
@@ -3035,7 +3003,7 @@ const PortfolioCard = ({
     >
       {/* 視窗標題列 */}
       <div 
-        className="text-white px-2 py-1 flex items-center justify-between text-xs font-bold"
+        className="text-white px-2 py-2 flex items-center justify-between text-xs font-bold"
         style={{ 
           background: Math.random() > 0.5 
             ? 'linear-gradient(90deg, #003EC3 0%, #0056CC 100%)' 
@@ -3116,14 +3084,30 @@ const getPortfolioImages = (item: PortfolioItem) => {
     { src: item.image, alt: item.title }
   ];
   
-  // 根據作品類型添加額外的圖片
+  // 為所有作品添加額外的圖片（輪播功能）
   const additionalImages = {
     1: ['/illustration_2.png', '/illustration_3.png', '/illustration_4.png', '/illustration_5.png'],
     2: ['/illustration_1.png', '/illustration_3.png', '/illustration_4.png', '/illustration_6.png'],
     3: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_5.png'],
     4: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_6.png'],
     5: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_6.png'],
-    6: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_5.png']
+    6: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_5.png'],
+    7: ['/illustration_2.png', '/illustration_3.png', '/illustration_4.png', '/illustration_5.png'],
+    8: ['/illustration_1.png', '/illustration_3.png', '/illustration_4.png', '/illustration_6.png'],
+    9: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_5.png'],
+    10: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_6.png'],
+    11: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_6.png'],
+    12: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_5.png'],
+    13: ['/illustration_2.png', '/illustration_3.png', '/illustration_4.png', '/illustration_5.png'],
+    14: ['/illustration_1.png', '/illustration_3.png', '/illustration_4.png', '/illustration_6.png'],
+    15: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_5.png'],
+    16: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_6.png'],
+    17: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_6.png'],
+    18: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_5.png'],
+    19: ['/illustration_2.png', '/illustration_3.png', '/illustration_4.png', '/illustration_5.png'],
+    20: ['/illustration_1.png', '/illustration_3.png', '/illustration_4.png', '/illustration_6.png'],
+    21: ['/illustration_1.png', '/illustration_2.png', '/illustration_4.png', '/illustration_5.png'],
+    22: ['/illustration_1.png', '/illustration_2.png', '/illustration_3.png', '/illustration_6.png']
   };
   
   const extraImages = additionalImages[item.id as keyof typeof additionalImages] || [];
@@ -3397,29 +3381,14 @@ const WaterfallPortfolioSection = () => {
           {/* 篩選按鈕 */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {categories.map((category) => (
-              <button
+              <ModernButton
                 key={category}
                 onClick={() => setFilter(category)}
-                className="px-6 py-3 text-sm font-bold transition-all duration-150"
-                style={{
-                  background: filter === category 
-                    ? 'linear-gradient(135deg, #000080 0%, #0000ff 100%)'
-                    : 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
-                  border: '2px solid #808080',
-                  borderTopColor: '#ffffff',
-                  borderLeftColor: '#ffffff',
-                  borderRightColor: '#404040',
-                  borderBottomColor: '#404040',
-                  boxShadow: filter === category
-                    ? 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040'
-                    : 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                  color: filter === category ? '#ffffff' : '#000000',
-                  textShadow: filter === category ? 'none' : '1px 1px 0px #ffffff',
-                  fontFamily: 'var(--font-zpix), monospace'
-                }}
+                variant={filter === category ? 'primary' : 'outline'}
+                size="md"
               >
                 {category === 'all' ? '📁' : '📂'} {category}
-              </button>
+              </ModernButton>
             ))}
           </div>
 
@@ -3456,43 +3425,15 @@ const WaterfallPortfolioSection = () => {
           {/* 載入更多按鈕 - 僅桌面版 */}
           {!isMobile && currentPage < totalPages && (
             <div className="text-center mt-12">
-              <button
+              <ModernButton
                 onClick={loadMoreItems}
                 disabled={isLoading}
-                className="px-8 py-4 text-lg font-bold transition-all duration-150"
-                style={{
-                  background: isLoading 
-                    ? 'linear-gradient(135deg, #a0a0a0 0%, #808080 100%)'
-                    : 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
-                  border: '2px solid #808080',
-                  borderTopColor: '#ffffff',
-                  borderLeftColor: '#ffffff',
-                  borderRightColor: '#404040',
-                  borderBottomColor: '#404040',
-                  boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                  color: '#000000',
-                  textShadow: '1px 1px 0px #ffffff',
-                  fontFamily: 'var(--font-zpix), monospace',
-                  cursor: isLoading ? 'not-allowed' : 'pointer'
-                }}
-                onMouseDown={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-                  }
-                }}
-                onMouseUp={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-                  }
-                }}
+                loading={isLoading}
+                variant="secondary"
+                size="lg"
               >
                 {isLoading ? '載入中...' : '🔗 載入更多作品'}
-              </button>
+              </ModernButton>
             </div>
           )}
         </div>

@@ -39,29 +39,7 @@ export default function TestCardAlt({ title, subtitle, imageSrc, href, tag, clas
           <div className="mt-4">
             <button
               onClick={onReadMore}
-              className="inline-block px-4 py-2 font-bold text-sm transition-all duration-150"
-              style={{
-                background: 'linear-gradient(135deg, #c0c0c0 0%, #808080 100%)',
-                border: '1px solid #808080',
-                borderTopColor: '#ffffff',
-                borderLeftColor: '#ffffff',
-                borderRightColor: '#404040',
-                borderBottomColor: '#404040',
-                boxShadow: 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040',
-                color: '#000000',
-                textShadow: '1px 1px 0px #ffffff',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-zpix), monospace'
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.boxShadow = 'inset -1px -1px 0px #ffffff, inset 1px 1px 0px #404040';
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = 'inset 1px 1px 0px #ffffff, inset -1px -1px 0px #404040';
-              }}
+              className="inline-block bg-white text-[#003EC3] border border-[#003EC3] px-4 py-2 rounded-md font-bold text-sm group-hover:bg-[#3aaf3a] group-hover:text-[#FFFFF3] group-hover:border-[#3aaf3a] transition-colors"
             >
               閱讀更多
             </button>
