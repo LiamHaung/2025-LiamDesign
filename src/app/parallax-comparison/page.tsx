@@ -268,6 +268,7 @@ export default function ParallaxComparisonPage() {
                 transform: 'translate(-50%, -50%)',
                 width: 'min(500px, 80vw)',
                 height: 'min(600px, 50vh)',
+                zIndex: 10, // 確保人物在彩色區塊之上
               }}
             >
               <motion.img 
@@ -334,6 +335,7 @@ export default function ParallaxComparisonPage() {
               style={{
                 ...fixedCharacterPosition,
                 position: 'absolute',
+                zIndex: 10, // 確保人物在彩色區塊之上
               }}
             >
               <motion.img 
@@ -358,7 +360,7 @@ export default function ParallaxComparisonPage() {
 
         {/* 文字內容 */}
         <motion.div
-          className="text-content fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center px-4 w-full max-w-4xl"
+          className="text-content fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center px-4 w-full max-w-4xl"
           style={{
             opacity: heroOpacity,
           }}
