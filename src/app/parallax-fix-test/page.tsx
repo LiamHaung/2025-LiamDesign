@@ -46,7 +46,6 @@ export default function ParallaxFixTestPage() {
   useEffect(() => {
     const updateCharacterPosition = () => {
       const width = window.innerWidth;
-      const height = window.innerHeight;
       
       // 使用更精確的斷點和計算
       if (width >= 1440) {
