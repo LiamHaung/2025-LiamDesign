@@ -14,13 +14,14 @@ const images = [
 const displayImages = [...images, ...images, ...images, ...images];
 
 // 響應式滾輪格子的尺寸
-const getReelSize = (screenWidth: number) => {
+const getReelSize = (screenWidth: number, containerWidth?: number) => {
   const isMobile = screenWidth <= 768;
-  // 手機版放大：減少預留邊距與容器padding，釋放更多寬度
+  // 使用容器寬度而不是螢幕寬度
+  const effectiveWidth = containerWidth || screenWidth;
   const sidePadding = isMobile ? 24 : 40;       // 左右外邊距預留
   const containerPadding = isMobile ? 12 : 20;  // 容器內邊距預留
   const gapsTotal = isMobile ? 8 * 2 : 10 * 2;  // 三個滾輪兩個間距
-  const availableWidth = screenWidth - sidePadding - containerPadding - gapsTotal;
+  const availableWidth = effectiveWidth - sidePadding - containerPadding - gapsTotal;
   const reelWidth = Math.max(60, Math.floor(availableWidth / 3));
   return {
     width: reelWidth,
@@ -46,7 +47,10 @@ const SlotReel = ({
   
   useEffect(() => {
     const updateSize = () => {
-      const newSize = getReelSize(window.innerWidth);
+      // 獲取父容器的寬度
+      const parentElement = document.querySelector('.slot-machine-container');
+      const containerWidth = parentElement ? parentElement.clientWidth : window.innerWidth;
+      const newSize = getReelSize(window.innerWidth, containerWidth);
       setReelSize(newSize);
     };
     
@@ -232,7 +236,13 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
   };
 
     return (
-    <div className={className} style={style}>
+    <div className={className} style={{
+      ...style,
+      width: '100%',
+      maxWidth: '100%',
+      boxSizing: 'border-box',
+      overflow: 'hidden' // 防止內容溢出
+    }}>
       {/* 彈出式視窗 */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
@@ -337,7 +347,10 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
         gap: '15px',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}>
         {/* 滾輪區域 */}
         <div style={{
@@ -348,7 +361,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           justifyContent: 'center',
           flexWrap: 'nowrap',
           width: '100%',
-          maxWidth: 'min(100vw, 1080px)',
+          maxWidth: '100%',
           padding: '0 12px'
         }}>
           {[0, 1, 2].map((reelIndex) => (
@@ -394,9 +407,11 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
           display: flex;
           justify-content: center;
           width: 100%;
+          max-width: 100%;
           margin-top: 30px;
           gap: 10px;
           padding: 0 20px;
+          box-sizing: border-box;
         }
         
         .slot-play-button {
