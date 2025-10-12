@@ -11,7 +11,6 @@ export default function CosmicEntranceTest() {
   const [scrollY, setScrollY] = useState(0);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     // 進度條動畫
@@ -48,15 +47,6 @@ export default function CosmicEntranceTest() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 滑鼠位置監聽
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   // 客戶端檢測和時間更新
   useEffect(() => {
