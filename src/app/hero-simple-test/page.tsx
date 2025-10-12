@@ -182,6 +182,404 @@ const backgroundImages = [
 //   );
 // };
 
+// 打字機文字組件
+const TypewriterText = ({ text, speed = 150, delay = 0 }: { text: string; speed?: number; delay?: number }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isStarted, setIsStarted] = useState(false);
+
+  useEffect(() => {
+    // 延遲開始
+    const delayTimer = setTimeout(() => {
+      setIsStarted(true);
+    }, delay);
+
+    return () => clearTimeout(delayTimer);
+  }, [delay]);
+
+  useEffect(() => {
+    if (!isStarted) return;
+
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text, speed, isStarted]);
+
+  return (
+    <span>
+      {displayedText}
+      <span style={{ opacity: currentIndex < text.length ? 1 : 0 }}>|</span>
+    </span>
+  );
+};
+
+// 載入頁面組件
+const LoadingPage = ({ 
+  loadingPhase, 
+  progressStep, 
+  onEnterMainContent 
+}: { 
+  loadingPhase: 'loading' | 'ready' | 'main';
+  progressStep: number;
+  onEnterMainContent: () => void;
+}) => {
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+      zIndex: 9999,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'opacity 0.8s ease-out',
+      opacity: loadingPhase === 'main' ? 0 : 1,
+      pointerEvents: loadingPhase === 'main' ? 'none' : 'auto'
+    }}>
+      {/* 軌道系統 */}
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden'
+      }}>
+        {/* 外軌道 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '600px',
+          height: '600px',
+          border: '2px solid rgba(0, 62, 195, 0.3)',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 20s linear infinite'
+        }} />
+        
+        {/* 外軌道圓點 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '600px',
+          height: '600px',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 20s linear infinite'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '50%',
+            width: '8px',
+            height: '8px',
+            background: '#003EC3',
+            borderRadius: '50%',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 10px rgba(0, 62, 195, 0.8)'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '0',
+            width: '6px',
+            height: '6px',
+            background: '#4A90E2',
+            borderRadius: '50%',
+            transform: 'translateY(-50%)',
+            boxShadow: '0 0 8px rgba(74, 144, 226, 0.6)'
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '0',
+            left: '50%',
+            width: '7px',
+            height: '7px',
+            background: '#003EC3',
+            borderRadius: '50%',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 9px rgba(0, 62, 195, 0.7)'
+          }} />
+        </div>
+        
+        {/* 中軌道 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '400px',
+          height: '400px',
+          border: '2px solid rgba(0, 62, 195, 0.5)',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 15s linear infinite reverse'
+        }} />
+        
+        {/* 中軌道圓點 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '400px',
+          height: '400px',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 15s linear infinite reverse'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '50%',
+            width: '6px',
+            height: '6px',
+            background: '#4A90E2',
+            borderRadius: '50%',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 8px rgba(74, 144, 226, 0.8)'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '0',
+            width: '5px',
+            height: '5px',
+            background: '#003EC3',
+            borderRadius: '50%',
+            transform: 'translateY(-50%)',
+            boxShadow: '0 0 6px rgba(0, 62, 195, 0.6)'
+          }} />
+        </div>
+        
+        {/* 內軌道 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '200px',
+          height: '200px',
+          border: '2px solid rgba(0, 62, 195, 0.7)',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 10s linear infinite'
+        }} />
+        
+        {/* 內軌道圓點 */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '200px',
+          height: '200px',
+          transform: 'translate(-50%, -50%)',
+          animation: 'orbit 10s linear infinite'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '50%',
+            width: '4px',
+            height: '4px',
+            background: '#003EC3',
+            borderRadius: '50%',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 6px rgba(0, 62, 195, 0.9)'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '0',
+            width: '3px',
+            height: '3px',
+            background: '#4A90E2',
+            borderRadius: '50%',
+            transform: 'translateY(-50%)',
+            boxShadow: '0 0 4px rgba(74, 144, 226, 0.7)'
+          }} />
+        </div>
+        
+        {/* 中心點 (Logo 周圍) */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '20px',
+          height: '20px',
+          background: '#003EC3',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+          boxShadow: '0 0 20px #003EC3'
+        }} />
+      </div>
+
+      {/* 流星效果 */}
+      {[...Array(5)].map((_, i) => (
+        <div
+          key={`loading-meteor-${i}`}
+          className="absolute z-5"
+          style={{
+            left: `${15 + i * 20}%`,
+            top: `${10 + i * 15}%`,
+            width: '16px',
+            height: '16px',
+            color: '#003EC3',
+            fontSize: '16px',
+            animation: `meteorStarBlur ${4 + i * 0.5}s linear infinite`,
+            animationDelay: `${i * 0.8}s`,
+            opacity: 0.8
+          }}
+        >
+          ✦
+        </div>
+      ))}
+
+      {/* Logo */}
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        marginBottom: loadingPhase === 'ready' ? '50px' : '60px',
+        transition: 'margin-bottom 0.8s ease-out'
+      }}>
+        <Image
+          src="/cursor-07.png"
+          alt="Liam Design Logo"
+          width={120}
+          height={120}
+          style={{
+            width: loadingPhase === 'ready' ? '144px' : '120px',
+            height: loadingPhase === 'ready' ? '144px' : '120px',
+            objectFit: 'contain',
+            filter: 'brightness(1.2) drop-shadow(0 0 20px rgba(0, 62, 195, 0.5))',
+            transition: 'all 0.8s ease-out'
+          }}
+        />
+      </div>
+
+      {/* 進度條 */}
+      <div style={{
+        width: '300px',
+        height: '4px',
+        background: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '2px',
+        overflow: 'hidden',
+        marginBottom: '40px',
+        position: 'relative',
+        zIndex: 10,
+        opacity: loadingPhase === 'ready' ? 0 : 1,
+        transition: 'opacity 0.8s ease-out'
+      }}>
+        <div style={{
+          width: `${progressStep}%`,
+          height: '100%',
+          background: '#003EC3',
+          borderRadius: '2px',
+          transition: 'width 0.3s ease',
+          boxShadow: '0 0 10px rgba(0, 62, 195, 0.5)'
+        }} />
+      </div>
+
+      {/* Explore Portfolio 按鈕 */}
+      {loadingPhase === 'ready' && (
+        <button
+          onClick={onEnterMainContent}
+          style={{
+            background: '#003EC3',
+            border: 'none',
+            borderRadius: '50px',
+            padding: '16px 32px',
+            color: 'white',
+            fontSize: '18px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
+            position: 'relative',
+            zIndex: 10,
+            animation: 'fadeInUp 0.8s ease-out',
+            transform: 'translateY(0)',
+            opacity: 1
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+          }}
+        >
+          Explore Portfolio
+        </button>
+      )}
+
+      {/* Slogan */}
+      {loadingPhase === 'ready' && (
+        <div style={{
+          position: 'relative',
+          zIndex: 10,
+          marginTop: '20px',
+          textAlign: 'center',
+          animation: 'fadeInUp 1s ease-out 0.5s both'
+        }}>
+          <div style={{
+            color: '#fffff3',
+            fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+            fontWeight: '600',
+            fontFamily: 'var(--font-zpix), monospace',
+            letterSpacing: '0.1em',
+            textShadow: '0 0 20px rgba(0, 62, 195, 0.5)',
+            marginBottom: '8px'
+          }}>
+            Own the Day.
+          </div>
+          <div style={{
+            color: 'rgba(255, 255, 243, 0.8)',
+            fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+            fontWeight: '500',
+            fontFamily: 'var(--font-zpix), monospace',
+            letterSpacing: '0.05em',
+            textShadow: '0 0 15px rgba(0, 62, 195, 0.4)'
+          }}>
+            掌握今天
+          </div>
+        </div>
+      )}
+
+      {/* CSS 動畫 */}
+      <style jsx>{`
+        @keyframes orbit {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes meteorStarBlur {
+          0% { opacity: 0; transform: translateX(-200px) translateY(200px) rotate(45deg); filter: blur(3px); }
+          20% { opacity: 0.3; transform: translateX(-100px) translateY(100px) rotate(45deg); filter: blur(2px); }
+          50% { opacity: 1; transform: translateX(0px) translateY(0px) rotate(45deg); filter: blur(0px); }
+          80% { opacity: 0.3; transform: translateX(100px) translateY(-100px) rotate(45deg); filter: blur(2px); }
+          100% { opacity: 0; transform: translateX(200px) translateY(-200px) rotate(45deg); filter: blur(3px); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // 項目數據接口
 interface ProjectItem {
   id: number;
@@ -192,6 +590,783 @@ interface ProjectItem {
   galleryImages: string[];
   detailedDescription: string;
 }
+
+// 商品數據接口
+interface ProductItem {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+  tag: string;
+}
+
+// 商品卡片組件
+const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProductClick: (product: ProductItem) => void }) => {
+  return (
+    <div style={{
+      background: 'rgba(0, 62, 195, 0.1)',
+      backdropFilter: 'blur(20px)',
+      borderRadius: '20px',
+      padding: '24px',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 8px 32px rgba(0, 62, 195, 0.2)',
+      transition: 'all 0.3s ease',
+      cursor: 'pointer',
+      position: 'relative',
+      overflow: 'hidden'
+    }}
+    onClick={() => onProductClick(product)}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+      e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 62, 195, 0.3)';
+      e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.4)';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+      e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 62, 195, 0.2)';
+      e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+    }}
+    >
+      {/* 商品圖片 */}
+      <div style={{
+        width: '100%',
+        height: '200px',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        marginBottom: '16px',
+        background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.2), rgba(74, 144, 226, 0.2))',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+      }}>
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={200}
+          height={200}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: '12px'
+          }}
+        />
+        {/* 發光效果 */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(45deg, transparent, rgba(0, 62, 195, 0.1), transparent)',
+          pointerEvents: 'none'
+        }} />
+      </div>
+
+      {/* 商品名稱 */}
+      <h3 style={{
+        fontSize: '1.2rem',
+        fontWeight: '600',
+        color: '#fffff3',
+        margin: '0 0 8px 0',
+        fontFamily: 'var(--font-zpix), monospace',
+        letterSpacing: '0.05em'
+      }}>
+        {product.name}
+      </h3>
+
+      {/* 價格 */}
+      <div style={{
+        fontSize: '1.1rem',
+        fontWeight: 'bold',
+        color: '#FF8C00', // 品牌橘色
+        marginBottom: '12px',
+        fontFamily: 'var(--font-zpix), monospace'
+      }}>
+        {product.price}
+      </div>
+
+      {/* 標籤 */}
+      <div style={{
+        fontSize: '0.9rem',
+        color: 'rgba(255, 255, 243, 0.8)',
+        fontFamily: 'var(--font-zpix), monospace',
+        letterSpacing: '0.02em',
+        background: 'rgba(0, 62, 195, 0.2)',
+        padding: '4px 8px',
+        borderRadius: '8px',
+        display: 'inline-block',
+        border: '1px solid rgba(0, 62, 195, 0.3)'
+      }}>
+        {product.tag}
+      </div>
+
+      {/* 背景裝飾 */}
+      <div style={{
+        position: 'absolute',
+        top: '-50%',
+        right: '-50%',
+        width: '100%',
+        height: '100%',
+        background: 'radial-gradient(circle, rgba(0, 62, 195, 0.1) 0%, transparent 70%)',
+        pointerEvents: 'none',
+        zIndex: -1
+      }} />
+    </div>
+  );
+};
+
+// 商品詳情 Modal 組件
+const ProductModal = ({ 
+  isOpen, 
+  onClose, 
+  product, 
+  onAddToCart, 
+  onDirectContact 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  product: ProductItem | null;
+  onAddToCart: (product: ProductItem) => void;
+  onDirectContact: (product: ProductItem) => void;
+}) => {
+  if (!isOpen || !product) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backdropFilter: 'blur(10px)',
+      zIndex: 2000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}
+    onClick={onClose}
+    >
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.1), rgba(74, 144, 226, 0.1))',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '20px',
+        padding: '40px',
+        maxWidth: '600px',
+        width: '100%',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 20px 60px rgba(0, 62, 195, 0.3)',
+        position: 'relative'
+      }}
+      onClick={(e) => e.stopPropagation()}
+      >
+        {/* 關閉按鈕 */}
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            color: 'white',
+            fontSize: '20px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+          }}
+        >
+          ×
+        </button>
+
+        {/* 商品圖片 */}
+        <div style={{
+          width: '100%',
+          height: '300px',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          marginBottom: '30px',
+          background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.2), rgba(74, 144, 226, 0.2))'
+        }}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={600}
+            height={300}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+
+        {/* 商品資訊 */}
+        <div style={{ marginBottom: '30px' }}>
+          <h2 style={{
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: '#fffff3',
+            margin: '0 0 10px 0',
+            fontFamily: 'var(--font-zpix), monospace',
+            letterSpacing: '0.05em'
+          }}>
+            {product.name}
+          </h2>
+          
+          <div style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: '#FF8C00', // 品牌橘色
+            marginBottom: '15px',
+            fontFamily: 'var(--font-zpix), monospace'
+          }}>
+            {product.price}
+          </div>
+
+          <div style={{
+            fontSize: '1rem',
+            color: 'rgba(255, 255, 243, 0.8)',
+            fontFamily: 'var(--font-zpix), monospace',
+            letterSpacing: '0.02em',
+            background: 'rgba(0, 62, 195, 0.2)',
+            padding: '8px 12px',
+            borderRadius: '12px',
+            display: 'inline-block',
+            border: '1px solid rgba(0, 62, 195, 0.3)',
+            marginBottom: '20px'
+          }}>
+            {product.tag}
+          </div>
+
+          <p style={{
+            fontSize: '1rem',
+            color: 'rgba(255, 255, 243, 0.9)',
+            lineHeight: '1.6',
+            margin: '0 0 20px 0'
+          }}>
+            這些小東西不多，如果喜歡，就來聊聊吧 :)
+          </p>
+        </div>
+
+        {/* 按鈕區域 */}
+        <div style={{
+          display: 'flex',
+          gap: '20px',
+          flexDirection: 'column'
+        }}>
+          <button
+            onClick={() => {
+              onAddToCart(product);
+              onClose();
+            }}
+            style={{
+              background: '#003EC3',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '16px 24px',
+              color: 'white',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+            }}
+          >
+            🛒 加入購物清單
+          </button>
+
+          <button
+            onClick={() => {
+              onDirectContact(product);
+              onClose();
+            }}
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '12px',
+              padding: '16px 24px',
+              color: 'white',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            }}
+          >
+            💬 直接聯繫購買
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 自我介紹 Modal 組件
+const IntroModal = ({ 
+  isOpen, 
+  onClose 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backdropFilter: 'blur(10px)',
+      zIndex: 2000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}
+    onClick={onClose}
+    >
+      <div style={{
+        background: 'rgba(0, 62, 195, 0.1)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '20px',
+        padding: '40px',
+        maxWidth: '500px',
+        width: '100%',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 20px 60px rgba(0, 62, 195, 0.3)',
+        position: 'relative',
+        textAlign: 'center'
+      }}
+      onClick={(e) => e.stopPropagation()}
+      >
+        {/* 關閉按鈕 */}
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            color: 'white',
+            fontSize: '20px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+          }}
+        >
+          ×
+        </button>
+
+        {/* 頭貼 */}
+        <div style={{
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          margin: '0 auto 30px auto',
+          background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.2), rgba(74, 144, 226, 0.2))',
+          border: '3px solid rgba(255, 255, 255, 0.3)',
+          boxShadow: '0 8px 32px rgba(0, 62, 195, 0.3)'
+        }}>
+          <Image
+            src="/designer.png"
+            alt="Designer"
+            width={120}
+            height={120}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+
+        {/* 名稱 */}
+        <h2 style={{
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: '#fffff3',
+          margin: '0 0 20px 0',
+          fontFamily: 'var(--font-zpix), monospace',
+          letterSpacing: '0.05em'
+        }}>
+          Liam
+        </h2>
+
+        {/* 介紹 */}
+        <div style={{
+          fontSize: '1rem',
+          color: 'rgba(255, 255, 243, 0.9)',
+          lineHeight: '1.6',
+          margin: '0 0 30px 0',
+          fontFamily: 'var(--font-zpix), monospace',
+          letterSpacing: '0.02em'
+        }}>
+          <p style={{ margin: '0 0 15px 0' }}>
+            你好！我是 Liam，一名熱愛設計的創作者。
+          </p>
+          <p style={{ margin: '0 0 15px 0' }}>
+            專注於品牌設計、視覺識別與數位體驗設計，
+            相信好的設計能夠傳達情感，創造價值。
+          </p>
+          <p style={{ margin: '0' }}>
+            歡迎來到我的作品集，希望你能在這裡找到靈感！
+          </p>
+        </div>
+
+        {/* 關閉按鈕 */}
+        <button
+          onClick={onClose}
+          style={{
+            background: '#003EC3',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '12px 24px',
+            color: 'white',
+            fontSize: '1rem',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
+            fontFamily: 'var(--font-zpix), monospace'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+          }}
+        >
+          關閉
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// 購物清單側欄組件
+const CartSidebar = ({ 
+  isOpen, 
+  onClose, 
+  cartItems, 
+  onRemoveItem, 
+  onCheckout 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  cartItems: ProductItem[];
+  onRemoveItem: (productId: number) => void;
+  onCheckout: () => void;
+}) => {
+  const totalAmount = cartItems.reduce((sum, item) => {
+    const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+    return sum + price;
+  }, 0);
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      right: isOpen ? 0 : '-400px',
+      width: '400px',
+      height: '100%',
+      background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.1), rgba(74, 144, 226, 0.1))',
+      backdropFilter: 'blur(20px)',
+      borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '-10px 0 30px rgba(0, 62, 195, 0.3)',
+      zIndex: 1500,
+      transition: 'right 0.3s ease',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '20px'
+    }}>
+      {/* 標題和關閉按鈕 */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '30px',
+        paddingBottom: '20px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
+      }}>
+        <h2 style={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: '#fffff3',
+          margin: 0,
+          fontFamily: 'var(--font-zpix), monospace',
+          letterSpacing: '0.05em'
+        }}>
+          🧺 購物清單
+        </h2>
+        <button
+          onClick={onClose}
+          style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '35px',
+            height: '35px',
+            color: 'white',
+            fontSize: '18px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+          }}
+        >
+          ×
+        </button>
+      </div>
+
+      {/* 商品列表 */}
+      <div style={{
+        flex: 1,
+        overflowY: 'auto',
+        marginBottom: '20px'
+      }}>
+        {cartItems.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            color: 'rgba(255, 255, 243, 0.6)',
+            fontSize: '1rem',
+            padding: '40px 20px'
+          }}>
+            購物清單是空的
+          </div>
+        ) : (
+          cartItems.map((item, index) => (
+            <div key={`${item.id}-${index}`} style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '15px',
+              marginBottom: '15px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                marginRight: '15px',
+                background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.2), rgba(74, 144, 226, 0.2))'
+              }}>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={60}
+                  height={60}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  color: '#fffff3',
+                  marginBottom: '5px',
+                  fontFamily: 'var(--font-zpix), monospace'
+                }}>
+                  {item.name}
+                </div>
+                <div style={{
+                  fontSize: '0.8rem',
+                  color: '#FF8C00', // 品牌橘色
+                  fontWeight: 'bold',
+                  fontFamily: 'var(--font-zpix), monospace'
+                }}>
+                  {item.price}
+                </div>
+              </div>
+              <button
+                onClick={() => onRemoveItem(item.id)}
+                style={{
+                  background: 'rgba(255, 0, 0, 0.2)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  width: '30px',
+                  height: '30px',
+                  color: 'white',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 0, 0, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 0, 0, 0.2)';
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 總金額和按鈕 */}
+      {cartItems.length > 0 && (
+        <div style={{
+          borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+          paddingTop: '20px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px'
+          }}>
+            <span style={{
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: '#fffff3',
+              fontFamily: 'var(--font-zpix), monospace'
+            }}>
+              總計
+            </span>
+            <span style={{
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: '#FF8C00', // 品牌橘色
+              fontFamily: 'var(--font-zpix), monospace'
+            }}>
+              NT$ {totalAmount.toFixed(0)}
+            </span>
+          </div>
+          
+          <div style={{
+            display: 'flex',
+            gap: '10px',
+            flexDirection: 'column'
+          }}>
+            <button
+              onClick={onCheckout}
+              style={{
+                background: '#003EC3',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '16px',
+                color: 'white',
+                fontSize: '1rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+              }}
+            >
+              前往結帳
+            </button>
+            
+            <button
+              onClick={onClose}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '12px',
+                padding: '16px',
+                color: 'white',
+                fontSize: '1rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+              }}
+            >
+              繼續逛逛
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // 彈出式視窗組件
 const ProjectModal: React.FC<{
@@ -321,8 +1496,8 @@ const ProjectModal: React.FC<{
                 />
               </button>
             ))}
-    </div>
-      </div>
+          </div>
+        </div>
       
         {/* 詳細描述 */}
         <div className="px-4 pb-4">
@@ -580,6 +1755,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         />
       </div>
 
+
+
       {/* 右上角導覽列 */}
       <div className="nav-responsive" style={{
         position: 'absolute',
@@ -650,9 +1827,32 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         height: '60vh',
         zIndex: 10,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
+
+        {/* 船隻上方標題 - 打字機效果 */}
+        <div style={{
+          position: 'relative',
+          zIndex: 25,
+          marginBottom: '40px',
+          opacity: boatOpacity,
+          transition: 'opacity 0.1s ease-out'
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(1.5rem, 4.8vw, 2.4rem)',
+            fontWeight: 'bold',
+            color: '#003EC3',
+            fontFamily: 'var(--font-zpix), monospace',
+            textAlign: 'center',
+            margin: 0,
+            letterSpacing: '0.1em',
+            minHeight: '1.2em'
+          }}>
+            <TypewriterText text="Own the Day." speed={150} />
+          </h1>
+        </div>
 
         {/* 中央船隻圖片 - 使用入口頁的船隻和波浪效果 */}
         <div className="boat-container" style={{
@@ -674,8 +1874,37 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               transform: `scale(${boatScale})`
             } as React.CSSProperties}
           >
-            <Image src="/boat.png" alt="Dreamy Boat" width={400} height={300} className="boat-img" />
+            <Image 
+              src="/boat.png" 
+              alt="Dreamy Boat" 
+              width={3541} 
+              height={2203} 
+              className="boat-img"
+              priority
+            />
           </div>
+        </div>
+
+        {/* 船隻下方標題 - 打字機效果 */}
+        <div style={{
+          position: 'relative',
+          zIndex: 25,
+          marginTop: '40px',
+          opacity: boatOpacity,
+          transition: 'opacity 0.1s ease-out'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(1.08rem, 3.6vw, 1.8rem)',
+            fontWeight: 'bold',
+            color: '#003EC3',
+            fontFamily: 'var(--font-zpix), monospace',
+            textAlign: 'center',
+            margin: 0,
+            letterSpacing: '0.05em',
+            minHeight: '1.2em'
+          }}>
+            <TypewriterText text="掌握今天，準備啟動設計。" speed={200} delay={2000} />
+          </h2>
         </div>
 
         {/* 星星裝飾 - 原有3顆 */}
@@ -720,6 +1949,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           opacity: starOpacity,
           transition: 'opacity 0.1s ease-out'
         }}></div>
+
+        {/* 流星效果 - 品牌藍色 */}
+        {[...Array(3)].map((_, i) => {
+          // 使用固定的動畫參數避免 SSR 水合錯誤
+          const animationDurations = [4.2, 3.8, 4.5];
+          const animationDelays = [0.5, 2.1, 3.7];
+          
+          return (
+            <div
+              key={`meteor-${i}`}
+              className="absolute z-50"
+              style={{
+                left: `${10 + i * 30}%`,
+                bottom: `${10 + i * 20}%`,
+                width: '20px',
+                height: '20px',
+                color: '#003EC3',
+                fontSize: '20px',
+                animation: `meteorStarBlur ${animationDurations[i]}s linear infinite`,
+                animationDelay: `${animationDelays[i]}s`,
+                opacity: starOpacity,
+                transition: 'opacity 0.1s ease-out'
+              }}
+            >
+              ✦
+            </div>
+          );
+        })}
 
         {/* 新增9顆星星 */}
         <div style={{
@@ -1016,6 +2273,9 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           display: block;
           position: relative;
           z-index: 2;
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
+          image-rendering: pixelated;
         }
         
         @keyframes bob { 
@@ -1035,6 +2295,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         @keyframes twinkle {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        @keyframes meteorStarBlur {
+          0% {
+            opacity: 0;
+            transform: translateX(-200px) translateY(200px) rotate(45deg);
+            filter: blur(3px);
+          }
+          20% {
+            opacity: 0.3;
+            transform: translateX(-100px) translateY(100px) rotate(45deg);
+            filter: blur(2px);
+          }
+          50% {
+            opacity: 1;
+            transform: translateX(0px) translateY(0px) rotate(45deg);
+            filter: blur(0px);
+          }
+          80% {
+            opacity: 0.3;
+            transform: translateX(100px) translateY(-100px) rotate(45deg);
+            filter: blur(2px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(200px) translateY(-200px) rotate(45deg);
+            filter: blur(3px);
+          }
         }
         
         .star-parallax {
@@ -1257,6 +2545,7 @@ export default function HeroSimpleTest() {
   const [scrollY, setScrollY] = useState(0);
   const [blueSectionHeight, setBlueSectionHeight] = useState(1200); // 預設高度
   const [darkSectionHeight, setDarkSectionHeight] = useState(1000); // 深色區塊高度
+  const [supportSectionHeight, setSupportSectionHeight] = useState(1000); // 支持我們區塊高度
   const [currentSection, setCurrentSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -1265,8 +2554,26 @@ export default function HeroSimpleTest() {
   const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [selectedStep, setSelectedStep] = useState<number | null>(1);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  
+  // 載入狀態管理
+  const [loadingPhase, setLoadingPhase] = useState<'loading' | 'ready' | 'main'>('loading');
+  const [progressStep, setProgressStep] = useState(0);
+  const [showMainContent, setShowMainContent] = useState(false);
+  
+  // 購物清單狀態管理
+  const [cartItems, setCartItems] = useState<ProductItem[]>([]);
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  
+  // 自我介紹狀態管理
+  const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
+  
   const blueSectionRef = useRef<HTMLDivElement>(null);
   const darkSectionRef = useRef<HTMLDivElement>(null);
+  const supportSectionRef = useRef<HTMLDivElement>(null);
 
   // 輪播組件數據
   const carouselItems: ProjectItem[] = [
@@ -1362,6 +2669,52 @@ export default function HeroSimpleTest() {
     }
   ];
 
+  // 商品數據
+  const productItems: ProductItem[] = [
+    {
+      id: 1,
+      name: "設計靈感筆記本",
+      price: "NT$ 380",
+      image: "/illustration_1.png",
+      tag: "#支持小設計"
+    },
+    {
+      id: 2,
+      name: "創意貼紙包",
+      price: "NT$ 150",
+      image: "/illustration_2.png",
+      tag: "#KeepGoing"
+    },
+    {
+      id: 3,
+      name: "設計師馬克杯",
+      price: "NT$ 450",
+      image: "/illustration_3.png",
+      tag: "#LocalCreativity"
+    },
+    {
+      id: 4,
+      name: "靈感明信片組",
+      price: "NT$ 200",
+      image: "/illustration_4.png",
+      tag: "#不大但用心"
+    },
+    {
+      id: 5,
+      name: "設計師帆布袋",
+      price: "NT$ 320",
+      image: "/illustration_5.png",
+      tag: "#DesignWithWarmth"
+    },
+    {
+      id: 6,
+      name: "創意書籤組",
+      price: "NT$ 180",
+      image: "/illustration_6.png",
+      tag: "#小小設計部"
+    }
+  ];
+
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -1376,11 +2729,85 @@ export default function HeroSimpleTest() {
     };
   }, []);
 
+  // 客戶端檢測和時間更新
+  useEffect(() => {
+    setIsClient(true);
+    setCurrentTime(new Date());
+    
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // 購物清單 localStorage 功能
+  useEffect(() => {
+    if (isClient) {
+      const savedCart = localStorage.getItem('cartItems');
+      if (savedCart) {
+        setCartItems(JSON.parse(savedCart));
+      }
+    }
+  }, [isClient]);
+
+  useEffect(() => {
+    if (isClient) {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }
+  }, [cartItems, isClient]);
+
+  // 載入動畫邏輯
+  useEffect(() => {
+    // 進度條動畫
+    const progressInterval = setInterval(() => {
+      setProgressStep(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          setLoadingPhase('ready'); // 載入完成，顯示按鈕
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 30);
+
+    return () => clearInterval(progressInterval);
+  }, []);
+
+  // 進入主內容
+  const handleEnterMainContent = () => {
+    setLoadingPhase('main');
+    setTimeout(() => {
+      setShowMainContent(true);
+    }, 500); // 給過渡動畫時間
+  };
+
+  // 購物清單處理函數
+  const handleAddToCart = (product: ProductItem) => {
+    setCartItems(prev => [...prev, product]);
+  };
+
+  const handleRemoveFromCart = (productId: number) => {
+    setCartItems(prev => prev.filter(item => item.id !== productId));
+  };
+
+  const handleProductClick = (product: ProductItem) => {
+    setSelectedProduct(product);
+    setIsProductModalOpen(true);
+  };
+
+  const handleCheckout = () => {
+    // 跳轉到 Google Form 或 Typeform
+    const formUrl = 'https://forms.gle/your-form-id'; // 替換為實際表單 URL
+    window.open(formUrl, '_blank');
+  };
+
   // 區塊數據
   const sections = [
     { id: 'hero', name: 'Hero', nameZh: '首頁' },
     { id: 'portfolio', name: 'Portfolio', nameZh: '作品' },
     { id: 'projects', name: 'Projects', nameZh: '專案' },
+    { id: 'support', name: 'Support', nameZh: '支持' },
     { id: 'contact', name: 'Contact', nameZh: '聯繫' }
   ];
 
@@ -1395,12 +2822,14 @@ export default function HeroSimpleTest() {
       newSection = 1; // Portfolio
     } else if (scrollY < windowHeight + blueSectionHeight + darkSectionHeight * 0.5) {
       newSection = 2; // Projects
+    } else if (scrollY < windowHeight + blueSectionHeight + darkSectionHeight + supportSectionHeight * 0.5) {
+      newSection = 3; // Support
     } else {
-      newSection = 3; // Contact
+      newSection = 4; // Contact
     }
     
     setCurrentSection(newSection);
-  }, [scrollY, blueSectionHeight, darkSectionHeight]);
+  }, [scrollY, blueSectionHeight, darkSectionHeight, supportSectionHeight]);
 
   // 彈出視窗處理函數
   const handleProjectClick = (project: ProjectItem) => {
@@ -1473,6 +2902,36 @@ export default function HeroSimpleTest() {
     };
   }, []);
 
+  // 測量支持我們區域內容高度
+  useEffect(() => {
+    const measureSupportHeight = () => {
+      if (supportSectionRef.current) {
+        const height = supportSectionRef.current.scrollHeight;
+        setSupportSectionHeight(height);
+      }
+    };
+
+    // 初始測量
+    measureSupportHeight();
+
+    // 監聽視窗大小變化
+    window.addEventListener('resize', measureSupportHeight);
+
+    // 使用 ResizeObserver 監聽內容變化
+    let resizeObserver: ResizeObserver | null = null;
+    if (supportSectionRef.current && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(measureSupportHeight);
+      resizeObserver.observe(supportSectionRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', measureSupportHeight);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
+
   // 計算 #353535 色塊覆蓋效果 - 基於藍色區域底部觸發
   const darkCoverHeight = typeof window !== 'undefined' 
     ? Math.max(0, Math.min(
@@ -1481,27 +2940,38 @@ export default function HeroSimpleTest() {
       ))
     : 0; // 深色色塊高度
 
-  // 計算第二個藍色區塊覆蓋效果 - 基於深色區域底部觸發
-  const secondBlueCoverHeight = typeof window !== 'undefined' 
+  // 計算專案服務區塊內部的品牌藍色覆蓋效果
+  const serviceBlueCoverHeight = typeof window !== 'undefined' 
     ? Math.max(0, Math.min(
         (scrollY - (blueSectionHeight + darkSectionHeight)) * 1.2, 
         window.innerHeight
       ))
-    : 0; // 第二個藍色區塊覆蓋高度
+    : 0; // 專案服務區塊內部的品牌藍色覆蓋高度
+
+  // 計算支持我們區塊底部的深灰色覆蓋效果
+  const supportToContactCoverHeight = typeof window !== 'undefined' 
+    ? Math.max(0, Math.min(
+        (scrollY - (blueSectionHeight + darkSectionHeight + supportSectionHeight)) * 1.2, 
+        window.innerHeight
+      ))
+    : 0; // 支持我們區塊底部的深灰色覆蓋高度
 
   // 調試信息（開發時使用）
   useEffect(() => {
     if (typeof window !== 'undefined') {
       console.log('🔵 第一個藍色區域高度:', blueSectionHeight, 'px');
       console.log('🌑 深色區域高度:', darkSectionHeight, 'px');
+      console.log('💙 支持我們區域高度:', supportSectionHeight, 'px');
       console.log('📱 螢幕高度:', window.innerHeight, 'px');
       console.log('🎯 深色覆蓋觸發點:', blueSectionHeight, 'px');
-      console.log('🎯 第二個藍色覆蓋觸發點:', blueSectionHeight + darkSectionHeight, 'px');
+      console.log('🎯 專案服務藍色覆蓋觸發點:', blueSectionHeight + darkSectionHeight, 'px');
+      console.log('🎯 支持我們到聯繫我們覆蓋觸發點:', blueSectionHeight + darkSectionHeight + supportSectionHeight, 'px');
       console.log('📊 當前滾動位置:', scrollY, 'px');
       console.log('🌑 深色覆蓋高度:', darkCoverHeight, 'px');
-      console.log('🔵 第二個藍色覆蓋高度:', secondBlueCoverHeight, 'px');
+      console.log('🔵 專案服務藍色覆蓋高度:', serviceBlueCoverHeight, 'px');
+      console.log('🌑 支持我們到聯繫我們覆蓋高度:', supportToContactCoverHeight, 'px');
     }
-  }, [blueSectionHeight, darkSectionHeight, scrollY, darkCoverHeight, secondBlueCoverHeight]);
+  }, [blueSectionHeight, darkSectionHeight, supportSectionHeight, scrollY, darkCoverHeight, serviceBlueCoverHeight, supportToContactCoverHeight]);
 
   // 直接渲染夢幻版Hero，移除所有測試相關功能
   const renderHeroComponent = () => {
@@ -1520,7 +2990,19 @@ export default function HeroSimpleTest() {
 
   return (
     <>
-      <style jsx global>{`
+      {/* 載入頁面 */}
+      {!showMainContent && (
+        <LoadingPage 
+          loadingPhase={loadingPhase}
+          progressStep={progressStep}
+          onEnterMainContent={handleEnterMainContent}
+        />
+      )}
+
+      {/* 主內容 */}
+      {showMainContent && (
+        <>
+          <style jsx global>{`
         body {
           margin: 0;
           padding: 0;
@@ -1834,8 +3316,11 @@ export default function HeroSimpleTest() {
                   case 2: // Projects
                     targetScroll = windowHeight + blueSectionHeight;
                     break;
-                  case 3: // Contact
+                  case 3: // Support
                     targetScroll = windowHeight + blueSectionHeight + darkSectionHeight;
+                    break;
+                  case 4: // Contact
+                    targetScroll = windowHeight + blueSectionHeight + darkSectionHeight + supportSectionHeight;
                     break;
                 }
                 
@@ -1934,20 +3419,92 @@ export default function HeroSimpleTest() {
       </div>
       )}
 
-      {/* 左上角經緯度標記 */}
+      {/* 左上角自我介紹按鈕 */}
       <div style={{
         position: 'fixed',
         top: '20px',
         left: '20px',
         zIndex: 1000,
+        background: 'rgba(0, 62, 195, 0.1)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: '16px',
+        padding: '16px',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        cursor: 'pointer'
+      }}
+      onClick={() => setIsIntroModalOpen(true)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '1';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.1)';
+        e.currentTarget.style.transform = 'scale(1)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '0';
+      }}
+      >
+        <Image
+          src="/designer.png"
+          alt="自我介紹"
+          width={40}
+          height={40}
+          style={{
+            width: '40px',
+            height: '40px',
+            objectFit: 'cover',
+            borderRadius: '50%'
+          }}
+        />
+        
+        {/* 懸停標籤 */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-35px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '6px 12px',
+          borderRadius: '8px',
+          fontSize: '0.8rem',
+          fontWeight: '500',
+          fontFamily: 'var(--font-zpix), monospace',
+          whiteSpace: 'nowrap',
+          opacity: 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+          zIndex: 1001
+        }}
+        className="tooltip"
+        >
+          Liam pretty good
+        </div>
+      </div>
+
+      {/* 左下角經緯度與時間顯示 - 桌面版顯示 */}
+      <div style={{
+        position: 'fixed',
+        top: isMobile ? 'auto' : 'auto',
+        bottom: isMobile ? 'auto' : '20px',
+        left: '20px',
+        zIndex: 1000,
         background: 'rgba(0, 0, 0, 0.7)',
         backdropFilter: 'blur(10px)',
         borderRadius: '8px',
-        padding: '8px 12px',
+        padding: '12px 16px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
+        display: isMobile ? 'none' : 'flex', // 手機版隱藏
+        flexDirection: 'column',
+        gap: '8px'
       }}>
+        {/* 經緯度 */}
         <div style={{
           color: '#FFFFFF',
           fontSize: '0.8rem',
@@ -1960,7 +3517,210 @@ export default function HeroSimpleTest() {
         }}>
           <span>{scrollY > 0 ? `${(24.75 + scrollY * 0.0001).toFixed(2)}°N` : '24.75°N'}, {scrollY > 0 ? `${(121.76 + scrollY * 0.0001).toFixed(2)}°E` : '121.76°E'}</span>
         </div>
+        
+        {/* 時間顯示 */}
+        <div style={{
+          color: '#fffff3',
+          fontSize: '0.8rem',
+          fontFamily: 'monospace',
+          fontWeight: '500',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px'
+        }}>
+          <span>
+            {isClient && currentTime ? currentTime.toLocaleString('zh-TW', {
+              timeZone: 'Asia/Taipei',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false
+            }) : '--:--:--'}
+          </span>
+        </div>
       </div>
+
+      {/* 購物清單圖示 - 桌面版右上角，手機版左下角 */}
+      <div style={{
+        position: 'fixed',
+        top: isMobile ? 'auto' : '20px',
+        bottom: isMobile ? '20px' : 'auto',
+        right: isMobile ? 'auto' : '20px',
+        left: isMobile ? '20px' : 'auto',
+        zIndex: 1000,
+        background: 'rgba(0, 62, 195, 0.1)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: '16px',
+        padding: '16px',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        cursor: 'pointer'
+      }}
+      onClick={() => setIsCartSidebarOpen(true)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '1';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.1)';
+        e.currentTarget.style.transform = 'scale(1)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '0';
+      }}
+      >
+        <div style={{
+          fontSize: '1.5rem',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          🧺
+        </div>
+        {cartItems.length > 0 && (
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            right: '-5px',
+            background: '#ff4757',
+            color: 'white',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            fontSize: '0.7rem',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(255, 71, 87, 0.4)'
+          }}>
+            {cartItems.length}
+          </div>
+        )}
+        
+        {/* 懸停標籤 */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-35px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '6px 12px',
+          borderRadius: '8px',
+          fontSize: '0.8rem',
+          fontWeight: '500',
+          fontFamily: 'var(--font-zpix), monospace',
+          whiteSpace: 'nowrap',
+          opacity: 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+          zIndex: 1001
+        }}
+        className="tooltip"
+        >
+          購物車
+        </div>
+      </div>
+
+      {/* 右下角釘選 Logo */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 1000,
+        background: 'rgba(0, 62, 195, 0.1)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: '16px',
+        padding: '16px',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.2)';
+        e.currentTarget.style.transform = 'scale(1.05)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '1';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(0, 62, 195, 0.1)';
+        e.currentTarget.style.transform = 'scale(1)';
+        const tooltip = e.currentTarget.querySelector('.tooltip') as HTMLElement;
+        if (tooltip) tooltip.style.opacity = '0';
+      }}
+      >
+        <Image 
+          src="/cursor-07.png" 
+          alt="Liam Design Logo" 
+          width={80}
+          height={80}
+          style={{
+            width: '80px',
+            height: '80px',
+            objectFit: 'contain',
+            filter: 'brightness(1.1)'
+          }}
+        />
+        
+        {/* 懸停標籤 */}
+        <div style={{
+          position: 'absolute',
+          top: '-35px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '6px 12px',
+          borderRadius: '8px',
+          fontSize: '0.8rem',
+          fontWeight: '500',
+          fontFamily: 'var(--font-zpix), monospace',
+          whiteSpace: 'nowrap',
+          opacity: 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+          zIndex: 1001
+        }}
+        className="tooltip"
+        >
+          So good
+        </div>
+      </div>
+
+      {/* 商品詳情 Modal */}
+      <ProductModal
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
+        product={selectedProduct}
+        onAddToCart={handleAddToCart}
+        onDirectContact={(product) => {
+          // 直接聯繫功能 - 可以跳轉到 LINE 或 Email
+          const contactUrl = `mailto:liam@example.com?subject=商品詢問：${product.name}&body=您好，我想了解關於 ${product.name} 的詳細資訊。`;
+          window.open(contactUrl);
+        }}
+      />
+
+      {/* 自我介紹 Modal */}
+      <IntroModal
+        isOpen={isIntroModalOpen}
+        onClose={() => setIsIntroModalOpen(false)}
+      />
+
+      {/* 購物清單側欄 */}
+      <CartSidebar
+        isOpen={isCartSidebarOpen}
+        onClose={() => setIsCartSidebarOpen(false)}
+        cartItems={cartItems}
+        onRemoveItem={handleRemoveFromCart}
+        onCheckout={handleCheckout}
+      />
 
       <div className="hero-test-container">
         {renderHeroComponent()}
@@ -2252,10 +4012,10 @@ export default function HeroSimpleTest() {
               left: 0,
               height: '100%',
               width: selectedStep === 1 ? '33%' : selectedStep === 2 ? '66%' : selectedStep === 3 ? '100%' : '66%',
-              background: 'linear-gradient(90deg, #4A90E2, #7BB3F0, #A8D0F0)',
+              background: '#003EC3',
               borderRadius: '10px',
               transition: 'width 0.5s ease-in-out',
-              boxShadow: '0 0 20px rgba(74, 144, 226, 0.5)'
+              boxShadow: '0 0 20px rgba(0, 62, 195, 0.5)'
             }} />
           </div>
 
@@ -2284,19 +4044,19 @@ export default function HeroSimpleTest() {
                     width: '40px',
                     height: '40px',
                     borderRadius: '50%',
-                    backgroundColor: selectedStep === item.step ? '#4A90E2' : 
-                                    item.status === 'completed' ? '#4A90E2' : 
-                                    item.status === 'in-progress' ? '#7BB3F0' : 'rgba(255, 255, 255, 0.3)',
+                    backgroundColor: selectedStep === item.step ? '#003EC3' : 
+                                    item.status === 'completed' ? '#003EC3' : 
+                                    item.status === 'in-progress' ? '#003EC3' : 'rgba(255, 255, 255, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: '10px',
-                    border: selectedStep === item.step ? '3px solid #4A90E2' : 
-                           item.status === 'completed' ? '3px solid #4A90E2' : 
-                           item.status === 'in-progress' ? '3px solid #7BB3F0' : '3px solid rgba(255, 255, 255, 0.3)',
-                    boxShadow: selectedStep === item.step ? '0 0 25px rgba(74, 144, 226, 0.8)' :
-                              item.status === 'completed' ? '0 0 15px rgba(74, 144, 226, 0.5)' :
-                              item.status === 'in-progress' ? '0 0 15px rgba(123, 179, 240, 0.5)' : 'none',
+                    border: selectedStep === item.step ? '3px solid #003EC3' : 
+                           item.status === 'completed' ? '3px solid #003EC3' : 
+                           item.status === 'in-progress' ? '3px solid #003EC3' : '3px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: selectedStep === item.step ? '0 0 25px rgba(0, 62, 195, 0.8)' :
+                              item.status === 'completed' ? '0 0 15px rgba(0, 62, 195, 0.5)' :
+                              item.status === 'in-progress' ? '0 0 15px rgba(0, 62, 195, 0.5)' : 'none',
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     transform: selectedStep === item.step ? 'scale(1.1)' : 'scale(1)'
@@ -2411,7 +4171,7 @@ export default function HeroSimpleTest() {
                       </h3>
 
                       {/* 內容 */}
-                      <div style={{
+        <div style={{
                         fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
                         color: '#FFFFFF',
                         lineHeight: '1.8',
@@ -2991,15 +4751,140 @@ export default function HeroSimpleTest() {
         }}>
         </div>
 
-        {/* 第二個藍色區塊覆蓋層 - 在深色區塊底部上緣 */}
+        {/* 專案服務區塊底部的品牌藍色覆蓋層 - 從底部向上覆蓋 */}
         <div style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           width: '100%',
-          height: `${secondBlueCoverHeight}px`,
+          height: `${serviceBlueCoverHeight}px`,
           backgroundColor: '#003EC3',
-          zIndex: 20, // 提高 z-index 到 20
+          zIndex: 10, // 降低 z-index，讓內容在覆蓋層之上
+          transition: 'height 0.1s ease-out'
+        }}></div>
+      </div>
+
+      {/* 支持我們區塊 */}
+      <div 
+        ref={supportSectionRef}
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#003EC3',
+          position: 'relative',
+          padding: '80px 20px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
+        }}
+      >
+        {/* 支持我們區塊標題 */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '60px',
+          zIndex: 15
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontWeight: '900',
+            color: '#FFFFFF',
+            margin: '0 0 20px 0',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+            letterSpacing: '0.05em'
+          }}>
+            支持我們
+          </h1>
+          <p style={{
+            fontSize: 'clamp(1rem, 3vw, 1.5rem)',
+            color: '#E8F4FD',
+            margin: '0',
+            fontWeight: '300',
+            letterSpacing: '0.1em'
+          }}>
+            小小的設計，陪你一整天。
+          </p>
+          <p style={{
+            fontSize: 'clamp(0.9rem, 2.5vw, 1.2rem)',
+            color: 'rgba(232, 244, 253, 0.8)',
+            margin: '20px 0 0 0',
+            fontWeight: '300',
+            letterSpacing: '0.05em',
+            lineHeight: '1.6'
+          }}>
+            這些商品來自我們的日常靈感，<br />
+            希望它們能在你生活裡，靜靜陪著你。
+          </p>
+        </div>
+
+        {/* 商品卡片網格 */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '30px',
+          maxWidth: '1200px',
+          width: '100%',
+          zIndex: 15
+        }}>
+          {productItems.map((product) => (
+            <ProductCard key={product.id} product={product} onProductClick={handleProductClick} />
+          ))}
+        </div>
+
+        {/* 支持我們區塊星空效果 */}
+        {[
+          { top: '10%', left: '12%', size: '8px', delay: '0s' },
+          { top: '20%', left: '88%', size: '6px', delay: '1s' },
+          { top: '30%', left: '8%', size: '10px', delay: '2s' },
+          { top: '40%', left: '92%', size: '7px', delay: '3s' },
+          { top: '50%', left: '20%', size: '9px', delay: '4s' },
+          { top: '60%', left: '80%', size: '8px', delay: '5s' },
+          { top: '70%', left: '5%', size: '6px', delay: '6s' },
+          { top: '80%', left: '95%', size: '10px', delay: '7s' },
+          { top: '15%', left: '60%', size: '7px', delay: '8s' },
+          { top: '35%', left: '40%', size: '9px', delay: '9s' },
+          { top: '55%', left: '50%', size: '8px', delay: '10s' },
+          { top: '75%', left: '30%', size: '6px', delay: '11s' },
+          { top: '45%', left: '70%', size: '10px', delay: '12s' },
+          { top: '65%', left: '15%', size: '7px', delay: '13s' },
+          { top: '85%', left: '55%', size: '9px', delay: '14s' },
+          { top: '25%', left: '35%', size: '8px', delay: '15s' },
+          { top: '45%', left: '90%', size: '6px', delay: '16s' },
+          { top: '65%', left: '45%', size: '10px', delay: '17s' },
+          { top: '85%', left: '25%', size: '7px', delay: '18s' },
+          { top: '95%', left: '75%', size: '9px', delay: '19s' },
+          { top: '18%', left: '50%', size: '8px', delay: '20s' },
+          { top: '38%', left: '22%', size: '6px', delay: '21s' },
+          { top: '58%', left: '78%', size: '10px', delay: '22s' },
+          { top: '78%', left: '42%', size: '7px', delay: '23s' },
+          { top: '88%', left: '62%', size: '9px', delay: '24s' }
+        ].map((star, index) => (
+          <div
+            key={`support-star-${index}`}
+            style={{
+              position: 'absolute',
+              top: star.top,
+              left: star.left,
+              width: star.size,
+              height: star.size,
+              background: '#FFFFFF',
+              borderRadius: '50%',
+              boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+              animation: `twinkle 3s infinite ${star.delay}`,
+              zIndex: 5
+            }}
+          />
+        ))}
+        
+        {/* 支持我們區塊底部的深灰色覆蓋層 - 從底部向上覆蓋 */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: `${supportToContactCoverHeight}px`,
+          backgroundColor: '#353535',
+          zIndex: 10, // 降低 z-index，讓內容在覆蓋層之上
           transition: 'height 0.1s ease-out'
         }}></div>
       </div>
@@ -3007,7 +4892,7 @@ export default function HeroSimpleTest() {
       {/* 第二個藍色區域 */}
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#003EC3',
+        backgroundColor: '#353535',
         position: 'relative',
         padding: '80px 20px',
         display: 'flex',
@@ -3149,7 +5034,7 @@ export default function HeroSimpleTest() {
             }}
             onClick={() => setIsPriceModalOpen(true)}>
               價目表
-            </button>
+          </button>
           </div>
         </div>
 
@@ -3167,7 +5052,6 @@ export default function HeroSimpleTest() {
           textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
         }}>
         </div>
-
       </div>
 
       {/* Footer */}
@@ -3395,6 +5279,8 @@ export default function HeroSimpleTest() {
           </p>
         </div>
       </footer>
+        </>
+      )}
     </>
   );
 }
