@@ -1434,7 +1434,7 @@ const ProjectModal: React.FC<{
           <div className="relative mb-4">
             <div className="relative h-64 bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20">
               <Image
-                src={project.galleryImages[currentImageIndex]}
+                src={project.galleryImages[currentImageIndex] || project.image}
                 alt={`${project.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-contain"
@@ -1493,7 +1493,7 @@ const ProjectModal: React.FC<{
                 }`}
               >
       <Image
-                  src={image}
+                  src={image || project.image}
                   alt={`Thumbnail ${index + 1}`}
                   fill
                   className="object-cover"
@@ -1662,7 +1662,7 @@ const Carousel3D: React.FC<{
             
             {/* 圖片 */}
             <Image 
-              src={item.image} 
+              src={item.image || "/illustration_1.png"} 
               alt={item.title}
               fill
               className="object-cover"
@@ -2674,12 +2674,11 @@ export default function HeroSimpleTest() {
       description: "完整的品牌識別設計，包含 Logo、色彩系統、應用範例等全方位品牌體驗。",
       image: "/project-cover-01.jpg",
       tags: ["品牌設計", "Logo設計", "視覺識別"],
-      galleryImages: [
-        "/project-cover-01.jpg",
-        "/project-01-01.jpg",
-        "/project-01-02.jpg",
-        "/project-01-03.jpg"
-      ],
+       galleryImages: [
+         "/project-cover-01.jpg",
+         "/project-01-01.jpg",
+         "/project-01-02.png"
+       ],
       detailedDescription: "這是一個完整的品牌設計專案，從品牌定位開始，設計了完整的視覺識別系統。包含 Logo 設計、品牌色彩系統、字體選擇、應用範例等。整個設計過程注重品牌的一致性和可擴展性，確保在不同媒介上都能完美呈現品牌形象。"
     },
     {
@@ -2688,12 +2687,10 @@ export default function HeroSimpleTest() {
       description: "現代化的響應式網頁設計，專注於用戶體驗和視覺美學的完美結合。",
       image: "/project-cover-02.jpg",
       tags: ["網頁設計", "響應式設計", "UI/UX"],
-      galleryImages: [
-        "/project-cover-02.jpg",
-        "/project-02-01.jpg",
-        "/project-02-02.jpg",
-        "/project-02-03.jpg"
-      ],
+       galleryImages: [
+         "/project-cover-02.jpg",
+         "/project-02-01.png"
+       ],
       detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。"
     },
     {
