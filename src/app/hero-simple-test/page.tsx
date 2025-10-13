@@ -866,8 +866,9 @@ const ProductModal = ({
         {/* 按鈕區域 */}
         <div style={{
           display: 'flex',
-          gap: '20px',
-          flexDirection: 'column'
+          gap: '12px',
+          flexDirection: 'row',
+          justifyContent: 'center'
         }}>
           <button
             onClick={() => {
@@ -877,29 +878,30 @@ const ProductModal = ({
             style={{
               background: '#003EC3',
               border: 'none',
-              borderRadius: '12px',
-              padding: '16px 24px',
+              borderRadius: '8px',
+              padding: '10px 16px',
               color: 'white',
-              fontSize: '1.1rem',
+              fontSize: '0.9rem',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
+              boxShadow: '0 4px 15px rgba(0, 62, 195, 0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '6px',
+              flex: '1'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 62, 195, 0.4)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 62, 195, 0.3)';
             }}
           >
-            🛒 加入購物清單
+            🛒 加入購物車
           </button>
 
           <button
@@ -910,17 +912,18 @@ const ProductModal = ({
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
               border: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRadius: '12px',
-              padding: '16px 24px',
+              borderRadius: '8px',
+              padding: '10px 16px',
               color: 'white',
-              fontSize: '1.1rem',
+              fontSize: '0.9rem',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '6px',
+              flex: '1'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
