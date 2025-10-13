@@ -1950,27 +1950,29 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           transition: 'opacity 0.1s ease-out'
         }}></div>
 
-        {/* 流星效果 - 品牌藍色 */}
+        {/* 弧形流星效果 - 品牌藍色 */}
         {[...Array(3)].map((_, i) => {
           // 使用固定的動畫參數避免 SSR 水合錯誤
           const animationDurations = [4.2, 3.8, 4.5];
           const animationDelays = [0.5, 2.1, 3.7];
+          const arcAnimations = ['meteorInnerArc', 'meteorMiddleArc', 'meteorOuterArc'];
           
           return (
             <div
               key={`meteor-${i}`}
               className="absolute z-50"
               style={{
-                left: `${10 + i * 30}%`,
-                bottom: `${10 + i * 20}%`,
+                left: '50%',
+                top: '50%',
                 width: '20px',
                 height: '20px',
                 color: '#003EC3',
                 fontSize: '20px',
-                animation: `meteorStarBlur ${animationDurations[i]}s linear infinite`,
+                animation: `${arcAnimations[i]} ${animationDurations[i]}s linear infinite`,
                 animationDelay: `${animationDelays[i]}s`,
                 opacity: starOpacity,
-                transition: 'opacity 0.1s ease-out'
+                transition: 'opacity 0.1s ease-out',
+                transform: 'translate(-50%, -50%)'
               }}
             >
               ✦
@@ -2321,6 +2323,91 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           100% {
             opacity: 0;
             transform: translateX(200px) translateY(-200px) rotate(45deg);
+            filter: blur(3px);
+          }
+        }
+        
+        /* 弧形流星動畫 - 多層軌道系統 */
+        @keyframes meteorInnerArc {
+          0% { 
+            opacity: 0; 
+            transform: translateX(-120px) translateY(80px) rotate(0deg);
+            filter: blur(3px);
+          }
+          20% { 
+            opacity: 0.4; 
+            transform: translateX(-60px) translateY(40px) rotate(36deg);
+            filter: blur(2px);
+          }
+          50% { 
+            opacity: 1; 
+            transform: translateX(0px) translateY(0px) rotate(90deg);
+            filter: blur(0px);
+          }
+          80% { 
+            opacity: 0.4; 
+            transform: translateX(60px) translateY(-40px) rotate(144deg);
+            filter: blur(2px);
+          }
+          100% { 
+            opacity: 0; 
+            transform: translateX(120px) translateY(-80px) rotate(180deg);
+            filter: blur(3px);
+          }
+        }
+        
+        @keyframes meteorMiddleArc {
+          0% { 
+            opacity: 0; 
+            transform: translateX(-180px) translateY(120px) rotate(0deg);
+            filter: blur(3px);
+          }
+          20% { 
+            opacity: 0.3; 
+            transform: translateX(-90px) translateY(60px) rotate(36deg);
+            filter: blur(2px);
+          }
+          50% { 
+            opacity: 1; 
+            transform: translateX(0px) translateY(0px) rotate(90deg);
+            filter: blur(0px);
+          }
+          80% { 
+            opacity: 0.3; 
+            transform: translateX(90px) translateY(-60px) rotate(144deg);
+            filter: blur(2px);
+          }
+          100% { 
+            opacity: 0; 
+            transform: translateX(180px) translateY(-120px) rotate(180deg);
+            filter: blur(3px);
+          }
+        }
+        
+        @keyframes meteorOuterArc {
+          0% { 
+            opacity: 0; 
+            transform: translateX(-250px) translateY(160px) rotate(0deg);
+            filter: blur(3px);
+          }
+          20% { 
+            opacity: 0.2; 
+            transform: translateX(-125px) translateY(80px) rotate(36deg);
+            filter: blur(2px);
+          }
+          50% { 
+            opacity: 1; 
+            transform: translateX(0px) translateY(0px) rotate(90deg);
+            filter: blur(0px);
+          }
+          80% { 
+            opacity: 0.2; 
+            transform: translateX(125px) translateY(-80px) rotate(144deg);
+            filter: blur(2px);
+          }
+          100% { 
+            opacity: 0; 
+            transform: translateX(250px) translateY(-160px) rotate(180deg);
             filter: blur(3px);
           }
         }
