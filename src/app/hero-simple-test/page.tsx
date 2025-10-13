@@ -2670,33 +2670,31 @@ export default function HeroSimpleTest() {
   const carouselItems: ProjectItem[] = [
     {
       id: 1,
-      title: "E-commerce Platform",
-      description: "設計現代化的電商平台，提供流暢的購物體驗和直觀的用戶界面。",
-      image: "/illustration_1.png",
-      tags: ["React", "TypeScript", "E-commerce"],
+      title: "品牌設計專案",
+      description: "完整的品牌識別設計，包含 Logo、色彩系統、應用範例等全方位品牌體驗。",
+      image: "/project-cover-01.jpg",
+      tags: ["品牌設計", "Logo設計", "視覺識別"],
       galleryImages: [
-        "/illustration_1.png",
-        "/illustration_2.png",
-        "/illustration_3.png",
-        "/illustration_4.png",
-        "/illustration_5.png"
+        "/project-cover-01.jpg",
+        "/project-01-01.jpg",
+        "/project-01-02.jpg",
+        "/project-01-03.jpg"
       ],
-      detailedDescription: "這是一個完整的電商平台設計專案，專注於創造直觀的用戶體驗。我們從用戶研究開始，設計了完整的購物流程，包括商品瀏覽、購物車管理、結帳流程等。整個設計系統採用現代化的視覺語言，確保在不同設備上都能提供優秀的用戶體驗。"
+      detailedDescription: "這是一個完整的品牌設計專案，從品牌定位開始，設計了完整的視覺識別系統。包含 Logo 設計、品牌色彩系統、字體選擇、應用範例等。整個設計過程注重品牌的一致性和可擴展性，確保在不同媒介上都能完美呈現品牌形象。"
     },
     {
       id: 2,
-      title: "Mobile App Design",
-      description: "創建直觀的移動應用界面，專注於用戶體驗和視覺設計。",
-      image: "/illustration_2.png",
-      tags: ["Figma", "Prototyping", "Mobile"],
+      title: "網頁設計專案",
+      description: "現代化的響應式網頁設計，專注於用戶體驗和視覺美學的完美結合。",
+      image: "/project-cover-02.jpg",
+      tags: ["網頁設計", "響應式設計", "UI/UX"],
       galleryImages: [
-        "/illustration_2.png",
-        "/illustration_3.png",
-        "/illustration_4.png",
-        "/illustration_5.png",
-        "/illustration_6.png"
+        "/project-cover-02.jpg",
+        "/project-02-01.jpg",
+        "/project-02-02.jpg",
+        "/project-02-03.jpg"
       ],
-      detailedDescription: "移動應用設計專案，涵蓋從概念到最終產品的完整設計流程。我們注重觸控體驗和視覺層次，確保應用在各種設備上都能提供優秀的用戶體驗。設計過程中我們進行了多輪用戶測試，不斷優化交互細節。"
+      detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。"
     },
     {
       id: 3,
