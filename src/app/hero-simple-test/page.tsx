@@ -742,7 +742,7 @@ const ProductModal = ({
       height: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.8)',
       backdropFilter: 'blur(10px)',
-      zIndex: 2000,
+      zIndex: 10000,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -958,7 +958,7 @@ const IntroModal = ({
       height: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.8)',
       backdropFilter: 'blur(10px)',
-      zIndex: 2000,
+      zIndex: 10000,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -1392,7 +1392,8 @@ const ProjectModal: React.FC<{
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-gradient-to-br from-blue-900/80 via-blue-800/80 to-blue-700/80 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/80 to-blue-700/80 backdrop-blur-sm flex items-center justify-center p-4"
+      style={{ zIndex: 10000 }}
       onClick={onClose}
     >
       <div
@@ -4293,7 +4294,7 @@ export default function HeroSimpleTest() {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             backdropFilter: 'blur(10px)',
-            zIndex: 2000,
+            zIndex: 10000,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -4548,7 +4549,7 @@ export default function HeroSimpleTest() {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             backdropFilter: 'blur(10px)',
-            zIndex: 2000,
+            zIndex: 10000,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
