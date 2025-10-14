@@ -2701,10 +2701,10 @@ export default function HeroSimpleTest() {
       tags: ["Logo Design", "Branding", "Identity"],
       galleryImages: [
         "/project-cover-03.jpg",
-        "/illustration_3.png",
-        "/illustration_4.png",
-        "/illustration_5.png",
-        "/illustration_6.png"
+        "/project-03-01.jpg",
+        "/project-03-02.jpg",
+        "/project-03-03.jpg",
+        "/project-03-04.jpg"
       ],
       detailedDescription: "品牌識別設計專案，從標誌設計到完整的視覺識別系統。我們幫助品牌建立獨特的視覺語言，傳達品牌價值和個性，創造一致的品牌體驗。整個識別系統包含標誌、色彩、字體、應用規範等完整元素。"
     },
@@ -2712,31 +2712,30 @@ export default function HeroSimpleTest() {
       id: 4,
       title: "Web Design",
       description: "創建現代化、響應式的網站設計，專注於用戶體驗和視覺美學。",
-      image: "/illustration_4.png",
+      image: "/project-cover-04.jpg",
       tags: ["Web Design", "Responsive", "UX"],
       galleryImages: [
+        "/project-cover-04.jpg",
+        "/project-04-01.png",
         "/illustration_4.png",
         "/illustration_5.png",
-        "/illustration_6.png",
-        "/illustration_1.png",
-        "/illustration_2.png"
+        "/illustration_6.png"
       ],
       detailedDescription: "響應式網站設計專案，確保在桌面、平板和手機上都能提供優秀的瀏覽體驗。我們注重載入速度、用戶導航和視覺層次，創造現代化的網站設計。整個設計過程採用敏捷開發方法，快速迭代和優化。"
     },
     {
       id: 5,
-      title: "UI/UX Design",
-      description: "設計直觀的用戶界面，提升產品可用性和用戶滿意度。",
-      image: "/illustration_5.png",
-      tags: ["UI/UX", "Design System", "Prototyping"],
+      title: "創意設計專案",
+      description: "一個充滿創意的設計專案，展示了獨特的視覺風格和創新的設計理念。",
+      image: "/project-cover-05.jpg",
+      tags: ["創意設計", "視覺創新", "品牌體驗"],
       galleryImages: [
-        "/illustration_5.png",
-        "/illustration_6.png",
-        "/illustration_1.png",
-        "/illustration_2.png",
-        "/illustration_3.png"
+        "/project-cover-05.jpg",
+        "/hero-02.png",
+        "/hero-2.png",
+        "/illustration_1.png"
       ],
-      detailedDescription: "UI/UX 設計專案，專注於用戶研究和體驗優化。我們通過用戶測試和迭代設計，創造直觀易用的界面，提升產品的使用效率和用戶滿意度。設計系統確保了整個產品的一致性和可維護性。"
+      detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。"
     },
     {
       id: 6,
@@ -2933,7 +2932,13 @@ export default function HeroSimpleTest() {
     const measureHeight = () => {
       if (blueSectionRef.current) {
         const height = blueSectionRef.current.scrollHeight;
-        setBlueSectionHeight(height);
+        setBlueSectionHeight(prevHeight => {
+          // 只有當高度真正改變時才更新
+          if (Math.abs(prevHeight - height) > 10) {
+            return height;
+          }
+          return prevHeight;
+        });
       }
     };
 
@@ -2963,7 +2968,13 @@ export default function HeroSimpleTest() {
     const measureDarkHeight = () => {
       if (darkSectionRef.current) {
         const height = darkSectionRef.current.scrollHeight;
-        setDarkSectionHeight(height);
+        setDarkSectionHeight(prevHeight => {
+          // 只有當高度真正改變時才更新
+          if (Math.abs(prevHeight - height) > 10) {
+            return height;
+          }
+          return prevHeight;
+        });
       }
     };
 
@@ -2993,7 +3004,13 @@ export default function HeroSimpleTest() {
     const measureSupportHeight = () => {
       if (supportSectionRef.current) {
         const height = supportSectionRef.current.scrollHeight;
-        setSupportSectionHeight(height);
+        setSupportSectionHeight(prevHeight => {
+          // 只有當高度真正改變時才更新
+          if (Math.abs(prevHeight - height) > 10) {
+            return height;
+          }
+          return prevHeight;
+        });
       }
     };
 
@@ -5334,7 +5351,8 @@ export default function HeroSimpleTest() {
                 const windowHeight = window.innerHeight;
                 const blueSectionHeight = blueSectionRef.current?.offsetHeight || 0;
                 const darkSectionHeight = darkSectionRef.current?.offsetHeight || 0;
-                window.scrollTo({ top: windowHeight + blueSectionHeight + darkSectionHeight, behavior: 'smooth' });
+                const supportSectionHeight = supportSectionRef.current?.offsetHeight || 0;
+                window.scrollTo({ top: windowHeight + blueSectionHeight + darkSectionHeight + supportSectionHeight, behavior: 'smooth' });
               }}
               style={{
                 color: 'rgba(255, 255, 255, 0.7)',
