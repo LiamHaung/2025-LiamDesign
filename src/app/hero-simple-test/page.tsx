@@ -2697,14 +2697,14 @@ export default function HeroSimpleTest() {
       id: 3,
       title: "Brand Identity",
       description: "建立完整的品牌識別系統，包含標誌設計和視覺規範。",
-      image: "/illustration_3.png",
+      image: "/project-cover-03.jpg",
       tags: ["Logo Design", "Branding", "Identity"],
       galleryImages: [
+        "/project-cover-03.jpg",
         "/illustration_3.png",
         "/illustration_4.png",
         "/illustration_5.png",
-        "/illustration_6.png",
-        "/illustration_1.png"
+        "/illustration_6.png"
       ],
       detailedDescription: "品牌識別設計專案，從標誌設計到完整的視覺識別系統。我們幫助品牌建立獨特的視覺語言，傳達品牌價值和個性，創造一致的品牌體驗。整個識別系統包含標誌、色彩、字體、應用規範等完整元素。"
     },
