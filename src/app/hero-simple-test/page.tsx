@@ -274,6 +274,7 @@ const LoadingPage = ({
           transform: 'translate(-50%, -50%)',
           animation: 'orbit 20s linear infinite'
         }}>
+        
           <div style={{
             position: 'absolute',
             top: '0',
@@ -600,6 +601,21 @@ interface ProductItem {
   tag: string;
 }
 
+// 設計日記項目類型
+interface DiaryEntry {
+  id: number;
+  date: string;
+  title: string;
+  content: string;
+  tags?: string[];
+  mood?: string;
+  projectName?: string;
+  part1?: string;
+  part2?: string;
+  part3?: string;
+  backgroundImage?: string;
+}
+
 // 商品卡片組件
 const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProductClick: (product: ProductItem) => void }) => {
   return (
@@ -716,7 +732,6 @@ const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProd
     </div>
   );
 };
-
 // 商品詳情 Modal 組件
 const ProductModal = ({ 
   isOpen, 
@@ -1370,7 +1385,6 @@ const CartSidebar = ({
     </div>
   );
 };
-
 // 彈出式視窗組件
 const ProjectModal: React.FC<{
   isOpen: boolean;
@@ -1378,6 +1392,14 @@ const ProjectModal: React.FC<{
   project: ProjectItem | null;
 }> = ({ isOpen, onClose, project }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
+  // 當切換圖片時重置狀態
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageDimensions({ width: 0, height: 0 });
+  }, [currentImageIndex]);
 
   if (!isOpen || !project) return null;
 
@@ -1393,6 +1415,30 @@ const ProjectModal: React.FC<{
     );
   };
 
+  // 處理圖片載入完成
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = event.currentTarget;
+    setImageDimensions({
+      width: img.naturalWidth,
+      height: img.naturalHeight
+    });
+    setImageLoaded(true);
+  };
+
+  // 計算動態高度
+  const calculateImageHeight = () => {
+    if (!imageLoaded || imageDimensions.width === 0) {
+      return '60vh'; // 預設高度
+    }
+    
+    const aspectRatio = imageDimensions.height / imageDimensions.width;
+    const maxWidth = Math.min(window.innerWidth * 0.8, 1200); // 最大寬度
+    const calculatedHeight = maxWidth * aspectRatio;
+    const maxHeight = window.innerHeight * 0.85; // 最大高度限制
+    
+    return `${Math.min(calculatedHeight, maxHeight)}px`;
+  };
+
   return (
     <div
       className="fixed inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/80 to-blue-700/80 backdrop-blur-sm flex items-center justify-center p-4"
@@ -1400,11 +1446,15 @@ const ProjectModal: React.FC<{
       onClick={onClose}
     >
       <div
-        className="bg-white/10 backdrop-blur-md rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-white/20 shadow-2xl"
+        className="bg-white/10 backdrop-blur-md rounded-2xl w-full max-w-4xl overflow-hidden border border-white/20 shadow-2xl flex flex-col"
+        style={{ 
+          maxHeight: '95vh',
+          height: imageLoaded ? 'auto' : '90vh'
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 關閉按鈕 */}
-        <div className="flex justify-end p-4">
+        <div className="flex justify-end p-4 absolute top-0 right-0 z-10">
           <button
             onClick={onClose}
             className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-300 border border-white/30"
@@ -1413,59 +1463,65 @@ const ProjectModal: React.FC<{
           </button>
         </div>
 
-        {/* 標題 */}
-        <div className="px-4 pb-4">
-          <h2 className="text-2xl font-bold text-white mb-2">{project.title}</h2>
-          <p className="text-white/80 mb-3">{project.description}</p>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm border border-white/30"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* 上方：照片輪播區域 - 動態高度 */}
+        <div 
+          className="relative bg-white/10 backdrop-blur-sm overflow-hidden flex items-center justify-center"
+          style={{ 
+            height: calculateImageHeight(),
+            minHeight: '40vh',
+            maxHeight: '70vh'
+          }}
+        >
+          <img
+            src={project.galleryImages[currentImageIndex] || project.image}
+            alt={`${project.title} - Image ${currentImageIndex + 1}`}
+            className="max-w-full max-h-full object-contain"
+            onLoad={handleImageLoad}
+          />
         </div>
 
-        {/* 圖片區域 */}
-        <div className="px-4 pb-4">
-          <div className="relative mb-4">
-            <div className="relative h-64 bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20">
-              <Image
-                src={project.galleryImages[currentImageIndex] || project.image}
-                alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                fill
-                className="object-contain"
-                priority
-              />
+        {/* 下方：所有文字資訊和控制元件 */}
+        <div className="bg-black/20 backdrop-blur-sm p-4 space-y-3">
+          {/* 專案標題和描述 */}
+          <div>
+            <h2 className="text-lg font-bold text-white mb-1">{project.title}</h2>
+            <p className="text-white/80 text-sm mb-2">{project.description}</p>
+            <div className="flex flex-wrap gap-1">
+              {project.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-xs border border-white/30"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* 進度條控制 */}
-          <div className="mb-4">
-            <div className="flex items-center gap-4">
+          {/* 輪播控制 */}
+          <div className="space-y-2">
+            {/* 進度條控制 */}
+            <div className="flex items-center gap-3">
               {/* 上一張按鈕 */}
               <button
                 onClick={prevImage}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-2 rounded-lg transition-all duration-300 text-sm border border-white/30"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-2 py-1 rounded text-xs border border-white/30 transition-all duration-300"
               >
                 ← 上一張
               </button>
               
               {/* 進度條 */}
               <div className="flex-1">
-                <div className="w-full bg-white/20 rounded-full h-2">
+                <div className="w-full bg-white/20 rounded-full h-1.5">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-300 h-2 rounded-full transition-all duration-300"
-          style={{ 
+                    className="bg-gradient-to-r from-blue-500 to-blue-300 h-1.5 rounded-full transition-all duration-300"
+                    style={{ 
                       width: `${((currentImageIndex + 1) / project.galleryImages.length) * 100}%` 
                     }}
                   ></div>
                 </div>
                 <div className="flex justify-between mt-1 text-xs text-white/70">
-                  <span>1</span>
+                  <span>{currentImageIndex + 1}</span>
                   <span>{project.galleryImages.length}</span>
                 </div>
               </div>
@@ -1473,41 +1529,735 @@ const ProjectModal: React.FC<{
               {/* 下一張按鈕 */}
               <button
                 onClick={nextImage}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-2 rounded-lg transition-all duration-300 text-sm border border-white/30"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-2 py-1 rounded text-xs border border-white/30 transition-all duration-300"
               >
                 下一張 →
               </button>
             </div>
-    </div>
-    
-          {/* 縮圖 */}
-          <div className="flex gap-2 justify-center">
-            {project.galleryImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                  index === currentImageIndex
-                    ? 'border-white ring-2 ring-white/50'
-                    : 'border-white/30 hover:border-white/50'
-                }`}
-              >
-      <Image
-                  src={image || project.image}
-                  alt={`Thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
+            
+            {/* 縮圖 */}
+            <div className="flex gap-1 justify-center">
+              {project.galleryImages.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`relative w-8 h-8 rounded overflow-hidden border transition-all duration-300 ${
+                    index === currentImageIndex
+                      ? 'border-white ring-1 ring-white/50'
+                      : 'border-white/30 hover:border-white/50'
+                  }`}
+                >
+                  <img
+                    src={image || project.image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 專案詳情 */}
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-1">專案詳情</h3>
+            <p className="text-white/80 text-xs leading-relaxed">{project.detailedDescription}</p>
           </div>
         </div>
-      
-        {/* 詳細描述 */}
-        <div className="px-4 pb-4">
-          <h3 className="text-lg font-semibold text-white mb-3">專案詳情</h3>
-          <p className="text-white/80 leading-relaxed">{project.detailedDescription}</p>
       </div>
+    </div>
+  );
+};
+
+// 設計日記元件 - 現代數位風格
+const DesignDiary: React.FC<{
+  entries: DiaryEntry[];
+}> = ({ entries }) => {
+  const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // 控制背景滾動：彈出視窗開啟時鎖定背景，關閉時恢復
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    if (selectedEntry) {
+      // 彈出視窗開啟時，鎖定背景滾動
+      document.body.style.overflow = 'hidden';
+    } else {
+      // 彈出視窗關閉時，恢復背景滾動
+      document.body.style.overflow = '';
+    }
+
+    // 清理函數：確保組件卸載時恢復滾動
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedEntry]);
+
+  return (
+    <div style={{ 
+      minHeight: '100vh',
+      background: 'transparent',
+      padding: '0',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      
+      {/* CSS 動畫 */}
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          33% { transform: translateY(-20px) translateX(10px); }
+          66% { transform: translateY(10px) translateX(-15px); }
+        }
+      `}</style>
+
+      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10, padding: '4rem 2rem' }}>
+        {/* 標題區域 - 與 PROJECTS 區塊相同樣式 */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '60px',
+          zIndex: 11
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontWeight: '900',
+            color: '#FFFFFF',
+            margin: '0 0 20px 0',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+            letterSpacing: '0.05em'
+          }}>
+            DESIGN DIARY
+          </h1>
+        </div>
+
+        {/* 日記列表 - 橫向滾動容器 */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          marginBottom: '4rem',
+          maxWidth: '900px',
+          margin: '0 auto 4rem auto'
+        }}>
+          {/* 滾動容器 */}
+          <div
+            ref={scrollContainerRef}
+            style={{
+              display: 'flex',
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              scrollSnapType: 'x mandatory',
+              scrollBehavior: 'smooth',
+              gap: '2rem',
+              padding: '2rem 1rem',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(0, 62, 195, 0.3) transparent',
+              WebkitOverflowScrolling: 'touch',
+              msOverflowStyle: '-ms-autohiding-scrollbar'
+            }}
+          >
+            {entries.map((entry, index) => {
+              const isHovered = hoveredIndex === index;
+              
+              return (
+                <div
+                  key={entry.id}
+                  className="diary-card"
+                  onClick={() => setSelectedEntry(entry)}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  style={{
+                    border: '10px solid #353535',
+                    borderRadius: '24px',
+                    padding: '2rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    fontFamily: 'var(--font-zpix), monospace',
+                    scrollSnapAlign: 'start',
+                    transform: isHovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                    boxShadow: isHovered 
+                      ? '0 8px 20px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(0, 0, 0, 0.2)'
+                      : '0 2px 12px rgba(0, 0, 0, 0.6)',
+                    minHeight: '500px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    zIndex: 5,
+                    backgroundColor: '#FCFBE4'
+                  }}
+                >
+                  {/* 背景圖片 */}
+                  {entry.backgroundImage && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '10px',
+                      left: '10px',
+                      right: '10px',
+                      bottom: '10px',
+                      backgroundImage: `url(${entry.backgroundImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      borderRadius: '14px',
+                      zIndex: 0
+                    }} />
+                  )}
+                  
+                  {/* 毛玻璃遮罩層 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    right: '10px',
+                    bottom: '10px',
+                    background: '#FCFBE4',
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    borderRadius: '14px',
+                    zIndex: 1,
+                    transition: 'all 0.4s ease'
+                  }} />
+                  {/* 有機形狀裝飾 - 示意圖風格 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '-50%',
+                    right: '-30%',
+                    width: '200px',
+                    height: '200px',
+                    background: 'radial-gradient(circle, rgba(0, 62, 195, 0.15) 0%, transparent 70%)',
+                    borderRadius: '50%',
+                    filter: 'blur(40px)',
+                    pointerEvents: 'none',
+                    transition: 'all 0.4s ease',
+                    zIndex: 1
+                  }} />
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-40%',
+                    left: '-20%',
+                    width: '180px',
+                    height: '180px',
+                    background: 'radial-gradient(circle, rgba(0, 62, 195, 0.1) 0%, transparent 70%)',
+                    borderRadius: '50%',
+                    filter: 'blur(35px)',
+                    pointerEvents: 'none',
+                    transition: 'all 0.4s ease',
+                    zIndex: 1
+                  }} />
+                  
+                  {/* 發光邊框效果 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    right: '10px',
+                    bottom: '10px',
+                    borderRadius: '14px',
+                    padding: '2px',
+                    background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.3), rgba(0, 62, 195, 0.05))',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    pointerEvents: 'none',
+                    opacity: isHovered ? 0.6 : 0.3,
+                    transition: 'opacity 0.4s ease',
+                    zIndex: 1
+                  }} />
+                  
+                  {/* 內容區域 */}
+                  <div style={{ 
+                    position: 'relative', 
+                    zIndex: 2,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    {/* 頂部：日期 */}
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      marginBottom: '1.5rem'
+                    }}>
+                      <span style={{
+                        fontSize: '0.875rem',
+                        color: '#666',
+                        fontFamily: 'var(--font-zpix), monospace',
+                        fontWeight: 'normal'
+                      }}>
+                        {entry.date}
+                      </span>
+                    </div>
+
+                 {/* 標題 */}
+                 <h3 style={{
+                   fontSize: '1.75rem',
+                   fontWeight: 'bold',
+                   color: '#353535',
+                   marginBottom: '1rem',
+                   fontFamily: 'var(--font-zpix), monospace',
+                   lineHeight: '1.4',
+                   transition: 'color 0.3s ease'
+                 }}>
+                   {entry.title}
+                 </h3>
+
+                {/* 內容預覽 */}
+                <p style={{
+                  color: '#666',
+                  fontSize: '0.9375rem',
+                  lineHeight: '1.8',
+                  marginBottom: '1.5rem',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+                }}>
+                  {entry.content}
+                </p>
+
+                 {/* 標籤 - 完整顯示 */}
+                 {entry.tags && entry.tags.length > 0 && (
+                   <div style={{
+                     display: 'flex',
+                     flexWrap: 'wrap',
+                     gap: '0.5rem',
+                     marginBottom: '1.5rem',
+                     paddingBottom: '1.5rem',
+                     borderBottom: '1px solid rgba(0, 62, 195, 0.1)'
+                   }}>
+                     {entry.tags.map((tag, tagIndex) => (
+                       <span
+                         key={tagIndex}
+                         style={{
+                           padding: '0.375rem 0.875rem',
+                           background: 'rgba(0, 62, 195, 0.1)',
+                           color: '#003EC3',
+                           borderRadius: '20px',
+                           fontSize: '0.75rem',
+                           fontFamily: 'var(--font-zpix), monospace',
+                           fontWeight: 'bold',
+                           transition: 'all 0.2s ease'
+                         }}
+                         onMouseEnter={(e) => {
+                           e.currentTarget.style.background = '#003EC3';
+                           e.currentTarget.style.color = '#FFFFF3';
+                         }}
+                         onMouseLeave={(e) => {
+                           e.currentTarget.style.background = 'rgba(0, 62, 195, 0.1)';
+                           e.currentTarget.style.color = '#003EC3';
+                         }}
+                       >
+                         {tag}
+                       </span>
+                     ))}
+                   </div>
+                 )}
+
+                 {/* 閱讀更多按鈕 - 置中最下層 */}
+                 <div style={{
+                   display: 'flex',
+                   justifyContent: 'center',
+                   alignItems: 'center',
+                   marginTop: 'auto'
+                 }}>
+                   <button
+                     style={{
+                       background: '#003EC3',
+                       color: '#FFFFF3',
+                       fontSize: '1.3125rem',
+                       fontFamily: 'var(--font-zpix), monospace',
+                       fontWeight: 'bold',
+                       padding: '0.9375rem 1.875rem',
+                       borderRadius: '8px',
+                       border: 'none',
+                       cursor: 'pointer',
+                       transition: 'all 0.3s ease',
+                       display: 'flex',
+                       alignItems: 'center',
+                       gap: '0.75rem',
+                       boxShadow: '0 4px 12px rgba(0, 62, 195, 0.3)'
+                     }}
+                     onMouseEnter={(e) => {
+                       e.currentTarget.style.background = '#0052CC';
+                       e.currentTarget.style.transform = 'translateX(4px)';
+                       e.currentTarget.style.gap = '1.125rem';
+                       e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 62, 195, 0.4)';
+                     }}
+                     onMouseLeave={(e) => {
+                       e.currentTarget.style.background = '#003EC3';
+                       e.currentTarget.style.transform = 'translateX(0)';
+                       e.currentTarget.style.gap = '0.75rem';
+                       e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 62, 195, 0.3)';
+                     }}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       setSelectedEntry(entry);
+                     }}
+                   >
+                     閱讀更多 ⟶
+                   </button>
+                 </div>
+                  </div>
+                </div>
+            );
+          })}
+          </div>
+
+          {/* 響應式樣式 */}
+          <style>{`
+            /* 手機裝置：一次一張 */
+            @media (max-width: 768px) {
+              .diary-card {
+                flex: 0 0 calc(100% - 2rem) !important;
+                min-width: calc(100% - 2rem) !important;
+                max-width: calc(100% - 2rem) !important;
+                width: calc(100% - 2rem) !important;
+              }
+            }
+            
+            /* 平板裝置：一次2張 */
+            @media (min-width: 769px) and (max-width: 1024px) {
+              .diary-card {
+                flex: 0 0 calc(50% - 1rem) !important;
+                min-width: calc(50% - 1rem) !important;
+                max-width: calc(50% - 1rem) !important;
+                width: calc(50% - 1rem) !important;
+              }
+            }
+            
+            /* 桌面裝置：一次3張 */
+            @media (min-width: 1025px) {
+              .diary-card {
+                flex: 0 0 calc(33.333% - 1.33rem) !important;
+                min-width: calc(33.333% - 1.33rem) !important;
+                max-width: calc(33.333% - 1.33rem) !important;
+                width: calc(33.333% - 1.33rem) !important;
+              }
+            }
+          `}</style>
+        </div>
+        {/* 詳細視窗 - 溫暖親民風格 */}
+        {selectedEntry && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.4)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              zIndex: 50,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1.5rem',
+              animation: 'fadeIn 0.3s ease'
+            }}
+            onClick={() => setSelectedEntry(null)}
+          >
+            {/* CSS 動畫 */}
+            <style>{`
+              @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              @keyframes slideUp {
+                from { 
+                  opacity: 0;
+                  transform: translateY(20px) scale(0.98);
+                }
+                to { 
+                  opacity: 1;
+                  transform: translateY(0) scale(1);
+                }
+              }
+            `}</style>
+
+            <div
+              style={{
+                background: '#FCFBE4',
+                border: '10px solid #353535',
+                borderRadius: '24px',
+                boxShadow: '0 2px 12px rgba(0, 0, 0, 0.6)',
+                maxWidth: '750px',
+                width: '100%',
+                maxHeight: '85vh',
+                overflowY: 'auto',
+                padding: '3rem',
+                position: 'relative',
+                fontFamily: 'var(--font-zpix), monospace',
+                animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* 關閉按鈕 - 溫和設計 */}
+              <button
+                onClick={() => setSelectedEntry(null)}
+                style={{
+                  position: 'absolute',
+                  top: '1.5rem',
+                  right: '1.5rem',
+                  background: 'rgba(0, 62, 195, 0.1)',
+                  color: '#003EC3',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '2.5rem',
+                  height: '2.5rem',
+                  fontSize: '1.25rem',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-zpix), monospace',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease',
+                  fontWeight: 'bold'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#003EC3';
+                  e.currentTarget.style.color = '#FFFFF3';
+                  e.currentTarget.style.transform = 'rotate(90deg) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(0, 62, 195, 0.1)';
+                  e.currentTarget.style.color = '#003EC3';
+                  e.currentTarget.style.transform = 'rotate(0deg) scale(1)';
+                }}
+              >
+                ×
+              </button>
+
+              {/* 日記內容 */}
+              <div>
+                {/* 頂部區塊 - 更親切的排版 */}
+                <div style={{
+                  marginBottom: '2.5rem',
+                  paddingBottom: '2rem',
+                  borderBottom: '2px solid rgba(0, 62, 195, 0.15)'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: '0.875rem',
+                        color: '#888',
+                        fontFamily: 'var(--font-zpix), monospace',
+                        marginBottom: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span style={{
+                          width: '8px',
+                          height: '8px',
+                          background: '#003EC3',
+                          borderRadius: '50%',
+                          display: 'inline-block'
+                        }} />
+                        {selectedEntry.date}
+                      </div>
+                      
+                      {/* 專案名稱 */}
+                      {selectedEntry.projectName && (
+                        <div style={{
+                          fontSize: '1rem',
+                          color: '#003EC3',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          fontWeight: 'bold',
+                          marginBottom: '0.75rem',
+                          padding: '0.5rem 1rem',
+                          background: 'rgba(0, 62, 195, 0.1)',
+                          borderRadius: '8px',
+                          display: 'inline-block',
+                          border: '1px solid rgba(0, 62, 195, 0.2)'
+                        }}>
+                          專案：{selectedEntry.projectName}
+                        </div>
+                      )}
+
+                      <h2 style={{
+                        fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+                        fontWeight: 'bold',
+                        color: '#353535',
+                        fontFamily: 'var(--font-zpix), monospace',
+                        lineHeight: '1.3',
+                        marginBottom: '1rem'
+                      }}>
+                        {selectedEntry.title}
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 內容區塊 - 更舒適的閱讀體驗 */}
+                <div style={{
+                  marginBottom: '2.5rem',
+                  padding: '2rem',
+                  background: 'rgba(255, 255, 255, 0.5)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(0, 62, 195, 0.1)'
+                }}>
+                  <p style={{
+                    color: '#444',
+                    lineHeight: '2.2',
+                    whiteSpace: 'pre-line',
+                    fontSize: '1rem',
+                    fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+                  }}>
+                    {selectedEntry.content}
+                  </p>
+                </div>
+
+                {/* Part1, Part2, Part3 區塊 */}
+                {(selectedEntry.part1 || selectedEntry.part2 || selectedEntry.part3) && (
+                  <div style={{
+                    marginBottom: '2.5rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5rem'
+                  }}>
+                    {selectedEntry.part1 && (
+                      <div style={{
+                        padding: '1.5rem',
+                        background: 'rgba(255, 255, 255, 0.4)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(0, 62, 195, 0.15)'
+                      }}>
+                        <div style={{
+                          fontSize: '0.875rem',
+                          color: '#003EC3',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          fontWeight: 'bold',
+                          marginBottom: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em'
+                        }}>
+                          Part 1
+                        </div>
+                        <p style={{
+                          color: '#444',
+                          lineHeight: '1.8',
+                          whiteSpace: 'pre-line',
+                          fontSize: '0.9375rem',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+                        }}>
+                          {selectedEntry.part1}
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedEntry.part2 && (
+                      <div style={{
+                        padding: '1.5rem',
+                        background: 'rgba(255, 255, 255, 0.4)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(0, 62, 195, 0.15)'
+                      }}>
+                        <div style={{
+                          fontSize: '0.875rem',
+                          color: '#003EC3',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          fontWeight: 'bold',
+                          marginBottom: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em'
+                        }}>
+                          Part 2
+                        </div>
+                        <p style={{
+                          color: '#444',
+                          lineHeight: '1.8',
+                          whiteSpace: 'pre-line',
+                          fontSize: '0.9375rem',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+                        }}>
+                          {selectedEntry.part2}
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedEntry.part3 && (
+                      <div style={{
+                        padding: '1.5rem',
+                        background: 'rgba(255, 255, 255, 0.4)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(0, 62, 195, 0.15)'
+                      }}>
+                        <div style={{
+                          fontSize: '0.875rem',
+                          color: '#003EC3',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          fontWeight: 'bold',
+                          marginBottom: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em'
+                        }}>
+                          Part 3
+                        </div>
+                        <p style={{
+                          color: '#444',
+                          lineHeight: '1.8',
+                          whiteSpace: 'pre-line',
+                          fontSize: '0.9375rem',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+                        }}>
+                          {selectedEntry.part3}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* 標籤區塊 - 圓角設計更有溫度 */}
+                {selectedEntry.tags && selectedEntry.tags.length > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.75rem',
+                    paddingTop: '2rem',
+                    borderTop: '1px solid rgba(0, 62, 195, 0.1)'
+                  }}>
+                    {selectedEntry.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          padding: '0.625rem 1.5rem',
+                          background: 'rgba(0, 62, 195, 0.08)',
+                          color: '#003EC3',
+                          borderRadius: '20px',
+                          fontSize: '0.875rem',
+                          fontFamily: 'var(--font-zpix), monospace',
+                          border: '1px solid rgba(0, 62, 195, 0.2)',
+                          transition: 'all 0.2s ease',
+                          display: 'inline-block'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#003EC3';
+                          e.currentTarget.style.color = '#FFFFF3';
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 62, 195, 0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(0, 62, 195, 0.08)';
+                          e.currentTarget.style.color = '#003EC3';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1517,7 +2267,8 @@ const ProjectModal: React.FC<{
 const Carousel3D: React.FC<{
   items: ProjectItem[];
   onItemClick: (item: ProjectItem) => void;
-}> = ({ items, onItemClick }) => {
+  reverse?: boolean; // 是否反向（從右到左）
+}> = ({ items, onItemClick, reverse = false }) => {
   const [progress, setProgress] = useState(50);
   const [startX, setStartX] = useState(0);
   const [active, setActive] = useState(0);
@@ -1525,8 +2276,8 @@ const Carousel3D: React.FC<{
   const [isMobile, setIsMobile] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const speedWheel = 0.02;
-  const speedDrag = -0.1;
+  const speedWheel = reverse ? -0.02 : 0.02; // 反向時速度反轉
+  const speedDrag = reverse ? 0.1 : -0.1; // 反向時拖動方向反轉
 
   // 計算 Z-index
   const getZindex = (array: ProjectItem[], index: number) => 
@@ -1535,7 +2286,12 @@ const Carousel3D: React.FC<{
   // 計算項目位置
   const displayItems = (item: ProjectItem, index: number, activeIndex: number) => {
     const zIndex = getZindex(items, activeIndex)[index];
-    const activeValue = (index - activeIndex) / items.length;
+    let activeValue = (index - activeIndex) / items.length;
+    
+    // 反向時反轉 activeValue
+    if (reverse) {
+      activeValue = -activeValue;
+    }
     
     return {
       '--zIndex': zIndex,
@@ -1545,7 +2301,9 @@ const Carousel3D: React.FC<{
       '--height': 'clamp(350px, 50vw, 500px)',
       '--x': `calc(var(--active) * 400%)`,
       '--y': `0px`,
-      '--rot': `calc(var(--active) * 60deg)`,
+      '--rot': reverse 
+        ? `calc(var(--active) * -60deg)` // 反向時角度也反轉
+        : `calc(var(--active) * 60deg)`,
       '--opacity': `calc(var(--zIndex) / var(--items) * 3 - 2)`,
     } as React.CSSProperties;
   };
@@ -1693,11 +2451,15 @@ const Carousel3D: React.FC<{
     </div>
   );
 };
-
 // 夢幻版 Hero 組件
 const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 使用傳入的 scrollY prop，不需要內部狀態
   const scrollY = propScrollY || 0;
+
+  // 計算 Logo 淡入效果 - 在 hero 版面淡入
+  const logoOpacity = typeof window !== 'undefined' 
+    ? Math.min(1, Math.max(0, scrollY / 300)) // 在滚动前 300px 逐渐淡入
+    : 0;
 
   // 計算視差效果
   const boatY = typeof window !== 'undefined' ? scrollY * 0.5 : 0; // 船隻移動較慢
@@ -1737,13 +2499,15 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         zIndex: 1,
         transition: 'height 0.1s ease-out'
       }}></div>
-      {/* 頂部中央 Logo */}
+      {/* 頂部中央 Logo - Hero 版面淡入 */}
       <div style={{
         position: 'absolute',
         top: '20px',
         left: '50%',
         transform: 'translateX(-50%)',
-        zIndex: 20
+        zIndex: 20,
+        opacity: logoOpacity,
+        transition: 'opacity 0.5s ease-in-out'
       }}>
         <Image 
           src="/cursor-07.png" 
@@ -2238,7 +3002,6 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           })()}
         </div>
       </div>
-
       {/* CSS 動畫樣式 */}
       <style jsx>{`
         /* 入口頁的船隻和波浪效果 */
@@ -2665,6 +3428,7 @@ export default function HeroSimpleTest() {
   const blueSectionRef = useRef<HTMLDivElement>(null);
   const darkSectionRef = useRef<HTMLDivElement>(null);
   const supportSectionRef = useRef<HTMLDivElement>(null);
+  const contactSectionRef = useRef<HTMLDivElement>(null);
 
   // 輪播組件數據
   const carouselItems: ProjectItem[] = [
@@ -2687,10 +3451,11 @@ export default function HeroSimpleTest() {
       description: "現代化的響應式網頁設計，專注於用戶體驗和視覺美學的完美結合。",
       image: "/project-cover-02.jpg",
       tags: ["網頁設計", "響應式設計", "UI/UX"],
-       galleryImages: [
-         "/project-cover-02.jpg",
-         "/project-02-01.png"
-       ],
+      galleryImages: [
+        "/project-cover-02.jpg",
+        "/project-02-01.png",
+        "/project-02-02.jpg"
+      ],
       detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。"
     },
     {
@@ -2731,9 +3496,8 @@ export default function HeroSimpleTest() {
       tags: ["創意設計", "視覺創新", "品牌體驗"],
       galleryImages: [
         "/project-cover-05.jpg",
-        "/hero-02.png",
-        "/hero-2.png",
-        "/illustration_1.png"
+        "/project-05-01.jpg",
+        "/project-05-02.jpg"
       ],
       detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。"
     },
@@ -2800,7 +3564,96 @@ export default function HeroSimpleTest() {
     }
   ];
 
+  // 設計日記數據
+  const diaryEntries: DiaryEntry[] = [
+    {
+      id: 1,
+      date: '2024.01.15',
+      title: '最初的想法',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/project-cover-01.jpg',
+      content: `今天開始思考這個品牌的新視覺方向。客戶想要的是什麼？是溫馨、親近的感覺，還是現代、專業的形象？
+
+走在路上看到咖啡廳的招牌，突然想到...也許可以結合兩者？溫馨但不失專業，親近但保持質感。
+
+腦中開始浮現一些色彩組合：溫暖的咖啡色調、柔和的米白色、點綴一些深綠色...這讓我想起了秋天的午後，坐在窗邊看著街景的感覺。`,
+      tags: ['靈感', '色彩', '品牌定位'],
+      part1: '與客戶初次會議，了解品牌核心價值與目標受眾。發現客戶希望傳達「溫馨但不失專業」的品牌形象。',
+      part2: '開始收集競品分析，觀察市場上類似品牌的視覺呈現方式。注意到大多數品牌都偏向極簡或過於複雜的設計。',
+      part3: '第一次靈感迸發：在咖啡廳看到招牌時，突然想到「溫馨但專業」的視覺方向。開始構思色彩系統和設計語言。'
+    },
+    {
+      id: 2,
+      date: '2024.01.18',
+      title: 'Logo 設計的掙扎',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/project-cover-02.jpg',
+      content: `已經畫了快50個草圖，但總覺得哪裡不對。客戶給的 feedback 是「太複雜了」、「不夠有記憶點」、「感覺跟其他品牌很像」。
+
+重新回到最初的目標：簡單、有溫度、好記。
+
+今天在公園散步時，看到一片葉子落在水面上，葉脈的線條突然給了我靈感。也許...簡化的線條，流動的形態，可以傳達「自然」、「生長」的概念？`,
+      tags: ['Logo', '設計過程', '靈感'],
+      part1: '開始 Logo 草圖階段，嘗試了各種不同的設計方向：幾何圖形、有機線條、文字標誌等。',
+      part2: '客戶回饋指出問題：太複雜、缺乏記憶點、與其他品牌過於相似。需要重新思考設計策略。',
+      part3: '在公園散步時獲得靈感：葉子落水的瞬間，葉脈線條呈現的自然流動感。決定採用簡化線條結合流動形態的設計方向。'
+    },
+    {
+      id: 3,
+      date: '2024.01.22',
+      title: '色彩的選擇',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/project-cover-03.jpg',
+      content: `花了整個下午調色。藍色？太冷。紅色？太強烈。綠色？感覺不夠溫暖。
+
+最後決定採用大地色系：主要色是深咖啡色（#4A2C2A），輔助色是溫暖的米白色（#F5F1E8），點綴色是深綠色（#2D5016）。
+
+這個組合讓我想起在森林小徑散步的感覺，沉穩但不沉重，自然但不隨意。`,
+      tags: ['色彩', '品牌識別']
+    },
+    {
+      id: 4,
+      date: '2024.01.25',
+      title: '字體的選擇很重要',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/project-cover-04.jpg',
+      content: `選擇字體總是讓人頭痛。襯線字體？無襯線字體？
+
+考慮到品牌想要傳達的「專業但親近」，我選擇了無襯線字體作為主字體，但在標題和強調處使用帶有手寫感的字體。
+
+這就像是在正式場合穿一件剪裁合身的西裝，但領子上別了一枚有故事的別針——既專業又有人味。`,
+      tags: ['字體', '品牌識別']
+    },
+    {
+      id: 5,
+      date: '2024.02.01',
+      title: '第一次提案',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/project-cover-05.jpg',
+      content: `今天向客戶提案了。有點緊張，但更多的是興奮。
+
+看到他們眼中的認同，我知道方向對了。雖然還有一些細節需要調整，但整體概念得到了肯定。
+
+在回家的路上，我一直在想：設計不只是做出「好看的東西」，而是要做出「對的東西」——能解決問題、能打動人心的東西。`,
+      tags: ['提案', '反思']
+    },
+    {
+      id: 6,
+      date: '2024.02.05',
+      title: '細節的堅持',
+      projectName: '品牌視覺識別設計',
+      backgroundImage: '/illustration_1.png',
+      content: `客戶問：「這個小細節有人會注意嗎？」
+我回答：「也許不會直接注意到，但會感受到。」
+就像好的咖啡，你不會注意到每一粒咖啡豆，但會感受到整體的層次和風味。設計也是這樣，每個細節累積起來，創造出整體的質感和體驗。
+今天調整了 spacing、字距、陰影...這些看似微小的事情，但正是它們決定了設計的品質。`,
+      tags: ['細節', '質感', '設計哲學']
+    }
+  ];
+
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleScroll = () => setScrollY(window.scrollY);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     
@@ -2898,6 +3751,8 @@ export default function HeroSimpleTest() {
 
   // 滾動偵測 - 判斷當前區塊
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const windowHeight = window.innerHeight;
     
     let newSection = 0;
@@ -2929,6 +3784,8 @@ export default function HeroSimpleTest() {
 
   // 測量藍色區域內容高度
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const measureHeight = () => {
       if (blueSectionRef.current) {
         const height = blueSectionRef.current.scrollHeight;
@@ -2965,6 +3822,8 @@ export default function HeroSimpleTest() {
 
   // 測量深色區域內容高度
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const measureDarkHeight = () => {
       if (darkSectionRef.current) {
         const height = darkSectionRef.current.scrollHeight;
@@ -3001,6 +3860,8 @@ export default function HeroSimpleTest() {
 
   // 測量支持我們區域內容高度
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const measureSupportHeight = () => {
       if (supportSectionRef.current) {
         const height = supportSectionRef.current.scrollHeight;
@@ -3035,6 +3896,19 @@ export default function HeroSimpleTest() {
     };
   }, []);
 
+  // 計算導覽元素淡入效果 - 進入 project 區塊後淡入
+  const navOpacity = typeof window !== 'undefined' 
+    ? Math.min(1, Math.max(0, (scrollY - window.innerHeight + 200) / 300)) // 進入 project 區塊後 200px 開始淡入，300px 完成
+    : 0;
+
+  // 計算設計日記深色色塊覆蓋效果 - 從藍色區域底部開始向上覆蓋（已取消覆蓋）
+  // const diaryCoverHeight = typeof window !== 'undefined' 
+  //   ? Math.max(0, Math.min(
+  //       (scrollY - (window.innerHeight + blueSectionHeight)) * 1.2, 
+  //       window.innerHeight
+  //     ))
+  //   : 0; // 設計日記深色色塊高度
+
   // 計算 #353535 色塊覆蓋效果 - 基於藍色區域底部觸發
   const darkCoverHeight = typeof window !== 'undefined' 
     ? Math.max(0, Math.min(
@@ -3043,15 +3917,30 @@ export default function HeroSimpleTest() {
       ))
     : 0; // 深色色塊高度
 
-  // 計算專案服務區塊內部的品牌藍色覆蓋效果
-  const serviceBlueCoverHeight = typeof window !== 'undefined' 
+  // 計算設計日記到 OUR SERVICES 的深色覆蓋效果 - 從 OUR SERVICES 底部向上覆蓋設計日記
+  // 觸發點：當滾動超過設計日記區域時開始覆蓋
+  const diaryToServicesCoverHeight = typeof window !== 'undefined' 
     ? Math.max(0, Math.min(
-        (scrollY - (blueSectionHeight + darkSectionHeight)) * 1.2, 
+        (scrollY - (window.innerHeight + blueSectionHeight)) * 1.2, 
         window.innerHeight
       ))
-    : 0; // 專案服務區塊內部的品牌藍色覆蓋高度
+    : 0; // 設計日記到 OUR SERVICES 的深色覆蓋高度
 
-  // 計算支持我們區塊底部的深灰色覆蓋效果
+  // 計算專案服務區塊底部的品牌藍色覆蓋效果 - 在 OUR SERVICES 區塊內部從底部向上覆蓋
+  const serviceBlueCoverHeight = typeof window !== 'undefined' 
+    ? Math.max(0, Math.min(
+        (scrollY - (window.innerHeight + blueSectionHeight + darkSectionHeight * 0.7)) * 1.2, 
+        window.innerHeight * 0.5
+      ))
+    : 0; // 專案服務區塊底部的品牌藍色覆蓋高度
+
+  // 計算 OUR SERVICES -> CONTACT 白色覆蓋高度
+  // 以 CONTACT 區塊進入視窗為觸發：當 CONTACT top 低於視窗底部時開始往上覆蓋
+  const servicesToContactCoverHeight = typeof window !== 'undefined' && contactSectionRef.current
+    ? Math.max(0, Math.min(window.innerHeight - contactSectionRef.current.getBoundingClientRect().top, window.innerHeight))
+    : 0;
+
+  // 計算支持我們區塊底部的深灰色覆蓋效果（已隱藏，保留以備將來使用）
   const supportToContactCoverHeight = typeof window !== 'undefined' 
     ? Math.max(0, Math.min(
         (scrollY - (blueSectionHeight + darkSectionHeight + supportSectionHeight)) * 1.2, 
@@ -3090,7 +3979,6 @@ export default function HeroSimpleTest() {
 
     return <DreamyHero {...props} />;
   };
-
   return (
     <>
       {/* 載入頁面 */}
@@ -3357,7 +4245,7 @@ export default function HeroSimpleTest() {
         </div>
       )}
 
-      {/* Stepper 導覽組件 - 只在桌面版顯示 */}
+      {/* Stepper 導覽組件 - 只在桌面版顯示，Project 區塊後淡入 */}
       {!isMobile && (
       <div style={{
         position: 'fixed',
@@ -3374,7 +4262,10 @@ export default function HeroSimpleTest() {
         borderRadius: isMobile ? '15px' : '25px',
         backdropFilter: 'blur(10px)',
         boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
-        border: isMobile ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,62,195,0.2)'
+        border: isMobile ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,62,195,0.2)',
+        opacity: navOpacity,
+        transition: 'opacity 0.5s ease-in-out',
+        pointerEvents: navOpacity > 0 ? 'auto' : 'none'
       }}>
         {sections.map((section, index) => {
           const isActive = index === currentSection;
@@ -3522,7 +4413,7 @@ export default function HeroSimpleTest() {
       </div>
       )}
 
-      {/* 左上角自我介紹按鈕 */}
+      {/* 左上角自我介紹按鈕 - Project 區塊後淡入 */}
       <div style={{
         position: 'fixed',
         top: '20px',
@@ -3533,9 +4424,11 @@ export default function HeroSimpleTest() {
         borderRadius: '16px',
         padding: '16px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s ease, opacity 0.5s ease-in-out',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        opacity: navOpacity,
+        pointerEvents: navOpacity > 0 ? 'auto' : 'none'
       }}
       onClick={() => setIsIntroModalOpen(true)}
       onMouseEnter={(e) => {
@@ -3589,7 +4482,7 @@ export default function HeroSimpleTest() {
         </div>
       </div>
 
-      {/* 左下角經緯度與時間顯示 - 桌面版顯示 */}
+      {/* 左下角經緯度與時間顯示 - 桌面版顯示，Project 區塊後淡入 */}
       <div style={{
         position: 'fixed',
         top: isMobile ? 'auto' : 'auto',
@@ -3602,10 +4495,12 @@ export default function HeroSimpleTest() {
         padding: '12px 16px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s ease, opacity 0.5s ease-in-out',
         display: isMobile ? 'none' : 'flex', // 手機版隱藏
         flexDirection: 'column',
-        gap: '8px'
+        gap: '8px',
+        opacity: navOpacity,
+        pointerEvents: navOpacity > 0 ? 'auto' : 'none'
       }}>
         {/* 經緯度 */}
         <div style={{
@@ -3646,7 +4541,7 @@ export default function HeroSimpleTest() {
         </div>
       </div>
 
-      {/* 購物清單圖示 - 桌面版右上角，手機版左下角 */}
+      {/* 購物清單圖示 - 桌面版右上角，手機版左下角，Project 區塊後淡入 */}
       <div style={{
         position: 'fixed',
         top: isMobile ? 'auto' : '20px',
@@ -3659,9 +4554,11 @@ export default function HeroSimpleTest() {
         borderRadius: '16px',
         padding: '16px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s ease, opacity 0.5s ease-in-out',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        opacity: navOpacity,
+        pointerEvents: navOpacity > 0 ? 'auto' : 'none'
       }}
       onClick={() => setIsCartSidebarOpen(true)}
       onMouseEnter={(e) => {
@@ -3828,7 +4725,6 @@ export default function HeroSimpleTest() {
       <div className="hero-test-container">
         {renderHeroComponent()}
       </div>
-      
       {/* 純藍色背景區域 - 基於內容動態調整高度 */}
       <div 
         ref={blueSectionRef}
@@ -3895,6 +4791,35 @@ export default function HeroSimpleTest() {
           }}>
             按住 Ctrl/Cmd + 滾輪切換作品 • 點擊卡片查看詳情
             </div>
+        </div>
+
+        {/* 第二個 3D 輪播組件 - 從右到左 */}
+        <div style={{
+          width: '100%',
+          height: '80vh',
+          position: 'relative',
+          zIndex: 10,
+          marginTop: '40px'
+        }}>
+          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} />
+          
+          {/* 操作提示 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'rgba(0, 0, 0, 0.7)',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '20px',
+            fontSize: '14px',
+            fontFamily: 'var(--font-zpix), monospace',
+            zIndex: 20,
+            display: isMobile ? 'none' : 'block'
+          }}>
+            按住 Ctrl/Cmd + 滾輪切換作品 • 點擊卡片查看詳情
+          </div>
         </div>
 
         {/* 裝飾性元素 */}
@@ -3980,17 +4905,57 @@ export default function HeroSimpleTest() {
         }}>
         </div>
 
-        {/* #353535 色塊覆蓋層 - 從底部往上覆蓋藍色區域 */}
+        {/* #353535 色塊覆蓋層 - 從底部往上覆蓋藍色區域（置底以免遮擋下一區塊） */}
         <div style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           width: '100%',
           height: `${darkCoverHeight}px`,
-          backgroundColor: '#353535', // 使用 backgroundColor 而不是 background
-          zIndex: 2, // 在藍色背景之上
+          backgroundColor: '#353535',
+          zIndex: 0,
           transition: 'height 0.1s ease-out'
         }}></div>
+      </div>
+
+      {/* 設計日記區域 - 深色背景並向上覆蓋藍色區域 */}
+      <div style={{
+        position: 'relative',
+        backgroundColor: '#353535',
+        paddingTop: '4rem',
+        paddingBottom: '4rem',
+        minHeight: '100vh',
+        zIndex: 1
+      }}>
+        {/* 深色色塊覆蓋層（取消覆蓋效果） */}
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: 0,
+          width: '100%',
+          height: 0,
+          backgroundColor: '#353535',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}></div>
+        
+        {/* OUR SERVICES 品牌藍向上覆蓋層（放在設計日記內，僅覆蓋背景不遮內容） */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: `${diaryToServicesCoverHeight}px`,
+          backgroundColor: '#003EC3',
+          zIndex: 1,
+          pointerEvents: 'none',
+          transition: 'height 0.1s ease-out'
+        }}></div>
+
+        {/* 設計日記組件 */}
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          <DesignDiary entries={diaryEntries} />
+        </div>
       </div>
 
       {/* 深色區域 - 包含星星和內容 */}
@@ -3998,14 +4963,39 @@ export default function HeroSimpleTest() {
         ref={darkSectionRef}
         style={{
           minHeight: '100vh',
-          backgroundColor: '#353535',
+          backgroundColor: '#003EC3',
           position: 'relative',
           padding: '80px 20px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          zIndex: 10
         }}>
+        {/* 水藍色覆蓋層 - 從 OUR SERVICES 底部往上覆蓋（僅蓋背景） */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: `${servicesToContactCoverHeight}px`,
+          backgroundColor: '#0099FF',
+          zIndex: 5,
+          pointerEvents: 'none',
+          transition: 'height 0.1s ease-out'
+        }}></div>
+        {/* 品牌藍色塊覆蓋層（移出，改由設計日記區域內處理） */}
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: 0,
+          width: '100%',
+          height: 0,
+          backgroundColor: '#003EC3',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}></div>
+
         {/* OUR SERVICES 版位星空效果 */}
         {[
           { top: '8%', left: '15%', size: '8px', delay: '0s' },
@@ -4056,7 +5046,8 @@ export default function HeroSimpleTest() {
         <div style={{
           textAlign: 'center',
           marginBottom: isMobile ? '-60px' : '2px',
-          zIndex: 15
+          position: 'relative',
+          zIndex: 10
         }}>
           <h1 style={{
             fontSize: 'clamp(2.5rem, 8vw, 6rem)',
@@ -4079,12 +5070,55 @@ export default function HeroSimpleTest() {
           </p>
         </div>
 
+        {/* 插畫（置於服務流程正下方，100% 不透明） */}
+        <div style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: isMobile ? '56px' : '24px',
+          marginBottom: '16px',
+          position: 'relative',
+          zIndex: 9,
+          minHeight: '300px' // 確保有足夠空間顯示插畫
+        }}>
+          {[
+            { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
+            { step: 2, src: '/illustration_2.png', alt: 'Step 2 Illustration' },
+            { step: 3, src: '/illustration_3.png', alt: 'Step 3 Illustration' },
+            { step: 4, src: '/illustration_4.png', alt: 'Step 4 Illustration' },
+            { step: 5, src: '/illustration_5.png', alt: 'Step 5 Illustration' }
+          ].map((item) => (
+            <img
+              key={`svc-illu-inline-${item.step}`}
+              src={item.src}
+              alt={item.alt}
+              style={{
+                position: 'absolute',
+                width: isMobile ? '54vw' : 'min(528px, 42vw)',
+                height: 'auto',
+                borderRadius: '20px',
+                background: 'transparent',
+                opacity: selectedStep === item.step ? 1 : 0,
+                transform: selectedStep === item.step 
+                  ? 'translate(-50%, -50%) translateX(0)' 
+                  : 'translate(-50%, -50%) translateX(-30px)',
+                transition: 'opacity 600ms ease-in-out 0.3s, transform 600ms ease-in-out 0.3s',
+                pointerEvents: 'none',
+                top: '50%',
+                left: '50%'
+              }}
+            />
+          ))}
+        </div>
+
         {/* 進度條區域 */}
         <div style={{
           maxWidth: '1200px',
           width: '100%',
           marginTop: '60px',
-          zIndex: 15
+          position: 'relative',
+          zIndex: 10
         }}>
           {/* 進度條標題 */}
           <h2 style={{
@@ -4099,11 +5133,12 @@ export default function HeroSimpleTest() {
           </h2>
 
           {/* 進度條容器 */}
-          <div style={{
+          <div id="services-progress" style={{
             position: 'relative',
             width: '100%',
             height: '8px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: 'rgba(255, 255, 243, 0.25)',
+            border: '1px solid rgba(255, 255, 243, 0.6)',
             borderRadius: '10px',
             overflow: 'hidden',
             marginBottom: '40px'
@@ -4114,11 +5149,11 @@ export default function HeroSimpleTest() {
               top: 0,
               left: 0,
               height: '100%',
-              width: selectedStep === 1 ? '33%' : selectedStep === 2 ? '66%' : selectedStep === 3 ? '100%' : '66%',
-              background: '#003EC3',
+              width: `${Math.max(0, Math.min(100, ((selectedStep ?? 1) - 1) / 4 * 100))}%`,
+              background: '#FFFFF3',
               borderRadius: '10px',
               transition: 'width 0.5s ease-in-out',
-              boxShadow: '0 0 20px rgba(0, 62, 195, 0.5)'
+              boxShadow: '0 0 16px rgba(255, 255, 243, 0.65)'
             }} />
           </div>
 
@@ -4130,9 +5165,11 @@ export default function HeroSimpleTest() {
             marginTop: '20px'
           }}>
             {[
-              { step: 1, label: '討論發想', status: 'completed', subtitle: '從理解開始，讓想法慢慢長出形狀。', content: '從對話開始，了解你的故事與期待。\n我們一起找出品牌最真實的樣子，\n慢慢描出第一條線。' },
-              { step: 2, label: '設計插畫', status: 'completed', subtitle: '用線條和色彩，讓故事開始呼吸。', content: '把概念轉化成畫面，\n讓品牌的語氣與溫度被看見。\n每一筆，都是為了更靠近你的想像。' },
-              { step: 3, label: '落地執行', status: 'in-progress', subtitle: '讓設計真正走進生活。', content: '從印刷到社群、從線上到現場，\n我們陪你完成最後一步，\n讓每一份設計都被感受到。' }
+              { step: 1, label: '討論發想', status: 'active', subtitle: '從理解開始，讓想法慢慢長出形狀。', content: '從對話開始，了解你的故事與期待。\n我們一起找出品牌最真實的樣子，\n慢慢描出第一條線。' },
+              { step: 2, label: '設計插畫', status: 'active', subtitle: '用線條和色彩，讓故事開始呼吸。', content: '把概念轉化成畫面，\n讓品牌的語氣與溫度被看見。\n每一筆，都是為了更靠近你的想像。' },
+              { step: 3, label: '草圖提案', status: 'active', subtitle: '把想法化為可見的方向。', content: '提出多個草圖方向，\n討論可行性與風格走向，\n收斂到最合適的方案。' },
+              { step: 4, label: '調整定稿', status: 'active', subtitle: '來回修正直到到位。', content: '依照回饋調整細節、版式與色彩，\n確認檔案版權與輸出規格。' },
+              { step: 5, label: '交付上線', status: 'active', subtitle: '完整交付、準備上線。', content: '提供可用檔案與指引，\n支援印刷與線上應用，\n確保順利上線。' }
             ].map((item) => (
               <div key={item.step} style={{
                 display: 'flex',
@@ -4147,19 +5184,13 @@ export default function HeroSimpleTest() {
                     width: '40px',
                     height: '40px',
                     borderRadius: '50%',
-                    backgroundColor: selectedStep === item.step ? '#003EC3' : 
-                                    item.status === 'completed' ? '#003EC3' : 
-                                    item.status === 'in-progress' ? '#003EC3' : 'rgba(255, 255, 255, 0.3)',
+                    backgroundColor: selectedStep === item.step ? '#003EC3' : 'rgba(255, 255, 255, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: '10px',
-                    border: selectedStep === item.step ? '3px solid #003EC3' : 
-                           item.status === 'completed' ? '3px solid #003EC3' : 
-                           item.status === 'in-progress' ? '3px solid #003EC3' : '3px solid rgba(255, 255, 255, 0.3)',
-                    boxShadow: selectedStep === item.step ? '0 0 25px rgba(0, 62, 195, 0.8)' :
-                              item.status === 'completed' ? '0 0 15px rgba(0, 62, 195, 0.5)' :
-                              item.status === 'in-progress' ? '0 0 15px rgba(0, 62, 195, 0.5)' : 'none',
+                    border: selectedStep === item.step ? '3px solid #003EC3' : '3px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: selectedStep === item.step ? '0 0 25px rgba(0, 62, 195, 0.8)' : 'none',
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     transform: selectedStep === item.step ? 'scale(1.1)' : 'scale(1)'
@@ -4180,14 +5211,6 @@ export default function HeroSimpleTest() {
                 >
                   {item.status === 'completed' ? (
                     <span style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>✓</span>
-                  ) : item.status === 'in-progress' ? (
-                    <div style={{
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      backgroundColor: 'white',
-                      animation: 'pulse 2s infinite'
-                    }} />
                   ) : (
                     <span style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '16px', fontWeight: 'bold' }}>
                       {item.step}
@@ -4210,86 +5233,9 @@ export default function HeroSimpleTest() {
             ))}
           </div>
 
-          {/* 內嵌內容區域 */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: '20px',
-            padding: '40px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-            position: 'relative',
-            transform: 'perspective(1000px) rotateX(5deg)',
-            animation: 'slideInUp 0.6s ease-out',
-            minHeight: '300px',
-            marginTop: '40px',
-            transition: 'all 0.4s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'perspective(1000px) rotateX(5deg) scale(1)';
-            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
-          }}>
+          {/* Step 內文窗已移除（避免視覺干擾） */}
 
-            {/* 內容顯示 */}
-            {(() => {
-              const stepDataArray = [
-                { step: 1, label: '討論發想', subtitle: '從理解開始，讓想法慢慢長出形狀。', content: '從對話開始，了解你的故事與期待。\n我們一起找出品牌最真實的樣子，\n慢慢描出第一條線。' },
-                { step: 2, label: '設計插畫', subtitle: '用線條和色彩，讓故事開始呼吸。', content: '把概念轉化成畫面，\n讓品牌的語氣與溫度被看見。\n每一筆，都是為了更靠近你的想像。' },
-                { step: 3, label: '落地執行', subtitle: '讓設計真正走進生活。', content: '從印刷到社群、從線上到現場，\n我們陪你完成最後一步，\n讓每一份設計都被感受到。' }
-              ];
-              const stepData = stepDataArray.find(item => item.step === selectedStep) || stepDataArray[0]; // 預設顯示第一個
-
-                  return (
-                    <div style={{ position: 'relative', zIndex: 10 }}>
-                      {/* 標題 */}
-                      <h2 style={{
-                        fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
-                        fontWeight: 'bold',
-                        color: '#FFFFFF',
-                        margin: '0 0 20px 0',
-                        textAlign: 'center',
-                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-                        fontFamily: 'var(--font-zpix), monospace',
-                        animation: 'slideInDown 0.8s ease-out'
-                      }}>
-                        {stepData.label}
-                      </h2>
-
-                      {/* 副標題 */}
-                      <h3 style={{
-                        fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
-                        fontWeight: '300',
-                        color: '#E8E8E8',
-                        margin: '0 0 30px 0',
-                        textAlign: 'center',
-                        fontStyle: 'italic',
-                        lineHeight: '1.4',
-                        animation: 'fadeInUp 1s ease-out 0.2s both'
-                      }}>
-                        {stepData.subtitle}
-                      </h3>
-
-                      {/* 內容 */}
-        <div style={{
-                        fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
-                        color: '#FFFFFF',
-                        lineHeight: '1.8',
-                        textAlign: 'center',
-                        whiteSpace: 'pre-line',
-                        fontFamily: 'var(--font-zpix), monospace',
-                        animation: 'fadeInUp 1s ease-out 0.4s both',
-                        textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
-                      }}>
-                        {stepData.content}
-                      </div>
-                    </div>
-                  );
-            })()}
-          </div>
+          {/* 內嵌內容區域：已移除 */}
         </div>
 
         {/* 彈出式視窗 */}
@@ -4553,7 +5499,6 @@ export default function HeroSimpleTest() {
             </div>
           </div>
         )}
-
         {/* 聯絡方式彈出視窗 */}
         {isContactModalOpen && (
           <div style={{
@@ -4862,7 +5807,7 @@ export default function HeroSimpleTest() {
           width: '100%',
           height: `${serviceBlueCoverHeight}px`,
           backgroundColor: '#003EC3',
-          zIndex: 10, // 降低 z-index，讓內容在覆蓋層之上
+          zIndex: 0, // 將覆蓋層放在該區塊內容最底層
           transition: 'height 0.1s ease-out'
         }}></div>
       </div>
@@ -4875,7 +5820,7 @@ export default function HeroSimpleTest() {
           backgroundColor: '#003EC3',
           position: 'relative',
           padding: '80px 20px',
-          display: 'flex',
+          display: 'none',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
@@ -4987,41 +5932,55 @@ export default function HeroSimpleTest() {
           width: '100%',
           height: `${supportToContactCoverHeight}px`,
           backgroundColor: '#353535',
-          zIndex: 10, // 降低 z-index，讓內容在覆蓋層之上
+          zIndex: 0, // 覆蓋層置底
           transition: 'height 0.1s ease-out'
         }}></div>
       </div>
 
-      {/* 第二個藍色區域 */}
-      <div style={{
+      {/* 第二個藍色區域 - CONTACT */}
+      <div ref={contactSectionRef} style={{
         minHeight: '100vh',
-        backgroundColor: '#353535',
+        backgroundColor: '#0099FF',
         position: 'relative',
         padding: '80px 20px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        zIndex: 0
       }}>
+        {/* 溫暖白覆蓋改由 OUR SERVICES 區塊處理，此處關閉覆蓋 */}
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: 0,
+          width: '100%',
+          height: 0,
+          backgroundColor: '#FFFFF3',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}></div>
+
         {/* 第二個藍色區域標題 */}
         <div style={{
           textAlign: 'center',
           marginBottom: '60px',
-          zIndex: 15
+          position: 'relative',
+          zIndex: 100
         }}>
           <h1 style={{
             fontSize: 'clamp(2.5rem, 8vw, 6rem)',
             fontWeight: '900',
-            color: '#FFFFFF',
+            color: '#FFFFF3',
             margin: '0 0 20px 0',
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
             letterSpacing: '0.05em'
           }}>
             CONTACT
           </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
-            color: '#E8F4FD',
+            color: '#FFFFFF',
             margin: '0',
             fontWeight: '300',
             letterSpacing: '0.1em'
@@ -5061,12 +6020,12 @@ export default function HeroSimpleTest() {
               left: star.left,
               width: star.size,
               height: star.size,
-              background: '#FFFFFF',
+              background: '#FFD700',
               clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
               animation: `twinkle ${3 + (index % 3)}s ease-in-out infinite alternate`,
               animationDelay: star.delay,
               zIndex: 12,
-              opacity: 0.8
+              opacity: 0.9
             }}
           />
         ))}
@@ -5075,10 +6034,11 @@ export default function HeroSimpleTest() {
         <div style={{
           textAlign: 'center',
           maxWidth: '600px',
-          zIndex: 15
+          position: 'relative',
+          zIndex: 100
         }}>
           <p style={{
-            color: '#E8F4FD',
+            color: '#FFFFFF',
             fontSize: '1.2rem',
             lineHeight: '1.6',
             marginBottom: '40px'
@@ -5092,23 +6052,22 @@ export default function HeroSimpleTest() {
             flexWrap: 'wrap'
           }}>
           <button style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            color: '#FFFFFF',
-            border: '2px solid rgba(255, 255, 255, 0.3)',
+            backgroundColor: '#003EC3',
+            color: '#FFFFF3',
+            border: '2px solid #003EC3',
             padding: '15px 40px',
             borderRadius: '30px',
             fontSize: '1.1rem',
             fontWeight: '600',
             cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            backdropFilter: 'blur(10px)'
+            transition: 'all 0.3s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.backgroundColor = '#0052CC';
             e.currentTarget.style.transform = 'translateY(-2px)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.backgroundColor = '#003EC3';
             e.currentTarget.style.transform = 'translateY(0)';
             }}
             onClick={() => setIsContactModalOpen(true)}>
@@ -5116,23 +6075,24 @@ export default function HeroSimpleTest() {
           </button>
 
             <button style={{
-              backgroundColor: 'rgba(74, 144, 226, 0.2)',
-              color: '#FFFFFF',
-              border: '2px solid #4A90E2',
+              backgroundColor: 'rgba(0, 62, 195, 0.1)',
+              color: '#003EC3',
+              border: '2px solid #003EC3',
               padding: '15px 40px',
               borderRadius: '30px',
               fontSize: '1.1rem',
               fontWeight: '600',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              backdropFilter: 'blur(10px)'
+              transition: 'all 0.3s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(74, 144, 226, 0.3)';
+              e.currentTarget.style.backgroundColor = '#003EC3';
+              e.currentTarget.style.color = '#FFFFF3';
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(74, 144, 226, 0.2)';
+              e.currentTarget.style.backgroundColor = 'rgba(0, 62, 195, 0.1)';
+              e.currentTarget.style.color = '#003EC3';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
             onClick={() => setIsPriceModalOpen(true)}>
@@ -5146,13 +6106,13 @@ export default function HeroSimpleTest() {
           position: 'absolute',
           bottom: '20px',
           left: '20px',
-          color: 'white',
+          color: '#003EC3',
           fontSize: '16px',
           fontFamily: 'var(--font-zpix), monospace',
           lineHeight: '1.4',
           textAlign: 'left',
           zIndex: 25,
-          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
         }}>
         </div>
       </div>

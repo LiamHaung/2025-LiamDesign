@@ -25,6 +25,7 @@ const carouselItems = [
     tags: ['動畫', '互動', '創意'],
     galleryImages: [
       { id: 1, src: '/project-02-01.png', alt: '專案截圖 1' },
+      { id: 2, src: '/project-02-02.jpg', alt: '專案截圖 2' },
     ],
     galleryDescription: '這個專案專注於創造令人印象深刻的視覺體驗。'
   },
@@ -61,8 +62,8 @@ const carouselItems = [
     tags: ['創意', '視覺', '創新'],
     galleryImages: [
       { id: 1, src: '/project-cover-05.jpg', alt: '專案封面' },
-      { id: 2, src: '/hero-02.png', alt: '專案截圖 1' },
-      { id: 3, src: '/hero-2.png', alt: '專案截圖 2' },
+      { id: 2, src: '/project-05-01.jpg', alt: '專案截圖 1' },
+      { id: 3, src: '/project-05-02.jpg', alt: '專案截圖 2' },
     ],
     galleryDescription: '這個專案展示了創新的設計思維和獨特的視覺表達。'
   }
