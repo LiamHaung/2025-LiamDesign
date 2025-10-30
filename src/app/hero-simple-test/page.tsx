@@ -1610,6 +1610,34 @@ const DesignDiary: React.FC<{
           33% { transform: translateY(-20px) translateX(10px); }
           66% { transform: translateY(10px) translateX(-15px); }
         }
+        
+        @keyframes floatCloud {
+          0%, 100% { 
+            transform: translateY(0) translateX(0) scale(1); 
+            opacity: 0.6; 
+          }
+          25% { 
+            transform: translateY(-15px) translateX(10px) scale(1.05); 
+            opacity: 0.8; 
+          }
+          50% { 
+            transform: translateY(-10px) translateX(-8px) scale(0.95); 
+            opacity: 0.7; 
+          }
+          75% { 
+            transform: translateY(10px) translateX(5px) scale(1.02); 
+            opacity: 0.75; 
+          }
+        }
+        
+        @keyframes rotateSun {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
       `}</style>
 
       <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10, padding: '4rem 2rem' }}>
@@ -2268,7 +2296,8 @@ const Carousel3D: React.FC<{
   items: ProjectItem[];
   onItemClick: (item: ProjectItem) => void;
   reverse?: boolean; // 是否反向（從右到左）
-}> = ({ items, onItemClick, reverse = false }) => {
+  startNumber?: number; // 起始編號（默認為0，即從01開始）
+}> = ({ items, onItemClick, reverse = false, startNumber = 0 }) => {
   const [progress, setProgress] = useState(50);
   const [startX, setStartX] = useState(0);
   const [active, setActive] = useState(0);
@@ -2435,7 +2464,7 @@ const Carousel3D: React.FC<{
             {/* 編號 */}
             <div className="absolute top-6 left-6 z-20 text-white">
               <span className="text-6xl font-bold opacity-70">
-                {String(index + 1).padStart(2, '0')}
+                {String(index + startNumber + 1).padStart(2, '0')}
               </span>
       </div>
 
@@ -2455,6 +2484,17 @@ const Carousel3D: React.FC<{
 const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 使用傳入的 scrollY prop，不需要內部狀態
   const scrollY = propScrollY || 0;
+  
+  // 檢測是否為手機裝置
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // 計算 Logo 淡入效果 - 在 hero 版面淡入
   const logoOpacity = typeof window !== 'undefined' 
@@ -2600,27 +2640,29 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         justifyContent: 'center'
       }}>
 
-        {/* 船隻上方標題 - 打字機效果 */}
-        <div style={{
-          position: 'relative',
-          zIndex: 25,
-          marginBottom: '40px',
-          opacity: boatOpacity,
-          transition: 'opacity 0.1s ease-out'
-        }}>
-          <h1 style={{
-            fontSize: 'clamp(1.5rem, 4.8vw, 2.4rem)',
-            fontWeight: 'bold',
-            color: '#003EC3',
-            fontFamily: 'var(--font-zpix), monospace',
-            textAlign: 'center',
-            margin: 0,
-            letterSpacing: '0.1em',
-            minHeight: '1.2em'
+        {/* 船隻上方標題 - 打字機效果 (桌面版显示，手机版隐藏) */}
+        {!isMobile && (
+          <div style={{
+            position: 'relative',
+            zIndex: 30,
+            marginBottom: isMobile ? '30px' : '50px',
+            opacity: boatOpacity,
+            transition: 'opacity 0.1s ease-out'
           }}>
-            <TypewriterText text="Own the Day." speed={150} />
-          </h1>
-        </div>
+            <h1 style={{
+              fontSize: 'clamp(1.65rem, 5.28vw, 2.64rem)', // 放大110%
+              fontWeight: 'bold',
+              color: '#003EC3',
+              fontFamily: 'var(--font-zpix), monospace',
+              textAlign: 'center',
+              margin: 0,
+              letterSpacing: '0.1em',
+              minHeight: '1.2em'
+            }}>
+              <TypewriterText text="Own the Day." speed={150} />
+            </h1>
+          </div>
+        )}
 
         {/* 中央船隻圖片 - 使用入口頁的船隻和波浪效果 */}
         <div className="boat-container" style={{
@@ -2629,8 +2671,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 'min(90vw, 600px)',
-          height: 'min(70vh, 450px)',
+          width: isMobile ? 'min(99vw, 462px)' : 'min(77vw, 550px)', // 手机版放大20%：82.5vw * 1.2 = 99vw, 385px * 1.2 = 462px
+          height: isMobile ? 'min(66vh, 396px)' : 'min(60.5vh, 440px)', // 手机版放大20%：55vh * 1.2 = 66vh, 330px * 1.2 = 396px
           transform: `translateY(${boatY}px)`,
           opacity: boatOpacity, // 應用透明度效果
           transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
@@ -2643,7 +2685,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             } as React.CSSProperties}
           >
             <Image 
-              src="/boat.png" 
+              src="/boat1031.png" 
               alt="Dreamy Boat" 
               width={3541} 
               height={2203} 
@@ -2653,16 +2695,35 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           </div>
         </div>
 
-        {/* 船隻下方標題 - 打字機效果 */}
+        {/* 船隻下方標題區域 - 手機版顯示Own the Day和掌握今天 */}
         <div style={{
           position: 'relative',
-          zIndex: 25,
-          marginTop: '40px',
+          zIndex: 30,
+          marginTop: isMobile ? '30px' : '50px',
           opacity: boatOpacity,
-          transition: 'opacity 0.1s ease-out'
+          transition: 'opacity 0.1s ease-out',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: isMobile ? '15px' : '0'
         }}>
+          {/* 手機版：Own the Day 顯示在掌握今天上方 */}
+          {isMobile && (
+            <h1 style={{
+              fontSize: 'clamp(1.65rem, 5.28vw, 2.64rem)',
+              fontWeight: 'bold',
+              color: '#003EC3',
+              fontFamily: 'var(--font-zpix), monospace',
+              textAlign: 'center',
+              margin: 0,
+              letterSpacing: '0.1em',
+              minHeight: '1.2em'
+            }}>
+              <TypewriterText text="Own the Day." speed={150} />
+            </h1>
+          )}
           <h2 style={{
-            fontSize: 'clamp(1.08rem, 3.6vw, 1.8rem)',
+            fontSize: 'clamp(1.188rem, 3.96vw, 1.98rem)', // 放大110%
             fontWeight: 'bold',
             color: '#003EC3',
             fontFamily: 'var(--font-zpix), monospace',
@@ -2675,50 +2736,89 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           </h2>
         </div>
 
-        {/* 星星裝飾 - 原有3顆 */}
-        <div 
-          className="star-parallax"
-          style={{
+          {/* 星球裝飾 - Hero區域3顆 */}
+          <div 
+            className="star-parallax"
+            style={{
+              position: 'absolute',
+              top: '20%',
+              left: '20%',
+              width: '48px', // 缩小60%：80px * 0.6 = 48px
+              height: '48px', // 缩小60%：80px * 0.6 = 48px
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2s infinite',
+              opacity: starOpacity, // 應用透明度效果
+              '--star-y': `${starY}px`,
+              zIndex: 15, // 確保在藍色覆蓋層之上
+              transition: 'opacity 0.1s ease-out'
+            } as React.CSSProperties}
+          ></div>
+          <div style={{
             position: 'absolute',
-            top: '20%',
-            left: '20%',
-            width: '20px',
-            height: '20px',
-            background: '#FFD700',
-            clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-            animation: 'twinkle 2s infinite',
-            opacity: starOpacity, // 應用透明度效果
-            '--star-y': `${starY}px`,
-            zIndex: 15, // 確保在藍色覆蓋層之上
+            top: '30%',
+            right: '25%',
+            width: '36px', // 缩小60%：60px * 0.6 = 36px
+            height: '36px', // 缩小60%：60px * 0.6 = 36px
+            backgroundImage: 'url(/star-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'twinkle 2.5s infinite',
+            opacity: starOpacity,
             transition: 'opacity 0.1s ease-out'
-          } as React.CSSProperties}
-        ></div>
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '30%',
+            left: '30%',
+            width: '42px', // 缩小60%：70px * 0.6 = 42px
+            height: '42px', // 缩小60%：70px * 0.6 = 42px
+            backgroundImage: 'url(/star-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'twinkle 1.8s infinite',
+            opacity: starOpacity,
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+
+        {/* 太陽裝飾 - Hero區域1顆 */}
         <div style={{
           position: 'absolute',
-          top: '30%',
-          right: '25%',
-          width: '15px',
-          height: '15px',
-          background: '#FFFFFF',
-          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-          animation: 'twinkle 2.5s infinite',
+          top: '8%',
+          left: '8%',
+          width: isMobile ? 'clamp(120px, 25vw, 200px)' : 'clamp(200px, 20vw, 280px)',
+          height: isMobile ? 'clamp(120px, 25vw, 200px)' : 'clamp(200px, 20vw, 280px)',
+          backgroundImage: 'url(/sun-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
           opacity: starOpacity,
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '30%',
-          left: '30%',
-          width: '12px',
-          height: '12px',
-          background: '#FFD700',
-          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-          animation: 'twinkle 1.8s infinite',
-          opacity: starOpacity,
+          zIndex: 11,
+          pointerEvents: 'none',
           transition: 'opacity 0.1s ease-out'
         }}></div>
 
-        {/* 弧形流星效果 - 品牌藍色 */}
+        {/* 雲朵裝飾 - Hero區域1朵 */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          right: '15%',
+          width: isMobile ? '120px' : '180px',
+          height: isMobile ? '120px' : '180px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 8s ease-in-out infinite',
+          opacity: starOpacity,
+          zIndex: 12,
+          pointerEvents: 'none',
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
         {[...Array(3)].map((_, i) => {
           // 使用固定的動畫參數避免 SSR 水合錯誤
           const animationDurations = [4.2, 3.8, 4.5];
@@ -3011,13 +3111,21 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         
         .boat-with-waves {
           position: absolute;
-          width: min(80vw, 400px); // 船隻寬度控制在波浪的80%內
+          width: min(77vw, 385px); // 桌面版保持原尺寸
           z-index: 2;
           animation: bob 2.6s ease-in-out infinite;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%) scale(1.8); // 進一步放大 (1.44 * 1.25 = 1.8)
+          transform: translate(-50%, -50%) scale(1.32); // 桌面版保持原尺寸
           transform-origin: center center;
+        }
+        
+        /* 手機版：圖片放大20% */
+        @media (max-width: 768px) {
+          .boat-with-waves {
+            width: min(92.4vw, 462px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 385px * 1.2 = 462px
+            transform: translate(-50%, -50%) scale(1.584); // 手機版放大20%：1.32 * 1.2 = 1.584
+          }
         }
         
         .boat-with-waves::after {
@@ -3048,8 +3156,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         }
         
         @keyframes bob { 
-          0%, 100% { transform: translate(-50%, -50%) scale(1.8) translateY(0) rotate(0.5deg); } 
-          50% { transform: translate(-50%, -50%) scale(1.8) translateY(-3px) rotate(-0.5deg); } 
+          0%, 100% { transform: translate(-50%, -50%) scale(1.32) translateY(0) rotate(0.5deg); } 
+          50% { transform: translate(-50%, -50%) scale(1.32) translateY(-3px) rotate(-0.5deg); } 
         }
         @keyframes wave-move {
           0% { background-position-x: 0; }
@@ -3257,8 +3365,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(80vw, 360px); // 船隻寬度控制在波浪的80%內
-            transform: translate(-50%, -50%) scale(1.6);
+            width: min(71.5vw, 330px); // 放大110%：65vw * 1.1 = 71.5vw, 300px * 1.1 = 330px
+            transform: translate(-50%, -50%) scale(1.1); // 放大110%：1.0 * 1.1 = 1.1
           }
           .boat-with-waves::after {
             height: 50px; /* 恢復原始高度 */
@@ -3294,8 +3402,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(80vw, 280px); // 船隻寬度控制在波浪的80%內
-            transform: translate(-50%, -50%) scale(1.0); // 手機橫向大幅縮小船隻
+            width: min(92.4vw, 330px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 275px * 1.2 = 330px
+            transform: translate(-50%, -50%) scale(1.188); // 手機版放大20%：0.99 * 1.2 = 1.188
           }
           .boat-with-waves::after {
             height: 40px; /* 恢復原始高度 */
@@ -3332,8 +3440,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(80vw, 200px); // 船隻寬度控制在波浪的80%內
-            transform: translate(-50%, -50%) scale(0.8); // 手機直向進一步縮小船隻
+            width: min(92.4vw, 237.6px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 198px * 1.2 = 237.6px
+            transform: translate(-50%, -50%) scale(0.924); // 手機版放大20%：0.77 * 1.2 = 0.924
           }
           .boat-with-waves::after {
             height: 35px; /* 恢復原始高度 */
@@ -3370,8 +3478,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(80vw, 160px); // 船隻寬度控制在波浪的80%內
-            transform: translate(-50%, -50%) scale(0.6); // 超小螢幕大幅縮小船隻
+            width: min(92.4vw, 184.8px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 154px * 1.2 = 184.8px
+            transform: translate(-50%, -50%) scale(0.792); // 手機版放大20%：0.66 * 1.2 = 0.792
           }
           .boat-with-waves::after {
             height: 30px; /* 恢復原始高度 */
@@ -3389,6 +3497,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         @keyframes twinkle {
           0% { opacity: 0.3; transform: scale(1); }
           100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes floatCloud {
+          0%, 100% { 
+            transform: translateY(0) translateX(0) scale(1); 
+            opacity: 0.6; 
+          }
+          25% { 
+            transform: translateY(-15px) translateX(10px) scale(1.05); 
+            opacity: 0.8; 
+          }
+          50% { 
+            transform: translateY(-10px) translateX(-8px) scale(0.95); 
+            opacity: 0.7; 
+          }
+          75% { 
+            transform: translateY(10px) translateX(5px) scale(1.02); 
+            opacity: 0.75; 
+          }
+        }
+        
+        @keyframes rotateSun {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
@@ -4558,7 +4694,8 @@ export default function HeroSimpleTest() {
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         cursor: 'pointer',
         opacity: navOpacity,
-        pointerEvents: navOpacity > 0 ? 'auto' : 'none'
+        pointerEvents: navOpacity > 0 ? 'auto' : 'none',
+        display: 'none' // 隱藏購物車按鈕（手機和桌面）
       }}
       onClick={() => setIsCartSidebarOpen(true)}
       onMouseEnter={(e) => {
@@ -4801,7 +4938,7 @@ export default function HeroSimpleTest() {
           zIndex: 10,
           marginTop: '40px'
         }}>
-          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} />
+          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={6} />
           
           {/* 操作提示 */}
           <div style={{
@@ -4822,31 +4959,23 @@ export default function HeroSimpleTest() {
           </div>
         </div>
 
-        {/* 裝飾性元素 */}
+        {/* 雲朵裝飾 - PROJECTS區域1朵 */}
         <div style={{
           position: 'absolute',
-          top: '20%',
-          left: '10%',
-          width: '30px',
-          height: '30px',
-          background: '#FFFFFF',
-          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-          animation: 'float 6s ease-in-out infinite',
+          top: '15%',
+          left: '5%',
+          width: isMobile ? '100px' : '150px',
+          height: isMobile ? '100px' : '150px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 9s ease-in-out infinite',
+          animationDelay: '1s',
           zIndex: 12,
-          opacity: 1
+          pointerEvents: 'none',
+          opacity: 0.7
         }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '20%',
-          right: '15%',
-          width: '18px',
-          height: '18px',
-          background: '#FFFFFF',
-          clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-          animation: 'float 8s ease-in-out infinite reverse',
-          zIndex: 12,
-          opacity: 1
-        }}>        </div>
 
         {/* 小星星陣列 */}
         {[
@@ -4925,8 +5054,26 @@ export default function HeroSimpleTest() {
         paddingTop: '4rem',
         paddingBottom: '4rem',
         minHeight: '100vh',
-        zIndex: 1
+        zIndex: 1,
+        overflow: 'hidden'
       }}>
+        {/* 雲朵裝飾 - DESIGN DIARY區域1朵 */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          right: '10%',
+          width: isMobile ? '100px' : '160px',
+          height: isMobile ? '100px' : '160px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 10s ease-in-out infinite',
+          animationDelay: '2s',
+          zIndex: 5,
+          pointerEvents: 'none',
+          opacity: 0.6
+        }}></div>
         {/* 深色色塊覆蓋層（取消覆蓋效果） */}
         <div style={{
           position: 'absolute',
@@ -4970,8 +5117,42 @@ export default function HeroSimpleTest() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 10
+          zIndex: 10,
+          overflow: 'hidden'
         }}>
+        {/* 雲朵裝飾 - OUR SERVICES區域2朵 */}
+        <div style={{
+          position: 'absolute',
+          top: '8%',
+          left: '8%',
+          width: isMobile ? '100px' : '170px',
+          height: isMobile ? '100px' : '170px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 11s ease-in-out infinite',
+          animationDelay: '0.5s',
+          zIndex: 8,
+          pointerEvents: 'none',
+          opacity: 0.65
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '15%',
+          right: '12%',
+          width: isMobile ? '90px' : '140px',
+          height: isMobile ? '90px' : '140px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 12s ease-in-out infinite',
+          animationDelay: '3.5s',
+          zIndex: 8,
+          pointerEvents: 'none',
+          opacity: 0.6
+        }}></div>
         {/* 水藍色覆蓋層 - 從 OUR SERVICES 底部往上覆蓋（僅蓋背景） */}
         <div style={{
           position: 'absolute',
@@ -5080,7 +5261,8 @@ export default function HeroSimpleTest() {
           marginBottom: '16px',
           position: 'relative',
           zIndex: 9,
-          minHeight: '300px' // 確保有足夠空間顯示插畫
+          minHeight: '300px', // 確保有足夠空間顯示插畫
+          padding: isMobile ? '0 10px' : '0' // 手機版留一點邊距
         }}>
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
@@ -5095,7 +5277,8 @@ export default function HeroSimpleTest() {
               alt={item.alt}
               style={{
                 position: 'absolute',
-                width: isMobile ? '54vw' : 'min(528px, 42vw)',
+                width: isMobile ? 'calc(100vw - 20px)' : 'min(528px, 42vw)',
+                maxWidth: isMobile ? 'none' : 'min(528px, 42vw)',
                 height: 'auto',
                 borderRadius: '20px',
                 background: 'transparent',
@@ -5947,8 +6130,42 @@ export default function HeroSimpleTest() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 0
+        zIndex: 0,
+        overflow: 'hidden'
       }}>
+        {/* 雲朵裝飾 - CONTACT區域2朵 */}
+        <div style={{
+          position: 'absolute',
+          top: '12%',
+          left: '12%',
+          width: isMobile ? '100px' : '160px',
+          height: isMobile ? '100px' : '160px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 13s ease-in-out infinite',
+          animationDelay: '1.5s',
+          zIndex: 8,
+          pointerEvents: 'none',
+          opacity: 0.7
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '10%',
+          width: isMobile ? '110px' : '150px',
+          height: isMobile ? '110px' : '150px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 14s ease-in-out infinite',
+          animationDelay: '4s',
+          zIndex: 8,
+          pointerEvents: 'none',
+          opacity: 0.65
+        }}></div>
         {/* 溫暖白覆蓋改由 OUR SERVICES 區塊處理，此處關閉覆蓋 */}
         <div style={{
           position: 'absolute',
@@ -5989,46 +6206,40 @@ export default function HeroSimpleTest() {
           </p>
         </div>
 
-        {/* CONTACT 版位星空效果 */}
+        {/* CONTACT 版位星球效果 - 2顆星球（總共5顆，非4的倍數） */}
         {[
-          { top: '12%', left: '18%', size: '9px', delay: '0s' },
-          { top: '22%', left: '78%', size: '7px', delay: '1s' },
-          { top: '32%', left: '8%', size: '11px', delay: '2s' },
-          { top: '42%', left: '88%', size: '8px', delay: '3s' },
-          { top: '52%', left: '22%', size: '10px', delay: '4s' },
-          { top: '62%', left: '82%', size: '9px', delay: '5s' },
-          { top: '72%', left: '3%', size: '7px', delay: '6s' },
-          { top: '82%', left: '72%', size: '11px', delay: '7s' },
-          { top: '8%', left: '58%', size: '8px', delay: '8s' },
-          { top: '28%', left: '42%', size: '10px', delay: '9s' },
-          { top: '48%', left: '68%', size: '9px', delay: '10s' },
-          { top: '68%', left: '32%', size: '7px', delay: '11s' },
-          { top: '38%', left: '52%', size: '11px', delay: '12s' },
-          { top: '58%', left: '12%', size: '8px', delay: '13s' },
-          { top: '78%', left: '62%', size: '10px', delay: '14s' },
-          { top: '18%', left: '28%', size: '9px', delay: '15s' },
-          { top: '38%', left: '92%', size: '7px', delay: '16s' },
-          { top: '58%', left: '38%', size: '11px', delay: '17s' },
-          { top: '78%', left: '18%', size: '8px', delay: '18s' },
-          { top: '88%', left: '82%', size: '10px', delay: '19s' }
-        ].map((star, index) => (
-          <div
-            key={`contact-star-${index}`}
-            style={{
-              position: 'absolute',
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              background: '#FFD700',
-              clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-              animation: `twinkle ${3 + (index % 3)}s ease-in-out infinite alternate`,
-              animationDelay: star.delay,
-              zIndex: 12,
-              opacity: 0.9
-            }}
-          />
-        ))}
+          { top: '15%', left: '15%', size: '54px', delay: '0s' }, // 缩小60%：90px * 0.6 = 54px
+          { top: '75%', right: '15%', size: '45px', delay: '2s' } // 缩小60%：75px * 0.6 = 45px
+        ].map((planet, index) => {
+          const style: React.CSSProperties = {
+            position: 'absolute',
+            top: planet.top,
+            width: planet.size,
+            height: planet.size,
+            backgroundImage: 'url(/star-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: `twinkle ${3 + (index % 2)}s ease-in-out infinite alternate`,
+            animationDelay: planet.delay,
+            zIndex: 12,
+            opacity: 0.9
+          };
+          
+          if (planet.left) {
+            style.left = planet.left;
+          }
+          if (planet.right) {
+            style.right = planet.right;
+          }
+          
+          return (
+            <div
+              key={`contact-planet-${index}`}
+              style={style}
+            />
+          );
+        })}
 
         {/* 第二個藍色區域內容 */}
         <div style={{
