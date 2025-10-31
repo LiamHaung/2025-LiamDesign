@@ -2774,7 +2774,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         {/* 太陽裝飾 - Hero區域1顆 */}
         <div style={{
           position: 'absolute',
-          top: '5%',
+          top: '8%',
           left: '8%',
           width: '220px',
           height: '220px',
