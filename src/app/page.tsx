@@ -2501,6 +2501,41 @@ Tel: 03-9XX-XXXX
           .boat-container + [class*="star"] {
             display: none !important;
           }
+          
+          /* 手機版調整裝飾圖片大小 */
+          /* 雲朵圖片縮小至80% */
+          [style*="cloud-big.png"],
+          [style*="cloud-big"] {
+            transform: scale(0.8) !important;
+          }
+          
+          /* 星星圖片縮小至50% */
+          [style*="star-big.png"],
+          [style*="star-big"] {
+            transform: scale(0.5) !important;
+          }
+          
+          /* 太陽圖片放大至135% */
+          [style*="sun-big.png"],
+          [style*="sun-big"] {
+            transform: scale(1.35) !important;
+          }
+          
+          /* 使用背景圖片的元素 - 更精確的選擇器 */
+          div[style*="cloud-big.png"],
+          div[style*="cloud-big"] {
+            transform: scale(0.8) !important;
+          }
+          
+          div[style*="star-big.png"],
+          div[style*="star-big"] {
+            transform: scale(0.5) !important;
+          }
+          
+          div[style*="sun-big.png"],
+          div[style*="sun-big"] {
+            transform: scale(1.35) !important;
+          }
         }
 
         /* Illustration read-more button (customizable via CSS variables) */
