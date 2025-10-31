@@ -2455,6 +2455,24 @@ Tel: 03-9XX-XXXX
             height: 50px;
             background-size: 120px 100%;
           }
+          
+          /* 手機版背景星星往上移動20px */
+          .hero-block-grid {
+            background-position-y: -20px !important;
+          }
+          
+          .hero-block-grid::before,
+          .hero-block-grid::after {
+            transform: translateY(-20px) !important;
+          }
+          
+          /* 如果有星星裝飾元素 */
+          .hero-block-grid [class*="star"],
+          .hero-grid-container [class*="star"],
+          .hero-block-grid [style*="star-big"],
+          .hero-grid-container [style*="star-big"] {
+            transform: translateY(-20px) !important;
+          }
         }
 
         /* Illustration read-more button (customizable via CSS variables) */
