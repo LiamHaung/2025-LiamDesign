@@ -5495,6 +5495,41 @@ export default function HeroSimpleTest() {
           />
         ))}
 
+        {/* OUR SERVICES 星星圖片裝飾 */}
+        {[
+          { top: '10%', left: '10%' },
+          { top: '15%', right: '15%' },
+          { top: '25%', left: '8%' },
+          { top: '30%', right: '12%' },
+          { top: '45%', left: '20%' },
+          { top: '50%', right: '25%' },
+          { top: '65%', left: '15%' },
+          { top: '70%', right: '20%' },
+          { top: '80%', left: '10%' },
+          { top: '85%', right: '15%' }
+        ]
+        .filter((_, index) => !isMobile || index < 6) // 手機版只顯示前6顆
+        .map((star, index) => (
+          <div
+            key={`services-star-img-${index}`}
+            style={{
+              position: 'absolute',
+              ...star,
+              width: '24px',
+              height: '24px',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: `twinkle ${2 + (index % 3) * 0.3}s ease-in-out infinite`,
+              animationDelay: `${index * 0.4}s`,
+              zIndex: 11,
+              opacity: 0.7 + (index % 3) * 0.1,
+              pointerEvents: 'none'
+            }}
+          />
+        ))}
+
         {/* 深色區域標題 */}
         <div style={{
           textAlign: 'center',
@@ -5536,12 +5571,49 @@ export default function HeroSimpleTest() {
           minHeight: '300px', // 確保有足夠空間顯示插畫
           padding: isMobile ? '0 10px' : '0' // 手機版留一點邊距
         }}>
+          {/* 深色背景層 - 增強立體感 */}
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
-            { step: 2, src: '/illustration_2.png', alt: 'Step 2 Illustration' },
-            { step: 3, src: '/illustration_3.png', alt: 'Step 3 Illustration' },
-            { step: 4, src: '/illustration_4.png', alt: 'Step 4 Illustration' },
-            { step: 5, src: '/illustration_5.png', alt: 'Step 5 Illustration' }
+            { step: 2, src: '/service-1.png', alt: 'Step 2 Illustration' },
+            { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
+            { step: 4, src: '/service-1.png', alt: 'Step 4 Illustration' },
+            { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
+          ].map((item) => (
+            <div
+              key={`svc-bg-${item.step}`}
+              style={{
+                position: 'absolute',
+                width: isMobile ? 'calc(100vw - 20px)' : 'min(792px, 63vw)',
+                maxWidth: isMobile ? 'none' : 'min(792px, 63vw)',
+                height: 'auto',
+                minHeight: isMobile ? '250px' : '400px',
+                borderRadius: '20px',
+                background: selectedStep === item.step 
+                  ? 'radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.7) 100%)'
+                  : 'transparent',
+                opacity: selectedStep === item.step ? 1 : 0,
+                transform: selectedStep === item.step 
+                  ? 'translate(-50%, -50%) translateY(8px) scale(0.98)' 
+                  : 'translate(-50%, -50%) translateY(8px) scale(0.98)',
+                transition: 'opacity 600ms ease-in-out 0.3s, transform 600ms ease-in-out 0.3s',
+                pointerEvents: 'none',
+                top: '50%',
+                left: '50%',
+                zIndex: 0,
+                boxShadow: selectedStep === item.step 
+                  ? '0 12px 40px rgba(0, 0, 0, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3)' 
+                  : 'none'
+              }}
+            />
+          ))}
+          
+          {/* 圖片層 */}
+          {[
+            { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
+            { step: 2, src: '/service-1.png', alt: 'Step 2 Illustration' },
+            { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
+            { step: 4, src: '/service-1.png', alt: 'Step 4 Illustration' },
+            { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
           ].map((item) => (
             <img
               key={`svc-illu-inline-${item.step}`}
@@ -5549,8 +5621,8 @@ export default function HeroSimpleTest() {
               alt={item.alt}
               style={{
                 position: 'absolute',
-                width: isMobile ? 'calc(100vw - 20px)' : 'min(528px, 42vw)',
-                maxWidth: isMobile ? 'none' : 'min(528px, 42vw)',
+                width: isMobile ? 'calc(100vw - 20px)' : 'min(792px, 63vw)',
+                maxWidth: isMobile ? 'none' : 'min(792px, 63vw)',
                 height: 'auto',
                 borderRadius: '20px',
                 background: 'transparent',
@@ -5561,7 +5633,9 @@ export default function HeroSimpleTest() {
                 transition: 'opacity 600ms ease-in-out 0.3s, transform 600ms ease-in-out 0.3s',
                 pointerEvents: 'none',
                 top: '50%',
-                left: '50%'
+                left: '50%',
+                zIndex: 1,
+                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))'
               }}
             />
           ))}
@@ -5575,6 +5649,38 @@ export default function HeroSimpleTest() {
           position: 'relative',
           zIndex: 10
         }}>
+          {/* 短敘述 - 隨step更換 */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: isMobile ? 'clamp(15px, 3vw, 25px)' : 'clamp(20px, 3vw, 30px)',
+            position: 'relative',
+            zIndex: 10
+          }}>
+            <div style={{
+              display: 'inline-block',
+              backgroundColor: '#FFFFFF',
+              color: '#000000',
+              padding: isMobile ? 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)' : 'clamp(10px, 1.5vw, 16px) clamp(20px, 3vw, 32px)',
+              borderRadius: '8px',
+              fontSize: isMobile ? 'clamp(0.9rem, 2.5vw, 1.1rem)' : 'clamp(1rem, 1.5vw, 1.2rem)',
+              fontWeight: '500',
+              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+              transition: 'opacity 0.3s ease-in-out',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+            }}>
+              {(() => {
+                const stepDescriptions: { [key: number]: string } = {
+                  1: '從理解開始，用對話找到靈感。',
+                  2: '把想法具象化，讓設計開始呼吸。',
+                  3: '根據回饋，一起修整航向。',
+                  4: '讓作品準備好啟程。',
+                  5: '讓理想走進真實，成為被看見的樣子。'
+                };
+                return stepDescriptions[selectedStep ?? 1] || stepDescriptions[1];
+              })()}
+            </div>
+          </div>
+
           {/* 進度條標題 */}
           <h2 style={{
             fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
