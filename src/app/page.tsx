@@ -2478,13 +2478,22 @@ Tel: 03-9XX-XXXX
           .boat-container::after {
             content: '';
             position: absolute;
-            bottom: -30px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 120%;
-            height: 60px;
+            width: 150%;
+            height: 80px;
             background: #FFFFF3;
-            z-index: 1;
+            z-index: 100;
+            pointer-events: none;
+          }
+          
+          /* 確保船圖片本身不會顯示下方的星星部分 - 使用 clip-path 裁剪 */
+          .boat-img {
+            overflow: hidden;
+            object-fit: contain;
+            object-position: center top;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 0% 85%);
           }
           
           /* 隱藏船容器下方區域的星星元素 */
