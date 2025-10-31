@@ -2736,15 +2736,15 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           </h2>
         </div>
 
-          {/* 星球裝飾 - Hero區域3顆 */}
+          {/* 星球裝飾 - Hero區域2顆 */}
           <div 
             className="star-parallax"
             style={{
               position: 'absolute',
               top: '20%',
               left: '20%',
-              width: '48px', // 缩小60%：80px * 0.6 = 48px
-              height: '48px', // 缩小60%：80px * 0.6 = 48px
+              width: '16px',
+              height: '16px',
               backgroundImage: 'url(/star-big.png)',
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
@@ -2760,27 +2760,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             position: 'absolute',
             top: '30%',
             right: '25%',
-            width: '36px', // 缩小60%：60px * 0.6 = 36px
-            height: '36px', // 缩小60%：60px * 0.6 = 36px
+            width: '16px',
+            height: '16px',
             backgroundImage: 'url(/star-big.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'twinkle 2.5s infinite',
-            opacity: starOpacity,
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '30%',
-            left: '30%',
-            width: '42px', // 缩小60%：70px * 0.6 = 42px
-            height: '42px', // 缩小60%：70px * 0.6 = 42px
-            backgroundImage: 'url(/star-big.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'twinkle 1.8s infinite',
             opacity: starOpacity,
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2790,8 +2776,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           position: 'absolute',
           top: '8%',
           left: '8%',
-          width: isMobile ? 'clamp(120px, 25vw, 200px)' : 'clamp(200px, 20vw, 280px)',
-          height: isMobile ? 'clamp(120px, 25vw, 200px)' : 'clamp(200px, 20vw, 280px)',
+          width: '240px',
+          height: '240px',
           backgroundImage: 'url(/sun-big.png)',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
@@ -2802,18 +2788,52 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           transition: 'opacity 0.1s ease-out'
         }}></div>
 
-        {/* 雲朵裝飾 - Hero區域1朵 */}
+        {/* 雲朵裝飾 - Hero區域3朵 */}
         <div style={{
           position: 'absolute',
           top: '10%',
           right: '15%',
-          width: isMobile ? '120px' : '180px',
-          height: isMobile ? '120px' : '180px',
+          width: '60px',
+          height: '60px',
           backgroundImage: 'url(/cloud-big.png)',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           animation: 'floatCloud 8s ease-in-out infinite',
+          opacity: starOpacity,
+          zIndex: 12,
+          pointerEvents: 'none',
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          top: '25%',
+          left: '10%',
+          width: '60px',
+          height: '60px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 9s ease-in-out infinite',
+          animationDelay: '2s',
+          opacity: starOpacity,
+          zIndex: 12,
+          pointerEvents: 'none',
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '20%',
+          right: '25%',
+          width: '60px',
+          height: '60px',
+          backgroundImage: 'url(/cloud-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          animation: 'floatCloud 10s ease-in-out infinite',
+          animationDelay: '4s',
           opacity: starOpacity,
           zIndex: 12,
           pointerEvents: 'none',
