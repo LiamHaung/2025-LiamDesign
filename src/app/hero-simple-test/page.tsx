@@ -531,7 +531,7 @@ const LoadingPage = ({
             color: '#fffff3',
             fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
             fontWeight: '600',
-            fontFamily: 'var(--font-zpix), monospace',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
             letterSpacing: '0.1em',
             textShadow: '0 0 20px rgba(0, 62, 195, 0.5)',
             marginBottom: '8px'
@@ -542,7 +542,7 @@ const LoadingPage = ({
             color: 'rgba(255, 255, 243, 0.8)',
             fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
             fontWeight: '500',
-            fontFamily: 'var(--font-zpix), monospace',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
             letterSpacing: '0.05em',
             textShadow: '0 0 15px rgba(0, 62, 195, 0.4)'
           }}>
