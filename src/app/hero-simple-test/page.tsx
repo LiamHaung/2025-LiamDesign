@@ -2653,7 +2653,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               fontSize: 'clamp(1.65rem, 5.28vw, 2.64rem)', // 放大110%
               fontWeight: 'bold',
               color: '#003EC3',
-              fontFamily: 'var(--font-zpix), monospace',
+              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
               textAlign: 'center',
               margin: 0,
               letterSpacing: '0.1em',
