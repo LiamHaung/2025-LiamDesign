@@ -2091,7 +2091,7 @@ Tel: 03-9XX-XXXX
                   
                   {/* Tagline */}
                   <div className="text-center md:text-right">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: 'var(--font-zpix), monospace' }}>
+                    <h2 className="text-2xl md:text-3xl mb-2" style={{ fontFamily: 'var(--font-noto-sans-tc), sans-serif', fontWeight: 800 }}>
                       Own the Day.<br />
                       掌握今天。
                     </h2>

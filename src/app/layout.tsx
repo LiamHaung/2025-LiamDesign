@@ -23,7 +23,7 @@ const pressStart2P = Press_Start_2P({
 const notoSansTC = Noto_Sans_TC({
   variable: "--font-noto-sans-tc",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["300", "400", "500", "700", "800"],
   display: "swap",
 });
 
