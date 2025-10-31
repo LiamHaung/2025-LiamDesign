@@ -599,7 +599,7 @@ export default function Home() {
               height: 'clamp(200px, 40vw, 500px)'
             }}>
               <div className="boat-with-waves">
-                <img src="/boat.png" alt="Boat" className="boat-img" />
+                <img src="/boat1031.png" alt="Boat" className="boat-img" />
               </div>
             </div>
             
