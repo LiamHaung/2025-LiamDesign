@@ -2473,6 +2473,25 @@ Tel: 03-9XX-XXXX
           .hero-grid-container [style*="star-big"] {
             transform: translateY(-20px) !important;
           }
+          
+          /* 手機版隱藏船下方的星星 */
+          .boat-container::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 60px;
+            background: #FFFFF3;
+            z-index: 1;
+          }
+          
+          /* 隱藏船容器下方區域的星星元素 */
+          .boat-container ~ [class*="star"],
+          .boat-container + [class*="star"] {
+            display: none !important;
+          }
         }
 
         /* Illustration read-more button (customizable via CSS variables) */
