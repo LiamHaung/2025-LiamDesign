@@ -2774,10 +2774,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         {/* 太陽裝飾 - Hero區域1顆 */}
         <div style={{
           position: 'absolute',
-          top: '8%',
+          top: '4%',
           left: '8%',
-          width: '240px',
-          height: '240px',
+          width: '220px',
+          height: '220px',
           backgroundImage: 'url(/sun-big.png)',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
