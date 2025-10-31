@@ -2732,7 +2732,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             letterSpacing: '0.05em',
             minHeight: '1.2em'
           }}>
-            <TypewriterText text="掌握今天，準備啟動設計。" speed={200} delay={2000} />
+            <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
           </h2>
         </div>
 
