@@ -162,6 +162,18 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
   const [reelSpinning, setReelSpinning] = useState([false, false, false]);
   const [stopRequested, setStopRequested] = useState(false);
 
+  // 鎖定背景滾動
+  useEffect(() => {
+    if (showPopup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showPopup]);
+
   const spinAllReels = () => {
     if (isSpinning) return;
 
@@ -245,7 +257,7 @@ export default function SlotMachine({ className, style }: SlotMachineProps) {
     }}>
       {/* 彈出式視窗 */}
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
           <div className="win98-window relative" style={{
             width: '400px',
             maxWidth: '95vw',

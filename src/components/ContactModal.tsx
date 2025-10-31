@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ContactLiam from './ContactLiam';
 import PricingTable from './PricingTable';
@@ -11,6 +11,18 @@ interface ContactModalProps {
 }
 
 export default function ContactModal({ isOpen, onClose, type }: ContactModalProps) {
+  // 鎖定背景滾動
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   if (!isOpen || !type) return null;
 
   return (
@@ -19,8 +31,8 @@ export default function ContactModal({ isOpen, onClose, type }: ContactModalProp
         <>
           {/* 背景遮罩 */}
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ backgroundColor: '#003EC3' }} // 純品牌藍，無透明度
+            className="fixed inset-0 flex items-center justify-center p-4"
+            style={{ backgroundColor: '#003EC3', zIndex: 9999 }} // 純品牌藍，無透明度
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

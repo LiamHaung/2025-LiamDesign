@@ -418,26 +418,71 @@ const LoadingPage = ({
         }} />
       </div>
 
-      {/* 流星效果 */}
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={`loading-meteor-${i}`}
-          className="absolute z-5"
-          style={{
-            left: `${15 + i * 20}%`,
-            top: `${10 + i * 15}%`,
-            width: '16px',
-            height: '16px',
-            color: '#003EC3',
-            fontSize: '16px',
-            animation: `meteorStarBlur ${4 + i * 0.5}s linear infinite`,
-            animationDelay: `${i * 0.8}s`,
-            opacity: 0.8
-          }}
-        >
-          ✦
-        </div>
-      ))}
+      {/* 背景星星裝飾 */}
+      {[...Array(9)].map((_, i) => {
+        const positions = [
+          { top: '10%', left: '15%' },
+          { top: '20%', right: '20%' },
+          { top: '30%', left: '8%' },
+          { top: '40%', right: '12%' },
+          { top: '50%', left: '25%' },
+          { top: '60%', right: '18%' },
+          { top: '70%', left: '10%' },
+          { top: '25%', right: '40%' },
+          { top: '55%', left: '45%' }
+        ];
+        const pos = positions[i] || { top: `${10 + i * 5}%`, left: `${10 + i * 5}%` };
+        const size = 8 + (i % 3) * 4; // 8px, 12px, 16px 交替
+        return (
+          <div
+            key={`loading-star-${i}`}
+            style={{
+              position: 'absolute',
+              ...pos,
+              width: `${size}px`,
+              height: `${size}px`,
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: `twinkle ${2 + i * 0.2}s infinite`,
+              animationDelay: `${i * 0.3}s`,
+              opacity: 0.6 + (i % 3) * 0.1,
+              zIndex: 1
+            }}
+          />
+        );
+      })}
+
+      {/* 流星效果 - 使用星星圖片 */}
+      {[
+        { angle: 60, startX: 10, delay: 0 },
+        { angle: 60, startX: 50, delay: 3.0 },
+        { angle: 60, startX: 80, delay: 6.0 }
+      ].map((meteor, i) => {
+        return (
+          <div
+            key={`loading-meteor-${i}`}
+            style={{
+              position: 'absolute',
+              left: `${meteor.startX}%`,
+              top: '-50px',
+              width: '24px',
+              height: '24px',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: `meteorFall ${3 + (i % 3) * 0.5}s linear infinite`,
+              animationDelay: `${meteor.delay}s`,
+              opacity: 0.9,
+              zIndex: 2,
+              filter: 'drop-shadow(0 0 8px rgba(0, 62, 195, 0.8))',
+              transform: `rotate(${meteor.angle - 45}deg)`
+            }}
+          />
+        );
+      })}
 
       {/* Logo */}
       <div style={{
@@ -566,6 +611,43 @@ const LoadingPage = ({
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        
+        @keyframes twinkle {
+          0%, 100% { 
+            opacity: 0.4;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1.2);
+          }
+        }
+        
+        @keyframes meteorFall {
+          0% { 
+            opacity: 0;
+            transform: translateX(-200px) translateY(-200px) rotate(15deg) scale(0.5);
+            filter: blur(4px) drop-shadow(0 0 8px rgba(0, 62, 195, 0.8));
+          }
+          10% { 
+            opacity: 0.8;
+            filter: blur(2px) drop-shadow(0 0 12px rgba(0, 62, 195, 1));
+          }
+          50% { 
+            opacity: 1;
+            transform: translateX(0) translateY(0) rotate(15deg) scale(1);
+            filter: blur(0px) drop-shadow(0 0 16px rgba(0, 62, 195, 1));
+          }
+          90% { 
+            opacity: 0.8;
+            filter: blur(2px) drop-shadow(0 0 12px rgba(0, 62, 195, 0.8));
+          }
+          100% { 
+            opacity: 0;
+            transform: translateX(200px) translateY(calc(100vh + 200px)) rotate(15deg) scale(0.5);
+            filter: blur(4px) drop-shadow(0 0 8px rgba(0, 62, 195, 0.5));
           }
         }
         
@@ -757,7 +839,7 @@ const ProductModal = ({
       height: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.8)',
       backdropFilter: 'blur(10px)',
-      zIndex: 10000,
+      zIndex: 9999,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -976,7 +1058,7 @@ const IntroModal = ({
       height: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.8)',
       backdropFilter: 'blur(10px)',
-      zIndex: 10000,
+      zIndex: 9999,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -1442,7 +1524,7 @@ const ProjectModal: React.FC<{
   return (
     <div
       className="fixed inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/80 to-blue-700/80 backdrop-blur-sm flex items-center justify-center p-4"
-      style={{ zIndex: 10000 }}
+      style={{ zIndex: 9999 }}
       onClick={onClose}
     >
       <div
@@ -1571,8 +1653,9 @@ const ProjectModal: React.FC<{
 // 設計日記元件 - 現代數位風格
 const DesignDiary: React.FC<{
   entries: DiaryEntry[];
-}> = ({ entries }) => {
-  const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null);
+  selectedEntry: DiaryEntry | null;
+  onSelectEntry: (entry: DiaryEntry | null) => void;
+}> = ({ entries, selectedEntry, onSelectEntry }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1653,7 +1736,8 @@ const DesignDiary: React.FC<{
             color: '#FFFFFF',
             margin: '0 0 20px 0',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif'
           }}>
             DESIGN DIARY
           </h1>
@@ -1691,7 +1775,7 @@ const DesignDiary: React.FC<{
                 <div
                   key={entry.id}
                   className="diary-card"
-                  onClick={() => setSelectedEntry(entry)}
+                  onClick={() => onSelectEntry(entry)}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   style={{
@@ -1702,7 +1786,7 @@ const DesignDiary: React.FC<{
                     transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                     position: 'relative',
                     overflow: 'hidden',
-                    fontFamily: 'var(--font-zpix), monospace',
+                    fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                     scrollSnapAlign: 'start',
                     transform: isHovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: isHovered 
@@ -1811,7 +1895,7 @@ const DesignDiary: React.FC<{
                       <span style={{
                         fontSize: '0.875rem',
                         color: '#666',
-                        fontFamily: 'var(--font-zpix), monospace',
+                        fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                         fontWeight: 'normal'
                       }}>
                         {entry.date}
@@ -1824,7 +1908,7 @@ const DesignDiary: React.FC<{
                    fontWeight: 'bold',
                    color: '#353535',
                    marginBottom: '1rem',
-                   fontFamily: 'var(--font-zpix), monospace',
+                   fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                    lineHeight: '1.4',
                    transition: 'color 0.3s ease'
                  }}>
@@ -1865,7 +1949,7 @@ const DesignDiary: React.FC<{
                            color: '#003EC3',
                            borderRadius: '20px',
                            fontSize: '0.75rem',
-                           fontFamily: 'var(--font-zpix), monospace',
+                           fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                            fontWeight: 'bold',
                            transition: 'all 0.2s ease'
                          }}
@@ -1896,7 +1980,7 @@ const DesignDiary: React.FC<{
                        background: '#003EC3',
                        color: '#FFFFF3',
                        fontSize: '1.3125rem',
-                       fontFamily: 'var(--font-zpix), monospace',
+                       fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                        fontWeight: 'bold',
                        padding: '0.9375rem 1.875rem',
                        borderRadius: '8px',
@@ -1922,7 +2006,7 @@ const DesignDiary: React.FC<{
                      }}
                      onClick={(e) => {
                        e.stopPropagation();
-                       setSelectedEntry(entry);
+                       onSelectEntry(entry);
                      }}
                    >
                      閱讀更多 ⟶
@@ -1976,14 +2060,14 @@ const DesignDiary: React.FC<{
               background: 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              zIndex: 50,
+              zIndex: 9999,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               padding: '1.5rem',
               animation: 'fadeIn 0.3s ease'
             }}
-            onClick={() => setSelectedEntry(null)}
+            onClick={() => onSelectEntry(null)}
           >
             {/* CSS 動畫 */}
             <style>{`
@@ -2015,14 +2099,14 @@ const DesignDiary: React.FC<{
                 overflowY: 'auto',
                 padding: '3rem',
                 position: 'relative',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                 animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* 關閉按鈕 - 溫和設計 */}
               <button
-                onClick={() => setSelectedEntry(null)}
+                onClick={() => onSelectEntry(null)}
                 style={{
                   position: 'absolute',
                   top: '1.5rem',
@@ -2035,7 +2119,7 @@ const DesignDiary: React.FC<{
                   height: '2.5rem',
                   fontSize: '1.25rem',
                   cursor: 'pointer',
-                  fontFamily: 'var(--font-zpix), monospace',
+                  fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -2074,7 +2158,7 @@ const DesignDiary: React.FC<{
                       <div style={{
                         fontSize: '0.875rem',
                         color: '#888',
-                        fontFamily: 'var(--font-zpix), monospace',
+                        fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                         marginBottom: '0.75rem',
                         display: 'flex',
                         alignItems: 'center',
@@ -2095,7 +2179,7 @@ const DesignDiary: React.FC<{
                         <div style={{
                           fontSize: '1rem',
                           color: '#003EC3',
-                          fontFamily: 'var(--font-zpix), monospace',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                           fontWeight: 'bold',
                           marginBottom: '0.75rem',
                           padding: '0.5rem 1rem',
@@ -2112,7 +2196,7 @@ const DesignDiary: React.FC<{
                         fontSize: 'clamp(2rem, 5vw, 2.75rem)',
                         fontWeight: 'bold',
                         color: '#353535',
-                        fontFamily: 'var(--font-zpix), monospace',
+                        fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                         lineHeight: '1.3',
                         marginBottom: '1rem'
                       }}>
@@ -2159,7 +2243,7 @@ const DesignDiary: React.FC<{
                         <div style={{
                           fontSize: '0.875rem',
                           color: '#003EC3',
-                          fontFamily: 'var(--font-zpix), monospace',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                           fontWeight: 'bold',
                           marginBottom: '0.75rem',
                           textTransform: 'uppercase',
@@ -2189,7 +2273,7 @@ const DesignDiary: React.FC<{
                         <div style={{
                           fontSize: '0.875rem',
                           color: '#003EC3',
-                          fontFamily: 'var(--font-zpix), monospace',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                           fontWeight: 'bold',
                           marginBottom: '0.75rem',
                           textTransform: 'uppercase',
@@ -2219,7 +2303,7 @@ const DesignDiary: React.FC<{
                         <div style={{
                           fontSize: '0.875rem',
                           color: '#003EC3',
-                          fontFamily: 'var(--font-zpix), monospace',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                           fontWeight: 'bold',
                           marginBottom: '0.75rem',
                           textTransform: 'uppercase',
@@ -2259,7 +2343,7 @@ const DesignDiary: React.FC<{
                           color: '#003EC3',
                           borderRadius: '20px',
                           fontSize: '0.875rem',
-                          fontFamily: 'var(--font-zpix), monospace',
+                          fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                           border: '1px solid rgba(0, 62, 195, 0.2)',
                           transition: 'all 0.2s ease',
                           display: 'inline-block'
@@ -3556,6 +3640,7 @@ export default function HeroSimpleTest() {
   const [blueSectionHeight, setBlueSectionHeight] = useState(1200); // 預設高度
   const [darkSectionHeight, setDarkSectionHeight] = useState(1000); // 深色區塊高度
   const [supportSectionHeight, setSupportSectionHeight] = useState(1000); // 支持我們區塊高度
+  const [diarySectionHeight, setDiarySectionHeight] = useState(1000); // 設計日記區塊高度
   const [currentSection, setCurrentSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -3581,10 +3666,29 @@ export default function HeroSimpleTest() {
   // 自我介紹狀態管理
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
   
+  // 設計日記狀態管理
+  const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
+  const [selectedDiaryEntry, setSelectedDiaryEntry] = useState<DiaryEntry | null>(null);
+  
   const blueSectionRef = useRef<HTMLDivElement>(null);
   const darkSectionRef = useRef<HTMLDivElement>(null);
   const supportSectionRef = useRef<HTMLDivElement>(null);
   const contactSectionRef = useRef<HTMLDivElement>(null);
+  const diarySectionRef = useRef<HTMLDivElement>(null);
+  const firstCarouselRef = useRef<HTMLDivElement>(null);
+  const secondCarouselRef = useRef<HTMLDivElement>(null);
+
+  // 鎖定背景滾動（當彈出視窗打開時）
+  useEffect(() => {
+    if (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry]);
 
   // 輪播組件數據
   const carouselItems: ProjectItem[] = [
@@ -3900,32 +4004,80 @@ export default function HeroSimpleTest() {
   const sections = [
     { id: 'hero', name: 'Hero', nameZh: '首頁' },
     { id: 'portfolio', name: 'Portfolio', nameZh: '作品' },
-    { id: 'projects', name: 'Projects', nameZh: '專案' },
-    { id: 'support', name: 'Support', nameZh: '支持' },
+    { id: 'diary', name: 'Diary', nameZh: '日記' },
+    { id: 'services', name: 'Services', nameZh: '服務' },
     { id: 'contact', name: 'Contact', nameZh: '聯繫' }
   ];
 
-  // 滾動偵測 - 判斷當前區塊
+  // 滾動偵測 - 判斷當前區塊（使用實際元素位置）
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    const windowHeight = window.innerHeight;
+    const updateCurrentSection = () => {
+      const windowHeight = window.innerHeight;
+      
+      // 使用 getBoundingClientRect 獲取每個區塊相對於視窗的位置
+      const sections = [
+        { ref: null, top: 0 }, // Hero
+        { ref: blueSectionRef, top: 0 },
+        { ref: diarySectionRef, top: 0 },
+        { ref: darkSectionRef, top: 0 },
+        { ref: contactSectionRef, top: 0 }
+      ];
+      
+      // 獲取每個區塊的實際位置（相對於視窗頂部）
+      const sectionPositions = sections.map((section, index) => {
+        if (index === 0) return 0; // Hero 在頂部
+        if (section.ref?.current) {
+          const rect = section.ref.current.getBoundingClientRect();
+          return rect.top + window.scrollY;
+        }
+        return Infinity; // 如果元素不存在，設為 Infinity
+      });
+      
+      // 當前滾動位置
+      const scrollPosition = window.scrollY;
+      const viewportCenter = scrollPosition + windowHeight / 2;
+      
+      let newSection = 0;
+      
+      // 從後往前判斷，找到第一個視窗中心超過的區塊
+      for (let i = sectionPositions.length - 1; i >= 0; i--) {
+        if (viewportCenter >= sectionPositions[i] - windowHeight * 0.2) {
+          newSection = i;
+          break;
+        }
+      }
+      
+      setCurrentSection(newSection);
+    };
     
-    let newSection = 0;
-    if (scrollY < windowHeight * 0.5) {
-      newSection = 0; // Hero
-    } else if (scrollY < windowHeight + blueSectionHeight * 0.5) {
-      newSection = 1; // Portfolio
-    } else if (scrollY < windowHeight + blueSectionHeight + darkSectionHeight * 0.5) {
-      newSection = 2; // Projects
-    } else if (scrollY < windowHeight + blueSectionHeight + darkSectionHeight + supportSectionHeight * 0.5) {
-      newSection = 3; // Support
-    } else {
-      newSection = 4; // Contact
-    }
+    // 初始更新
+    updateCurrentSection();
     
-    setCurrentSection(newSection);
-  }, [scrollY, blueSectionHeight, darkSectionHeight, supportSectionHeight]);
+    // 使用 requestAnimationFrame 優化滾動偵測
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          updateCurrentSection();
+          rafId = null;
+        });
+      }
+    };
+    
+    // 監聽滾動事件
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateCurrentSection);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateCurrentSection);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, [blueSectionHeight, darkSectionHeight, diarySectionHeight]);
 
   // 彈出視窗處理函數
   const handleProjectClick = (project: ProjectItem) => {
@@ -4008,6 +4160,44 @@ export default function HeroSimpleTest() {
 
     return () => {
       window.removeEventListener('resize', measureDarkHeight);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
+
+  // 測量設計日記區域內容高度
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const measureDiaryHeight = () => {
+      if (diarySectionRef.current) {
+        const height = diarySectionRef.current.scrollHeight;
+        setDiarySectionHeight(prevHeight => {
+          // 只有當高度真正改變時才更新
+          if (Math.abs(prevHeight - height) > 10) {
+            return height;
+          }
+          return prevHeight;
+        });
+      }
+    };
+
+    // 初始測量
+    measureDiaryHeight();
+
+    // 監聽視窗大小變化
+    window.addEventListener('resize', measureDiaryHeight);
+
+    // 使用 ResizeObserver 監聽內容變化
+    let resizeObserver: ResizeObserver | null = null;
+    if (diarySectionRef.current && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(measureDiaryHeight);
+      resizeObserver.observe(diarySectionRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', measureDiaryHeight);
       if (resizeObserver) {
         resizeObserver.disconnect();
       }
@@ -4301,7 +4491,7 @@ export default function HeroSimpleTest() {
           position: 'fixed',
           top: '20px',
           right: '20px',
-          zIndex: 1001
+          zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998
         }}>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -4385,7 +4575,7 @@ export default function HeroSimpleTest() {
                     padding: '12px 16px',
                     textAlign: 'left',
                     fontSize: '16px',
-                    fontFamily: 'var(--font-zpix), monospace',
+                    fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                     cursor: 'pointer',
                     borderRadius: '8px',
                     marginBottom: '4px',
@@ -4408,7 +4598,7 @@ export default function HeroSimpleTest() {
         right: isMobile ? '15px' : '30px',
         top: isMobile ? '50%' : '50%',
         transform: isMobile ? 'translateY(-50%)' : 'translateY(-50%)',
-        zIndex: 1000,
+        zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -4452,6 +4642,7 @@ export default function HeroSimpleTest() {
                 justifyContent: 'center'
               }}
               onClick={() => {
+                setHoveredNavIndex(null);
                 // 平滑滾動到對應區塊
                 const windowHeight = window.innerHeight;
                 let targetScroll = 0;
@@ -4460,17 +4651,39 @@ export default function HeroSimpleTest() {
                   case 0: // Hero
                     targetScroll = 0;
                     break;
-                  case 1: // Portfolio
-                    targetScroll = windowHeight;
+                  case 1: // Portfolio (第一個作品 - 第一組輪播元件)
+                    if (firstCarouselRef.current) {
+                      firstCarouselRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      return;
+                    } else if (blueSectionRef.current) {
+                      targetScroll = blueSectionRef.current.offsetTop;
+                    } else {
+                      targetScroll = windowHeight;
+                    }
                     break;
-                  case 2: // Projects
-                    targetScroll = windowHeight + blueSectionHeight;
+                  case 2: // Diary (日記)
+                    if (diarySectionRef.current) {
+                      diarySectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      return;
+                    } else {
+                      targetScroll = windowHeight + blueSectionHeight;
+                    }
                     break;
-                  case 3: // Support
-                    targetScroll = windowHeight + blueSectionHeight + darkSectionHeight;
+                  case 3: // Services (服務)
+                    if (darkSectionRef.current) {
+                      // 使用 scrollIntoView 確保正確滾動到服務區塊
+                      darkSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      return; // 直接返回，不需要後續的 window.scrollTo
+                    } else {
+                      targetScroll = windowHeight + blueSectionHeight + diarySectionHeight;
+                    }
                     break;
                   case 4: // Contact
-                    targetScroll = windowHeight + blueSectionHeight + darkSectionHeight + supportSectionHeight;
+                    if (contactSectionRef.current) {
+                      targetScroll = contactSectionRef.current.offsetTop;
+                    } else {
+                      targetScroll = windowHeight + blueSectionHeight + diarySectionHeight + darkSectionHeight;
+                    }
                     break;
                 }
                 
@@ -4480,12 +4693,14 @@ export default function HeroSimpleTest() {
                 });
               }}
               onMouseEnter={(e) => {
+                setHoveredNavIndex(index);
                 if (!isMobile) {
                   e.currentTarget.style.transform = 'scale(1.1)';
                   e.currentTarget.style.background = isActive ? '#003EC3' : '#FF8603';
                 }
               }}
               onMouseLeave={(e) => {
+                setHoveredNavIndex(null);
                 if (!isMobile) {
                   e.currentTarget.style.transform = 'scale(1)';
                   e.currentTarget.style.background = isActive 
@@ -4542,7 +4757,7 @@ export default function HeroSimpleTest() {
                   fontWeight: 'bold',
                   fontFamily: 'var(--font-zpix), monospace',
                   whiteSpace: 'nowrap',
-                  opacity: isActive ? 1 : 0,
+                  opacity: (isActive || hoveredNavIndex === index) ? 1 : 0,
                   transition: 'all 0.3s ease',
                   pointerEvents: 'none'
                 }}>
@@ -4574,7 +4789,7 @@ export default function HeroSimpleTest() {
         position: 'fixed',
         top: '20px',
         left: '20px',
-        zIndex: 1000,
+        zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         background: 'rgba(0, 62, 195, 0.1)',
         backdropFilter: 'blur(10px)',
         borderRadius: '16px',
@@ -4644,7 +4859,7 @@ export default function HeroSimpleTest() {
         top: isMobile ? 'auto' : 'auto',
         bottom: isMobile ? 'auto' : '20px',
         left: '20px',
-        zIndex: 1000,
+        zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         background: 'rgba(0, 0, 0, 0.7)',
         backdropFilter: 'blur(10px)',
         borderRadius: '8px',
@@ -4704,7 +4919,7 @@ export default function HeroSimpleTest() {
         bottom: isMobile ? '20px' : 'auto',
         right: isMobile ? 'auto' : '20px',
         left: isMobile ? '20px' : 'auto',
-        zIndex: 1000,
+        zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         background: 'rgba(0, 62, 195, 0.1)',
         backdropFilter: 'blur(10px)',
         borderRadius: '16px',
@@ -4791,7 +5006,7 @@ export default function HeroSimpleTest() {
         position: 'fixed',
         bottom: '20px',
         right: '20px',
-        zIndex: 1000,
+        zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         background: 'rgba(0, 62, 195, 0.1)',
         backdropFilter: 'blur(10px)',
         borderRadius: '16px',
@@ -4899,7 +5114,8 @@ export default function HeroSimpleTest() {
         <div style={{
           textAlign: 'center',
           marginBottom: '60px',
-          zIndex: 15 // 提高z-index確保在深色覆蓋層之上
+          zIndex: 1, // 降低z-index，確保彈出視窗在其上方
+          position: 'relative'
         }}>
           <h1 style={{
             fontSize: 'clamp(2.5rem, 8vw, 6rem)',
@@ -4923,12 +5139,14 @@ export default function HeroSimpleTest() {
         </div>
 
         {/* 3D 輪播組件 */}
-        <div style={{
-          width: '100%',
-          height: '80vh',
+        <div 
+          ref={firstCarouselRef}
+          style={{
+            width: '100%',
+            height: '80vh',
             position: 'relative',
-          zIndex: 10
-        }}>
+            zIndex: 10
+          }}>
           <Carousel3D items={carouselItems} onItemClick={handleProjectClick} />
           
           {/* 操作提示 */}
@@ -4950,14 +5168,46 @@ export default function HeroSimpleTest() {
             </div>
         </div>
 
-        {/* 第二個 3D 輪播組件 - 從右到左 */}
+        {/* 分隔線 */}
         <div style={{
           width: '100%',
-          height: '80vh',
-          position: 'relative',
-          zIndex: 10,
-          marginTop: '40px'
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: isMobile ? 'clamp(10px, 2vw, 20px)' : '40px',
+          marginBottom: isMobile ? 'clamp(10px, 2vw, 20px)' : '40px',
+          padding: isMobile ? '0 20px' : '0 40px'
         }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '600px',
+            height: isMobile ? '2px' : '3px',
+            background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent)',
+            position: 'relative'
+          }}>
+            {/* 可選：在中間添加裝飾元素 */}
+            <div style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
+            }}></div>
+          </div>
+        </div>
+
+        {/* 第二個 3D 輪播組件 - 從右到左 */}
+        <div 
+          ref={secondCarouselRef}
+          style={{
+            width: '100%',
+            height: '80vh',
+            position: 'relative',
+            zIndex: 10
+          }}>
           <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={6} />
           
           {/* 操作提示 */}
@@ -5068,15 +5318,17 @@ export default function HeroSimpleTest() {
       </div>
 
       {/* 設計日記區域 - 深色背景並向上覆蓋藍色區域 */}
-      <div style={{
-        position: 'relative',
-        backgroundColor: '#353535',
-        paddingTop: '4rem',
-        paddingBottom: '4rem',
-        minHeight: '100vh',
-        zIndex: 1,
-        overflow: 'hidden'
-      }}>
+      <div 
+        ref={diarySectionRef}
+        style={{
+          position: 'relative',
+          backgroundColor: '#353535',
+          paddingTop: '4rem',
+          paddingBottom: '4rem',
+          minHeight: '100vh',
+          zIndex: 1,
+          overflow: 'hidden'
+        }}>
         {/* 雲朵裝飾 - DESIGN DIARY區域1朵 */}
         <div style={{
           position: 'absolute',
@@ -5121,7 +5373,7 @@ export default function HeroSimpleTest() {
 
         {/* 設計日記組件 */}
         <div style={{ position: 'relative', zIndex: 10 }}>
-          <DesignDiary entries={diaryEntries} />
+          <DesignDiary entries={diaryEntries} selectedEntry={selectedDiaryEntry} onSelectEntry={setSelectedDiaryEntry} />
         </div>
       </div>
 
@@ -5246,7 +5498,7 @@ export default function HeroSimpleTest() {
         {/* 深色區域標題 */}
         <div style={{
           textAlign: 'center',
-          marginBottom: isMobile ? '-60px' : '2px',
+          marginBottom: isMobile ? 'clamp(20px, 5vw, 40px)' : 'clamp(40px, 6vw, 80px)',
           position: 'relative',
           zIndex: 10
         }}>
@@ -5277,8 +5529,8 @@ export default function HeroSimpleTest() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginTop: isMobile ? '56px' : '24px',
-          marginBottom: '16px',
+          marginTop: isMobile ? 'clamp(20px, 5vw, 40px)' : 'clamp(40px, 6vw, 80px)',
+          marginBottom: isMobile ? '8px' : '12px',
           position: 'relative',
           zIndex: 9,
           minHeight: '300px', // 確保有足夠空間顯示插畫
@@ -5319,7 +5571,7 @@ export default function HeroSimpleTest() {
         <div style={{
           maxWidth: '1200px',
           width: '100%',
-          marginTop: '60px',
+          marginTop: isMobile ? 'clamp(20px, 3vw, 30px)' : 'clamp(30px, 4vw, 50px)',
           position: 'relative',
           zIndex: 10
         }}>
@@ -5458,7 +5710,7 @@ export default function HeroSimpleTest() {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             backdropFilter: 'blur(10px)',
-            zIndex: 10000,
+            zIndex: 9999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -5712,7 +5964,7 @@ export default function HeroSimpleTest() {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             backdropFilter: 'blur(10px)',
-            zIndex: 10000,
+            zIndex: 9999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

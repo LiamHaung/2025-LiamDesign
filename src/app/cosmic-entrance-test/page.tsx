@@ -249,9 +249,7 @@ export default function CosmicEntranceTest() {
 
       {/* 載入畫面 */}
       {!isLoaded && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{
-          background: 'radial-gradient(ellipse at center, #0B0B2B 0%, #1A1A3A 30%, #2D1B69 60%, #0A0A1A 100%)'
-        }}>
+        <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 9999, background: 'radial-gradient(ellipse at center, #0B0B2B 0%, #1A1A3A 30%, #2D1B69 60%, #0A0A1A 100%)' }}>
           {/* 宇宙載入彈窗 */}
           <div className="relative backdrop-blur-sm w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 max-w-lg mx-auto px-4" style={{ 
             backgroundColor: 'rgba(0, 0, 0, 0.4)',

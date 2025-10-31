@@ -75,7 +75,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
         width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        zIndex: 99999,
+        zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -122,7 +122,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             padding: '10px',
             borderRadius: '5px',
             transition: 'background-color 0.2s',
-            zIndex: 100000
+            zIndex: 10000
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#f0f0f0';

@@ -154,9 +154,7 @@ export default function MinimalCosmicTest() {
 
       {/* 簡潔的載入畫面 */}
       {!isLoaded && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{
-          background: 'linear-gradient(135deg, #0A0A1A 0%, #1A1A3A 50%, #2D1B69 100%)'
-        }}>
+        <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 9999, background: 'linear-gradient(135deg, #0A0A1A 0%, #1A1A3A 50%, #2D1B69 100%)' }}>
           {/* 簡潔的載入彈窗 */}
           <div className="relative backdrop-blur-sm w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 max-w-lg mx-auto px-4" style={{ 
             backgroundColor: 'rgba(0, 0, 0, 0.3)',

@@ -83,6 +83,18 @@ export default function ProfileIntroWindow({
     }
   }, [isOpen]);
 
+  // 鎖定背景滾動（僅在 modal 模式）
+  useEffect(() => {
+    if (isOpen && !embedded) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, embedded]);
+
   if (!isOpen) return null;
 
   const currentData = profileData[currentProfile];
@@ -241,7 +253,8 @@ export default function ProfileIntroWindow({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 flex items-center justify-center p-4"
+          style={{ zIndex: 9999 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

@@ -125,7 +125,7 @@ export default function MinimalEntranceTest() {
       </div>
       {/* 像素奇幻透明風格載入畫面 */}
       {!isLoaded && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900">
+        <div className="fixed inset-0 flex items-center justify-center bg-slate-900" style={{ zIndex: 9999 }}>
           {/* 像素奇幻彈窗 */}
           <div className="relative backdrop-blur-sm w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 max-w-lg mx-auto px-4" style={{ 
             backgroundColor: 'rgba(0, 62, 195, 0.2)',

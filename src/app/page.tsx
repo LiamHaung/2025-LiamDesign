@@ -101,6 +101,18 @@ export default function Home() {
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
 
+  // 鎖定背景滾動（當彈出視窗打開時）
+  useEffect(() => {
+    if (showIntroModal || mobileMenuOpen || modalOpen || profileIntroOpen || designModalOpen || illustrationModalOpen || testCardModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showIntroModal, mobileMenuOpen, modalOpen, profileIntroOpen, designModalOpen, illustrationModalOpen, testCardModalOpen]);
+
   useEffect(() => {
     setShowLiam(false);
     setShowRight(false);
@@ -383,7 +395,7 @@ export default function Home() {
       />
       {/* Windows 98 風格介紹視窗 */}
       {showIntroModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
           <div className="win98-window relative" style={{
             width: '960px',
             maxWidth: '95vw',
@@ -767,7 +779,7 @@ export default function Home() {
             </div>
 
             {/* 手機版固定小圖示 */}
-            <div className="fixed top-4 right-4 z-50 lg:hidden" style={{ zIndex: 10000 }}>
+            <div className="fixed top-4 right-4 z-50 lg:hidden" style={{ zIndex: (showIntroModal || mobileMenuOpen || modalOpen || profileIntroOpen || designModalOpen || illustrationModalOpen || testCardModalOpen) ? 1 : 9998 }}>
               <div
                 style={{
                   width: '40px',
@@ -805,7 +817,7 @@ export default function Home() {
 
             {/* 手機版選單視窗 */}
             {mobileMenuOpen && (
-              <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ zIndex: 10001 }}>
+              <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
                 <div className="win98-window relative" style={{
                   width: '320px',
                   maxWidth: '90vw',
@@ -1071,7 +1083,7 @@ export default function Home() {
             <div className="fixed right-0 bottom-0 z-50 p-6" style={{ 
               transform: 'scale(1.5)', 
               transformOrigin: 'right bottom', 
-              zIndex: 10000 
+              zIndex: (showIntroModal || mobileMenuOpen || modalOpen || profileIntroOpen || designModalOpen || illustrationModalOpen || testCardModalOpen) ? 1 : 9998
             }}>
               <div className="logo-block long">
                 <Image src="/cursor-07.png" alt="Liam Design Logo" width={108} height={108} style={{ display: 'block' }} />
