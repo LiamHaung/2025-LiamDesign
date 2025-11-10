@@ -2571,13 +2571,20 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   
   // 檢測是否為手機裝置
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
+    const checkDevice = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setIsMobile(width < 768);
+      // iPad 檢測：寬度在 768-1400px 之間，且高度在 1000-1400px 之間
+      setIsTablet(width >= 768 && width <= 1400 && height >= 1000 && height <= 1400);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
   // 計算 Logo 淡入效果 - 在 hero 版面淡入
@@ -2727,21 +2734,25 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         {/* 船隻上方標題 - 打字機效果 (桌面版显示，手机版隐藏) */}
         {!isMobile && (
           <div style={{
-            position: 'relative',
-            zIndex: 30,
-            marginBottom: isMobile ? '30px' : 'clamp(60px, 8vh, 120px)', // 桌面版：增加間距，使用響應式單位
+            position: 'absolute',
+            top: isTablet ? '8%' : '10%', // 使用絕對定位，確保標題在頂部固定位置
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1,
+            width: '100%',
             opacity: boatOpacity,
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.1s ease-out',
+            pointerEvents: 'none'
           }}>
             <h1 style={{
-              fontSize: 'clamp(1.55rem, 4.7vh, 3.1rem)', // 桌面版：放大約3%，相對於視窗高度約4.7%
+              fontSize: isTablet ? 'clamp(1.2rem, 3vh, 2rem)' : 'clamp(1.3rem, 3.5vh, 2.5rem)', // 縮小字體，避免佔據太多空間
               fontWeight: 'bold',
               color: '#003EC3',
               fontFamily: 'var(--font-noto-sans-tc), sans-serif',
               textAlign: 'center',
               margin: 0,
               letterSpacing: '0.1em',
-              minHeight: '1.2em'
+              lineHeight: '1.2'
             }}>
               <TypewriterText text="Own the Day." speed={150} />
             </h1>
@@ -2751,15 +2762,16 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         {/* 中央船隻圖片 - 使用入口頁的船隻和波浪效果 */}
         <div className="boat-container" style={{
           position: 'relative',
-          zIndex: 20, // 提高z-index確保在藍色覆蓋層之上
+          zIndex: 30, // 極高 z-index，確保在所有標題之上
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: isMobile ? 'min(99vw, 462px)' : 'min(39vw, 520px)', // 桌面版：放大約3%，約39%視窗寬度
-          height: isMobile ? 'min(66vh, 396px)' : 'min(60.5vh, 440px)', // 手机版放大20%：55vh * 1.2 = 66vh, 330px * 1.2 = 396px
+          width: isMobile ? 'min(99vw, 462px)' : isTablet ? 'min(35.1vw, 468px)' : 'min(39vw, 520px)', // iPad 縮小10%：39vw * 0.9 = 35.1vw, 520px * 0.9 = 468px
+          height: isMobile ? 'min(66vh, 396px)' : isTablet ? 'min(54.45vh, 396px)' : 'min(60.5vh, 440px)', // iPad 縮小10%：60.5vh * 0.9 = 54.45vh, 440px * 0.9 = 396px
           transform: `translateY(${boatY}px)`,
           opacity: boatOpacity, // 應用透明度效果
-          transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+          transition: 'transform 0.1s ease-out, opacity 0.1s ease-out',
+          pointerEvents: 'auto' // 確保船隻可以互動
         }}>
           <div 
             className="boat-with-waves"
@@ -2781,15 +2793,19 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
         {/* 船隻下方標題區域 - 手機版顯示Own the Day和掌握今天 */}
         <div style={{
-          position: 'relative',
-          zIndex: 30,
-          marginTop: isMobile ? '30px' : 'clamp(60px, 8vh, 120px)', // 桌面版：增加間距，使用響應式單位
+          position: 'absolute',
+          bottom: isTablet ? '8%' : '10%', // 使用絕對定位，確保標題在底部固定位置
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 1,
+          width: '100%',
           opacity: boatOpacity,
           transition: 'opacity 0.1s ease-out',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: isMobile ? '15px' : '0'
+          gap: isMobile ? '15px' : '0',
+          pointerEvents: 'none'
         }}>
           {/* 手機版：Own the Day 顯示在掌握今天上方 */}
           {isMobile && (
@@ -2807,14 +2823,14 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             </h1>
           )}
           <h2 style={{
-            fontSize: isMobile ? 'clamp(1.188rem, 3.96vw, 1.98rem)' : 'clamp(1.25rem, 3.6vh, 2.6rem)', // 桌面版：放大約3%，相對於視窗高度約3.6%
+            fontSize: isMobile ? 'clamp(1.188rem, 3.96vw, 1.98rem)' : isTablet ? 'clamp(1rem, 2.5vh, 1.8rem)' : 'clamp(1.1rem, 3vh, 2.2rem)', // 縮小字體，避免佔據太多空間
             fontWeight: 'bold',
             color: '#003EC3',
             fontFamily: 'var(--font-noto-sans-tc), sans-serif',
             textAlign: 'center',
             margin: 0,
             letterSpacing: '0.05em',
-            minHeight: '1.2em'
+            lineHeight: '1.2'
           }}>
             <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
           </h2>
@@ -3222,6 +3238,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           left: 50%;
           transform: translate(-50%, -50%) scale(1.32);
           transform-origin: center center;
+        }
+        
+        /* iPad 版：縮小10% */
+        @media (min-width: 768px) and (max-width: 1400px) {
+          .boat-with-waves {
+            width: min(35.1vw, 468px); // iPad 縮小10%：39vw * 0.9 = 35.1vw, 520px * 0.9 = 468px
+          }
         }
         
         /* 手機版：圖片放大20% */
