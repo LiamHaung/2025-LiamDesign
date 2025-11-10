@@ -2729,12 +2729,12 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           <div style={{
             position: 'relative',
             zIndex: 30,
-            marginBottom: isMobile ? '30px' : '50px',
+            marginBottom: isMobile ? '30px' : 'clamp(60px, 8vh, 120px)', // 桌面版：增加間距，使用響應式單位
             opacity: boatOpacity,
             transition: 'opacity 0.1s ease-out'
           }}>
             <h1 style={{
-              fontSize: 'clamp(1.65rem, 5.28vw, 2.64rem)', // 放大110%
+              fontSize: 'clamp(1.55rem, 4.7vh, 3.1rem)', // 桌面版：放大約3%，相對於視窗高度約4.7%
               fontWeight: 'bold',
               color: '#003EC3',
               fontFamily: 'var(--font-noto-sans-tc), sans-serif',
@@ -2755,7 +2755,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: isMobile ? 'min(99vw, 462px)' : 'min(77vw, 550px)', // 手机版放大20%：82.5vw * 1.2 = 99vw, 385px * 1.2 = 462px
+          width: isMobile ? 'min(99vw, 462px)' : 'min(39vw, 520px)', // 桌面版：放大約3%，約39%視窗寬度
           height: isMobile ? 'min(66vh, 396px)' : 'min(60.5vh, 440px)', // 手机版放大20%：55vh * 1.2 = 66vh, 330px * 1.2 = 396px
           transform: `translateY(${boatY}px)`,
           opacity: boatOpacity, // 應用透明度效果
@@ -2783,7 +2783,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         <div style={{
           position: 'relative',
           zIndex: 30,
-          marginTop: isMobile ? '30px' : '50px',
+          marginTop: isMobile ? '30px' : 'clamp(60px, 8vh, 120px)', // 桌面版：增加間距，使用響應式單位
           opacity: boatOpacity,
           transition: 'opacity 0.1s ease-out',
           display: 'flex',
@@ -2807,7 +2807,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             </h1>
           )}
           <h2 style={{
-            fontSize: 'clamp(1.188rem, 3.96vw, 1.98rem)', // 放大110%
+            fontSize: isMobile ? 'clamp(1.188rem, 3.96vw, 1.98rem)' : 'clamp(1.25rem, 3.6vh, 2.6rem)', // 桌面版：放大約3%，相對於視窗高度約3.6%
             fontWeight: 'bold',
             color: '#003EC3',
             fontFamily: 'var(--font-noto-sans-tc), sans-serif',
@@ -3215,12 +3215,12 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         
         .boat-with-waves {
           position: absolute;
-          width: min(77vw, 385px); // 桌面版保持原尺寸
+          width: min(39vw, 520px); // 桌面版：放大約3%，約39%視窗寬度，最大520px
           z-index: 2;
           animation: bob 2.6s ease-in-out infinite;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%) scale(1.32); // 桌面版保持原尺寸
+          transform: translate(-50%, -50%) scale(1.32);
           transform-origin: center center;
         }
         
@@ -5574,9 +5574,9 @@ export default function HeroSimpleTest() {
           {/* 深色背景層 - 增強立體感 */}
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
-            { step: 2, src: '/service-1.png', alt: 'Step 2 Illustration' },
+            { step: 2, src: '/service-2.png', alt: 'Step 2 Illustration' },
             { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
-            { step: 4, src: '/service-1.png', alt: 'Step 4 Illustration' },
+            { step: 4, src: '/service-2.png', alt: 'Step 4 Illustration' },
             { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
           ].map((item) => (
             <div
@@ -5610,9 +5610,9 @@ export default function HeroSimpleTest() {
           {/* 圖片層 */}
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
-            { step: 2, src: '/service-1.png', alt: 'Step 2 Illustration' },
+            { step: 2, src: '/service-2.png', alt: 'Step 2 Illustration' },
             { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
-            { step: 4, src: '/service-1.png', alt: 'Step 4 Illustration' },
+            { step: 4, src: '/service-2.png', alt: 'Step 4 Illustration' },
             { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
           ].map((item) => (
             <img
