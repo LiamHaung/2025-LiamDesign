@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Press_Start_2P, Noto_Sans_TC } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P, Noto_Sans_TC, Caveat } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,6 +32,27 @@ const zpix = localFont({
   src: "../../public/zpix.ttf",
   variable: "--font-zpix",
   display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// 中文手寫字體 - 辰宇落雁體
+const handwritingFont = localFont({
+  src: [
+    {
+      path: "../../public/fonts/ChenYuluoyan-Thin-Monospaced.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-handwriting",
+  display: "swap",
+  fallback: ["var(--font-caveat)", "var(--font-noto-sans-tc)", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -195,14 +217,28 @@ export default function RootLayout({
   return (
     <html lang="zh-TW">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap"
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${notoSansTC.variable} ${zpix.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${notoSansTC.variable} ${zpix.variable} ${caveat.variable} ${handwritingFont.variable} antialiased`}
       >
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
       </body>
     </html>

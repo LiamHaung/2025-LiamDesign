@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 字體導入已移至 layout.tsx 的 <head> 中 */
+/* 手寫字體配置：如果有本地字體文件，請在 layout.tsx 中配置 */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
