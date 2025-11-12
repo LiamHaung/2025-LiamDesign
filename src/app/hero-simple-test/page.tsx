@@ -2550,10 +2550,6 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
-  // 計算 Logo 淡入效果 - 在 hero 版面淡入
-  const logoOpacity = typeof window !== 'undefined' 
-    ? Math.min(1, Math.max(0, scrollY / 300)) // 在滚动前 300px 逐渐淡入
-    : 0;
 
   // 計算視差效果
   const boatY = typeof window !== 'undefined' ? scrollY * 0.5 : 0; // 船隻移動較慢
@@ -2593,29 +2589,6 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         zIndex: 1,
         transition: 'height 0.1s ease-out'
       }}></div>
-      {/* 頂部中央 Logo - Hero 版面淡入 */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 20,
-        opacity: logoOpacity,
-        transition: 'opacity 0.5s ease-in-out'
-      }}>
-        <Image 
-          src="/cursor-07.png" 
-          alt="Liam Design Logo" 
-          width={160}
-          height={160}
-          className="logo-responsive"
-          style={{
-            width: '160px', // 桌面版大小
-            height: '160px',
-            objectFit: 'contain'
-          }}
-        />
-      </div>
 
 
 
@@ -2679,69 +2652,137 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         </div>
       </div>
 
-      {/* 中央區域 - 移除藍色背景 */}
+      {/* 中央區域 - Flex 容器：畫面左右上下置中，包含船隻+海浪和標題 */}
+      {/* 🔴 紅線：最外層 Flex 容器 */}
       <div style={{
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80vw',
-        height: '60vh',
-        zIndex: 10,
+        transform: `translate(-50%, -50%) translateY(${boatY}px)`, // 合併兩個 transform，確保置中
+        width: '100%',
+        maxWidth: isSmallMobile ? '95vw' : isMobile ? '90vw' : isTablet ? '85vw' : '80vw', // 響應式最大寬度
+        zIndex: 100, // 大幅提高 z-index，確保在所有背景裝飾元素（z-index: 1）之上
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        gap: '0', // 移除間距，讓綠線區和藍線區緊緊連在一起
+        opacity: boatOpacity,
+        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
+        boxSizing: 'border-box',
+        minHeight: '200px', // 確保容器有足夠高度可見
+        // 確保建立新的堆疊上下文
+        isolation: 'isolate' // 建立新的堆疊上下文，確保 z-index 生效
       }}>
+        {/* 太陽裝飾 - 位於紅線容器左上緣 */}
+        <div style={{
+          position: 'absolute',
+          top: '0', // 貼齊容器頂部
+          left: '0', // 貼齊容器左側
+          width: isMobile ? 'clamp(100px, 20vw, 150px)' : '180px',
+          height: isMobile ? 'clamp(100px, 20vw, 150px)' : '180px',
+          backgroundImage: 'url(/sun-big.png)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          opacity: starOpacity,
+          zIndex: 1, // 在容器內，但低於文字
+          pointerEvents: 'none',
+          transition: 'opacity 0.1s ease-out',
+          transform: 'translate(-30%, -30%)' // 稍微往外偏移，讓太陽一部分在容器外，形成貼齊左上緣的效果
+        }}></div>
 
-        {/* 船隻上方標題 - 打字機效果 (桌面版显示，手机版隐藏) */}
-        {!isMobile && (
-          <div style={{
-            position: 'absolute',
-            top: isTablet ? '8%' : '10%', // 使用絕對定位，確保標題在頂部固定位置
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 50, // 高於船隻，確保文字顯示在船隻上方
-            width: '100%',
-            opacity: boatOpacity,
-            transition: 'opacity 0.1s ease-out',
-            pointerEvents: 'none'
+        {/* 1. 標題區域 - 響應式大小，現在在上方 */}
+        {/* 🟢 綠線：標題容器 */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center', // 垂直置中
+          width: '100%',
+          maxWidth: isSmallMobile ? '95vw' : isMobile ? '90vw' : isTablet ? '85vw' : '80vw', // 響應式最大寬度
+          minHeight: isSmallMobile ? 'clamp(100px, 15vh, 150px)' : isMobile ? 'clamp(120px, 18vh, 180px)' : isTablet ? 'clamp(110px, 16vh, 170px)' : 'clamp(120px, 18vh, 180px)', // 響應式最小高度，確保有足夠空間上下置中
+          paddingTop: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingTop，確保文字不被海浪遮住
+          paddingBottom: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingBottom，確保上下對稱
+          gap: isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : isMobile ? 'clamp(8px, 2vh, 16px)' : isTablet ? 'clamp(10px, 2.2vh, 18px)' : 'clamp(12px, 2.5vh, 20px)', // 響應式標題間距
+          pointerEvents: 'none',
+          flexShrink: 0,
+          boxSizing: 'border-box'
+        }}>
+          {/* 主標題 - 響應式字體大小 */}
+          <h1 style={{
+            fontSize: isSmallMobile ? 'clamp(1.2rem, 4vw, 1.8rem)' : isMobile ? 'clamp(1.4rem, 4.5vw, 2.2rem)' : isTablet ? 'clamp(1.5rem, 3vh, 2.2rem)' : 'clamp(1.8rem, 4vh, 2.8rem)',
+            fontWeight: 'bold',
+            color: '#003EC3',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+            textAlign: 'center',
+            margin: 0,
+            letterSpacing: '0.1em',
+            lineHeight: '1.2',
+            width: '100%'
           }}>
-            <h1 style={{
-              fontSize: isTablet ? 'clamp(1.2rem, 3vh, 2rem)' : 'clamp(1.3rem, 3.5vh, 2.5rem)', // 縮小字體，避免佔據太多空間
-              fontWeight: 'bold',
-              color: '#003EC3',
-              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-              textAlign: 'center',
-              margin: 0,
-              letterSpacing: '0.1em',
-              lineHeight: '1.2'
-            }}>
-              <TypewriterText text="Own the Day." speed={150} />
-            </h1>
-          </div>
-        )}
+            <TypewriterText text="Own the Day." speed={150} />
+          </h1>
+          
+          {/* 副標題 - 響應式字體大小 */}
+          <h2 style={{
+            fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.3rem)' : isMobile ? 'clamp(1rem, 3.5vw, 1.6rem)' : isTablet ? 'clamp(1.1rem, 2.5vh, 1.8rem)' : 'clamp(1.2rem, 3vh, 2rem)',
+            fontWeight: 'bold',
+            color: '#003EC3',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+            textAlign: 'center',
+            margin: 0,
+            letterSpacing: '0.05em',
+            lineHeight: '1.2',
+            width: '100%'
+          }}>
+            <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
+          </h2>
+        </div>
 
-        {/* 中央船隻圖片 - 使用入口頁的船隻和波浪效果 */}
+        {/* 2. 船隻圖片 + 海浪 - 響應式大小，等比例縮放，現在在下方 */}
+        {/* 🔵 藍線：船隻容器 */}
         <div className="boat-container" style={{
           position: 'relative',
-          zIndex: 5, // 低 z-index，確保文字（z-index: 50）顯示在上方
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: isSmallMobile ? 'min(85vw, 380px)' : isMobile ? 'min(99vw, 462px)' : isTablet ? 'min(35.1vw, 468px)' : 'min(39vw, 520px)', // 小手機縮小船隻
-          height: isSmallMobile ? 'min(55vh, 320px)' : isMobile ? 'min(66vh, 396px)' : isTablet ? 'min(54.45vh, 396px)' : 'min(60.5vh, 440px)', // 小手機縮小船隻高度
-          marginBottom: isSmallMobile ? 'clamp(80px, 15vh, 120px)' : isMobile ? 'clamp(60px, 12vh, 100px)' : '0', // 小手機增加更多底部間距
-          transform: `translateY(${boatY}px)`,
-          opacity: boatOpacity, // 應用透明度效果
-          transition: 'transform 0.1s ease-out, opacity 0.1s ease-out',
-          pointerEvents: 'auto' // 確保船隻可以互動
+          alignItems: 'center', // 垂直置中
+          justifyContent: 'center', // 水平置中
+          width: isSmallMobile ? 'min(102vw, 456px)' : isMobile ? 'min(108vw, 540px)' : isTablet ? 'min(48vw, 600px)' : 'min(46.8vw, 624px)', // 響應式寬度，放大120%（85vw*1.2=102vw, 380px*1.2=456px 等）
+          // 使用固定高度，確保 flex 置中正確計算
+          height: isSmallMobile ? 'min(60vh, 360px)' : isMobile ? 'min(66vh, 420px)' : isTablet ? 'min(60vh, 480px)' : 'min(66vh, 528px)', // 響應式高度，放大120%（50vh*1.2=60vh, 300px*1.2=360px 等）
+          // 不設置 paddingTop，讓 flex 置中正常工作
+          paddingTop: 0,
+          paddingBottom: isSmallMobile ? 'clamp(80px, 10vh, 100px)' : isMobile ? 'clamp(90px, 11vh, 110px)' : isTablet ? 'clamp(85px, 10vh, 100px)' : 'clamp(90px, 11vh, 110px)', // 響應式為海浪留出空間
+          flexShrink: 0,
+          // 移除 transform，因為已經在最外層容器處理了
+          pointerEvents: 'auto',
+          overflow: 'visible', // 允許海浪顯示，但船隻本身要在容器內
+          boxSizing: 'border-box',
+          // 確保內容在容器內
+          maxWidth: '100%'
         }}>
           <div 
             className="boat-with-waves"
             style={{
               '--wave-y': `${waveY}px`,
-              transform: `scale(${boatScale})`
+              width: '100%',
+              maxWidth: '100%', // 確保不超出藍線容器
+              aspectRatio: '3541 / 2203', // 原始比例，確保等比例縮放
+              height: 'auto',
+              maxHeight: '100%', // 確保不超出容器高度
+              position: 'relative', // 強制使用 relative，確保在藍線框內
+              top: 'auto', // 確保不在左上角
+              left: 'auto', // 確保不在左上角
+              right: 'auto',
+              bottom: 'auto',
+              transform: `scale(${boatScale})`,
+              transformOrigin: 'center center',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              // 使用負 margin 來補償 paddingBottom，讓船隻視覺上置中
+              marginTop: 'auto',
+              marginBottom: isSmallMobile ? 'clamp(-40px, -5vh, -50px)' : isMobile ? 'clamp(-45px, -5.5vh, -55px)' : isTablet ? 'clamp(-42px, -5.2vh, -52px)' : 'clamp(-45px, -5.5vh, -55px)',
+              boxSizing: 'border-box'
             } as React.CSSProperties}
           >
             <Image 
@@ -2751,56 +2792,18 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               height={2203} 
               className="boat-img"
               priority
+              style={{
+                width: '100%',
+                height: '100%', // 填滿父容器
+                objectFit: 'contain', // 保持比例，完整顯示在容器內
+                display: 'block',
+                maxWidth: '100%',
+                maxHeight: '100%'
+              }}
             />
           </div>
         </div>
 
-        {/* 船隻下方標題區域 - 手機版顯示Own the Day和掌握今天 */}
-        <div style={{
-          position: 'absolute',
-          bottom: isSmallMobile ? 'clamp(8%, 12vh, 18%)' : isMobile ? 'clamp(5%, 8vh, 12%)' : isTablet ? '8%' : '10%', // 小手機大幅增加 bottom 間距
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 50, // 高於船隻（z-index: 5），確保文字顯示在船隻上方
-          width: '100%',
-          paddingTop: isSmallMobile ? 'clamp(30px, 8vh, 60px)' : isMobile ? 'clamp(20px, 5vh, 40px)' : '0', // 小手機增加更多 padding-top
-          paddingBottom: isSmallMobile ? 'clamp(20px, 6vh, 40px)' : isMobile ? 'clamp(15px, 4vh, 30px)' : '0', // 小手機增加更多 padding-bottom
-          opacity: boatOpacity,
-          transition: 'opacity 0.1s ease-out',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: isSmallMobile ? 'clamp(12px, 3vh, 24px)' : isMobile ? 'clamp(10px, 2vh, 20px)' : '0', // 小手機增加標題間距
-          pointerEvents: 'none'
-        }}>
-          {/* 手機版：Own the Day 顯示在掌握今天上方 */}
-          {isMobile && (
-            <h1 style={{
-              fontSize: isSmallMobile ? 'clamp(1.3rem, 4.5vw, 2rem)' : 'clamp(1.65rem, 5.28vw, 2.64rem)', // 小手機縮小字體
-              fontWeight: 'bold',
-              color: '#003EC3',
-              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-              textAlign: 'center',
-              margin: 0,
-              letterSpacing: '0.1em',
-              lineHeight: '1.2'
-            }}>
-              <TypewriterText text="Own the Day." speed={150} />
-            </h1>
-          )}
-          <h2 style={{
-            fontSize: isSmallMobile ? 'clamp(0.95rem, 3.2vw, 1.5rem)' : isMobile ? 'clamp(1.188rem, 3.96vw, 1.98rem)' : isTablet ? 'clamp(1rem, 2.5vh, 1.8rem)' : 'clamp(1.1rem, 3vh, 2.2rem)', // 小手機進一步縮小字體
-            fontWeight: 'bold',
-            color: '#003EC3',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-            textAlign: 'center',
-            margin: 0,
-            letterSpacing: '0.05em',
-            lineHeight: '1.2'
-          }}>
-            <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
-          </h2>
-        </div>
 
           {/* 星球裝飾 - Hero區域2顆 */}
           <div 
@@ -2818,7 +2821,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               animation: 'twinkle 2s infinite',
               opacity: starOpacity, // 應用透明度效果
               '--star-y': `${starY}px`,
-              zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
+              zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
               transition: 'opacity 0.1s ease-out'
             } as React.CSSProperties}
           ></div>
@@ -2834,26 +2837,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'twinkle 2.5s infinite',
             opacity: starOpacity,
-            zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
+            zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
             transition: 'opacity 0.1s ease-out'
           }}></div>
 
-        {/* 太陽裝飾 - Hero區域1顆 */}
-        <div style={{
-          position: 'absolute',
-          top: '8%',
-          left: '8%',
-          width: isMobile ? 'clamp(120px, 25vw, 180px)' : '220px',
-          height: isMobile ? 'clamp(120px, 25vw, 180px)' : '220px',
-          backgroundImage: 'url(/sun-big.png)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          opacity: starOpacity,
-          zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
-          pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
 
         {/* 雲朵裝飾 - Hero區域3朵 */}
         <div style={{
@@ -2868,7 +2855,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           backgroundPosition: 'center',
           animation: 'floatCloud 8s ease-in-out infinite',
           opacity: starOpacity,
-          zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
+          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
           pointerEvents: 'none',
           transition: 'opacity 0.1s ease-out'
         }}></div>
@@ -2885,7 +2872,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           animation: 'floatCloud 9s ease-in-out infinite',
           animationDelay: '2s',
           opacity: starOpacity,
-          zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
+          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
           pointerEvents: 'none',
           transition: 'opacity 0.1s ease-out'
         }}></div>
@@ -2902,7 +2889,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           animation: 'floatCloud 10s ease-in-out infinite',
           animationDelay: '4s',
           opacity: starOpacity,
-          zIndex: 4, // 低於船隻（z-index: 5）和文字（z-index: 50）
+          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
           pointerEvents: 'none',
           transition: 'opacity 0.1s ease-out'
         }}></div>
@@ -3197,37 +3184,16 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         }
         
         .boat-with-waves {
-          position: absolute;
-          width: min(39vw, 520px); // 桌面版：放大約3%，約39%視窗寬度，最大520px
+          /* 使用 relative 以配合 flex 布局，寬度由父容器和 inline style 控制 */
+          position: relative !important; /* 強制使用 relative，覆蓋任何絕對定位 */
           z-index: 2;
           animation: bob 2.6s ease-in-out infinite;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) scale(1.32);
           transform-origin: center center;
-        }
-        
-        /* iPad 版：縮小10% */
-        @media (min-width: 768px) and (max-width: 1400px) {
-          .boat-with-waves {
-            width: min(35.1vw, 468px); // iPad 縮小10%：39vw * 0.9 = 35.1vw, 520px * 0.9 = 468px
-          }
-        }
-        
-        /* 小手機版（iPhone SE 等）：縮小船隻 */
-        @media (max-width: 375px) {
-          .boat-with-waves {
-            width: min(85vw, 380px); // 小手機縮小船隻
-            transform: translate(-50%, -50%) scale(1.2); // 小手機縮小 scale
-          }
-        }
-        
-        /* 手機版：圖片放大20% */
-        @media (min-width: 376px) and (max-width: 768px) {
-          .boat-with-waves {
-            width: min(92.4vw, 462px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 385px * 1.2 = 462px
-            transform: translate(-50%, -50%) scale(1.584); // 手機版放大20%：1.32 * 1.2 = 1.584
-          }
+          /* 確保不在左上角 */
+          top: auto !important;
+          left: auto !important;
+          right: auto !important;
+          bottom: auto !important;
         }
         
         .boat-with-waves::after {
@@ -3258,8 +3224,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         }
         
         @keyframes bob { 
-          0%, 100% { transform: translate(-50%, -50%) scale(1.32) translateY(0) rotate(0.5deg); } 
-          50% { transform: translate(-50%, -50%) scale(1.32) translateY(-3px) rotate(-0.5deg); } 
+          0%, 100% { transform: scale(1.32) translateY(0) rotate(0.5deg); } 
+          50% { transform: scale(1.32) translateY(-3px) rotate(-0.5deg); } 
         }
         @keyframes wave-move {
           0% { background-position-x: 0; }
@@ -3467,8 +3433,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(71.5vw, 330px); // 放大110%：65vw * 1.1 = 71.5vw, 300px * 1.1 = 330px
-            transform: translate(-50%, -50%) scale(1.1); // 放大110%：1.0 * 1.1 = 1.1
+            width: 100%; // 由父容器控制寬度
+            transform: scale(1.1) !important; // 只保留 scale，移除 translate
           }
           .boat-with-waves::after {
             height: 50px; /* 恢復原始高度 */
@@ -3504,8 +3470,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(92.4vw, 330px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 275px * 1.2 = 330px
-            transform: translate(-50%, -50%) scale(1.188); // 手機版放大20%：0.99 * 1.2 = 1.188
+            width: 100%; // 由父容器控制寬度
+            transform: scale(1.188) !important; // 只保留 scale，移除 translate
           }
           .boat-with-waves::after {
             height: 40px; /* 恢復原始高度 */
@@ -3542,8 +3508,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(92.4vw, 237.6px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 198px * 1.2 = 237.6px
-            transform: translate(-50%, -50%) scale(0.924); // 手機版放大20%：0.77 * 1.2 = 0.924
+            width: 100%; // 由父容器控制寬度
+            transform: scale(0.924) !important; // 只保留 scale，移除 translate
           }
           .boat-with-waves::after {
             height: 35px; /* 恢復原始高度 */
@@ -3580,8 +3546,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }
           
           .boat-with-waves { 
-            width: min(92.4vw, 184.8px); // 手機版放大20%：77vw * 1.2 = 92.4vw, 154px * 1.2 = 184.8px
-            transform: translate(-50%, -50%) scale(0.792); // 手機版放大20%：0.66 * 1.2 = 0.792
+            width: 100%; // 由父容器控制寬度
+            transform: scale(0.792) !important; // 只保留 scale，移除 translate
           }
           .boat-with-waves::after {
             height: 30px; /* 恢復原始高度 */
