@@ -2694,7 +2694,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
         {/* 1. 標題區域 - 響應式大小，現在在上方 */}
         {/* 🟢 綠線：標題容器 */}
-        <div style={{
+          <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -2710,19 +2710,19 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           boxSizing: 'border-box'
         }}>
           {/* 主標題 - 響應式字體大小 */}
-          <h1 style={{
+            <h1 style={{
             fontSize: isSmallMobile ? 'clamp(1.2rem, 4vw, 1.8rem)' : isMobile ? 'clamp(1.4rem, 4.5vw, 2.2rem)' : isTablet ? 'clamp(1.5rem, 3vh, 2.2rem)' : 'clamp(1.8rem, 4vh, 2.8rem)',
-            fontWeight: 'bold',
-            color: '#003EC3',
+              fontWeight: 'bold',
+              color: '#003EC3',
             fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-            textAlign: 'center',
-            margin: 0,
-            letterSpacing: '0.1em',
+              textAlign: 'center',
+              margin: 0,
+              letterSpacing: '0.1em',
             lineHeight: '1.2',
             width: '100%'
-          }}>
-            <TypewriterText text="Own the Day." speed={150} />
-          </h1>
+            }}>
+              <TypewriterText text="Own the Day." speed={150} />
+            </h1>
           
           {/* 副標題 - 響應式字體大小 */}
           <h2 style={{
@@ -2738,7 +2738,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }}>
             <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
           </h2>
-        </div>
+          </div>
 
         {/* 2. 船隻圖片 + 海浪 - 響應式大小，等比例縮放，現在在下方 */}
         {/* 🔵 藍線：船隻容器 */}
@@ -2843,22 +2843,22 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
 
         {/* 雲朵裝飾 - Hero區域3朵 */}
-        <div style={{
-          position: 'absolute',
+          <div style={{
+            position: 'absolute',
           top: '10%',
           right: '15%',
           width: '60px',
           height: '60px',
           backgroundImage: 'url(/cloud-big.png)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           animation: 'floatCloud 8s ease-in-out infinite',
-          opacity: starOpacity,
+            opacity: starOpacity,
           zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
           pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
         <div style={{
           position: 'absolute',
           top: '25%',
@@ -5730,9 +5730,9 @@ export default function HeroSimpleTest() {
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
             { step: 2, src: '/service-2.png', alt: 'Step 2 Illustration' },
-            { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
-            { step: 4, src: '/service-2.png', alt: 'Step 4 Illustration' },
-            { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
+            { step: 3, src: '/service-3.png', alt: 'Step 3 Illustration' },
+            { step: 4, src: '/service-4.png', alt: 'Step 4 Illustration' },
+            { step: 5, src: '/service-5.png', alt: 'Step 5 Illustration' }
           ].map((item) => (
             <div
               key={`svc-bg-${item.step}`}
@@ -5766,9 +5766,9 @@ export default function HeroSimpleTest() {
           {[
             { step: 1, src: '/service-1.png', alt: 'Step 1 Illustration' },
             { step: 2, src: '/service-2.png', alt: 'Step 2 Illustration' },
-            { step: 3, src: '/service-1.png', alt: 'Step 3 Illustration' },
-            { step: 4, src: '/service-2.png', alt: 'Step 4 Illustration' },
-            { step: 5, src: '/service-1.png', alt: 'Step 5 Illustration' }
+            { step: 3, src: '/service-3.png', alt: 'Step 3 Illustration' },
+            { step: 4, src: '/service-4.png', alt: 'Step 4 Illustration' },
+            { step: 5, src: '/service-5.png', alt: 'Step 5 Illustration' }
           ].map((item) => (
             <img
               key={`svc-illu-inline-${item.step}`}
@@ -5813,15 +5813,16 @@ export default function HeroSimpleTest() {
           }}>
             <div style={{
               display: 'inline-block',
-              backgroundColor: '#FFFFFF',
-              color: '#000000',
+              backgroundColor: '#353535', // 深灰色實色背景（與 footer 一致），像夜晚的深色
+              color: '#fdd000', // 黃色文字
               padding: isMobile ? 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)' : 'clamp(10px, 1.5vw, 16px) clamp(20px, 3vw, 32px)',
               borderRadius: '8px',
               fontSize: isMobile ? 'clamp(0.9rem, 2.5vw, 1.1rem)' : 'clamp(1rem, 1.5vw, 1.2rem)',
               fontWeight: '500',
               fontFamily: 'var(--font-noto-sans-tc), sans-serif',
               transition: 'opacity 0.3s ease-in-out',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', // 只保留基本陰影
+              textShadow: '0 0 10px rgba(253, 208, 0, 0.8), 0 0 20px rgba(253, 208, 0, 0.6), 0 0 30px rgba(253, 208, 0, 0.4)' // 文字光暈效果
             }}>
               {(() => {
                 const stepDescriptions: { [key: number]: string } = {
