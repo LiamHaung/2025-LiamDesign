@@ -2559,11 +2559,11 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 計算船隻縮放效果
   const boatScale = typeof window !== 'undefined' ? Math.max(0.5, 1.0 - scrollY * 0.0005) : 1.0; // 從1.0縮小到0.5
   
-  // 計算船隻透明度效果 - 輕微滾動就完全消失
-  const boatOpacity = typeof window !== 'undefined' ? (scrollY > 50 ? 0 : 1) : 1; // 滾動超過50px就完全消失
+  // 計算船隻透明度效果 - 滾動5px就完全消失
+  const boatOpacity = typeof window !== 'undefined' ? (scrollY > 5 ? 0 : 1) : 1; // 滾動超過5px就完全消失
   
   // 計算星星透明度效果 - 與船隻同步消失
-  const starOpacity = typeof window !== 'undefined' ? (scrollY > 50 ? 0 : 1) : 1; // 星星也同步完全消失
+  const starOpacity = typeof window !== 'undefined' ? (scrollY > 5 ? 0 : 1) : 1; // 星星也同步完全消失
   
   // 計算藍色色塊覆蓋效果 - 從底部往上覆蓋
   const coverHeight = typeof window !== 'undefined' 
@@ -2699,16 +2699,36 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center', // 垂直置中
-          width: '100%',
-          maxWidth: isSmallMobile ? '95vw' : isMobile ? '90vw' : isTablet ? '85vw' : '80vw', // 響應式最大寬度
+          width: 'fit-content', // 改為 fit-content，取消左右空白
           minHeight: isSmallMobile ? 'clamp(100px, 15vh, 150px)' : isMobile ? 'clamp(120px, 18vh, 180px)' : isTablet ? 'clamp(110px, 16vh, 170px)' : 'clamp(120px, 18vh, 180px)', // 響應式最小高度，確保有足夠空間上下置中
           paddingTop: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingTop，確保文字不被海浪遮住
           paddingBottom: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingBottom，確保上下對稱
           gap: isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : isMobile ? 'clamp(8px, 2vh, 16px)' : isTablet ? 'clamp(10px, 2.2vh, 18px)' : 'clamp(12px, 2.5vh, 20px)', // 響應式標題間距
           pointerEvents: 'none',
           flexShrink: 0,
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          position: 'relative',
+          zIndex: 200
         }}>
+          {/* 毛玻璃背景層 - 緊貼文字區域 */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+            padding: isSmallMobile ? 'clamp(4px, 0.6vh, 6px) clamp(40px, 6vw, 50px)' : isMobile ? 'clamp(5px, 0.8vh, 8px) clamp(50px, 8vw, 60px)' : isTablet ? 'clamp(6px, 1vh, 10px) clamp(60px, 10vw, 70px)' : 'clamp(6px, 1.2vh, 11px) clamp(70px, 12vw, 80px)', // 上下 padding 減少 60%，左右 padding 保持不變
+            background: 'rgba(255, 255, 243, 0.4)', // 降低透明度：從 0.7 改為 0.4
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            borderRadius: '24px',
+            zIndex: -1,
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            boxSizing: 'border-box'
+          }}></div>
           {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h1 style={{
             fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
@@ -2719,9 +2739,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               margin: 0,
               letterSpacing: '0.1em',
             lineHeight: '1.2',
-            width: '100%',
+            width: 'fit-content', // 改為 fit-content，取消左右空白
             position: 'relative',
-            zIndex: 200 // 確保在雲朵（z-index: 1）之上
+            zIndex: 200, // 確保在雲朵（z-index: 1）之上
+            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
             }}>
               <TypewriterText text="Own the Day." speed={150} />
             </h1>
@@ -2736,9 +2757,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             margin: 0,
             letterSpacing: '0.05em',
             lineHeight: '1.2',
-            width: '100%',
+            width: 'fit-content', // 改為 fit-content，取消左右空白
             position: 'relative',
-            zIndex: 200 // 確保在雲朵（z-index: 1）之上
+            zIndex: 200, // 確保在雲朵（z-index: 1）之上
+            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
           }}>
             <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
           </h2>
@@ -2753,10 +2775,11 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             margin: 0,
             letterSpacing: '0.03em',
             lineHeight: '1.4',
-            width: '100%',
+            width: 'fit-content', // 改為 fit-content，取消左右空白
             opacity: 0.9,
             position: 'relative',
-            zIndex: 200 // 確保在雲朵（z-index: 1）之上
+            zIndex: 200, // 確保在雲朵（z-index: 1）之上
+            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
           }}>
             <TypewriterText text="把故事變成設計，讓你的品牌被看見。" speed={150} delay={4000} />
           </h3>
@@ -2767,7 +2790,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         <div className="boat-container" style={{
           position: 'relative',
           display: 'flex',
-          alignItems: 'center', // 垂直置中
+          alignItems: (isMobile || isSmallMobile) ? 'flex-start' : 'center', // 手機版本置頂，桌面版本置中
           justifyContent: 'center', // 水平置中
           width: isSmallMobile ? 'min(102vw, 456px)' : isMobile ? 'min(108vw, 540px)' : isTablet ? 'min(48vw, 600px)' : 'min(46.8vw, 624px)', // 響應式寬度，放大120%（85vw*1.2=102vw, 380px*1.2=456px 等）
           // 使用固定高度，確保 flex 置中正確計算
@@ -2783,30 +2806,31 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           // 確保內容在容器內
           maxWidth: '100%'
         }}>
-          <div 
-            className="boat-with-waves"
-            style={{
-              '--wave-y': `${waveY}px`,
-              width: '100%',
-              maxWidth: '100%', // 確保不超出藍線容器
-              aspectRatio: '3541 / 2203', // 原始比例，確保等比例縮放
-              height: 'auto',
-              maxHeight: '100%', // 確保不超出容器高度
-              position: 'relative', // 強制使用 relative，確保在藍線框內
-              top: 'auto', // 確保不在左上角
-              left: 'auto', // 確保不在左上角
-              right: 'auto',
-              bottom: 'auto',
-              transform: `scale(${boatScale})`,
-              transformOrigin: 'center center',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              // 使用負 margin 來補償 paddingBottom，讓船隻視覺上置中
-              marginTop: 'auto',
-              marginBottom: isSmallMobile ? 'clamp(-40px, -5vh, -50px)' : isMobile ? 'clamp(-45px, -5.5vh, -55px)' : isTablet ? 'clamp(-42px, -5.2vh, -52px)' : 'clamp(-45px, -5.5vh, -55px)',
-              boxSizing: 'border-box'
-            } as React.CSSProperties}
-          >
+            <div 
+              className="boat-with-waves"
+              style={{
+                '--wave-y': `${waveY}px`,
+                '--wave-opacity': boatOpacity, // 波浪透明度與船隻同步
+                width: '100%',
+                maxWidth: '100%', // 確保不超出藍線容器
+                aspectRatio: '3541 / 2203', // 原始比例，確保等比例縮放
+                height: 'auto',
+                maxHeight: '100%', // 確保不超出容器高度
+                position: 'relative', // 強制使用 relative，確保在藍線框內
+                top: 'auto', // 確保不在左上角
+                left: 'auto', // 確保不在左上角
+                right: 'auto',
+                bottom: 'auto',
+                transform: `scale(${boatScale})`,
+                transformOrigin: 'center center',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                // 手機版本：置頂，移除 marginTop 和負 marginBottom
+                marginTop: (isMobile || isSmallMobile) ? 0 : 'auto',
+                marginBottom: (isMobile || isSmallMobile) ? 0 : (isTablet ? 'clamp(-42px, -5.2vh, -52px)' : 'clamp(-45px, -5.5vh, -55px)'),
+                boxSizing: 'border-box'
+              } as React.CSSProperties}
+            >
             <Image 
               src="/boat1031.png" 
               alt="Dreamy Boat" 
@@ -2865,7 +2889,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
 
         {/* 雲朵裝飾 - Hero區域（重新分配尺寸：320% 2朵，200% 3朵，100% 4朵，50% 6朵） */}
-          {/* 320% 尺寸雲朵 - 2朵（使用 cloud-1 和 cloud-2） */}
+          {/* 320% 尺寸雲朵 - 2朵（cloud-1 放在下方，cloud-2 和 cloud-3 放在上方） */}
           {/* 雲朵 1 - 320% - 左上 */}
           <div style={{
             position: 'absolute',
@@ -2873,13 +2897,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             left: '8%',
             width: isMobile ? '112px' : '192px', // 60px * 3.2 = 192px
             height: isMobile ? '112px' : '192px',
-            backgroundImage: 'url(/cloud-1.png)',
+            backgroundImage: 'url(/cloud-2.png)', // 上方使用 cloud-2
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 10s ease-in-out 1s infinite',
             opacity: starOpacity * 0.9,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2890,18 +2914,18 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             right: '12%',
             width: isMobile ? '112px' : '192px',
             height: isMobile ? '112px' : '192px',
-            backgroundImage: 'url(/cloud-2.png)',
+            backgroundImage: 'url(/cloud-1.png)', // 下方使用 cloud-1
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 12s ease-in-out 4s infinite',
             opacity: starOpacity * 0.85,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
 
-          {/* 200% 尺寸雲朵 - 3朵（使用 cloud-1、cloud-2、cloud-3） */}
+          {/* 200% 尺寸雲朵 - 3朵（cloud-1 放在下方，cloud-2 和 cloud-3 放在上方） */}
           {/* 雲朵 3 - 200% - 右上 */}
           <div style={{
             position: 'absolute',
@@ -2909,13 +2933,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             right: '15%',
             width: isMobile ? '70px' : '120px', // 60px * 2 = 120px
             height: isMobile ? '70px' : '120px',
-            backgroundImage: 'url(/cloud-1.png)',
+            backgroundImage: 'url(/cloud-3.png)', // 上方使用 cloud-3
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 9s ease-in-out 2s infinite',
             opacity: starOpacity * 0.8,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2927,13 +2951,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             transform: 'translateX(-50%)',
             width: isMobile ? '70px' : '120px',
             height: isMobile ? '70px' : '120px',
-            backgroundImage: 'url(/cloud-2.png)',
+            backgroundImage: 'url(/cloud-2.png)', // 上方使用 cloud-2
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 11s ease-in-out 3s infinite',
             opacity: starOpacity * 0.75,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2944,13 +2968,13 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             left: '12%',
             width: isMobile ? '70px' : '120px',
             height: isMobile ? '70px' : '120px',
-            backgroundImage: 'url(/cloud-3.png)',
+            backgroundImage: 'url(/cloud-1.png)', // 下方使用 cloud-1
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 13s ease-in-out 5s infinite',
             opacity: starOpacity * 0.7,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2969,7 +2993,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 8s ease-in-out 0.5s infinite',
             opacity: starOpacity * 0.7,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -2986,7 +3010,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 9.5s ease-in-out 2.5s infinite',
             opacity: starOpacity * 0.65,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3003,7 +3027,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 10.5s ease-in-out 4.5s infinite',
             opacity: starOpacity * 0.6,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3020,7 +3044,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 11.5s ease-in-out 6s infinite',
             opacity: starOpacity * 0.65,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3039,7 +3063,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 7s ease-in-out 1.5s infinite',
             opacity: starOpacity * 0.6,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3056,7 +3080,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 8.5s ease-in-out 3.5s infinite',
             opacity: starOpacity * 0.55,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3073,7 +3097,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 9s ease-in-out 5.5s infinite',
             opacity: starOpacity * 0.5,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3090,7 +3114,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 10s ease-in-out 7s infinite',
             opacity: starOpacity * 0.55,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3107,7 +3131,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 11s ease-in-out 2s infinite',
             opacity: starOpacity * 0.5,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3124,7 +3148,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundPosition: 'center',
             animation: 'floatCloud 12s ease-in-out 6.5s infinite',
             opacity: starOpacity * 0.55,
-            zIndex: 1,
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
@@ -3444,7 +3468,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           animation: wave-move 8s linear infinite;
           z-index: 3;
           transform: translateY(var(--wave-y, 0px));
-          transition: transform 0.1s ease-out;
+          transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+          opacity: var(--wave-opacity, 1); /* 與船隻透明度同步，滾動時消失 */
         }
 
         .boat-img { 
