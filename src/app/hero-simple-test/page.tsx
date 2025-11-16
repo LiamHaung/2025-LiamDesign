@@ -2626,16 +2626,16 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '10px',
+        gap: '15px', // 放大 150%: 10px * 1.5 = 15px
         color: '#666',
-        fontSize: '12px',
+        fontSize: '18px', // 放大 150%: 12px * 1.5 = 18px
         fontFamily: 'var(--font-zpix), monospace',
-        letterSpacing: '2px'
+        letterSpacing: '3px' // 放大 150%: 2px * 1.5 = 3px
       }}>
         <div>SCROLL</div>
         <div style={{
-          width: '2px',
-          height: '30px',
+          width: '3px', // 放大 150%: 2px * 1.5 = 3px
+          height: '45px', // 放大 150%: 30px * 1.5 = 45px
           background: '#666',
           position: 'relative',
           overflow: 'hidden'
@@ -2645,7 +2645,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             top: '0',
             left: '0',
             width: '100%',
-            height: '8px',
+            height: '12px', // 放大 150%: 8px * 1.5 = 12px
             background: '#4A90E2',
             animation: 'scrollIndicator 2s infinite'
           }}></div>
@@ -2709,35 +2709,57 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           flexShrink: 0,
           boxSizing: 'border-box'
         }}>
-          {/* 主標題 - 響應式字體大小 */}
+          {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h1 style={{
-            fontSize: isSmallMobile ? 'clamp(1.2rem, 4vw, 1.8rem)' : isMobile ? 'clamp(1.4rem, 4.5vw, 2.2rem)' : isTablet ? 'clamp(1.5rem, 3vh, 2.2rem)' : 'clamp(1.8rem, 4vh, 2.8rem)',
+            fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
               fontWeight: 'bold',
-              color: '#003EC3',
+              color: '#353535',
             fontFamily: 'var(--font-noto-sans-tc), sans-serif',
               textAlign: 'center',
               margin: 0,
               letterSpacing: '0.1em',
             lineHeight: '1.2',
-            width: '100%'
+            width: '100%',
+            position: 'relative',
+            zIndex: 200 // 確保在雲朵（z-index: 1）之上
             }}>
               <TypewriterText text="Own the Day." speed={150} />
             </h1>
           
-          {/* 副標題 - 響應式字體大小 */}
+          {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
           <h2 style={{
-            fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.3rem)' : isMobile ? 'clamp(1rem, 3.5vw, 1.6rem)' : isTablet ? 'clamp(1.1rem, 2.5vh, 1.8rem)' : 'clamp(1.2rem, 3vh, 2rem)',
+            fontSize: isSmallMobile ? 'clamp(1.08rem, 3.6vw, 1.56rem)' : isMobile ? 'clamp(1.2rem, 4.2vw, 1.92rem)' : isTablet ? 'clamp(1.32rem, 3vh, 2.16rem)' : 'clamp(1.44rem, 3.6vh, 2.4rem)',
             fontWeight: 'bold',
-            color: '#003EC3',
+            color: '#353535',
             fontFamily: 'var(--font-noto-sans-tc), sans-serif',
             textAlign: 'center',
             margin: 0,
             letterSpacing: '0.05em',
             lineHeight: '1.2',
-            width: '100%'
+            width: '100%',
+            position: 'relative',
+            zIndex: 200 // 確保在雲朵（z-index: 1）之上
           }}>
             <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
           </h2>
+          
+          {/* 第三個標題 - 響應式字體大小（等比例放大 1.2 倍） */}
+          <h3 style={{
+            fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
+            fontWeight: 'normal',
+            color: '#353535',
+            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+            textAlign: 'center',
+            margin: 0,
+            letterSpacing: '0.03em',
+            lineHeight: '1.4',
+            width: '100%',
+            opacity: 0.9,
+            position: 'relative',
+            zIndex: 200 // 確保在雲朵（z-index: 1）之上
+          }}>
+            <TypewriterText text="把故事變成設計，讓你的品牌被看見。" speed={150} delay={4000} />
+          </h3>
           </div>
 
         {/* 2. 船隻圖片 + 海浪 - 響應式大小，等比例縮放，現在在下方 */}
@@ -2842,57 +2864,270 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }}></div>
 
 
-        {/* 雲朵裝飾 - Hero區域3朵 */}
+        {/* 雲朵裝飾 - Hero區域（重新分配尺寸：320% 2朵，200% 3朵，100% 4朵，50% 6朵） */}
+          {/* 320% 尺寸雲朵 - 2朵（使用 cloud-1 和 cloud-2） */}
+          {/* 雲朵 1 - 320% - 左上 */}
           <div style={{
             position: 'absolute',
-          top: '10%',
-          right: '15%',
-          width: '60px',
-          height: '60px',
-          backgroundImage: 'url(/cloud-big.png)',
+            top: '8%',
+            left: '8%',
+            width: isMobile ? '112px' : '192px', // 60px * 3.2 = 192px
+            height: isMobile ? '112px' : '192px',
+            backgroundImage: 'url(/cloud-1.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-          animation: 'floatCloud 8s ease-in-out infinite',
-            opacity: starOpacity,
-          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-          pointerEvents: 'none',
+            animation: 'floatCloud 10s ease-in-out 1s infinite',
+            opacity: starOpacity * 0.9,
+            zIndex: 1,
+            pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-        <div style={{
-          position: 'absolute',
-          top: '25%',
-          left: '10%',
-          width: '60px',
-          height: '60px',
-          backgroundImage: 'url(/cloud-big.png)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          animation: 'floatCloud 9s ease-in-out infinite',
-          animationDelay: '2s',
-          opacity: starOpacity,
-          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-          pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '20%',
-          right: '25%',
-          width: '60px',
-          height: '60px',
-          backgroundImage: 'url(/cloud-big.png)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          animation: 'floatCloud 10s ease-in-out infinite',
-          animationDelay: '4s',
-          opacity: starOpacity,
-          zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-          pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
+          {/* 雲朵 2 - 320% - 右下 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '15%',
+            right: '12%',
+            width: isMobile ? '112px' : '192px',
+            height: isMobile ? '112px' : '192px',
+            backgroundImage: 'url(/cloud-2.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 12s ease-in-out 4s infinite',
+            opacity: starOpacity * 0.85,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+
+          {/* 200% 尺寸雲朵 - 3朵（使用 cloud-1、cloud-2、cloud-3） */}
+          {/* 雲朵 3 - 200% - 右上 */}
+          <div style={{
+            position: 'absolute',
+            top: '12%',
+            right: '15%',
+            width: isMobile ? '70px' : '120px', // 60px * 2 = 120px
+            height: isMobile ? '70px' : '120px',
+            backgroundImage: 'url(/cloud-1.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 9s ease-in-out 2s infinite',
+            opacity: starOpacity * 0.8,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 4 - 200% - 中上 */}
+          <div style={{
+            position: 'absolute',
+            top: '6%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: isMobile ? '70px' : '120px',
+            height: isMobile ? '70px' : '120px',
+            backgroundImage: 'url(/cloud-2.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 11s ease-in-out 3s infinite',
+            opacity: starOpacity * 0.75,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 5 - 200% - 左下 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20%',
+            left: '12%',
+            width: isMobile ? '70px' : '120px',
+            height: isMobile ? '70px' : '120px',
+            backgroundImage: 'url(/cloud-3.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 13s ease-in-out 5s infinite',
+            opacity: starOpacity * 0.7,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+
+          {/* 100% 尺寸雲朵 - 4朵 */}
+          {/* 雲朵 6 - 100% - 左上角 */}
+          <div style={{
+            position: 'absolute',
+            top: '20%',
+            left: '5%',
+            width: isMobile ? '35px' : '60px', // 60px * 1 = 60px
+            height: isMobile ? '35px' : '60px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 8s ease-in-out 0.5s infinite',
+            opacity: starOpacity * 0.7,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 7 - 100% - 右上角 */}
+          <div style={{
+            position: 'absolute',
+            top: '25%',
+            right: '8%',
+            width: isMobile ? '35px' : '60px',
+            height: isMobile ? '35px' : '60px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 9.5s ease-in-out 2.5s infinite',
+            opacity: starOpacity * 0.65,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 8 - 100% - 中下偏左 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '25%',
+            left: '25%',
+            width: isMobile ? '35px' : '60px',
+            height: isMobile ? '35px' : '60px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 10.5s ease-in-out 4.5s infinite',
+            opacity: starOpacity * 0.6,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 9 - 100% - 中下偏右 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '30%',
+            right: '25%',
+            width: isMobile ? '35px' : '60px',
+            height: isMobile ? '35px' : '60px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 11.5s ease-in-out 6s infinite',
+            opacity: starOpacity * 0.65,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+
+          {/* 50% 尺寸雲朵 - 6朵 */}
+          {/* 雲朵 10 - 50% - 左上小 */}
+          <div style={{
+            position: 'absolute',
+            top: '15%',
+            left: '15%',
+            width: isMobile ? '18px' : '30px', // 60px * 0.5 = 30px
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 7s ease-in-out 1.5s infinite',
+            opacity: starOpacity * 0.6,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 11 - 50% - 右上小 */}
+          <div style={{
+            position: 'absolute',
+            top: '18%',
+            right: '20%',
+            width: isMobile ? '18px' : '30px',
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 8.5s ease-in-out 3.5s infinite',
+            opacity: starOpacity * 0.55,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 12 - 50% - 中上偏左 */}
+          <div style={{
+            position: 'absolute',
+            top: '10%',
+            left: '35%',
+            width: isMobile ? '18px' : '30px',
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 9s ease-in-out 5.5s infinite',
+            opacity: starOpacity * 0.5,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 13 - 50% - 中上偏右 */}
+          <div style={{
+            position: 'absolute',
+            top: '14%',
+            right: '35%',
+            width: isMobile ? '18px' : '30px',
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 10s ease-in-out 7s infinite',
+            opacity: starOpacity * 0.55,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 14 - 50% - 左下小 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '18%',
+            left: '18%',
+            width: isMobile ? '18px' : '30px',
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 11s ease-in-out 2s infinite',
+            opacity: starOpacity * 0.5,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+          {/* 雲朵 15 - 50% - 右下小 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '22%',
+            right: '18%',
+            width: isMobile ? '18px' : '30px',
+            height: isMobile ? '18px' : '30px',
+            backgroundImage: 'url(/cloud-big.png)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            animation: 'floatCloud 12s ease-in-out 6.5s infinite',
+            opacity: starOpacity * 0.55,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
         {[...Array(3)].map((_, i) => {
           // 使用固定的動畫參數避免 SSR 水合錯誤
           const animationDurations = [4.2, 3.8, 4.5];
@@ -3367,8 +3602,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         }
         
         @keyframes scrollIndicator {
-          0% { transform: translateY(-30px); }
-          100% { transform: translateY(30px); }
+          0% { transform: translateY(-45px); } // 放大 150%: -30px * 1.5 = -45px
+          100% { transform: translateY(45px); } // 放大 150%: 30px * 1.5 = 45px
         }
         
         @keyframes float {
@@ -3429,7 +3664,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           
           .scroll-responsive {
             bottom: 40px;
-            font-size: 11px;
+            font-size: 16.5px; // 放大 150%: 11px * 1.5 = 16.5px
           }
           
           .boat-with-waves { 
@@ -3466,7 +3701,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           
           .scroll-responsive {
             bottom: 30px;
-            font-size: 10px;
+            font-size: 15px; // 放大 150%: 10px * 1.5 = 15px
           }
           
           .boat-with-waves { 
@@ -3504,7 +3739,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           
           .scroll-responsive {
             bottom: 20px;
-            font-size: 9px;
+            font-size: 13.5px; // 放大 150%: 9px * 1.5 = 13.5px
           }
           
           .boat-with-waves { 
@@ -3542,7 +3777,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           
           .scroll-responsive {
             bottom: 15px;
-            font-size: 8px;
+            font-size: 12px; // 放大 150%: 8px * 1.5 = 12px
           }
           
           .boat-with-waves { 
@@ -4349,6 +4584,11 @@ export default function HeroSimpleTest() {
           padding: 0;
           overflow-x: hidden;
           font-family: 'var(--font-zpix)', monospace;
+          background-color: #353535; /* 與 footer 背景色一致，隱藏白底 */
+        }
+        
+        html {
+          background-color: #353535; /* 確保 html 也是深色背景 */
         }
         
         .hero-test-container {
