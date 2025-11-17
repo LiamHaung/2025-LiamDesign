@@ -183,39 +183,40 @@ const backgroundImages = [
 // };
 
 // 打字機文字組件
-const TypewriterText = ({ text, speed = 150, delay = 0 }: { text: string; speed?: number; delay?: number }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isStarted, setIsStarted] = useState(false);
+// TypewriterText 組件已移除，改用淡入動畫
+// const TypewriterText = ({ text, speed = 150, delay = 0 }: { text: string; speed?: number; delay?: number }) => {
+//   const [displayedText, setDisplayedText] = useState('');
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [isStarted, setIsStarted] = useState(false);
 
-  useEffect(() => {
-    // 延遲開始
-    const delayTimer = setTimeout(() => {
-      setIsStarted(true);
-    }, delay);
+//   useEffect(() => {
+//     // 延遲開始
+//     const delayTimer = setTimeout(() => {
+//       setIsStarted(true);
+//     }, delay);
 
-    return () => clearTimeout(delayTimer);
-  }, [delay]);
+//     return () => clearTimeout(delayTimer);
+//   }, [delay]);
 
-  useEffect(() => {
-    if (!isStarted) return;
+//   useEffect(() => {
+//     if (!isStarted) return;
 
-    if (currentIndex < text.length) {
-      const timer = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, speed);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, text, speed, isStarted]);
+//     if (currentIndex < text.length) {
+//       const timer = setTimeout(() => {
+//         setDisplayedText(prev => prev + text[currentIndex]);
+//         setCurrentIndex(prev => prev + 1);
+//       }, speed);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [currentIndex, text, speed, isStarted]);
 
-  return (
-    <span>
-      {displayedText}
-      <span style={{ opacity: currentIndex < text.length ? 1 : 0 }}>|</span>
-    </span>
-  );
-};
+//   return (
+//     <span>
+//       {displayedText}
+//       <span style={{ opacity: currentIndex < text.length ? 1 : 0 }}>|</span>
+//     </span>
+//   );
+// };
 
 // 載入頁面組件
 const LoadingPage = ({ 
@@ -1572,20 +1573,20 @@ const ProjectModal: React.FC<{
             <h2 className="text-lg font-bold text-white mb-1">{project.title}</h2>
             <p className="text-white/80 text-sm mb-2">{project.description}</p>
             <div className="flex flex-wrap gap-1">
-              {project.tags.map((tag, index) => (
-                <span
-                  key={index}
+            {project.tags.map((tag, index) => (
+              <span
+                key={index}
                   className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-xs border border-white/30"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+              >
+                {tag}
+              </span>
+            ))}
           </div>
+        </div>
 
           {/* 輪播控制 */}
           <div className="space-y-2">
-            {/* 進度條控制 */}
+          {/* 進度條控制 */}
             <div className="flex items-center gap-3">
               {/* 上一張按鈕 */}
               <button
@@ -1600,7 +1601,7 @@ const ProjectModal: React.FC<{
                 <div className="w-full bg-white/20 rounded-full h-1.5">
                   <div 
                     className="bg-gradient-to-r from-blue-500 to-blue-300 h-1.5 rounded-full transition-all duration-300"
-                    style={{ 
+          style={{ 
                       width: `${((currentImageIndex + 1) / project.galleryImages.length) * 100}%` 
                     }}
                   ></div>
@@ -1618,36 +1619,36 @@ const ProjectModal: React.FC<{
               >
                 下一張 →
               </button>
-            </div>
-            
-            {/* 縮圖 */}
+    </div>
+    
+          {/* 縮圖 */}
             <div className="flex gap-1 justify-center">
-              {project.galleryImages.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
+            {project.galleryImages.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
                   className={`relative w-8 h-8 rounded overflow-hidden border transition-all duration-300 ${
-                    index === currentImageIndex
+                  index === currentImageIndex
                       ? 'border-white ring-1 ring-white/50'
-                      : 'border-white/30 hover:border-white/50'
-                  }`}
-                >
+                    : 'border-white/30 hover:border-white/50'
+                }`}
+              >
                   <img
-                    src={image || project.image}
-                    alt={`Thumbnail ${index + 1}`}
+                  src={image || project.image}
+                  alt={`Thumbnail ${index + 1}`}
                     className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
+                />
+              </button>
+            ))}
           </div>
-
+        </div>
+      
           {/* 專案詳情 */}
           <div>
             <h3 className="text-sm font-semibold text-white mb-1">專案詳情</h3>
             <p className="text-white/80 text-xs leading-relaxed">{project.detailedDescription}</p>
           </div>
-        </div>
+      </div>
       </div>
     </div>
   );
@@ -2626,8 +2627,6 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         transition: 'height 0.1s ease-out'
       }}></div>
 
-
-
       {/* 右上角導覽列 */}
       <div className="nav-responsive" style={{
         position: 'absolute',
@@ -2730,7 +2729,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
         {/* 1. 標題區域 - 響應式大小，現在在上方 */}
         {/* 🟢 綠線：標題容器 */}
-          <div style={{
+        <div style={{
           display: 'flex',
           flexDirection: (isMobile || isSmallMobile) ? 'column' : 'row', // 桌面版橫向，手機版縱向
           alignItems: 'center',
@@ -2776,16 +2775,16 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             gap: isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : isMobile ? 'clamp(8px, 2vh, 16px)' : isTablet ? 'clamp(10px, 2.2vh, 18px)' : 'clamp(12px, 2.5vh, 20px)',
             position: 'relative',
             zIndex: 200
-          }}>
+        }}>
             {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
-            <h1 style={{
+          <h1 style={{
               fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
-              fontWeight: 'bold',
+            fontWeight: 'bold',
               color: '#353535',
               fontFamily: 'var(--font-noto-sans-tc), sans-serif',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
-              margin: 0,
-              letterSpacing: '0.1em',
+            margin: 0,
+            letterSpacing: '0.1em',
               lineHeight: '1.2',
               width: 'fit-content',
               position: 'relative',
@@ -2793,9 +2792,9 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px',
               opacity: title1Opacity,
               transition: 'opacity 0.5s ease-in'
-            }}>
+          }}>
               Own the Day.
-            </h1>
+          </h1>
           
             {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h2 style={{
@@ -2816,7 +2815,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             }}>
               讓我們一起書寫你的品牌故事
             </h2>
-          </div>
+        </div>
 
           {/* 分隔線（僅桌面版顯示） */}
           {!(isMobile || isSmallMobile) && (
@@ -2946,10 +2945,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           // 確保內容在容器內
           maxWidth: '100%'
         }}>
-            <div 
-              className="boat-with-waves"
-              style={{
-                '--wave-y': `${waveY}px`,
+          <div 
+            className="boat-with-waves"
+            style={{
+              '--wave-y': `${waveY}px`,
                 '--wave-opacity': boatOpacity, // 波浪透明度與船隻同步
                 width: '100%',
                 maxWidth: '100%', // 確保不超出藍線容器
@@ -2969,8 +2968,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
                 marginTop: (isMobile || isSmallMobile) ? 0 : 'auto',
                 marginBottom: (isMobile || isSmallMobile) ? 0 : (isTablet ? 'clamp(-42px, -5.2vh, -52px)' : 'clamp(-45px, -5.5vh, -55px)'),
                 boxSizing: 'border-box'
-              } as React.CSSProperties}
-            >
+            } as React.CSSProperties}
+          >
             <Image 
               src="/boat1031.png" 
               alt="Dreamy Boat" 
@@ -2992,40 +2991,40 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
 
           {/* 星球裝飾 - Hero區域2顆 */}
-          <div 
-            className="star-parallax"
-            style={{
-              position: 'absolute',
-              top: '20%',
-              left: '20%',
+        <div 
+          className="star-parallax"
+          style={{
+            position: 'absolute',
+            top: '20%',
+            left: '20%',
               width: '16px',
               height: '16px',
               backgroundImage: 'url(/star-big.png)',
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              animation: 'twinkle 2s infinite',
-              opacity: starOpacity, // 應用透明度效果
-              '--star-y': `${starY}px`,
+            animation: 'twinkle 2s infinite',
+            opacity: starOpacity, // 應用透明度效果
+            '--star-y': `${starY}px`,
               zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-              transition: 'opacity 0.1s ease-out'
-            } as React.CSSProperties}
-          ></div>
-          <div style={{
-            position: 'absolute',
-            top: '30%',
-            right: '25%',
+            transition: 'opacity 0.1s ease-out'
+          } as React.CSSProperties}
+        ></div>
+        <div style={{
+          position: 'absolute',
+          top: '30%',
+          right: '25%',
             width: '16px',
             height: '16px',
             backgroundImage: 'url(/star-big.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            animation: 'twinkle 2.5s infinite',
-            opacity: starOpacity,
+          animation: 'twinkle 2.5s infinite',
+          opacity: starOpacity,
             zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
 
 
         {/* 雲朵裝飾 - Hero區域（重新分配尺寸：320% 2朵，200% 3朵，100% 4朵，50% 6朵） */}
@@ -3172,9 +3171,9 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             transition: 'opacity 0.1s ease-out'
           }}></div>
           {/* 雲朵 9 - 100% - 中下偏右 */}
-          <div style={{
-            position: 'absolute',
-            bottom: '30%',
+        <div style={{
+          position: 'absolute',
+          bottom: '30%',
             right: '25%',
             width: isMobile ? '35px' : '60px',
             height: isMobile ? '35px' : '60px',
@@ -3186,8 +3185,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             opacity: starOpacity * 0.65,
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
 
           {/* 50% 尺寸雲朵 - 6朵 */}
           {/* 雲朵 10 - 50% - 左上小 */}
@@ -3292,6 +3291,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
+
         {[...Array(3)].map((_, i) => {
           // 使用固定的動畫參數避免 SSR 水合錯誤
           const animationDurations = [4.2, 3.8, 4.5];
@@ -3994,6 +3994,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             transform: rotate(360deg);
           }
         }
+        
       `}</style>
     </div>
   );
@@ -4079,11 +4080,11 @@ export default function HeroSimpleTest() {
       description: "現代化的響應式網頁設計，專注於用戶體驗和視覺美學的完美結合。",
       image: "/project-cover-02.jpg",
       tags: ["網頁設計", "響應式設計", "UI/UX"],
-      galleryImages: [
-        "/project-cover-02.jpg",
+       galleryImages: [
+         "/project-cover-02.jpg",
         "/project-02-01.png",
         "/project-02-02.jpg"
-      ],
+       ],
       detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。"
     },
     {
@@ -5600,8 +5601,8 @@ export default function HeroSimpleTest() {
             position: 'relative'
           }}>
             {/* 可選：在中間添加裝飾元素 */}
-            <div style={{
-              position: 'absolute',
+        <div style={{
+          position: 'absolute',
               left: '50%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
@@ -5610,7 +5611,7 @@ export default function HeroSimpleTest() {
               borderRadius: '50%',
               background: 'rgba(255, 255, 255, 0.5)',
               boxShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
-            }}></div>
+        }}></div>
           </div>
         </div>
 
@@ -5626,8 +5627,8 @@ export default function HeroSimpleTest() {
           <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={6} />
           
           {/* 操作提示 */}
-          <div style={{
-            position: 'absolute',
+        <div style={{
+          position: 'absolute',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
@@ -7153,7 +7154,7 @@ export default function HeroSimpleTest() {
           { top: '75%', right: '15%', size: '45px', delay: '2s' } // 缩小60%：75px * 0.6 = 45px
         ].map((planet, index) => {
           const style: React.CSSProperties = {
-            position: 'absolute',
+              position: 'absolute',
             top: planet.top,
             width: planet.size,
             height: planet.size,
@@ -7163,7 +7164,7 @@ export default function HeroSimpleTest() {
             backgroundPosition: 'center',
             animation: `twinkle ${3 + (index % 2)}s ease-in-out infinite alternate`,
             animationDelay: planet.delay,
-            zIndex: 12,
+              zIndex: 12,
             opacity: 0.9
           };
           
@@ -7178,7 +7179,7 @@ export default function HeroSimpleTest() {
             <div
               key={`contact-planet-${index}`}
               style={style}
-            />
+          />
           );
         })}
 
