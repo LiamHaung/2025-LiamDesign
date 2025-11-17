@@ -2534,6 +2534,42 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   const [isTablet, setIsTablet] = useState(false);
   const [isSmallMobile, setIsSmallMobile] = useState(false); // 小手機檢測（iPhone SE 等）
   
+  // 動畫狀態控制
+  const [glassOpacity, setGlassOpacity] = useState(0); // 毛玻璃區塊透明度
+  const [title1Opacity, setTitle1Opacity] = useState(0); // "Own the Day." 透明度
+  const [title2Opacity, setTitle2Opacity] = useState(0); // "讓我們一起書寫你的品牌故事" 透明度
+  const [ctaOpacity, setCtaOpacity] = useState(0); // CTA 按鈕透明度
+  
+  // 動畫時序控制
+  useEffect(() => {
+    // 1. 毛玻璃區塊淡入 (0-500ms)
+    const timer1 = setTimeout(() => {
+      setGlassOpacity(1);
+    }, 0);
+    
+    // 2. "Own the Day." 淡入 (500-1000ms)
+    const timer2 = setTimeout(() => {
+      setTitle1Opacity(1);
+    }, 500);
+    
+    // 3. "讓我們一起書寫你的品牌故事" 淡入 (1000-1500ms)
+    const timer3 = setTimeout(() => {
+      setTitle2Opacity(1);
+    }, 1000);
+    
+    // 4. CTA 按鈕淡入 (1500-2000ms)
+    const timer4 = setTimeout(() => {
+      setCtaOpacity(1);
+    }, 1500);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      clearTimeout(timer4);
+    };
+  }, []);
+  
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const checkDevice = () => {
@@ -2696,14 +2732,14 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         {/* 🟢 綠線：標題容器 */}
           <div style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: (isMobile || isSmallMobile) ? 'column' : 'row', // 桌面版橫向，手機版縱向
           alignItems: 'center',
           justifyContent: 'center', // 垂直置中
           width: 'fit-content', // 改為 fit-content，取消左右空白
           minHeight: isSmallMobile ? 'clamp(100px, 15vh, 150px)' : isMobile ? 'clamp(120px, 18vh, 180px)' : isTablet ? 'clamp(110px, 16vh, 170px)' : 'clamp(120px, 18vh, 180px)', // 響應式最小高度，確保有足夠空間上下置中
           paddingTop: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingTop，確保文字不被海浪遮住
           paddingBottom: isSmallMobile ? 'clamp(30px, 4vh, 40px)' : isMobile ? 'clamp(40px, 5vh, 50px)' : isTablet ? 'clamp(35px, 4.5vh, 40px)' : 'clamp(40px, 5vh, 50px)', // 響應式 paddingBottom，確保上下對稱
-          gap: isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : isMobile ? 'clamp(8px, 2vh, 16px)' : isTablet ? 'clamp(10px, 2.2vh, 18px)' : 'clamp(12px, 2.5vh, 20px)', // 響應式標題間距
+          gap: (isMobile || isSmallMobile) ? (isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : 'clamp(8px, 2vh, 16px)') : '32px', // 桌面版左右間距，手機版上下間距
           pointerEvents: 'none',
           flexShrink: 0,
           boxSizing: 'border-box',
@@ -2727,62 +2763,166 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             zIndex: -1,
             border: '1px solid rgba(255, 255, 255, 0.3)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            opacity: glassOpacity, // 毛玻璃區塊淡入動畫
+            transition: 'opacity 0.5s ease-in'
           }}></div>
-          {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
+          
+          {/* 左側文字區域 */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: (isMobile || isSmallMobile) ? 'center' : 'flex-start', // 手機版置中，桌面版靠左
+            gap: isSmallMobile ? 'clamp(6px, 1.5vh, 12px)' : isMobile ? 'clamp(8px, 2vh, 16px)' : isTablet ? 'clamp(10px, 2.2vh, 18px)' : 'clamp(12px, 2.5vh, 20px)',
+            position: 'relative',
+            zIndex: 200
+          }}>
+            {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h1 style={{
-            fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
+              fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
               fontWeight: 'bold',
               color: '#353535',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-              textAlign: 'center',
+              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+              textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
               margin: 0,
               letterSpacing: '0.1em',
-            lineHeight: '1.2',
-            width: 'fit-content', // 改為 fit-content，取消左右空白
-            position: 'relative',
-            zIndex: 200, // 確保在雲朵（z-index: 1）之上
-            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
+              lineHeight: '1.2',
+              width: 'fit-content',
+              position: 'relative',
+              zIndex: 200,
+              padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px',
+              opacity: title1Opacity,
+              transition: 'opacity 0.5s ease-in'
             }}>
-              <TypewriterText text="Own the Day." speed={150} />
+              Own the Day.
             </h1>
           
-          {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
-          <h2 style={{
-            fontSize: isSmallMobile ? 'clamp(1.08rem, 3.6vw, 1.56rem)' : isMobile ? 'clamp(1.2rem, 4.2vw, 1.92rem)' : isTablet ? 'clamp(1.32rem, 3vh, 2.16rem)' : 'clamp(1.44rem, 3.6vh, 2.4rem)',
-            fontWeight: 'bold',
-            color: '#353535',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-            textAlign: 'center',
-            margin: 0,
-            letterSpacing: '0.05em',
-            lineHeight: '1.2',
-            width: 'fit-content', // 改為 fit-content，取消左右空白
+            {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
+            <h2 style={{
+              fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
+              fontWeight: 'bold',
+              color: '#353535',
+              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+              textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
+              margin: 0,
+              letterSpacing: '0.03em',
+              lineHeight: '1.4',
+              width: 'fit-content',
+              position: 'relative',
+              zIndex: 200,
+              padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px',
+              opacity: title2Opacity,
+              transition: 'opacity 0.5s ease-in'
+            }}>
+              讓我們一起書寫你的品牌故事
+            </h2>
+          </div>
+
+          {/* 分隔線（僅桌面版顯示） */}
+          {!(isMobile || isSmallMobile) && (
+            <div style={{
+              width: '1px',
+              height: '100%',
+              background: 'rgba(53, 53, 53, 0.2)',
+              position: 'relative',
+              zIndex: 200,
+              alignSelf: 'stretch' // 使分隔線延伸到容器的全高
+            }}></div>
+          )}
+
+          {/* 右側 CTA 按鈕組（桌面版）/ 下方按鈕組（手機版） */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column', // 按鈕始終縱向排列
+            gap: '12px',
+            marginTop: (isMobile || isSmallMobile) ? (isSmallMobile ? '16px' : '20px') : '0', // 手機版有上邊距，桌面版無
+            paddingRight: (isMobile || isSmallMobile) ? '0' : '24px', // 桌面版右側增加 padding
+            opacity: ctaOpacity,
+            transition: 'opacity 0.5s ease-in',
             position: 'relative',
-            zIndex: 200, // 確保在雲朵（z-index: 1）之上
-            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
+            zIndex: 200,
+            pointerEvents: 'auto' // 確保按鈕可點擊
           }}>
-            <TypewriterText text="掌握今天，開始設計" speed={200} delay={2000} />
-          </h2>
-          
-          {/* 第三個標題 - 響應式字體大小（等比例放大 1.2 倍） */}
-          <h3 style={{
-            fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
-            fontWeight: 'normal',
-            color: '#353535',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-            textAlign: 'center',
-            margin: 0,
-            letterSpacing: '0.03em',
-            lineHeight: '1.4',
-            width: 'fit-content', // 改為 fit-content，取消左右空白
-            opacity: 0.9,
-            position: 'relative',
-            zIndex: 200, // 確保在雲朵（z-index: 1）之上
-            padding: isSmallMobile ? '4px 24px' : isMobile ? '5px 32px' : isTablet ? '6px 40px' : '8px 48px' // 減少上下 padding，增加左右 padding
-          }}>
-            <TypewriterText text="把故事變成設計，讓你的品牌被看見。" speed={150} delay={4000} />
-          </h3>
+            {/* 按鈕 1: Explore Portfolio */}
+            <button
+              onClick={() => {
+                const projectSection = document.getElementById('projects-section');
+                if (projectSection) {
+                  projectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              style={{
+                padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
+                fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
+                fontWeight: '600',
+                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                color: '#353535',
+                background: 'transparent',
+                border: '2px solid #353535',
+                borderRadius: '50px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.02em',
+                width: isMobile || isSmallMobile ? '100%' : 'auto',
+                minWidth: isMobile || isSmallMobile ? 'auto' : '180px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#353535';
+                e.currentTarget.style.color = '#FFFFF3';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(53, 53, 53, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#353535';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Explore Portfolio｜看作品
+            </button>
+
+            {/* 按鈕 2: Our Services */}
+            <button
+              onClick={() => {
+                const servicesSection = document.getElementById('services-section');
+                if (servicesSection) {
+                  servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              style={{
+                padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
+                fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
+                fontWeight: '600',
+                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                color: '#353535',
+                background: 'transparent',
+                border: '2px solid #353535',
+                borderRadius: '50px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.02em',
+                width: isMobile || isSmallMobile ? '100%' : 'auto',
+                minWidth: isMobile || isSmallMobile ? 'auto' : '180px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#353535';
+                e.currentTarget.style.color = '#FFFFF3';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(53, 53, 53, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#353535';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Our Services｜了解服務流程
+            </button>
+          </div>
           </div>
 
         {/* 2. 船隻圖片 + 海浪 - 響應式大小，等比例縮放，現在在下方 */}
@@ -5373,6 +5513,7 @@ export default function HeroSimpleTest() {
       </div>
       {/* 純藍色背景區域 - 基於內容動態調整高度 */}
       <div 
+        id="projects-section"
         ref={blueSectionRef}
         style={{
           backgroundColor: '#003EC3', // 使用 backgroundColor 而不是 background
@@ -5799,6 +5940,7 @@ export default function HeroSimpleTest() {
 
       {/* 深色區域 - 包含星星和內容 */}
       <div 
+        id="services-section"
         ref={darkSectionRef}
         style={{
           minHeight: '100vh',
