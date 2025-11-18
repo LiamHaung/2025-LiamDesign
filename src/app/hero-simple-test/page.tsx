@@ -540,8 +540,9 @@ const LoadingPage = ({
             borderRadius: '50px',
             padding: '16px 32px',
             color: 'white',
-            fontSize: '18px',
-            fontWeight: '600',
+            fontSize: '27px',
+            fontWeight: '900',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
@@ -576,8 +577,8 @@ const LoadingPage = ({
           <div style={{
             color: '#fffff3',
             fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
-            fontWeight: '600',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+            fontWeight: '900',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.1em',
             textShadow: '0 0 20px rgba(0, 62, 195, 0.5)',
             marginBottom: '8px'
@@ -588,7 +589,7 @@ const LoadingPage = ({
             color: 'rgba(255, 255, 243, 0.8)',
             fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
             fontWeight: '500',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.05em',
             textShadow: '0 0 15px rgba(0, 62, 195, 0.4)'
           }}>
@@ -767,10 +768,10 @@ const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProd
       {/* 商品名稱 */}
       <h3 style={{
         fontSize: '1.2rem',
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#fffff3',
         margin: '0 0 8px 0',
-        fontFamily: 'var(--font-zpix), monospace',
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
         letterSpacing: '0.05em'
       }}>
         {product.name}
@@ -782,7 +783,7 @@ const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProd
         fontWeight: 'bold',
         color: '#FF8C00', // 品牌橘色
         marginBottom: '12px',
-        fontFamily: 'var(--font-zpix), monospace'
+        fontFamily: 'var(--font-google-sans-flex), sans-serif'
       }}>
         {product.price}
       </div>
@@ -791,7 +792,8 @@ const ProductCard = ({ product, onProductClick }: { product: ProductItem; onProd
       <div style={{
         fontSize: '0.9rem',
         color: 'rgba(255, 255, 243, 0.8)',
-        fontFamily: 'var(--font-zpix), monospace',
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        fontWeight: '400',
         letterSpacing: '0.02em',
         background: 'rgba(0, 62, 195, 0.2)',
         padding: '4px 8px',
@@ -918,10 +920,10 @@ const ProductModal = ({
         <div style={{ marginBottom: '30px' }}>
           <h2 style={{
             fontSize: '2rem',
-            fontWeight: 'bold',
+            fontWeight: '400',
             color: '#fffff3',
             margin: '0 0 10px 0',
-            fontFamily: 'var(--font-zpix), monospace',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.05em'
           }}>
             {product.name}
@@ -932,7 +934,7 @@ const ProductModal = ({
             fontWeight: 'bold',
             color: '#FF8C00', // 品牌橘色
             marginBottom: '15px',
-            fontFamily: 'var(--font-zpix), monospace'
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             {product.price}
           </div>
@@ -940,7 +942,8 @@ const ProductModal = ({
           <div style={{
             fontSize: '1rem',
             color: 'rgba(255, 255, 243, 0.8)',
-            fontFamily: 'var(--font-zpix), monospace',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+            fontWeight: '400',
             letterSpacing: '0.02em',
             background: 'rgba(0, 62, 195, 0.2)',
             padding: '8px 12px',
@@ -981,7 +984,8 @@ const ProductModal = ({
               padding: '10px 16px',
               color: 'white',
               fontSize: '0.9rem',
-              fontWeight: '600',
+              fontWeight: '900',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               boxShadow: '0 4px 15px rgba(0, 62, 195, 0.3)',
@@ -1015,7 +1019,8 @@ const ProductModal = ({
               padding: '10px 16px',
               color: 'white',
               fontSize: '0.9rem',
-              fontWeight: '600',
+              fontWeight: '700',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               display: 'flex',
@@ -1139,10 +1144,10 @@ const IntroModal = ({
         {/* 名稱 */}
         <h2 style={{
           fontSize: '2rem',
-          fontWeight: 'bold',
+          fontWeight: '400',
           color: '#fffff3',
           margin: '0 0 20px 0',
-          fontFamily: 'var(--font-zpix), monospace',
+          fontFamily: 'var(--font-google-sans-flex), sans-serif',
           letterSpacing: '0.05em'
         }}>
           Liam
@@ -1154,7 +1159,8 @@ const IntroModal = ({
           color: 'rgba(255, 255, 243, 0.9)',
           lineHeight: '1.6',
           margin: '0 0 30px 0',
-          fontFamily: 'var(--font-zpix), monospace',
+          fontFamily: 'var(--font-google-sans-flex), sans-serif',
+          fontWeight: '400',
           letterSpacing: '0.02em'
         }}>
           <p style={{ margin: '0 0 15px 0' }}>
@@ -1179,11 +1185,11 @@ const IntroModal = ({
             padding: '12px 24px',
             color: 'white',
             fontSize: '1rem',
-            fontWeight: '600',
+            fontWeight: '700',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
-            fontFamily: 'var(--font-zpix), monospace'
+            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -1335,10 +1341,10 @@ const CartSidebar = ({
               <div style={{ flex: 1 }}>
                 <div style={{
                   fontSize: '0.9rem',
-                  fontWeight: '600',
+                  fontWeight: '400',
                   color: '#fffff3',
                   marginBottom: '5px',
-                  fontFamily: 'var(--font-zpix), monospace'
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif'
                 }}>
                   {item.name}
                 </div>
@@ -1346,7 +1352,7 @@ const CartSidebar = ({
                   fontSize: '0.8rem',
                   color: '#FF8C00', // 品牌橘色
                   fontWeight: 'bold',
-                  fontFamily: 'var(--font-zpix), monospace'
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif'
                 }}>
                   {item.price}
                 </div>
@@ -1395,9 +1401,9 @@ const CartSidebar = ({
           }}>
             <span style={{
               fontSize: '1.2rem',
-              fontWeight: 'bold',
+              fontWeight: '400',
               color: '#fffff3',
-              fontFamily: 'var(--font-zpix), monospace'
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
             }}>
               總計
             </span>
@@ -1405,7 +1411,7 @@ const CartSidebar = ({
               fontSize: '1.2rem',
               fontWeight: 'bold',
               color: '#FF8C00', // 品牌橘色
-              fontFamily: 'var(--font-zpix), monospace'
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
             }}>
               NT$ {totalAmount.toFixed(0)}
             </span>
@@ -1520,9 +1526,10 @@ const ProjectModal: React.FC<{
       <div
         className="w-full flex flex-col"
         style={{ 
-          maxHeight: isMobile ? '70vh' : '100vh', // 手機版高度縮小至70%
+          maxHeight: isMobile ? '70vh' : '80vh', // 手機版70%，桌面版80%
           overflow: 'auto',
-          maxWidth: isMobile ? '100%' : '1400px',
+          maxWidth: isMobile ? '100%' : '900px', // 桌面版縮小，與圖片寬度差不多
+          width: isMobile ? '100%' : 'fit-content', // 桌面版自適應內容寬度
           borderRadius: isMobile ? '0' : '20px',
           boxShadow: isMobile ? 'none' : '0 20px 60px rgba(0, 0, 0, 0.3)',
           background: 'rgba(255, 255, 255, 0.7)',
@@ -1553,16 +1560,16 @@ const ProjectModal: React.FC<{
             style={{
               position: 'relative',
               right: isMobile ? '12px' : '20px',
-            background: isMobile ? 'rgba(0, 0, 0, 0.75)' : 'rgba(0, 0, 0, 0.5)',
+            background: isMobile ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.85)', // 淺色背景
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            border: isMobile ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
+            border: isMobile ? '2px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
             borderRadius: '50%',
             width: isMobile ? '48px' : '44px',
             height: isMobile ? '48px' : '44px',
             cursor: 'pointer',
             fontSize: isMobile ? '22px' : '20px',
-            color: 'white',
+            color: isMobile ? '#333' : '#555', // 深色文字
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1572,61 +1579,87 @@ const ProjectModal: React.FC<{
           }}
           onMouseEnter={(e) => {
             if (!isMobile) {
-              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
               e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
             }
           }}
           onMouseLeave={(e) => {
             if (!isMobile) {
-              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.5)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)';
               e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
             }
           }}
           >
             ✕
           </button>
         </div>
-        {/* 上半部：圖片展示區 - 毛玻璃背景 */}
+        {/* 上半部：圖片展示區 - 移除背景色塊 */}
         <div style={{ 
-          background: 'rgba(248, 249, 250, 0.5)', 
-          backdropFilter: 'blur(30px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(30px) saturate(150%)',
-          padding: '20px 12px 16px'
+          background: 'transparent', // 移除背景色塊
+          padding: isMobile ? '20px 12px 16px' : '20px 20px 16px' // 桌面版適中 padding
         }}>
-          {/* 標題區 - 精緻設計 */}
+          {/* 標題區 - 優化設計感排版，對齊 Project Details 標題位置 */}
           <div style={{ 
-            marginBottom: '20px', 
-            textAlign: 'center',
-            paddingTop: isMobile ? '40px' : '0'
+            marginBottom: isMobile ? '24px' : '16px', 
+            paddingTop: isMobile ? '16px' : '0', // 手機版減少 padding-top，移除多餘空白
+            paddingBottom: isMobile ? '20px' : '0',
+            position: 'relative',
+            maxWidth: '800px', // 與 Project Details 容器寬度一致
+            margin: isMobile ? '0 auto' : '0', // 手機版置中，桌面版左對齊
+            paddingLeft: isMobile ? '0' : '24px', // 桌面版對齊 Project Details 的 paddingLeft
+            paddingRight: isMobile ? '0' : '24px'
           }}>
+            {/* 標題 - 左對齊，對齊 Project Details */}
             <h2 
               style={{
-                fontSize: isMobile ? 'clamp(1.4rem, 5vw, 1.8rem)' : 'clamp(1.8rem, 4vw, 2.8rem)',
-                fontWeight: '700',
+                fontSize: isMobile ? 'clamp(1.5rem, 5.5vw, 2rem)' : 'clamp(1.6rem, 3vw, 2.2rem)',
+                fontWeight: '400',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#1a1a1a',
-                marginBottom: isMobile ? '12px' : '16px',
-                letterSpacing: '-0.02em',
-                lineHeight: '1.3'
+                marginBottom: isMobile ? '16px' : '10px',
+                letterSpacing: '-0.03em',
+                lineHeight: '1.2',
+                textAlign: 'left',
+                paddingLeft: '0', // 移除額外 padding，直接對齊
+                position: 'relative',
+                paddingBottom: isMobile ? '12px' : '10px'
               }}
             >
               {project.title}
+              {/* 標題下方裝飾線 - 灰色實心線 */}
+              <span style={{
+                position: 'absolute',
+                bottom: '0',
+                left: '0',
+                width: isMobile ? '60px' : '50px',
+                height: '2px',
+                background: '#ddd', // 灰色實心線
+                borderRadius: '1px'
+              }}></span>
             </h2>
+            {/* 描述 - 左對齊，對齊 Project Details */}
             <p 
               style={{
-                fontSize: isMobile ? 'clamp(0.9rem, 3.5vw, 1.1rem)' : 'clamp(1rem, 2vw, 1.25rem)',
-                color: '#666',
+                fontSize: isMobile ? 'clamp(0.95rem, 3.8vw, 1.15rem)' : 'clamp(0.95rem, 1.8vw, 1.1rem)',
+                color: '#555',
                 fontWeight: '400',
-                lineHeight: '1.6',
-                maxWidth: '700px',
-                margin: '0 auto',
-                padding: isMobile ? '0 8px' : '0'
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                lineHeight: isMobile ? '1.75' : '1.6',
+                textAlign: 'left',
+                paddingLeft: '0', // 移除額外 padding，直接對齊
+                paddingRight: '0',
+                paddingBottom: isMobile ? '20px' : '16px', // 增加下方間距
+                letterSpacing: '0.01em',
+                marginTop: isMobile ? '8px' : '4px'
               }}
             >
               {project.description}
             </p>
-        </div>
+          </div>
 
-          {/* 標籤 - 手機版移到圖片外 */}
+          {/* 標籤 - 手機版在圖片外，桌面版在圖片內 */}
           {isMobile && (
             <div 
               style={{
@@ -1647,7 +1680,8 @@ const ProjectModal: React.FC<{
                     padding: '6px 14px',
                     fontSize: '11px',
                     color: '#555',
-                    fontWeight: '500',
+                    fontWeight: '400',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
                   }}
               >
@@ -1657,35 +1691,31 @@ const ProjectModal: React.FC<{
           </div>
           )}
 
-          {/* 照片輪播區域 - 1575:1500 比例 */}
+          {/* 照片輪播區域 - 1575:1500 比例，移除背景色塊 */}
           <div 
             style={{
               position: 'relative',
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(25px) saturate(140%)',
-              WebkitBackdropFilter: 'blur(25px) saturate(140%)',
+              background: 'transparent', // 移除背景色塊
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: isMobile ? '12px' : '16px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
               aspectRatio: '1575 / 1500',
               maxHeight: isMobile ? 'none' : '65vh',
-              margin: '0 auto',
-              border: '1px solid rgba(255, 255, 255, 0.4)'
+              margin: '0 auto'
             }}
           >
-            {/* 標籤 - 桌面版在圖片內 */}
+            {/* 標籤 - 桌面版在圖片內左上角 */}
             {!isMobile && (
               <div 
                 style={{
                   position: 'absolute',
-                  top: '24px',
-                  left: '24px',
+                  top: '16px',
+                  left: '16px',
                   display: 'flex',
                   flexWrap: 'wrap',
-                  gap: '10px',
+                  gap: '8px',
                   zIndex: 10
                 }}
               >
@@ -1697,11 +1727,12 @@ const ProjectModal: React.FC<{
                       backdropFilter: 'blur(12px)',
                       WebkitBackdropFilter: 'blur(12px)',
                       border: '1px solid rgba(0, 0, 0, 0.06)',
-                      borderRadius: '24px',
-                      padding: '10px 20px',
-                      fontSize: '13px',
+                      borderRadius: '20px',
+                      padding: '8px 16px',
+                      fontSize: '12px',
                       color: '#444',
-                      fontWeight: '500',
+                      fontWeight: '400',
+                      fontFamily: 'var(--font-google-sans-flex), sans-serif',
                       boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
                       letterSpacing: '0.01em'
                     }}
@@ -1709,7 +1740,7 @@ const ProjectModal: React.FC<{
                     {tag}
                   </span>
                 ))}
-        </div>
+              </div>
             )}
 
             {/* 圖片 */}
@@ -1791,7 +1822,8 @@ const ProjectModal: React.FC<{
                     padding: isMobile ? '6px 12px' : '10px 20px',
                     borderRadius: '20px',
                     fontSize: isMobile ? '11px' : '13px',
-                    fontWeight: '500',
+                    fontWeight: '400',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
                     letterSpacing: '0.02em',
                     boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
                     whiteSpace: 'nowrap',
@@ -1849,13 +1881,13 @@ const ProjectModal: React.FC<{
             </div>
     </div>
     
-        {/* 下半部：專案詳情 - 毛玻璃質感 */}
+        {/* 下半部：專案詳情 - 桌面版和手機版都顯示，但樣式不同 */}
         <div 
           style={{ 
             background: 'rgba(255, 255, 255, 0.6)',
             backdropFilter: 'blur(30px) saturate(150%)',
             WebkitBackdropFilter: 'blur(30px) saturate(150%)',
-            padding: '30px 20px 40px',
+            padding: isMobile ? '30px 20px 40px' : '20px 24px 24px', // 桌面版減少 padding
             borderTop: '1px solid rgba(0, 0, 0, 0.06)'
           }}
         >
@@ -1864,12 +1896,12 @@ const ProjectModal: React.FC<{
             <div 
               style={{
                 display: 'inline-block',
-                fontSize: isMobile ? '11px' : '13px',
+                fontSize: isMobile ? '11px' : '11px',
                 fontWeight: '600',
                 color: '#999',
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                marginBottom: isMobile ? '16px' : '20px',
+                marginBottom: isMobile ? '16px' : '12px',
                 paddingBottom: '8px',
                 borderBottom: '2px solid #ddd'
               }}
@@ -1880,9 +1912,9 @@ const ProjectModal: React.FC<{
             {/* 詳細描述 */}
             <p 
               style={{
-                fontSize: isMobile ? 'clamp(0.9rem, 3.5vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.15rem)',
+                fontSize: isMobile ? 'clamp(0.9rem, 3.5vw, 1.05rem)' : 'clamp(0.9rem, 1.6vw, 1.05rem)',
                 color: '#444',
-                lineHeight: '1.8',
+                lineHeight: isMobile ? '1.8' : '1.7',
                 fontWeight: '400',
                 letterSpacing: '0.01em'
               }}
@@ -2110,7 +2142,7 @@ const DesignDiary: React.FC<{
             margin: '0 0 20px 0',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
             letterSpacing: '0.05em',
-            fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             DESIGN DIARY
           </h1>
@@ -2444,8 +2476,8 @@ const DesignDiary: React.FC<{
                       boxShadow: 'inset 0 2px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.1)'
                     }}
                   />
-                ))}
-              </div>
+            ))}
+          </div>
 
               {/* 右上角插畫 - 根據卡片索引輪換 */}
               {(() => {
@@ -2528,8 +2560,8 @@ const DesignDiary: React.FC<{
               >
                 ×
               </button>
-              </div>
-
+        </div>
+      
               {/* 日記內容 - 簡化版 */}
                 <div style={{
                 marginTop: '1rem'
@@ -2563,7 +2595,7 @@ const DesignDiary: React.FC<{
                   }}>
                     {selectedEntry.content}
                   </p>
-                </div>
+      </div>
                         </div>
                       </div>
                     )}
@@ -2773,14 +2805,14 @@ const Carousel3D: React.FC<{
             />
       
       {/* 標題 */}
-            <div className="absolute bottom-6 left-6 z-20 text-white">
-              <h3 className="text-2xl font-bold mb-1">{item.title}</h3>
-              <p className="text-sm opacity-90">{item.description}</p>
+            <div className="absolute bottom-6 left-6 z-20 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif' }}>
+              <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
+              <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
       </div>
             
             {/* 編號 */}
             <div className="absolute top-6 left-6 z-20 text-white">
-              <span className="text-6xl font-bold opacity-70">
+              <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>
                 {String(index + startNumber + 1).padStart(2, '0')}
               </span>
       </div>
@@ -2795,7 +2827,8 @@ const Carousel3D: React.FC<{
                   borderRadius: '8px',
                   padding: '6px 14px',
                   fontSize: '13px',
-                  fontWeight: '600',
+                  fontWeight: '400',
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
                   color: '#333',
                   border: '1px solid rgba(0, 0, 0, 0.08)',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
@@ -3098,9 +3131,9 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
           <h1 style={{
               fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
-            fontWeight: 'bold',
+            fontWeight: '900',
               color: '#353535',
-              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
             margin: 0,
             letterSpacing: '0.1em',
@@ -3118,9 +3151,9 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h2 style={{
               fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
-              fontWeight: 'bold',
+              fontWeight: '400',
               color: '#353535',
-              fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
               margin: 0,
               letterSpacing: '0.03em',
@@ -3172,8 +3205,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
                 fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
-                fontWeight: '600',
-                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                fontWeight: '900',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#353535',
                 background: 'transparent',
                 border: '2px solid #353535',
@@ -3212,8 +3245,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
                 fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
-                fontWeight: '600',
-                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                fontWeight: '700',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#353535',
                 background: 'transparent',
                 border: '2px solid #353535',
@@ -3527,8 +3560,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             transform: 'scaleX(-1)', // 添加镜像效果
             animation: 'floatCloud 11.5s ease-in-out 6s infinite',
             opacity: starOpacity * 0.65,
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
         </div>
 
           {/* 50% 尺寸雲朵 - 6朵 */}
@@ -5928,7 +5961,8 @@ export default function HeroSimpleTest() {
             color: '#FFFFFF',
             margin: '0 0 20px 0',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             PROJECTS
           </h1>
@@ -5936,7 +5970,8 @@ export default function HeroSimpleTest() {
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
             color: '#E8F4FD',
             margin: '0',
-            fontWeight: '300',
+            fontWeight: '400',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.1em'
           }}>
             Explore My Latest Works
@@ -5965,7 +6000,8 @@ export default function HeroSimpleTest() {
             padding: '10px 20px',
             borderRadius: '20px',
             fontSize: '14px',
-            fontFamily: 'var(--font-zpix), monospace',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+            fontWeight: '400',
             zIndex: 20,
             display: isMobile ? 'none' : 'block'
           }}>
@@ -6495,7 +6531,8 @@ export default function HeroSimpleTest() {
             color: '#FFFFFF',
             margin: '0 0 20px 0',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             OUR SERVICES
           </h1>
@@ -6503,7 +6540,8 @@ export default function HeroSimpleTest() {
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
             color: '#E8E8E8',
             margin: '0',
-            fontWeight: '300',
+            fontWeight: '400',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.1em'
           }}>
             Discover My Creative Journey
@@ -7522,7 +7560,8 @@ export default function HeroSimpleTest() {
             color: '#FFFFF3',
             margin: '0 0 20px 0',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            letterSpacing: '0.05em'
+            letterSpacing: '0.05em',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             CONTACT
           </h1>
@@ -7530,7 +7569,8 @@ export default function HeroSimpleTest() {
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
             color: '#FFFFFF',
             margin: '0',
-            fontWeight: '300',
+            fontWeight: '400',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             letterSpacing: '0.1em'
           }}>
             Let&apos;s Create Something Amazing Together
@@ -7853,7 +7893,8 @@ export default function HeroSimpleTest() {
             padding: '15px 40px',
             borderRadius: '30px',
             fontSize: '1.1rem',
-            fontWeight: '600',
+            fontWeight: '900',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
             width: '200px',
@@ -7875,10 +7916,11 @@ export default function HeroSimpleTest() {
               backgroundColor: '#fdd000',
               color: '#000000',
               border: '2px solid #fdd000',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               padding: '15px 40px',
               borderRadius: '30px',
               fontSize: '1.1rem',
-              fontWeight: '600',
+              fontWeight: '700',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               width: '200px'
@@ -7968,7 +8010,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.8)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -7986,7 +8029,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.8)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8004,7 +8048,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.8)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8043,7 +8088,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.7)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8066,7 +8112,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.7)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8090,7 +8137,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.7)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8116,7 +8164,8 @@ export default function HeroSimpleTest() {
                 color: 'rgba(255, 255, 255, 0.7)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontFamily: 'var(--font-zpix), monospace',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '400',
                 transition: 'color 0.3s ease'
               }}
               onMouseEnter={(e) => {
@@ -8135,7 +8184,8 @@ export default function HeroSimpleTest() {
             color: 'rgba(255, 255, 255, 0.5)',
             fontSize: '0.8rem',
             margin: '0',
-            fontFamily: 'var(--font-zpix), monospace'
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+            fontWeight: '400'
           }}>
             #Own the Day #Go Live Today
           </p>

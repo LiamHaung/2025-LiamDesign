@@ -4,6 +4,10 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 
+// 尝试导入 Google Sans Flex（如果字体名称不对，请使用本地字体文件）
+// 注意：Google Sans Flex 可能不在标准 Google Fonts API 中
+// 如果构建失败，请下载字体文件到 public/fonts/ 并使用 localFont
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -53,6 +57,20 @@ const handwritingFont = localFont({
   variable: "--font-handwriting",
   display: "swap",
   fallback: ["var(--font-caveat)", "var(--font-noto-sans-tc)", "sans-serif"],
+});
+
+// Google Sans Flex 英文字體 - 使用本地可變字體文件
+const googleSansFlex = localFont({
+  src: [
+    {
+      path: "../../public/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf",
+      weight: "100 900", // 可變字體支援 100-900 的所有字重
+      style: "normal",
+    },
+  ],
+  variable: "--font-google-sans-flex",
+  display: "swap",
+  fallback: ["var(--font-geist-sans)", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -232,7 +250,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${notoSansTC.variable} ${zpix.variable} ${caveat.variable} ${handwritingFont.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${notoSansTC.variable} ${zpix.variable} ${caveat.variable} ${handwritingFont.variable} ${googleSansFlex.variable} antialiased`}
       >
         <Script
           id="json-ld"
