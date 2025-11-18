@@ -2802,29 +2802,60 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   const [title2Opacity, setTitle2Opacity] = useState(0); // "一起書寫你我的品牌故事" 透明度
   const [ctaOpacity, setCtaOpacity] = useState(0); // CTA 按鈕透明度
   
+  // 封面元素淡入動畫狀態（主次層次）
+  const [boatFadeOpacity, setBoatFadeOpacity] = useState(0); // 船隻淡入（最重要，最先）
+  const [cloudFadeOpacity, setCloudFadeOpacity] = useState(0); // 雲朵淡入（次要）
+  const [sunFadeOpacity, setSunFadeOpacity] = useState(0); // 太陽淡入（背景裝飾）
+  const [starFadeOpacity, setStarFadeOpacity] = useState(0); // 星星淡入（背景裝飾）
+  
   // 動畫時序控制
   useEffect(() => {
-    // 1. 毛玻璃區塊淡入 (0-500ms)
-    const timer1 = setTimeout(() => {
-      setGlassOpacity(1);
+    // 封面元素淡入順序（主次層次）
+    // 1. 船隻淡入 (0-300ms) - 最重要，最先出現
+    const boatTimer = setTimeout(() => {
+      setBoatFadeOpacity(1);
     }, 0);
     
-    // 2. "Own the Day." 淡入 (500-1000ms)
+    // 2. 雲朵淡入 (300-600ms) - 次要元素
+    const cloudTimer = setTimeout(() => {
+      setCloudFadeOpacity(1);
+    }, 300);
+    
+    // 3. 太陽和星星淡入 (600-900ms) - 背景裝飾，最後出現
+    const sunTimer = setTimeout(() => {
+      setSunFadeOpacity(1);
+    }, 600);
+    
+    const starTimer = setTimeout(() => {
+      setStarFadeOpacity(1);
+    }, 700);
+    
+    // 文字內容淡入（在封面元素之後）
+    // 4. 毛玻璃區塊淡入 (900-1400ms)
+    const timer1 = setTimeout(() => {
+      setGlassOpacity(1);
+    }, 900);
+    
+    // 5. "Own the Day." 淡入 (1400-1900ms)
     const timer2 = setTimeout(() => {
       setTitle1Opacity(1);
-    }, 500);
+    }, 1400);
     
-    // 3. "一起書寫你我的品牌故事" 淡入 (1000-1500ms)
+    // 6. "一起書寫你我的品牌故事" 淡入 (1900-2400ms)
     const timer3 = setTimeout(() => {
       setTitle2Opacity(1);
-    }, 1000);
+    }, 1900);
     
-    // 4. CTA 按鈕淡入 (1500-2000ms)
+    // 7. CTA 按鈕淡入 (2400-2900ms)
     const timer4 = setTimeout(() => {
       setCtaOpacity(1);
-    }, 1500);
+    }, 2400);
     
     return () => {
+      clearTimeout(boatTimer);
+      clearTimeout(cloudTimer);
+      clearTimeout(sunTimer);
+      clearTimeout(starTimer);
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
@@ -2963,8 +2994,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '0', // 移除間距，讓綠線區和藍線區緊緊連在一起
-        opacity: boatOpacity,
-        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
+        opacity: boatOpacity * boatFadeOpacity, // 結合滾動透明度和淡入動畫
+        transition: 'opacity 0.5s ease-in, transform 0.1s ease-out',
         boxSizing: 'border-box',
         minHeight: '200px', // 確保容器有足夠高度可見
         // 確保建立新的堆疊上下文
@@ -2981,10 +3012,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
-          opacity: starOpacity,
+          opacity: starOpacity * sunFadeOpacity, // 結合滾動透明度和淡入動畫
           zIndex: 1, // 在容器內，但低於文字
           pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out',
+          transition: 'opacity 0.5s ease-in, transform 0.1s ease-out',
           transform: 'translate(-30%, -30%)' // 稍微往外偏移，讓太陽一部分在容器外，形成貼齊左上緣的效果
         }}></div>
 
@@ -3265,10 +3296,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
             animation: 'twinkle 2s infinite',
-            opacity: starOpacity, // 應用透明度效果
+            opacity: starOpacity * starFadeOpacity, // 結合滾動透明度和淡入動畫
             '--star-y': `${starY}px`,
               zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           } as React.CSSProperties}
         ></div>
         <div style={{
@@ -3282,9 +3313,9 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
           animation: 'twinkle 2.5s infinite',
-          opacity: starOpacity,
+          opacity: starOpacity * starFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: 1, // 降低 z-index，確保在船隻和文字（z-index: 20）下方
-          transition: 'opacity 0.1s ease-out'
+          transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
         }}></div>
 
 
@@ -3302,10 +3333,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 10s ease-in-out 1s infinite',
-            opacity: starOpacity * 0.9,
+            opacity: starOpacity * 0.9 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 2 - 320% - 右下（更靠近中心） */}
           <div style={{
@@ -3319,10 +3350,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 12s ease-in-out 4s infinite',
-            opacity: starOpacity * 0.85,
+            opacity: starOpacity * 0.85 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
 
           {/* 200% 尺寸雲朵 - 3朵（cloud-1 放在下方，cloud-2 和 cloud-3 放在上方） */}
@@ -3338,10 +3369,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 9s ease-in-out 2s infinite',
-            opacity: starOpacity * 0.8,
+            opacity: starOpacity * 0.8 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 4 - 200% - 中上（更靠近中心，添加镜像） */}
           <div style={{
@@ -3363,8 +3394,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 11s ease-in-out 3s infinite',
-              opacity: starOpacity * 0.75,
-              transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.75 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+              transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
             }}></div>
           </div>
           {/* 雲朵 5 - 200% - 左下（更靠近中心，添加镜像） */}
@@ -3386,8 +3417,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 13s ease-in-out 5s infinite',
-              opacity: starOpacity * 0.7,
-          transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.7 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+          transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
         }}></div>
           </div>
 
@@ -3404,10 +3435,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 8s ease-in-out 0.5s infinite',
-            opacity: starOpacity * 0.7,
+            opacity: starOpacity * 0.7 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 7 - 100% - 右上角（更靠近中心，添加镜像） */}
           <div style={{
@@ -3428,8 +3459,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 9.5s ease-in-out 2.5s infinite',
-              opacity: starOpacity * 0.65,
-              transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.65 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+              transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
             }}></div>
           </div>
           {/* 雲朵 8 - 100% - 中下偏左（更靠近中心） */}
@@ -3444,10 +3475,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 10.5s ease-in-out 4.5s infinite',
-            opacity: starOpacity * 0.6,
+            opacity: starOpacity * 0.6 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 9 - 100% - 中下偏右（更靠近中心，添加镜像） */}
         <div style={{
@@ -3486,10 +3517,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 7s ease-in-out 1.5s infinite',
-            opacity: starOpacity * 0.6,
+            opacity: starOpacity * 0.6 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 11 - 50% - 右上小（更靠近中心，添加镜像） */}
           <div style={{
@@ -3510,8 +3541,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 8.5s ease-in-out 3.5s infinite',
-              opacity: starOpacity * 0.55,
-              transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.55 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+              transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
             }}></div>
           </div>
           {/* 雲朵 12 - 50% - 中上偏左（更靠近中心） */}
@@ -3526,10 +3557,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 9s ease-in-out 5.5s infinite',
-            opacity: starOpacity * 0.5,
+            opacity: starOpacity * 0.5 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 13 - 50% - 中上偏右（更靠近中心，添加镜像） */}
           <div style={{
@@ -3550,8 +3581,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 10s ease-in-out 7s infinite',
-              opacity: starOpacity * 0.55,
-              transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.55 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+              transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
             }}></div>
           </div>
           {/* 雲朵 14 - 50% - 左下小（更靠近中心） */}
@@ -3566,10 +3597,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             animation: 'floatCloud 11s ease-in-out 2s infinite',
-            opacity: starOpacity * 0.5,
+            opacity: starOpacity * 0.5 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
             zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
             pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
+            transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
           }}></div>
           {/* 雲朵 15 - 50% - 右下小（更靠近中心，添加镜像） */}
           <div style={{
@@ -3590,8 +3621,8 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               backgroundPosition: 'center',
               transform: 'scaleX(-1)', // 添加镜像效果
               animation: 'floatCloud 12s ease-in-out 6.5s infinite',
-              opacity: starOpacity * 0.55,
-              transition: 'opacity 0.1s ease-out'
+              opacity: starOpacity * 0.55 * cloudFadeOpacity, // 結合滾動透明度和淡入動畫
+              transition: 'opacity 0.5s ease-in, transform 0.1s ease-out'
             }}></div>
           </div>
 
