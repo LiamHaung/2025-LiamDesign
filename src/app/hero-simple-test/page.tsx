@@ -592,7 +592,7 @@ const LoadingPage = ({
             letterSpacing: '0.05em',
             textShadow: '0 0 15px rgba(0, 62, 195, 0.4)'
           }}>
-            掌握今天
+            一起書寫你我的品牌故事
           </div>
         </div>
       )}
@@ -673,6 +673,7 @@ interface ProjectItem {
   tags: string[];
   galleryImages: string[];
   detailedDescription: string;
+  year: number;
 }
 
 // 商品數據接口
@@ -1478,14 +1479,17 @@ const ProjectModal: React.FC<{
   project: ProjectItem | null;
 }> = ({ isOpen, onClose, project }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
-  // 當切換圖片時重置狀態
+  // 檢測移動裝置
   useEffect(() => {
-    setImageLoaded(false);
-    setImageDimensions({ width: 0, height: 0 });
-  }, [currentImageIndex]);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   if (!isOpen || !project) return null;
 
@@ -1501,154 +1505,383 @@ const ProjectModal: React.FC<{
     );
   };
 
-  // 處理圖片載入完成
-  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = event.currentTarget;
-    setImageDimensions({
-      width: img.naturalWidth,
-      height: img.naturalHeight
-    });
-    setImageLoaded(true);
-  };
-
-  // 計算動態高度
-  const calculateImageHeight = () => {
-    if (!imageLoaded || imageDimensions.width === 0) {
-      return '60vh'; // 預設高度
-    }
-    
-    const aspectRatio = imageDimensions.height / imageDimensions.width;
-    const maxWidth = Math.min(window.innerWidth * 0.8, 1200); // 最大寬度
-    const calculatedHeight = maxWidth * aspectRatio;
-    const maxHeight = window.innerHeight * 0.85; // 最大高度限制
-    
-    return `${Math.min(calculatedHeight, maxHeight)}px`;
-  };
-
   return (
     <div
-      className="fixed inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/80 to-blue-700/80 backdrop-blur-sm flex items-center justify-center p-4"
-      style={{ zIndex: 9999 }}
+      className="fixed inset-0 flex items-center justify-center"
+      style={{ 
+        zIndex: 10000,
+        background: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        padding: isMobile ? '0' : '16px'
+      }}
       onClick={onClose}
     >
       <div
-        className="bg-white/10 backdrop-blur-md rounded-2xl w-full max-w-4xl overflow-hidden border border-white/20 shadow-2xl flex flex-col"
+        className="w-full flex flex-col"
         style={{ 
-          maxHeight: '95vh',
-          height: imageLoaded ? 'auto' : '90vh'
+          maxHeight: '100vh',
+          overflow: 'auto',
+          maxWidth: isMobile ? '100%' : '1400px',
+          borderRadius: isMobile ? '0' : '20px',
+          boxShadow: isMobile ? 'none' : '0 20px 60px rgba(0, 0, 0, 0.3)',
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(40px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(150%)',
+          border: isMobile ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 關閉按鈕 */}
-        <div className="flex justify-end p-4 absolute top-0 right-0 z-10">
+        {/* 關閉按鈕 - 移動端固定在右上角 */}
           <button
-            onClick={onClose}
-            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold transition-all duration-300 border border-white/30"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClose();
+          }}
+          style={{
+            position: isMobile ? 'fixed' : 'absolute',
+            top: isMobile ? '12px' : '20px',
+            right: isMobile ? '12px' : '20px',
+            background: isMobile ? 'rgba(0, 0, 0, 0.75)' : 'rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: isMobile ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
+            borderRadius: '50%',
+            width: isMobile ? '48px' : '44px',
+            height: isMobile ? '48px' : '44px',
+            cursor: 'pointer',
+            fontSize: isMobile ? '22px' : '20px',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s',
+            zIndex: 1000,
+            fontWeight: 'normal',
+            boxShadow: isMobile ? '0 4px 12px rgba(0, 0, 0, 0.4)' : 'none'
+          }}
+          onMouseEnter={(e) => {
+            if (!isMobile) {
+              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.transform = 'scale(1.1)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isMobile) {
+              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.5)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }
+          }}
           >
             ✕
           </button>
+
+        {/* 上半部：圖片展示區 - 毛玻璃背景 */}
+        <div style={{ 
+          background: 'rgba(248, 249, 250, 0.5)', 
+          backdropFilter: 'blur(30px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(150%)',
+          padding: '20px 12px 16px'
+        }}>
+          {/* 標題區 - 精緻設計 */}
+          <div style={{ 
+            marginBottom: '20px', 
+            textAlign: 'center',
+            paddingTop: isMobile ? '40px' : '0'
+          }}>
+            <h2 
+              style={{
+                fontSize: isMobile ? 'clamp(1.4rem, 5vw, 1.8rem)' : 'clamp(1.8rem, 4vw, 2.8rem)',
+                fontWeight: '700',
+                color: '#1a1a1a',
+                marginBottom: isMobile ? '12px' : '16px',
+                letterSpacing: '-0.02em',
+                lineHeight: '1.3'
+              }}
+            >
+              {project.title}
+            </h2>
+            <p 
+              style={{
+                fontSize: isMobile ? 'clamp(0.9rem, 3.5vw, 1.1rem)' : 'clamp(1rem, 2vw, 1.25rem)',
+                color: '#666',
+                fontWeight: '400',
+                lineHeight: '1.6',
+                maxWidth: '700px',
+                margin: '0 auto',
+                padding: isMobile ? '0 8px' : '0'
+              }}
+            >
+              {project.description}
+            </p>
         </div>
 
-        {/* 上方：照片輪播區域 - 動態高度 */}
-        <div 
-          className="relative bg-white/10 backdrop-blur-sm overflow-hidden flex items-center justify-center"
-          style={{ 
-            height: calculateImageHeight(),
-            minHeight: '40vh',
-            maxHeight: '70vh'
-          }}
-        >
-          <img
-            src={project.galleryImages[currentImageIndex] || project.image}
-            alt={`${project.title} - Image ${currentImageIndex + 1}`}
-            className="max-w-full max-h-full object-contain"
-            onLoad={handleImageLoad}
-          />
-        </div>
-
-        {/* 下方：所有文字資訊和控制元件 */}
-        <div className="bg-black/20 backdrop-blur-sm p-4 space-y-3">
-          {/* 專案標題和描述 */}
-          <div>
-            <h2 className="text-lg font-bold text-white mb-1">{project.title}</h2>
-            <p className="text-white/80 text-sm mb-2">{project.description}</p>
-            <div className="flex flex-wrap gap-1">
+          {/* 標籤 - 手機版移到圖片外 */}
+          {isMobile && (
+            <div 
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+                marginBottom: '16px',
+                justifyContent: 'center'
+              }}
+            >
             {project.tags.map((tag, index) => (
               <span
                 key={index}
-                  className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-xs border border-white/30"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    borderRadius: '20px',
+                    padding: '6px 14px',
+                    fontSize: '11px',
+                    color: '#555',
+                    fontWeight: '500',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                  }}
               >
                 {tag}
               </span>
             ))}
           </div>
-        </div>
+          )}
 
-          {/* 輪播控制 */}
-          <div className="space-y-2">
-          {/* 進度條控制 */}
-            <div className="flex items-center gap-3">
+          {/* 照片輪播區域 - 1575:1500 比例 */}
+          <div 
+            style={{
+              position: 'relative',
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(25px) saturate(140%)',
+              WebkitBackdropFilter: 'blur(25px) saturate(140%)',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: isMobile ? '12px' : '16px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+              aspectRatio: '1575 / 1500',
+              maxHeight: isMobile ? 'none' : '65vh',
+              margin: '0 auto',
+              border: '1px solid rgba(255, 255, 255, 0.4)'
+            }}
+          >
+            {/* 標籤 - 桌面版在圖片內 */}
+            {!isMobile && (
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: '24px',
+                  left: '24px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  zIndex: 10
+                }}
+              >
+                {project.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.85)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(0, 0, 0, 0.06)',
+                      borderRadius: '24px',
+                      padding: '10px 20px',
+                      fontSize: '13px',
+                      color: '#444',
+                      fontWeight: '500',
+                      boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
+                      letterSpacing: '0.01em'
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+        </div>
+            )}
+
+            {/* 圖片 */}
+            <img
+                src={project.galleryImages[currentImageIndex] || project.image}
+                alt={`${project.title} - Image ${currentImageIndex + 1}`}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+
+            {/* 底部導航按鈕 - 響應式設計 */}
+            {project.galleryImages.length > 1 && (
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: isMobile ? '12px' : '24px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: isMobile ? '10px' : '16px',
+                  zIndex: 10
+                }}
+              >
               {/* 上一張按鈕 */}
               <button
-                onClick={prevImage}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-2 py-1 rounded text-xs border border-white/30 transition-all duration-300"
-              >
-                ← 上一張
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    prevImage();
+                  }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.85)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(0, 0, 0, 0.06)',
+                    borderRadius: '50%',
+                    width: isMobile ? '40px' : '52px',
+                    height: isMobile ? '40px' : '52px',
+                    cursor: 'pointer',
+                    fontSize: isMobile ? '18px' : '22px',
+                    color: '#333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+                    fontWeight: 'normal',
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
+                      e.currentTarget.style.transform = 'scale(1.08)';
+                      e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.12)';
+                    }
+                  }}
+                >
+                  ‹
               </button>
               
-              {/* 進度條 */}
-              <div className="flex-1">
-                <div className="w-full bg-white/20 rounded-full h-1.5">
+                {/* 圖片計數器 - 手機版縮小 */}
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-300 h-1.5 rounded-full transition-all duration-300"
           style={{ 
-                      width: `${((currentImageIndex + 1) / project.galleryImages.length) * 100}%` 
-                    }}
-                  ></div>
-                </div>
-                <div className="flex justify-between mt-1 text-xs text-white/70">
-                  <span>{currentImageIndex + 1}</span>
-                  <span>{project.galleryImages.length}</span>
-                </div>
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    color: 'white',
+                    padding: isMobile ? '6px 12px' : '10px 20px',
+                    borderRadius: '20px',
+                    fontSize: isMobile ? '11px' : '13px',
+                    fontWeight: '500',
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
+                  }}
+                >
+                  {currentImageIndex + 1} / {project.galleryImages.length}
               </div>
               
               {/* 下一張按鈕 */}
               <button
-                onClick={nextImage}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-2 py-1 rounded text-xs border border-white/30 transition-all duration-300"
-              >
-                下一張 →
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nextImage();
+                  }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.85)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(0, 0, 0, 0.06)',
+                    borderRadius: '50%',
+                    width: isMobile ? '40px' : '52px',
+                    height: isMobile ? '40px' : '52px',
+                    cursor: 'pointer',
+                    fontSize: isMobile ? '18px' : '22px',
+                    color: '#333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+                    fontWeight: 'normal',
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
+                      e.currentTarget.style.transform = 'scale(1.08)';
+                      e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.12)';
+                    }
+                  }}
+                >
+                  ›
               </button>
+              </div>
+            )}
+            </div>
     </div>
     
-          {/* 縮圖 */}
-            <div className="flex gap-1 justify-center">
-            {project.galleryImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                  className={`relative w-8 h-8 rounded overflow-hidden border transition-all duration-300 ${
-                  index === currentImageIndex
-                      ? 'border-white ring-1 ring-white/50'
-                    : 'border-white/30 hover:border-white/50'
-                }`}
-              >
-                  <img
-                  src={image || project.image}
-                  alt={`Thumbnail ${index + 1}`}
-                    className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
+        {/* 下半部：專案詳情 - 毛玻璃質感 */}
+        <div 
+          style={{ 
+            background: 'rgba(255, 255, 255, 0.6)',
+            backdropFilter: 'blur(30px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(30px) saturate(150%)',
+            padding: '30px 20px 40px',
+            borderTop: '1px solid rgba(0, 0, 0, 0.06)'
+          }}
+        >
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            {/* 專案詳情標題 */}
+            <div 
+              style={{
+                display: 'inline-block',
+                fontSize: isMobile ? '11px' : '13px',
+                fontWeight: '600',
+                color: '#999',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                marginBottom: isMobile ? '16px' : '20px',
+                paddingBottom: '8px',
+                borderBottom: '2px solid #ddd'
+              }}
+            >
+              Project Details
+            </div>
+            
+            {/* 詳細描述 */}
+            <p 
+              style={{
+                fontSize: isMobile ? 'clamp(0.9rem, 3.5vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.15rem)',
+                color: '#444',
+                lineHeight: '1.8',
+                fontWeight: '400',
+                letterSpacing: '0.01em'
+              }}
+            >
+              {project.detailedDescription}
+            </p>
           </div>
         </div>
-      
-          {/* 專案詳情 */}
-          <div>
-            <h3 className="text-sm font-semibold text-white mb-1">專案詳情</h3>
-            <p className="text-white/80 text-xs leading-relaxed">{project.detailedDescription}</p>
-          </div>
-      </div>
       </div>
     </div>
   );
@@ -1842,9 +2075,19 @@ const DesignDiary: React.FC<{
             transform: rotate(360deg);
           }
         }
+        
+        /* 隱藏滾動條 */
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}</style>
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10, padding: isMobile ? '2rem 1rem' : '4rem 2rem' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10, padding: isMobile ? '2rem 1rem 4rem 1rem' : '4rem 2rem 6rem 2rem', overflow: 'visible' }}>
         {/* 標題區域 - 與 PROJECTS 區塊相同樣式 */}
         <div style={{
           textAlign: 'center',
@@ -1869,8 +2112,9 @@ const DesignDiary: React.FC<{
           position: 'relative',
           width: '100%',
           marginBottom: isMobile ? '2rem' : '4rem',
-          maxWidth: isMobile ? '900px' : '1400px', // 桌面版增加最大寬度以容納更多卡片
-          margin: isMobile ? '0 auto 2rem auto' : '0 auto 4rem auto'
+          maxWidth: '100%',
+          margin: isMobile ? '0 auto 2rem auto' : '0 auto 4rem auto',
+          overflow: 'visible'
         }}>
           {/* 滾動容器 */}
           <div
@@ -1878,16 +2122,17 @@ const DesignDiary: React.FC<{
             style={{
               display: 'flex',
               overflowX: 'auto',
-              overflowY: 'hidden',
+              overflowY: 'visible',
               scrollSnapType: 'x mandatory',
               scrollBehavior: 'smooth',
               gap: '2rem',
-              padding: '2rem 1rem',
-              scrollbarWidth: 'thin',
-              scrollbarColor: 'rgba(0, 62, 195, 0.3) transparent',
+              padding: '2rem 2rem 4rem 2rem',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
-              msOverflowStyle: '-ms-autohiding-scrollbar'
+              marginBottom: '2rem'
             }}
+            className="hide-scrollbar"
           >
             {entries.map((entry, index) => {
               const isHovered = hoveredIndex === index;
@@ -1920,7 +2165,6 @@ const DesignDiary: React.FC<{
                     flexDirection: 'column',
                     zIndex: isHovered ? 10 : 5,
                     backgroundColor: 'transparent',
-                    aspectRatio: '4 / 3',
                     opacity: opacity
                   }}
                 >
@@ -1928,9 +2172,7 @@ const DesignDiary: React.FC<{
                     <div style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '4 / 3',
-                    minHeight: isMobile ? '280px' : '400px',
-                    maxHeight: isMobile ? '350px' : '500px',
+                    height: '100%',
                     background: '#FCFBE4',
                     borderRadius: '24px',
                     paddingTop: isMobile ? '1.5rem' : '2rem',
@@ -1949,7 +2191,7 @@ const DesignDiary: React.FC<{
                     {/* 書籤 - 左下角，更自然的形狀 */}
                   <div style={{
                     position: 'absolute',
-                      bottom: '-8px',
+                      bottom: '-12px',
                       left: '20px',
                       width: '24px',
                       height: '24px',
@@ -1988,17 +2230,21 @@ const DesignDiary: React.FC<{
                    {entry.title}
                  </h3>
 
-                      {/* 內文 - 多行 */}
+                      {/* 內文 - 顯示3-4行 */}
                 <p style={{
                         color: '#000000',
-                  fontSize: isMobile ? '1.1rem' : '1.4rem',
-                  lineHeight: '1.8',
+                  fontSize: isMobile ? '1rem' : '1.2rem',
+                  lineHeight: '1.7',
                   marginBottom: '1.5rem',
                         fontFamily: 'var(--font-handwriting), var(--font-noto-sans-tc), sans-serif',
                         flex: '1',
                   overflow: 'hidden',
                         textAlign: 'left',
-                        fontWeight: '800'
+                        fontWeight: '600',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical',
+                        textOverflow: 'ellipsis'
                 }}>
                   {entry.content}
                 </p>
@@ -2041,16 +2287,16 @@ const DesignDiary: React.FC<{
                        >
                          {tag}
                        </span>
-                     ))}
-                   </div>
+            ))}
+          </div>
                  )}
                  </div>
                   </div>
                 </div>
             );
           })}
-          </div>
-
+        </div>
+      
           {/* 響應式樣式 */}
           <style>{`
             /* 手機裝置：一次一張 */
@@ -2060,35 +2306,35 @@ const DesignDiary: React.FC<{
                 min-width: calc(100% - 2rem) !important;
                 max-width: calc(100% - 2rem) !important;
                 width: calc(100% - 2rem) !important;
-                aspect-ratio: 4 / 3 !important;
-                min-height: 280px !important;
+                height: 350px !important;
+                min-height: 350px !important;
                 max-height: 350px !important;
               }
             }
             
-            /* 平板裝置：一次2張 */
+            /* 平板裝置：固定寬度 */
             @media (min-width: 769px) and (max-width: 1024px) {
               .diary-card {
-                flex: 0 0 calc(50% - 1rem) !important;
-                min-width: calc(50% - 1rem) !important;
-                max-width: calc(50% - 1rem) !important;
-                width: calc(50% - 1rem) !important;
-                aspect-ratio: 4 / 3 !important;
-                min-height: 350px !important;
-                max-height: 450px !important;
+                flex: 0 0 380px !important;
+                min-width: 380px !important;
+                max-width: 380px !important;
+                width: 380px !important;
+                height: 380px !important;
+                min-height: 380px !important;
+                max-height: 380px !important;
               }
             }
             
-            /* 桌面裝置：一次顯示5張（每個卡片約20%寬度） */
+            /* 桌面裝置：固定寬度420px，高度380px */
             @media (min-width: 1025px) {
               .diary-card {
-                flex: 0 0 calc(20% - 1.6rem) !important;
-                min-width: calc(20% - 1.6rem) !important;
-                max-width: calc(20% - 1.6rem) !important;
-                width: calc(20% - 1.6rem) !important;
-                aspect-ratio: 4 / 3 !important;
-                min-height: 400px !important;
-                max-height: 500px !important;
+                flex: 0 0 420px !important;
+                min-width: 420px !important;
+                max-width: 420px !important;
+                width: 420px !important;
+                height: 380px !important;
+                min-height: 380px !important;
+                max-height: 380px !important;
                 transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease !important;
               }
             }
@@ -2096,14 +2342,14 @@ const DesignDiary: React.FC<{
             /* 平板裝置：hover 效果 */
             @media (min-width: 769px) and (max-width: 1024px) {
               .diary-card:hover {
-                width: calc(70% - 1rem) !important;
-                min-width: calc(70% - 1rem) !important;
-                max-width: calc(70% - 1rem) !important;
+                width: 480px !important;
+                min-width: 480px !important;
+                max-width: 480px !important;
                 z-index: 10 !important;
               }
             }
           `}</style>
-        </div>
+      </div>
         {/* 詳細視窗 - 溫暖親民風格 */}
         {selectedEntry && (
           <div
@@ -2113,7 +2359,7 @@ const DesignDiary: React.FC<{
               background: 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              zIndex: 9999,
+              zIndex: 100000,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -2146,15 +2392,17 @@ const DesignDiary: React.FC<{
                 border: '2px solid #FFFFFF',
                 borderRadius: '24px',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-                maxWidth: '600px',
-                width: '90%',
-                maxHeight: '85vh',
+                width: isMobile ? '90vw' : '800px',
+                minWidth: isMobile ? '90vw' : '800px',
+                maxWidth: isMobile ? '90vw' : '800px',
+                height: 'auto',
+                maxHeight: isMobile ? '70vh' : '60vh',
                 overflowY: 'auto',
                 overflowX: 'visible',
                 paddingTop: '3rem',
-                paddingLeft: '2.5rem',
-                paddingRight: '2.5rem',
-                paddingBottom: '2.5rem',
+                paddingLeft: isMobile ? '1.5rem' : '3rem',
+                paddingRight: isMobile ? '1.5rem' : '3rem',
+                paddingBottom: '2rem',
                 position: 'relative',
                 fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                 animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -2513,10 +2761,23 @@ const Carousel3D: React.FC<{
               </span>
       </div>
 
-            {/* 點擊提示 */}
-            <div className="absolute top-6 right-6 z-20 text-white">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm">
-                點擊查看
+            {/* 年份標籤 */}
+            <div className="absolute top-6 right-6 z-20">
+              <div 
+                style={{
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  borderRadius: '8px',
+                  padding: '6px 14px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  color: '#333',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                {item.year}
       </div>
             </div>
           </div>
@@ -2538,7 +2799,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 動畫狀態控制
   const [glassOpacity, setGlassOpacity] = useState(0); // 毛玻璃區塊透明度
   const [title1Opacity, setTitle1Opacity] = useState(0); // "Own the Day." 透明度
-  const [title2Opacity, setTitle2Opacity] = useState(0); // "讓我們一起書寫你的品牌故事" 透明度
+  const [title2Opacity, setTitle2Opacity] = useState(0); // "一起書寫你我的品牌故事" 透明度
   const [ctaOpacity, setCtaOpacity] = useState(0); // CTA 按鈕透明度
   
   // 動畫時序控制
@@ -2553,7 +2814,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
       setTitle1Opacity(1);
     }, 500);
     
-    // 3. "讓我們一起書寫你的品牌故事" 淡入 (1000-1500ms)
+    // 3. "一起書寫你我的品牌故事" 淡入 (1000-1500ms)
     const timer3 = setTimeout(() => {
       setTitle2Opacity(1);
     }, 1000);
@@ -2813,7 +3074,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
               opacity: title2Opacity,
               transition: 'opacity 0.5s ease-in'
             }}>
-              讓我們一起書寫你的品牌故事
+              一起書寫你我的品牌故事
             </h2>
         </div>
 
@@ -3029,11 +3290,11 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
 
         {/* 雲朵裝飾 - Hero區域（重新分配尺寸：320% 2朵，200% 3朵，100% 4朵，50% 6朵） */}
           {/* 320% 尺寸雲朵 - 2朵（cloud-1 放在下方，cloud-2 和 cloud-3 放在上方） */}
-          {/* 雲朵 1 - 320% - 左上 */}
+          {/* 雲朵 1 - 320% - 左上（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            top: '8%',
-            left: '8%',
+            top: '25%',
+            left: '25%',
             width: isMobile ? '112px' : '192px', // 60px * 3.2 = 192px
             height: isMobile ? '112px' : '192px',
             backgroundImage: 'url(/cloud-2.png)', // 上方使用 cloud-2
@@ -3046,11 +3307,11 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 2 - 320% - 右下 */}
+          {/* 雲朵 2 - 320% - 右下（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            bottom: '15%',
-            right: '12%',
+            bottom: '25%',
+            right: '25%',
             width: isMobile ? '112px' : '192px',
             height: isMobile ? '112px' : '192px',
             backgroundImage: 'url(/cloud-1.png)', // 下方使用 cloud-1
@@ -3065,11 +3326,11 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
           }}></div>
 
           {/* 200% 尺寸雲朵 - 3朵（cloud-1 放在下方，cloud-2 和 cloud-3 放在上方） */}
-          {/* 雲朵 3 - 200% - 右上 */}
+          {/* 雲朵 3 - 200% - 右上（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            top: '12%',
-            right: '15%',
+            top: '30%',
+            right: '30%',
             width: isMobile ? '70px' : '120px', // 60px * 2 = 120px
             height: isMobile ? '70px' : '120px',
             backgroundImage: 'url(/cloud-3.png)', // 上方使用 cloud-3
@@ -3082,48 +3343,60 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 4 - 200% - 中上 */}
+          {/* 雲朵 4 - 200% - 中上（更靠近中心，添加镜像） */}
           <div style={{
             position: 'absolute',
-            top: '6%',
+            top: '20%',
             left: '50%',
             transform: 'translateX(-50%)',
             width: isMobile ? '70px' : '120px',
             height: isMobile ? '70px' : '120px',
-            backgroundImage: 'url(/cloud-2.png)', // 上方使用 cloud-2
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 11s ease-in-out 3s infinite',
-            opacity: starOpacity * 0.75,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
-          {/* 雲朵 5 - 200% - 左下 */}
-          <div style={{
-            position: 'absolute',
-            bottom: '20%',
-            left: '12%',
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-2.png)', // 上方使用 cloud-2
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 11s ease-in-out 3s infinite',
+              opacity: starOpacity * 0.75,
+              transition: 'opacity 0.1s ease-out'
+            }}></div>
+          </div>
+          {/* 雲朵 5 - 200% - 左下（更靠近中心，添加镜像） */}
+        <div style={{
+          position: 'absolute',
+          bottom: '30%',
+          left: '30%',
             width: isMobile ? '70px' : '120px',
             height: isMobile ? '70px' : '120px',
-            backgroundImage: 'url(/cloud-1.png)', // 下方使用 cloud-1
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 13s ease-in-out 5s infinite',
-            opacity: starOpacity * 0.7,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-1.png)', // 下方使用 cloud-1
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 13s ease-in-out 5s infinite',
+              opacity: starOpacity * 0.7,
+          transition: 'opacity 0.1s ease-out'
+        }}></div>
+          </div>
 
           {/* 100% 尺寸雲朵 - 4朵 */}
-          {/* 雲朵 6 - 100% - 左上角 */}
+          {/* 雲朵 6 - 100% - 左上角（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            top: '20%',
-            left: '5%',
+            top: '30%',
+            left: '30%',
             width: isMobile ? '35px' : '60px', // 60px * 1 = 60px
             height: isMobile ? '35px' : '60px',
             backgroundImage: 'url(/cloud-big.png)',
@@ -3136,28 +3409,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 7 - 100% - 右上角 */}
+          {/* 雲朵 7 - 100% - 右上角（更靠近中心，添加镜像） */}
           <div style={{
             position: 'absolute',
-            top: '25%',
-            right: '8%',
+            top: '35%',
+            right: '30%',
             width: isMobile ? '35px' : '60px',
             height: isMobile ? '35px' : '60px',
-            backgroundImage: 'url(/cloud-big.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 9.5s ease-in-out 2.5s infinite',
-            opacity: starOpacity * 0.65,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
-          {/* 雲朵 8 - 100% - 中下偏左 */}
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 9.5s ease-in-out 2.5s infinite',
+              opacity: starOpacity * 0.65,
+              transition: 'opacity 0.1s ease-out'
+            }}></div>
+          </div>
+          {/* 雲朵 8 - 100% - 中下偏左（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            bottom: '25%',
-            left: '25%',
+            bottom: '35%',
+            left: '35%',
             width: isMobile ? '35px' : '60px',
             height: isMobile ? '35px' : '60px',
             backgroundImage: 'url(/cloud-big.png)',
@@ -3170,30 +3449,36 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 9 - 100% - 中下偏右 */}
+          {/* 雲朵 9 - 100% - 中下偏右（更靠近中心，添加镜像） */}
         <div style={{
           position: 'absolute',
-          bottom: '30%',
-            right: '25%',
+          bottom: '40%',
+            right: '35%',
             width: isMobile ? '35px' : '60px',
             height: isMobile ? '35px' : '60px',
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+        }}>
+          <div style={{
+            width: '100%',
+            height: '100%',
             backgroundImage: 'url(/cloud-big.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
+            transform: 'scaleX(-1)', // 添加镜像效果
             animation: 'floatCloud 11.5s ease-in-out 6s infinite',
             opacity: starOpacity * 0.65,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-          transition: 'opacity 0.1s ease-out'
-        }}></div>
+            transition: 'opacity 0.1s ease-out'
+          }}></div>
+        </div>
 
           {/* 50% 尺寸雲朵 - 6朵 */}
-          {/* 雲朵 10 - 50% - 左上小 */}
+          {/* 雲朵 10 - 50% - 左上小（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            top: '15%',
-            left: '15%',
+            top: '35%',
+            left: '35%',
             width: isMobile ? '18px' : '30px', // 60px * 0.5 = 30px
             height: isMobile ? '18px' : '30px',
             backgroundImage: 'url(/cloud-big.png)',
@@ -3206,28 +3491,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 11 - 50% - 右上小 */}
+          {/* 雲朵 11 - 50% - 右上小（更靠近中心，添加镜像） */}
           <div style={{
             position: 'absolute',
-            top: '18%',
-            right: '20%',
+            top: '40%',
+            right: '35%',
             width: isMobile ? '18px' : '30px',
             height: isMobile ? '18px' : '30px',
-            backgroundImage: 'url(/cloud-big.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 8.5s ease-in-out 3.5s infinite',
-            opacity: starOpacity * 0.55,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
-          {/* 雲朵 12 - 50% - 中上偏左 */}
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 8.5s ease-in-out 3.5s infinite',
+              opacity: starOpacity * 0.55,
+              transition: 'opacity 0.1s ease-out'
+            }}></div>
+          </div>
+          {/* 雲朵 12 - 50% - 中上偏左（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            top: '10%',
-            left: '35%',
+            top: '25%',
+            left: '40%',
             width: isMobile ? '18px' : '30px',
             height: isMobile ? '18px' : '30px',
             backgroundImage: 'url(/cloud-big.png)',
@@ -3240,28 +3531,34 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 13 - 50% - 中上偏右 */}
+          {/* 雲朵 13 - 50% - 中上偏右（更靠近中心，添加镜像） */}
           <div style={{
             position: 'absolute',
-            top: '14%',
-            right: '35%',
+            top: '28%',
+            right: '40%',
             width: isMobile ? '18px' : '30px',
             height: isMobile ? '18px' : '30px',
-            backgroundImage: 'url(/cloud-big.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 10s ease-in-out 7s infinite',
-            opacity: starOpacity * 0.55,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
-          {/* 雲朵 14 - 50% - 左下小 */}
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 10s ease-in-out 7s infinite',
+              opacity: starOpacity * 0.55,
+              transition: 'opacity 0.1s ease-out'
+            }}></div>
+          </div>
+          {/* 雲朵 14 - 50% - 左下小（更靠近中心） */}
           <div style={{
             position: 'absolute',
-            bottom: '18%',
-            left: '18%',
+            bottom: '40%',
+            left: '40%',
             width: isMobile ? '18px' : '30px',
             height: isMobile ? '18px' : '30px',
             backgroundImage: 'url(/cloud-big.png)',
@@ -3274,23 +3571,29 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             pointerEvents: 'none',
             transition: 'opacity 0.1s ease-out'
           }}></div>
-          {/* 雲朵 15 - 50% - 右下小 */}
+          {/* 雲朵 15 - 50% - 右下小（更靠近中心，添加镜像） */}
           <div style={{
             position: 'absolute',
-            bottom: '22%',
-            right: '18%',
+            bottom: '45%',
+            right: '40%',
             width: isMobile ? '18px' : '30px',
             height: isMobile ? '18px' : '30px',
-            backgroundImage: 'url(/cloud-big.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            animation: 'floatCloud 12s ease-in-out 6.5s infinite',
-            opacity: starOpacity * 0.55,
-            zIndex: (isMobile || isSmallMobile) ? 10 : 1, // 手機版本：雲朵在船和波浪之上
-            pointerEvents: 'none',
-            transition: 'opacity 0.1s ease-out'
-          }}></div>
+            zIndex: (isMobile || isSmallMobile) ? 10 : 1,
+            pointerEvents: 'none'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)', // 添加镜像效果
+              animation: 'floatCloud 12s ease-in-out 6.5s infinite',
+              opacity: starOpacity * 0.55,
+              transition: 'opacity 0.1s ease-out'
+            }}></div>
+          </div>
 
         {[...Array(3)].map((_, i) => {
           // 使用固定的動畫參數避免 SSR 水合錯誤
@@ -4024,6 +4327,9 @@ export default function HeroSimpleTest() {
   
   // 購物清單狀態管理
   const [cartItems, setCartItems] = useState<ProductItem[]>([]);
+  
+  // FAQ 展開狀態管理
+  const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(null);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -4072,7 +4378,8 @@ export default function HeroSimpleTest() {
          "/project-01-01.jpg",
          "/project-01-02.png"
        ],
-      detailedDescription: "這是一個完整的品牌設計專案，從品牌定位開始，設計了完整的視覺識別系統。包含 Logo 設計、品牌色彩系統、字體選擇、應用範例等。整個設計過程注重品牌的一致性和可擴展性，確保在不同媒介上都能完美呈現品牌形象。"
+      detailedDescription: "這是一個完整的品牌設計專案，從品牌定位開始，設計了完整的視覺識別系統。包含 Logo 設計、品牌色彩系統、字體選擇、應用範例等。整個設計過程注重品牌的一致性和可擴展性，確保在不同媒介上都能完美呈現品牌形象。",
+      year: 2023
     },
     {
       id: 2,
@@ -4085,7 +4392,8 @@ export default function HeroSimpleTest() {
         "/project-02-01.png",
         "/project-02-02.jpg"
        ],
-      detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。"
+      detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。",
+      year: 2024
     },
     {
       id: 3,
@@ -4100,7 +4408,8 @@ export default function HeroSimpleTest() {
         "/project-03-03.jpg",
         "/project-03-04.jpg"
       ],
-      detailedDescription: "品牌識別設計專案，從標誌設計到完整的視覺識別系統。我們幫助品牌建立獨特的視覺語言，傳達品牌價值和個性，創造一致的品牌體驗。整個識別系統包含標誌、色彩、字體、應用規範等完整元素。"
+      detailedDescription: "品牌識別設計專案，從標誌設計到完整的視覺識別系統。我們幫助品牌建立獨特的視覺語言，傳達品牌價值和個性，創造一致的品牌體驗。整個識別系統包含標誌、色彩、字體、應用規範等完整元素。",
+      year: 2022
     },
     {
       id: 4,
@@ -4115,7 +4424,8 @@ export default function HeroSimpleTest() {
         "/illustration_5.png",
         "/illustration_6.png"
       ],
-      detailedDescription: "響應式網站設計專案，確保在桌面、平板和手機上都能提供優秀的瀏覽體驗。我們注重載入速度、用戶導航和視覺層次，創造現代化的網站設計。整個設計過程採用敏捷開發方法，快速迭代和優化。"
+      detailedDescription: "響應式網站設計專案，確保在桌面、平板和手機上都能提供優秀的瀏覽體驗。我們注重載入速度、用戶導航和視覺層次，創造現代化的網站設計。整個設計過程採用敏捷開發方法，快速迭代和優化。",
+      year: 2025
     },
     {
       id: 5,
@@ -4128,7 +4438,8 @@ export default function HeroSimpleTest() {
         "/project-05-01.jpg",
         "/project-05-02.jpg"
       ],
-      detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。"
+      detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。",
+      year: 2021
     },
     {
       id: 6,
@@ -4143,7 +4454,8 @@ export default function HeroSimpleTest() {
         "/illustration_3.png",
         "/illustration_4.png"
       ],
-      detailedDescription: "創意指導專案，提供全方位的視覺策略和創意解決方案。我們幫助品牌建立獨特的視覺語言，創造令人印象深刻的品牌體驗，在競爭激烈的市場中脫穎而出。整個創意過程結合了策略思考和藝術表達。"
+      detailedDescription: "創意指導專案，提供全方位的視覺策略和創意解決方案。我們幫助品牌建立獨特的視覺語言，創造令人印象深刻的品牌體驗，在競爭激烈的市場中脫穎而出。整個創意過程結合了策略思考和藝術表達。",
+      year: 2020
     }
   ];
 
@@ -4892,6 +5204,24 @@ export default function HeroSimpleTest() {
 
         .stepper-item.active {
           animation: pulse 2s infinite;
+        }
+
+        /* Logo 跑馬燈動畫 */
+        @keyframes logoMarquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .logo-marquee {
+          will-change: transform;
+        }
+
+        .logo-marquee:hover {
+          animation-play-state: paused;
         }
       `}</style>
 
@@ -7186,18 +7516,271 @@ export default function HeroSimpleTest() {
         {/* 第二個藍色區域內容 */}
         <div style={{
           textAlign: 'center',
-          maxWidth: '600px',
+          maxWidth: '1200px',
+          width: '100%',
           position: 'relative',
-          zIndex: 100
+          zIndex: 100,
+          padding: isMobile ? '0 20px' : '0 40px'
         }}>
           <p style={{
             color: '#FFFFFF',
             fontSize: '1.2rem',
             lineHeight: '1.6',
-            marginBottom: '40px'
+            marginBottom: '60px'
           }}>
             準備好開始你的下一個項目了嗎？讓我們一起創造令人驚艷的設計作品。
           </p>
+
+          {/* 特別適合的品牌 + FAQ 並排容器 */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '30px' : '24px',
+            marginBottom: '60px',
+            maxWidth: '1200px',
+            margin: '0 auto 60px auto',
+            width: '100%',
+            padding: isMobile ? '0 1rem' : '0 2rem'
+          }}>
+            {/* 特別適合的品牌對話窗 */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              borderRadius: '20px',
+              padding: isMobile ? '30px 20px' : '40px 50px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              flex: isMobile ? '0 0 100%' : '0 0 50%',
+              width: isMobile ? '100%' : '50%'
+            }}>
+              <h3 style={{
+                fontSize: isMobile ? 'clamp(1.4rem, 4vw, 2rem)' : 'clamp(1.8rem, 4vw, 2.4rem)',
+                fontWeight: '700',
+                color: '#FFFFF3',
+                marginBottom: '30px',
+                textAlign: 'center'
+              }}>
+                特別適合的品牌
+              </h3>
+              <div style={{
+                textAlign: 'left'
+              }}>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0
+                }}>
+                  {[
+                    '正在準備開店、但不知道視覺如何統整',
+                    '小型店家、手作品牌、在地創業者',
+                    '第二代接班，想提升品牌形象',
+                    '想要溫度、在地感、故事化設計的品牌',
+                    '尋求「陪跑式合作」而非一次性設計的人'
+                  ].map((item, index) => (
+                    <li key={index} style={{
+                      fontSize: isMobile ? '1rem' : '1.1rem',
+                      color: '#FFFFF3',
+                      marginBottom: index < 4 ? '20px' : '0',
+                      paddingLeft: '36px',
+                      position: 'relative',
+                      lineHeight: '1.8',
+                      fontWeight: '500'
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        left: '0',
+                        top: isMobile ? '4px' : '6px',
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: 'rgba(255, 255, 255, 0.25)',
+                        border: '1px solid rgba(255, 255, 255, 0.4)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        backdropFilter: 'blur(5px)'
+                      }}>
+                        <span style={{
+                          color: '#FFFFF3',
+                          fontSize: '12px',
+                          fontWeight: '700',
+                          lineHeight: '1'
+                        }}>✓</span>
+                      </div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* FAQ 區塊 */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              borderRadius: '20px',
+              padding: isMobile ? '30px 20px' : '40px 50px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              flex: isMobile ? '0 0 100%' : '0 0 50%',
+              width: isMobile ? '100%' : '50%'
+            }}>
+            <h3 style={{
+              fontSize: isMobile ? 'clamp(1.4rem, 4vw, 2rem)' : 'clamp(1.8rem, 4vw, 2.4rem)',
+              fontWeight: '700',
+              color: '#FFFFF3',
+              marginBottom: '30px',
+              textAlign: 'center'
+            }}>
+              常見問題
+            </h3>
+            <div style={{
+              textAlign: 'left'
+            }}>
+              {[
+                {
+                  q: '我沒有明確想法，可以跟你合作嗎？',
+                  a: '可以！我會引導你找到品牌個性與目標方向。'
+                },
+                {
+                  q: '費用怎麼估？',
+                  a: '會依照內容量、風格、素材多寡確認後報價，價格彈性且起步友善。'
+                },
+                {
+                  q: '需要多久？',
+                  a: '一般專案 2–4 週，依複雜度會調整。'
+                }
+              ].map((faq, index) => {
+                const isOpen = openFAQIndex === index;
+                return (
+                  <div key={index} style={{
+                    marginBottom: index < 2 ? '20px' : '0',
+                    borderBottom: index < 2 ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                    paddingBottom: index < 2 ? '20px' : '0'
+                  }}>
+                    <div
+                      onClick={() => setOpenFAQIndex(isOpen ? null : index)}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      <p style={{
+                        fontSize: isMobile ? '1rem' : '1.1rem',
+                        color: '#FFFFF3',
+                        fontWeight: '600',
+                        margin: 0,
+                        flex: 1
+                      }}>
+                        Q{index + 1}. {faq.q}
+                      </p>
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#FFFFF3',
+                        fontSize: '20px',
+                        fontWeight: '300',
+                        transition: 'transform 0.3s ease',
+                        transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                        marginLeft: '16px',
+                        flexShrink: 0
+                      }}>
+                        +
+                      </div>
+                    </div>
+                    <div style={{
+                      maxHeight: isOpen ? '200px' : '0',
+                      overflow: 'hidden',
+                      transition: 'max-height 0.3s ease, opacity 0.3s ease',
+                      opacity: isOpen ? 1 : 0
+                    }}>
+                      <p style={{
+                        fontSize: isMobile ? '0.95rem' : '1rem',
+                        color: 'rgba(255, 255, 243, 0.9)',
+                        lineHeight: '1.7',
+                        marginTop: '12px',
+                        marginLeft: '0',
+                        paddingLeft: '0'
+                      }}>
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            </div>
+          </div>
+
+          {/* Social Proof - Logo 跑馬燈 */}
+          <div style={{
+            marginBottom: '60px',
+            width: '100%',
+            overflow: 'hidden',
+            position: 'relative',
+            padding: '20px 0'
+          }}>
+            <h3 style={{
+              fontSize: isMobile ? 'clamp(1.2rem, 3.5vw, 1.6rem)' : 'clamp(1.4rem, 3vw, 1.8rem)',
+              fontWeight: '600',
+              color: '#FFFFF3',
+              marginBottom: '30px',
+              textAlign: 'center'
+            }}>
+              你已經合作過的人
+            </h3>
+            <div style={{
+              width: '100%',
+              overflow: 'hidden',
+              position: 'relative'
+            }}>
+              <div style={{
+                display: 'flex',
+                gap: isMobile ? '30px' : '50px',
+                animation: 'logoMarquee 30s linear infinite',
+                width: 'fit-content'
+              }} className="logo-marquee">
+                {/* 第一組 Logo */}
+                {[...Array(6)].map((_, i) => (
+                  <div key={`logo-${i}`} style={{
+                    width: isMobile ? '120px' : '180px',
+                    height: isMobile ? '120px' : '180px',
+                    backgroundImage: 'url(/logo.svg)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    filter: 'brightness(0) invert(1)',
+                    opacity: 0.8,
+                    flexShrink: 0
+                  }}></div>
+                ))}
+                {/* 第二組 Logo（重複，形成無縫循環） */}
+                {[...Array(6)].map((_, i) => (
+                  <div key={`logo-duplicate-${i}`} style={{
+                    width: isMobile ? '120px' : '180px',
+                    height: isMobile ? '120px' : '180px',
+                    backgroundImage: 'url(/logo.svg)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    filter: 'brightness(0) invert(1)',
+                    opacity: 0.8,
+                    flexShrink: 0
+                  }}></div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CTA 按鈕 */}
           <div style={{
             display: 'flex',
             gap: '20px',

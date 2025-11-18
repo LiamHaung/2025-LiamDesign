@@ -299,6 +299,7 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
             images={selectedItem.galleryImages}
             title={selectedItem.title}
             description={selectedItem.galleryDescription}
+            tags={selectedItem.tags}
           />
         </>
       )}
