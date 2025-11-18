@@ -1520,7 +1520,7 @@ const ProjectModal: React.FC<{
       <div
         className="w-full flex flex-col"
         style={{ 
-          maxHeight: '100vh',
+          maxHeight: isMobile ? '70vh' : '100vh', // 手機版高度縮小至70%
           overflow: 'auto',
           maxWidth: isMobile ? '100%' : '1400px',
           borderRadius: isMobile ? '0' : '20px',
@@ -1528,21 +1528,31 @@ const ProjectModal: React.FC<{
           background: 'rgba(255, 255, 255, 0.7)',
           backdropFilter: 'blur(40px) saturate(150%)',
           WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-          border: isMobile ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'
+          border: isMobile ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+          position: 'relative' // 為關閉按鈕提供定位參考
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 關閉按鈕 - 移動端固定在右上角 */}
+        {/* 關閉按鈕容器 - 粘性定位於彈出視窗右上角上沿，滾動時保持可見 */}
+        <div style={{
+          position: 'sticky', // 使用 sticky，滾動時保持在頂部可見
+          top: isMobile ? '12px' : '20px',
+          alignSelf: 'flex-end', // 對齊到右側
+          marginLeft: 'auto', // 推到右側
+          marginBottom: 'auto', // 推到頂部
+          zIndex: 10001, // 確保在最上層
+          width: 'fit-content',
+          height: 'fit-content'
+        }}>
           <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onClose();
-          }}
-          style={{
-            position: isMobile ? 'fixed' : 'absolute',
-            top: isMobile ? '12px' : '20px',
-            right: isMobile ? '12px' : '20px',
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
+            style={{
+              position: 'relative',
+              right: isMobile ? '12px' : '20px',
             background: isMobile ? 'rgba(0, 0, 0, 0.75)' : 'rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
@@ -1557,7 +1567,6 @@ const ProjectModal: React.FC<{
             alignItems: 'center',
             justifyContent: 'center',
             transition: 'all 0.3s',
-            zIndex: 1000,
             fontWeight: 'normal',
             boxShadow: isMobile ? '0 4px 12px rgba(0, 0, 0, 0.4)' : 'none'
           }}
@@ -1576,7 +1585,7 @@ const ProjectModal: React.FC<{
           >
             ✕
           </button>
-
+        </div>
         {/* 上半部：圖片展示區 - 毛玻璃背景 */}
         <div style={{ 
           background: 'rgba(248, 249, 250, 0.5)', 
@@ -2473,20 +2482,29 @@ const DesignDiary: React.FC<{
                 );
               })()}
 
-              {/* 關閉按鈕 */}
-              <button
-                onClick={() => onSelectEntry(null)}
-                style={{
-                  position: 'absolute',
-                  bottom: '1.5rem',
-                  right: '1.5rem',
-                  background: 'rgba(0, 0, 0, 0.1)',
-                  color: '#000000',
-                  border: 'none',
+              {/* 關閉按鈕容器 - 粘性定位於彈出視窗右上角上沿，滾動時保持可見 */}
+              <div style={{
+                position: 'sticky', // 使用 sticky，滾動時保持在頂部可見
+                top: isMobile ? '12px' : '20px',
+                alignSelf: 'flex-end', // 對齊到右側
+                marginLeft: 'auto', // 推到右側
+                marginBottom: 'auto', // 推到頂部
+                zIndex: 100002, // 確保在最上層
+                width: 'fit-content',
+                height: 'fit-content'
+              }}>
+                <button
+                  onClick={() => onSelectEntry(null)}
+                  style={{
+                    position: 'relative',
+                    right: isMobile ? '12px' : '20px',
+                  background: 'rgba(0, 0, 0, 0.6)',
+                  color: '#FFFFFF',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
                   borderRadius: '50%',
-                  width: '2rem',
-                  height: '2rem',
-                  fontSize: '1.25rem',
+                  width: isMobile ? '44px' : '2rem',
+                  height: isMobile ? '44px' : '2rem',
+                  fontSize: isMobile ? '20px' : '1.25rem',
                   cursor: 'pointer',
                   fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                   display: 'flex',
@@ -2494,17 +2512,23 @@ const DesignDiary: React.FC<{
                   justifyContent: 'center',
                   transition: 'all 0.3s ease',
                   fontWeight: 'bold',
-                  zIndex: 3
+                  zIndex: 100002, // 確保在最上層
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.2)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.8)';
+                  e.currentTarget.style.transform = 'scale(1.1)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.1)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.6)';
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
                 ×
               </button>
+              </div>
 
               {/* 日記內容 - 簡化版 */}
                 <div style={{
@@ -2787,7 +2811,7 @@ const Carousel3D: React.FC<{
   );
 };
 // 夢幻版 Hero 組件
-const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
+const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scrollY: number; hideScrollIndicator?: boolean }) => {
   // 使用傳入的 scrollY prop，不需要內部狀態
   const scrollY = propScrollY || 0;
   
@@ -2943,7 +2967,7 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         </div>
       </div>
 
-      {/* 中間下方 Scroll 指示器 */}
+      {/* 中間下方 Scroll 指示器 - 彈出視窗打開時隱藏 */}
       <div className="scroll-responsive" style={{
         position: 'absolute',
         bottom: '60px',
@@ -2957,7 +2981,10 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
         color: '#666',
         fontSize: '18px', // 放大 150%: 12px * 1.5 = 18px
         fontFamily: 'var(--font-zpix), monospace',
-        letterSpacing: '3px' // 放大 150%: 2px * 1.5 = 3px
+        letterSpacing: '3px', // 放大 150%: 2px * 1.5 = 3px
+        opacity: hideScrollIndicator ? 0 : 1, // 彈出視窗打開時隱藏
+        pointerEvents: hideScrollIndicator ? 'none' : 'auto',
+        transition: 'opacity 0.3s ease'
       }}>
         <div>SCROLL</div>
         <div style={{
@@ -5068,7 +5095,8 @@ export default function HeroSimpleTest() {
       backgroundColor: "#13496b",
       scrollY: scrollY,
       blueSectionHeight: blueSectionHeight,
-      darkSectionHeight: darkSectionHeight
+      darkSectionHeight: darkSectionHeight,
+      hideScrollIndicator: isModalOpen || !!selectedDiaryEntry // 彈出視窗打開時隱藏 scroll 指示器
     };
 
     return <DreamyHero {...props} />;
@@ -5783,8 +5811,8 @@ export default function HeroSimpleTest() {
         zIndex: (isContactModalOpen || isModalOpen || isPriceModalOpen || isProductModalOpen || isCartSidebarOpen || selectedDiaryEntry) ? 1 : 9998,
         background: 'rgba(0, 62, 195, 0.1)',
         backdropFilter: 'blur(10px)',
-        borderRadius: '16px',
-        padding: '16px',
+        borderRadius: isMobile ? '12px' : '16px', // 手機版縮小圓角
+        padding: isMobile ? '10px' : '16px', // 手機版縮小 padding (16 * 0.6 ≈ 10)
         border: '1px solid rgba(255, 255, 255, 0.2)',
         transition: 'all 0.3s ease, opacity 0.3s ease-in-out',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
@@ -5810,8 +5838,8 @@ export default function HeroSimpleTest() {
           width={80}
           height={80}
           style={{
-            width: '80px',
-            height: '80px',
+            width: isMobile ? '48px' : '80px', // 手機版縮小至60% (80 * 0.6 = 48)
+            height: isMobile ? '48px' : '80px',
             objectFit: 'contain',
             filter: 'brightness(1.1)'
           }}
