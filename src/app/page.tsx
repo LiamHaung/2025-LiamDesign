@@ -20,6 +20,7 @@ import ContactModal from '../components/ContactModal';
 import MapNavigation from '../components/MapNavigation';
 import ModernButton from '../components/ModernButton';
 import { useInView } from 'framer-motion';
+import PsychologyTestCard from '../components/BrandPsychologyTest';
 
 export default function Home() {
   // 品牌案例數據 - 暫時註解掉未使用的變數
@@ -97,6 +98,18 @@ export default function Home() {
   
   // 手機版選單視窗狀態
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // 手機版判斷
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const runnerRef = useRef<HTMLImageElement>(null);
   const casesRef = useRef<HTMLDivElement>(null);
@@ -1672,6 +1685,216 @@ Tel: 03-9XX-XXXX
             {/* 分隔線 */}
             <div className="w-full max-w-screen-2xl mx-auto px-6 md:px-10 py-6">
               <div className="border-t-2 border-gray-600"></div>
+            </div>
+
+            {/* 品牌心理測驗 Card */}
+            <div className="w-full py-12 md:py-16" style={{ 
+              background: '#003EC3',
+              minHeight: '400px', // 確保有足夠高度
+              position: 'relative',
+              zIndex: 10
+            }}>
+              <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
+                {/* 標題區域 */}
+                <div style={{
+                  textAlign: 'center',
+                  marginBottom: '60px',
+                  zIndex: 1,
+                  position: 'relative',
+                  overflow: 'visible'
+                }}>
+                  {/* 雲朵裝飾 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '10%',
+                    right: '10%',
+                    width: 'clamp(80px, 12vw, 160px)',
+                    height: 'clamp(80px, 12vw, 160px)',
+                    backgroundImage: 'url(/cloud-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'floatCloud 10s ease-in-out infinite',
+                    animationDelay: '2s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.6
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    top: '15%',
+                    left: '8%',
+                    width: 'clamp(60px, 10vw, 120px)',
+                    height: 'clamp(60px, 10vw, 120px)',
+                    backgroundImage: 'url(/cloud-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'floatCloud 12s ease-in-out infinite',
+                    animationDelay: '0s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.5
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '10%',
+                    left: '15%',
+                    width: 'clamp(70px, 11vw, 140px)',
+                    height: 'clamp(70px, 11vw, 140px)',
+                    backgroundImage: 'url(/cloud-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'floatCloud 14s ease-in-out infinite',
+                    animationDelay: '4s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.55
+                  }}></div>
+                  
+                  {/* 星星裝飾 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '8%',
+                    right: '15%',
+                    width: 'clamp(20px, 3vw, 32px)',
+                    height: 'clamp(20px, 3vw, 32px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 2s infinite',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.7
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    top: '12%',
+                    left: '12%',
+                    width: 'clamp(18px, 2.5vw, 28px)',
+                    height: 'clamp(18px, 2.5vw, 28px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 2.5s infinite',
+                    animationDelay: '0.5s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.6
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    top: '5%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 'clamp(16px, 2.2vw, 24px)',
+                    height: 'clamp(16px, 2.2vw, 24px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 3s infinite',
+                    animationDelay: '1s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.65
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '20%',
+                    right: '20%',
+                    width: 'clamp(18px, 2.8vw, 30px)',
+                    height: 'clamp(18px, 2.8vw, 30px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 2.2s infinite',
+                    animationDelay: '1.5s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.7
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '25%',
+                    left: '20%',
+                    width: 'clamp(16px, 2.4vw, 26px)',
+                    height: 'clamp(16px, 2.4vw, 26px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 2.8s infinite',
+                    animationDelay: '0.8s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.6
+                  }}></div>
+                  
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '15%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 'clamp(20px, 3vw, 32px)',
+                    height: 'clamp(20px, 3vw, 32px)',
+                    backgroundImage: 'url(/star-big.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    animation: 'twinkle 2.4s infinite',
+                    animationDelay: '1.2s',
+                    zIndex: 5,
+                    pointerEvents: 'none',
+                    opacity: 0.65
+                  }}></div>
+                  
+                  <h1 style={{
+                    fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+                    fontWeight: '900',
+                    color: '#FFFFFF',
+                    margin: '0 0 20px 0',
+                    textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                    letterSpacing: '0.05em',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    position: 'relative',
+                    zIndex: 10
+                  }}>
+                    BRAND ADVENTURE QUIZ
+                  </h1>
+                  <p style={{
+                    fontSize: 'clamp(1rem, 3vw, 1.5rem)',
+                    color: '#E8F4FD',
+                    margin: '0',
+                    fontWeight: '400',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    letterSpacing: '0.1em',
+                    position: 'relative',
+                    zIndex: 10
+                  }}>
+                    Find the Role Your Brand Was Born to Play
+                  </p>
+                </div>
+                <div style={{
+                  maxWidth: '800px',
+                  width: '100%',
+                  margin: '0 auto',
+                  position: 'relative',
+                  zIndex: 1
+                }}>
+                  <PsychologyTestCard isMobile={isMobile} />
+                </div>
+              </div>
             </div>
 
             {/* 瀑布流作品牆 - 完整功能版本 */}

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import PsychologyTestCard from "@/components/BrandPsychologyTest";
 // import Carousel3D from '../../components/Carousel3D';
 
 // Hero 組件選項 (保留供未來使用)
@@ -716,8 +717,8 @@ const LoadingPage = ({
           top: '-50px',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '16px',
-          height: '16px',
+            width: '16px',
+            height: '16px',
           background: 'radial-gradient(circle, #e9a52f 0%, #d8941f 70%, #c7830f 100%)',
           borderRadius: '50%',
           zIndex: 12,
@@ -764,8 +765,8 @@ const LoadingPage = ({
         </div>
 
         {/* 畫框容器 - 已移除畫框邊框和背景 */}
-        <div style={{
-          position: 'relative',
+      <div style={{
+        position: 'relative',
           width: 'clamp(320px, 50vw, 600px)',
           height: 'clamp(240px, 37.5vw, 450px)',
           overflow: 'hidden',
@@ -929,21 +930,21 @@ const LoadingPage = ({
                   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
                   zIndex: 0
                 }} />
-                <Image
-                  src="/cursor-07.png"
-                  alt="Liam Design Logo"
+        <Image
+          src="/cursor-07.png"
+          alt="Liam Design Logo"
                   width={80}
                   height={80}
-                  style={{
+          style={{
                     width: 'clamp(60px, 10vw, 100px)',
                     height: 'clamp(60px, 10vw, 100px)',
-                    objectFit: 'contain',
+            objectFit: 'contain',
                     filter: 'brightness(1.2)',
                     position: 'relative',
                     zIndex: 1
-                  }}
-                />
-              </div>
+          }}
+        />
+      </div>
             )}
 
             {/* 倒計時結束後淡入的圖片和雲朵 */}
@@ -987,7 +988,7 @@ const LoadingPage = ({
                 ))}
 
                 {/* 主要圖片 - service-3.png */}
-                <div style={{
+      <div style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
@@ -1006,7 +1007,7 @@ const LoadingPage = ({
                     height={450}
                     style={{
                       width: '100%',
-                      height: '100%',
+          height: '100%',
                       objectFit: 'contain',
                       filter: 'none',
                       animation: 'sway 3s ease-in-out infinite',
@@ -1017,7 +1018,7 @@ const LoadingPage = ({
               </>
             )}
           </div>
-        </div>
+      </div>
 
         {/* 文字和按鈕容器 - 畫架下方，移動版上下布局 */}
         {countdown === null && loadingPhase === 'ready' && (
@@ -1068,23 +1069,23 @@ const LoadingPage = ({
                 height: 'clamp(50px, 12vw, 70px)'
               }}>
                 {/* 主按鈕區域 - 右側 */}
-                <button
-                  onClick={onEnterMainContent}
-                  style={{
+        <button
+          onClick={onEnterMainContent}
+          style={{
                     position: 'absolute',
                     top: 0,
                     right: 0,
                     width: 'calc(100% - 30px)',
                     height: '100%',
-                    background: '#003EC3',
-                    border: 'none',
-                    color: 'white',
+            background: '#003EC3',
+            border: 'none',
+            color: 'white',
                     fontSize: 'clamp(18px, 4vw, 24px)',
                     fontWeight: '900',
                     fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -1094,29 +1095,29 @@ const LoadingPage = ({
                     borderBottomRightRadius: '8px',
                     borderTopLeftRadius: '8px',
                     borderBottomLeftRadius: '0'
-                  }}
-                  onMouseEnter={(e) => {
+          }}
+          onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
                     const extensionBtn = e.currentTarget.parentElement?.querySelector('button:last-child') as HTMLElement;
                     if (extensionBtn) {
                       extensionBtn.style.transform = 'translateY(-2px) scale(1.02)';
                       extensionBtn.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
                     }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
                     const extensionBtn = e.currentTarget.parentElement?.querySelector('button:last-child') as HTMLElement;
                     if (extensionBtn) {
                       extensionBtn.style.transform = 'translateY(0) scale(1)';
                       extensionBtn.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
                     }
-                  }}
-                >
+          }}
+        >
                   <span style={{ fontSize: '1.2em' }}>←</span>
                   <span>Enter</span>
-                </button>
+        </button>
                 {/* L型延伸部分 - 左側下方 */}
                 <button
                   onClick={onEnterMainContent}
@@ -1181,9 +1182,9 @@ const LoadingPage = ({
             width: '70%',
             textAlign: 'left',
             animation: 'slideInFromRight 1s ease-out 0s both'
-          }}>
-            <div style={{
-              color: '#fffff3',
+        }}>
+          <div style={{
+            color: '#fffff3',
               fontSize: 'clamp(0.96rem, 2.4vw, 1.44rem)',
               fontWeight: '400',
               fontFamily: 'var(--font-google-sans-flex), sans-serif',
@@ -1196,7 +1197,7 @@ const LoadingPage = ({
               這裡提供<span style={{ fontWeight: '700' }}>有溫度且實用的設計</span>
               <br /><br />
               一起來書寫<span style={{ fontWeight: '700' }}>好玩的品牌故事</span>吧！
-            </div>
+          </div>
           </div>
 
           {/* L型按鈕 - 右側30% */}
@@ -5315,22 +5316,6 @@ export default function HeroSimpleTest() {
       ],
       detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。",
       year: 2021
-    },
-    {
-      id: 6,
-      title: "Creative Direction",
-      description: "提供創意指導和視覺策略，幫助品牌在市場中脫穎而出。",
-      image: "/illustration_6.png",
-      tags: ["Creative", "Strategy", "Direction"],
-      galleryImages: [
-        "/illustration_6.png",
-        "/illustration_1.png",
-        "/illustration_2.png",
-        "/illustration_3.png",
-        "/illustration_4.png"
-      ],
-      detailedDescription: "創意指導專案，提供全方位的視覺策略和創意解決方案。我們幫助品牌建立獨特的視覺語言，創造令人印象深刻的品牌體驗，在競爭激烈的市場中脫穎而出。整個創意過程結合了策略思考和藝術表達。",
-      year: 2020
     }
   ];
 
@@ -6728,6 +6713,217 @@ export default function HeroSimpleTest() {
       <div className="hero-test-container">
         {renderHeroComponent()}
       </div>
+
+      {/* 品牌心理測驗 Card */}
+      <div className="w-full py-12 md:py-16" style={{ 
+        background: '#003EC3',
+        minHeight: '400px',
+        position: 'relative',
+        zIndex: 10
+      }}>
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
+          {/* 標題區域 */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '60px',
+            zIndex: 1,
+            position: 'relative',
+            overflow: 'visible'
+          }}>
+            {/* 雲朵裝飾 */}
+            <div style={{
+              position: 'absolute',
+              top: '10%',
+              right: '10%',
+              width: 'clamp(80px, 12vw, 160px)',
+              height: 'clamp(80px, 12vw, 160px)',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'floatCloud 10s ease-in-out infinite',
+              animationDelay: '2s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.6
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              top: '15%',
+              left: '8%',
+              width: 'clamp(60px, 10vw, 120px)',
+              height: 'clamp(60px, 10vw, 120px)',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'floatCloud 12s ease-in-out infinite',
+              animationDelay: '0s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.5
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              bottom: '10%',
+              left: '15%',
+              width: 'clamp(70px, 11vw, 140px)',
+              height: 'clamp(70px, 11vw, 140px)',
+              backgroundImage: 'url(/cloud-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'floatCloud 14s ease-in-out infinite',
+              animationDelay: '4s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.55
+            }}></div>
+            
+            {/* 星星裝飾 */}
+            <div style={{
+              position: 'absolute',
+              top: '8%',
+              right: '15%',
+              width: 'clamp(20px, 3vw, 32px)',
+              height: 'clamp(20px, 3vw, 32px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2s infinite',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.7
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              top: '12%',
+              left: '12%',
+              width: 'clamp(18px, 2.5vw, 28px)',
+              height: 'clamp(18px, 2.5vw, 28px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2.5s infinite',
+              animationDelay: '0.5s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.6
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              top: '5%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'clamp(16px, 2.2vw, 24px)',
+              height: 'clamp(16px, 2.2vw, 24px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 3s infinite',
+              animationDelay: '1s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.65
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              bottom: '20%',
+              right: '20%',
+              width: 'clamp(18px, 2.8vw, 30px)',
+              height: 'clamp(18px, 2.8vw, 30px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2.2s infinite',
+              animationDelay: '1.5s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.7
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              bottom: '25%',
+              left: '20%',
+              width: 'clamp(16px, 2.4vw, 26px)',
+              height: 'clamp(16px, 2.4vw, 26px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2.8s infinite',
+              animationDelay: '0.8s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.6
+            }}></div>
+            
+            <div style={{
+              position: 'absolute',
+              bottom: '15%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'clamp(20px, 3vw, 32px)',
+              height: 'clamp(20px, 3vw, 32px)',
+              backgroundImage: 'url(/star-big.png)',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              animation: 'twinkle 2.4s infinite',
+              animationDelay: '1.2s',
+              zIndex: 5,
+              pointerEvents: 'none',
+              opacity: 0.65
+            }}></div>
+            
+            <h1 style={{
+              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+              fontWeight: '900',
+              color: '#FFFFFF',
+              margin: '0 0 20px 0',
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+              letterSpacing: '0.05em',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              position: 'relative',
+              zIndex: 10
+            }}>
+              BRAND ADVENTURE QUIZ
+            </h1>
+            <p style={{
+              fontSize: 'clamp(1rem, 3vw, 1.5rem)',
+              color: '#E8F4FD',
+              margin: '0',
+              fontWeight: '400',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              letterSpacing: '0.1em',
+              position: 'relative',
+              zIndex: 10
+            }}>
+              Find the Role Your Brand Was Born to Play
+            </p>
+          </div>
+          <div style={{
+            maxWidth: '800px',
+            width: '100%',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1
+          }}>
+            <PsychologyTestCard isMobile={isMobile} />
+          </div>
+        </div>
+      </div>
+
       {/* 純藍色背景區域 - 基於內容動態調整高度 */}
       <div 
         id="projects-section"
@@ -6843,7 +7039,7 @@ export default function HeroSimpleTest() {
           position: 'relative',
             zIndex: 10
         }}>
-          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={6} />
+          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={5} />
           
           {/* 操作提示 */}
         <div style={{
