@@ -341,9 +341,7 @@ function PsychologyTestResultContent() {
             // 移除任何漸層相關樣式
             clonedH1.style.background = 'none';
             clonedH1.style.webkitBackgroundClip = 'none';
-            clonedH1.style.WebkitBackgroundClip = 'none';
             clonedH1.style.webkitTextFillColor = '';
-            clonedH1.style.WebkitTextFillColor = '';
             clonedH1.style.backgroundClip = 'none';
           }
         }
