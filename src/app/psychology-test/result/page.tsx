@@ -713,7 +713,7 @@ function PsychologyTestResultContent() {
               crossOrigin="anonymous"
             />
             <img
-              src={resultType === 'story' ? "/test-01.png" : "/cha-1.png"}
+              src={resultType === 'story' ? "/test-01.png" : "/cha-2.png"}
               alt="Character"
               style={{
                 maxWidth: '100%',
@@ -896,7 +896,7 @@ function PsychologyTestResultContent() {
             overflow: 'hidden'
           }}>
             <Image
-              src={resultType === 'story' ? "/test-01.png" : "/cha-1.png"}
+              src={resultType === 'story' ? "/test-01.png" : "/cha-2.png"}
               alt="Character"
               fill
               style={{

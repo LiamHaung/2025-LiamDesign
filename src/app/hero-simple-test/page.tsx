@@ -6897,7 +6897,7 @@ export default function HeroSimpleTest() {
               position: 'relative',
               zIndex: 10
             }}>
-              BRAND ADVENTURE QUIZ
+              BRAND QUIZ
             </h1>
             <p style={{
               fontSize: 'clamp(1rem, 3vw, 1.5rem)',
