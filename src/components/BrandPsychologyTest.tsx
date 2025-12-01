@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import html2canvas from "html2canvas";
 
 // 测验题目数据
 const questions = [
@@ -76,14 +77,229 @@ const questions = [
 // 职业类型定义
 type CareerType = 'story' | 'visual' | 'navigator' | 'woodland' | 'explorer';
 
+// 职业结果数据
+const careerResults: Record<string, {
+  title: string;
+  titleEn: string;
+  emoji: string;
+  bgColor: string;
+  imageBgColor: string;
+  intro: {
+    title: string;
+    subtitle: string;
+    description: string;
+  };
+  focusPoints: Array<{
+    title: string;
+    description: string;
+  }>;
+  assistance: {
+    description: string;
+    services: string;
+  };
+  ctaButtons: Array<{
+    icon: string;
+    text: string;
+    action: string;
+  }>;
+  color: string;
+  bgGradient: string;
+}> = {
+  story: {
+    title: "故事魔法師",
+    titleEn: "Story Wizard",
+    emoji: "🌟",
+    bgColor: "#ffa008",
+    imageBgColor: "#dd902e",
+    intro: {
+      title: "你的職業是：故事魔法師 Story Wizard！",
+      subtitle: "你擅長說故事，也重視品牌背後的理念與情感。",
+      description: "你的品牌有靈魂、有內容，只需要更好的方式把故事「呈現給世界」。"
+    },
+    focusPoints: [
+      {
+        title: "故事性",
+        description: "設計是否能把故事說清楚、講得動人。"
+      },
+      {
+        title: "情感連結",
+        description: "品牌要讓人感受到「溫度」與「意義」。"
+      },
+      {
+        title: "世界觀呈現",
+        description: "希望品牌有自己的角色、場景與敘事方式。"
+      }
+    ],
+    assistance: {
+      description: "透過插畫、敘事主視覺與品牌架構，幫你把品牌故事整理成一個完整的世界觀，讓每一個設計都能說話。",
+      services: "品牌故事整理｜插畫主視覺｜敘事延伸設計"
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🔗", text: "查看作品", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#8B6F47",
+    bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
+  },
+  visual: {
+    title: "視覺工匠",
+    titleEn: "Visual Crafter",
+    emoji: "🌟",
+    bgColor: "#38b1e3",
+    imageBgColor: "#2597c0",
+    intro: {
+      title: "你的職業是：視覺工匠 Visual Crafter！",
+      subtitle: "你對美感敏銳，希望品牌呈現乾淨、有質感、專業一致。",
+      description: "你相信「好的視覺，是品牌最直接的力量」。"
+    },
+    focusPoints: [
+      {
+        title: "視覺一致性",
+        description: "整體視覺要保持專業且一致。"
+      },
+      {
+        title: "細節與專業感",
+        description: "每個細節都要到位，展現專業質感。"
+      },
+      {
+        title: "整體質感",
+        description: "品牌在任何場景都保持專業。"
+      }
+    ],
+    assistance: {
+      description: "建立一套完整又精緻的視覺識別系統：Logo、字體、色票、排版規範，讓你的品牌在任何場景都保持專業。",
+      services: "品牌識別設計｜視覺系統建立｜質感提升"
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🔗", text: "查看作品", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#4A6FA5",
+    bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #d4e3f0 50%, #c4d4e8 100%)"
+  },
+  navigator: {
+    title: "冒險舵手",
+    titleEn: "Navigator",
+    emoji: "🌟",
+    bgColor: "#c08bee",
+    imageBgColor: "#8c46d4",
+    intro: {
+      title: "你的職業是：冒險舵手 Navigator！",
+      subtitle: "你知道品牌想往哪裡走，也有想法只是缺一個能陪你一起規劃的夥伴。",
+      description: "你需要的是清晰的方向與能真正落地的設計。"
+    },
+    focusPoints: [
+      {
+        title: "方向與目的性",
+        description: "設計一定要有用、有意義。"
+      },
+      {
+        title: "整體規劃",
+        description: "視覺、內容、應用要能一致前進。"
+      },
+      {
+        title: "清楚溝通",
+        description: "希望品牌讓人一眼就懂。"
+      }
+    ],
+    assistance: {
+      description: "協助你整理品牌方向、建立優先順序，把品牌從想法導向「可執行的設計」。",
+      services: "品牌定位規劃｜設計陪跑｜跨平台整合視覺"
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🧭", text: "查看流程", action: "process" },
+      { icon: "💬", text: "一起討論", action: "contact" }
+    ],
+    color: "#6B8E6B",
+    bgGradient: "linear-gradient(135deg, #e8f5e8 0%, #d4e8d4 50%, #c4d8c4 100%)"
+  },
+  woodland: {
+    title: "森林職人",
+    titleEn: "Woodland Artisan",
+    emoji: "🌟",
+    bgColor: "#d1db3c",
+    imageBgColor: "#b5bf3b",
+    intro: {
+      title: "你的職業是：森林職人 Woodland Artisan！",
+      subtitle: "你重視在地、真誠與生活感。",
+      description: "品牌中最動人的部分，就是「你本來的樣子」。"
+    },
+    focusPoints: [
+      {
+        title: "在地感與文化性",
+        description: "設計要看起來像你。"
+      },
+      {
+        title: "手感與溫度",
+        description: "插畫、線條、質地都很重要。"
+      },
+      {
+        title: "人與人的連結",
+        description: "希望品牌讓人覺得親近、舒服。"
+      }
+    ],
+    assistance: {
+      description: "以插畫、在地故事、視覺延伸，幫你把品牌生活感與真誠放大成視覺特色。",
+      services: "在地文化設計｜手繪式主視覺｜店內物料延伸"
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🏡", text: "看更多案例", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#8B6F47",
+    bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
+  },
+  explorer: {
+    title: "創意探險家",
+    titleEn: "Idea Explorer",
+    emoji: "🌟",
+    bgColor: "#4bb45a",
+    imageBgColor: "#3a9e46",
+    intro: {
+      title: "你的職業是：創意探險家 Idea Explorer！",
+      subtitle: "你正處在品牌的萌芽期，什麼都新鮮、什麼都想試。",
+      description: "你需要的是：一個能讓你「開始」的簡單雛形。"
+    },
+    focusPoints: [
+      {
+        title: "先建立基本形象",
+        description: "不用複雜，但要讓人看得懂。"
+      },
+      {
+        title: "風格探索",
+        description: "想找出最代表你的那一種感覺。"
+      },
+      {
+        title: "輕量又好用",
+        description: "可以先使用，再慢慢升級。"
+      }
+    ],
+    assistance: {
+      description: "從 Logo、色票到 IG 首版視覺，幫你建立一個輕量但完整的品牌開場畫面。",
+      services: "品牌起步包｜基礎 Logo｜風格探索視覺"
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🌱", text: "開始你的品牌", action: "start" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#D4A574",
+    bgGradient: "linear-gradient(135deg, #fff8e8 0%, #f5e6d3 50%, #e8d5c0 100%)"
+  }
+};
+
 // 心理测验 Modal 组件
 const PsychologyTestModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  onComplete: (result: CareerType) => void;
+  onComplete?: (result: CareerType) => void;
   isMobile: boolean;
-}> = ({ isOpen, onClose, onComplete, isMobile }) => {
-  const [currentStep, setCurrentStep] = useState<'intro' | 'question' | 'loading'>('intro');
+}> = ({ isOpen, onClose, isMobile }) => {
+  const [currentStep, setCurrentStep] = useState<'intro' | 'question' | 'loading' | 'result'>('intro');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [scores, setScores] = useState<Record<CareerType, number>>({
@@ -94,6 +310,9 @@ const PsychologyTestModal: React.FC<{
     explorer: 0
   });
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [resultType, setResultType] = useState<CareerType | null>(null);
+  const shareImageRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -109,15 +328,181 @@ const PsychologyTestModal: React.FC<{
         explorer: 0
       });
       setLoadingProgress(0);
-      // 隱藏 scroll 指示器
+      setResultType(null);
+      // 锁定背景滚动
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
       document.body.classList.add('modal-open');
+      // 降低背景元素的 z-index，确保弹出窗口在最上层
+      // 使用 setTimeout 确保 DOM 已完全渲染
+      setTimeout(() => {
+        // 降低船只和海浪的 z-index
+        const backgroundElements = document.querySelectorAll('.boat-container, .boat-with-waves, .star-parallax, [class*="wave"], [class*="boat"]');
+        backgroundElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl.style.zIndex === '' || !htmlEl.dataset.originalZIndex) {
+            const computedZIndex = window.getComputedStyle(htmlEl).zIndex;
+            if (computedZIndex && computedZIndex !== 'auto') {
+              htmlEl.dataset.originalZIndex = computedZIndex;
+            }
+          }
+          htmlEl.style.zIndex = '-1';
+          htmlEl.style.pointerEvents = 'none';
+          htmlEl.style.opacity = '0';
+        });
+        
+        // 降低整个 hero 区域的 z-index
+        const heroContainer = document.querySelector('.hero-test-container, [class*="hero"]');
+        if (heroContainer) {
+          const htmlEl = heroContainer as HTMLElement;
+          if (!htmlEl.dataset.originalZIndex) {
+            const computedZIndex = window.getComputedStyle(htmlEl).zIndex;
+            if (computedZIndex && computedZIndex !== 'auto') {
+              htmlEl.dataset.originalZIndex = computedZIndex;
+            }
+          }
+          htmlEl.style.zIndex = '-1';
+        }
+        
+        // 降低3D轮播卡片的 z-index（查找projects-section内的所有元素）
+        const projectsSection = document.getElementById('projects-section');
+        if (projectsSection) {
+          const allElements = projectsSection.querySelectorAll('*');
+          allElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            const computedZIndex = window.getComputedStyle(htmlEl).zIndex;
+            if (computedZIndex && computedZIndex !== 'auto' && parseInt(computedZIndex) > 0) {
+              if (!htmlEl.dataset.originalZIndex) {
+                htmlEl.dataset.originalZIndex = computedZIndex;
+              }
+              htmlEl.style.zIndex = '-1';
+              htmlEl.style.pointerEvents = 'none';
+            }
+          });
+          // 也处理projects-section本身
+          const sectionZIndex = window.getComputedStyle(projectsSection).zIndex;
+          if (sectionZIndex && sectionZIndex !== 'auto' && parseInt(sectionZIndex) > 0) {
+            if (!projectsSection.dataset.originalZIndex) {
+              projectsSection.dataset.originalZIndex = sectionZIndex;
+            }
+            projectsSection.style.zIndex = '-1';
+          }
+        }
+      }, 0);
     } else {
-      // 顯示 scroll 指示器
+      // 恢复背景滚动
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
       document.body.classList.remove('modal-open');
+      // 恢复背景元素的 z-index
+      const backgroundElements = document.querySelectorAll('.boat-container, .boat-with-waves, .star-parallax, [class*="wave"], [class*="boat"]');
+      backgroundElements.forEach((el) => {
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.dataset.originalZIndex) {
+          htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+          delete htmlEl.dataset.originalZIndex;
+        } else {
+          htmlEl.style.zIndex = '';
+        }
+        htmlEl.style.pointerEvents = '';
+        htmlEl.style.opacity = '';
+      });
+      
+      // 恢复 hero 区域的 z-index
+      const heroContainer = document.querySelector('.hero-test-container, [class*="hero"]');
+      if (heroContainer) {
+        const htmlEl = heroContainer as HTMLElement;
+        if (htmlEl.dataset.originalZIndex) {
+          htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+          delete htmlEl.dataset.originalZIndex;
+        } else {
+          htmlEl.style.zIndex = '';
+        }
+      }
+      
+      // 恢复3D轮播卡片的 z-index
+      const projectsSection2 = document.getElementById('projects-section');
+      if (projectsSection2) {
+        const allElements2 = projectsSection2.querySelectorAll('*');
+        allElements2.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl.dataset.originalZIndex) {
+            htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+            delete htmlEl.dataset.originalZIndex;
+            htmlEl.style.pointerEvents = '';
+          }
+        });
+        // 恢复projects-section本身
+        if (projectsSection2.dataset.originalZIndex) {
+          projectsSection2.style.zIndex = projectsSection2.dataset.originalZIndex;
+          delete projectsSection2.dataset.originalZIndex;
+        }
+      }
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     // 清理函數
     return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
       document.body.classList.remove('modal-open');
+      // 恢复背景元素的 z-index
+      const backgroundElements = document.querySelectorAll('.boat-container, .boat-with-waves, .star-parallax, [class*="wave"], [class*="boat"]');
+      backgroundElements.forEach((el) => {
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.dataset.originalZIndex) {
+          htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+          delete htmlEl.dataset.originalZIndex;
+        } else {
+          htmlEl.style.zIndex = '';
+        }
+        htmlEl.style.pointerEvents = '';
+        htmlEl.style.opacity = '';
+      });
+      
+      // 恢复 hero 区域的 z-index
+      const heroContainer = document.querySelector('.hero-test-container, [class*="hero"]');
+      if (heroContainer) {
+        const htmlEl = heroContainer as HTMLElement;
+        if (htmlEl.dataset.originalZIndex) {
+          htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+          delete htmlEl.dataset.originalZIndex;
+        } else {
+          htmlEl.style.zIndex = '';
+        }
+      }
+      
+      // 恢复3D轮播卡片的 z-index
+      const projectsSection3 = document.getElementById('projects-section');
+      if (projectsSection3) {
+        const allElements3 = projectsSection3.querySelectorAll('*');
+        allElements3.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl.dataset.originalZIndex) {
+            htmlEl.style.zIndex = htmlEl.dataset.originalZIndex;
+            delete htmlEl.dataset.originalZIndex;
+            htmlEl.style.pointerEvents = '';
+          }
+        });
+        // 恢复projects-section本身
+        if (projectsSection3.dataset.originalZIndex) {
+          projectsSection3.style.zIndex = projectsSection3.dataset.originalZIndex;
+          delete projectsSection3.dataset.originalZIndex;
+        }
+      }
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     };
   }, [isOpen]);
 
@@ -164,11 +549,91 @@ const PsychologyTestModal: React.FC<{
         const maxScore = Math.max(...Object.values(scores));
         const topCareer = Object.entries(scores).find(([, score]) => score === maxScore)?.[0] as CareerType;
         setTimeout(() => {
-          onComplete(topCareer || 'story');
-          onClose();
+          setResultType(topCareer || 'story');
+          setCurrentStep('result');
         }, 500);
       }
     }, 100);
+  };
+
+  const handleShare = async () => {
+    if (!resultType || !shareImageRef.current) return;
+    
+    const resultData = careerResults[resultType];
+    if (!resultData) return;
+    
+    try {
+      // 等待所有图片加载
+      const imgs = shareImageRef.current.querySelectorAll('img');
+      await Promise.all(Array.from(imgs).map((img) => {
+        return new Promise((resolve) => {
+          if (img.complete && img.naturalWidth > 0) {
+            resolve(null);
+          } else {
+            img.onload = () => resolve(null);
+            img.onerror = () => resolve(null);
+            setTimeout(() => resolve(null), 5000);
+          }
+        });
+      }));
+      
+      // 生成图片
+      const canvas = await html2canvas(shareImageRef.current, {
+        backgroundColor: resultData.bgColor || '#fefef3',
+        scale: 3,
+        useCORS: true,
+        logging: false,
+        allowTaint: true,
+        imageTimeout: 10000,
+        removeContainer: false
+      });
+      
+      // 转换为blob并下载
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `品牌心理測驗-${resultData.title}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          alert('圖片已下載！');
+        }
+      }, 'image/png', 1.0);
+    } catch (error) {
+      console.error('生成圖片失敗:', error);
+      const text = `我剛測出自己是【${resultData.title} ${resultData.titleEn}】，原來我的品牌是這樣的角色。你也可以試試看～`;
+      navigator.clipboard.writeText(text);
+      alert('已複製到剪貼簿！');
+    }
+  };
+
+  const handleCTA = (action: string) => {
+    switch (action) {
+      case 'share':
+        handleShare();
+        break;
+      case 'portfolio':
+        onClose();
+        router.push('/hero-simple-test#projects-section');
+        break;
+      case 'contact':
+        onClose();
+        router.push('/hero-simple-test#contact-section');
+        break;
+      case 'process':
+        onClose();
+        router.push('/hero-simple-test#services-section');
+        break;
+      case 'start':
+        onClose();
+        router.push('/hero-simple-test#contact-section');
+        break;
+      default:
+        break;
+    }
   };
 
   if (!isOpen) return null;
@@ -184,7 +649,8 @@ const PsychologyTestModal: React.FC<{
         height: '100%',
         background: 'rgba(0, 0, 0, 0.7)',
         backdropFilter: 'blur(10px)',
-        zIndex: 999999,
+        zIndex: 9999999,
+        isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -196,7 +662,7 @@ const PsychologyTestModal: React.FC<{
         <div style={{
           maxWidth: '900px',
           width: '100%',
-          maxHeight: '90vh',
+          maxHeight: isMobile ? '70vh' : '90vh',
           overflow: 'auto',
           background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
           borderRadius: '20px',
@@ -357,7 +823,8 @@ const PsychologyTestModal: React.FC<{
         height: '100%',
         background: 'rgba(0, 0, 0, 0.7)',
         backdropFilter: 'blur(10px)',
-        zIndex: 999999,
+        zIndex: 9999999,
+        isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -472,6 +939,566 @@ const PsychologyTestModal: React.FC<{
     );
   }
 
+  // Result Page
+  if (currentStep === 'result' && resultType) {
+    const resultData = careerResults[resultType];
+    if (!resultData) return null;
+
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.7)',
+        backdropFilter: 'blur(10px)',
+        zIndex: 9999999,
+        isolation: 'isolate',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: isMobile ? '20px' : '40px',
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        overflow: 'auto'
+      }}
+      onClick={onClose}
+      >
+      <div style={{
+        maxWidth: '900px',
+        width: '100%',
+        maxHeight: isMobile ? '70vh' : '90vh',
+        overflow: 'auto',
+        background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+        borderRadius: '20px',
+        padding: 'clamp(30px, 4vw, 50px)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+        position: 'relative'
+      }}
+      onClick={(e) => e.stopPropagation()}
+      >
+        {/* 关闭按钮 */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            background: 'rgba(255, 255, 255, 0.85)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            color: '#555',
+            fontSize: '24px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease',
+            zIndex: 1000,
+            pointerEvents: 'auto'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
+            e.currentTarget.style.transform = 'rotate(90deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)';
+            e.currentTarget.style.transform = 'rotate(0deg)';
+          }}
+        >
+          ×
+        </button>
+
+        {/* 隐藏的分享图片容器 */}
+          <div
+            ref={shareImageRef}
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              top: '-9999px',
+              width: '900px',
+              height: '1350px',
+              background: resultData.bgColor,
+              padding: '30px',
+              color: '#353535',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              borderRadius: '30px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Logo */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+              marginBottom: '0px'
+            }}>
+              <div style={{
+                width: '183.6px',
+                height: '96px',
+                flexShrink: 0,
+                marginBottom: '4px',
+                marginTop: '-20px',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                  src="/cursor-07.png"
+                  alt="Liam Design Studio"
+                  style={{
+                    width: '183.6px',
+                    height: '96px',
+                    objectFit: 'contain',
+                    display: 'block',
+                    margin: '0',
+                    padding: '0',
+                    border: 'none',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                  crossOrigin="anonymous"
+                />
+              </div>
+              <h1 style={{
+                fontSize: '48.3px',
+                fontWeight: '900',
+                color: '#353535',
+                backgroundColor: 'transparent',
+                lineHeight: '1.2',
+                margin: 0,
+                padding: 0,
+                fontFamily: 'var(--font-google-sans-flex), sans-serif'
+              }}>
+                {resultData.title} {resultData.titleEn}
+              </h1>
+            </div>
+
+            {/* 图片区域 */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '16px',
+              marginBottom: '24px',
+              width: '100%'
+            }}>
+              <div style={{
+                width: '100%',
+                height: '640px',
+                background: resultData.imageBgColor,
+                borderRadius: '20px',
+                padding: '12px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/career-${resultType}.png`}
+                  alt="Character"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: 'auto',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                    position: 'relative',
+                    zIndex: 2
+                  }}
+                  crossOrigin="anonymous"
+                />
+              </div>
+            </div>
+
+            {/* 描述文字 */}
+            <div style={{
+              textAlign: 'center',
+              marginTop: '0px',
+              marginBottom: '20px',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              <p style={{
+                fontSize: '20px',
+                fontWeight: '500',
+                color: '#353535',
+                lineHeight: '1.6',
+                margin: '0 0 12px 0',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif'
+              }}>
+                {resultData.intro.subtitle}
+              </p>
+              <p style={{
+                fontSize: '20px',
+                fontWeight: '500',
+                color: '#353535',
+                lineHeight: '1.6',
+                margin: 0,
+                fontFamily: 'var(--font-google-sans-flex), sans-serif'
+              }}>
+                {resultData.intro.description}
+              </p>
+            </div>
+
+            {/* 三个重点 */}
+            <div style={{
+              textAlign: 'center',
+              fontSize: '26.4px',
+              fontWeight: '700',
+              color: 'black',
+              marginBottom: '0px',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              {resultData.focusPoints.map((point, index) => (
+                <span key={index}>
+                  {index > 0 && <span style={{ margin: '0 6px', color: 'rgba(0, 0, 0, 0.5)' }}>  |  </span>}
+                  <span>{point.title}</span>
+                </span>
+              ))}
+            </div>
+
+            {/* 底部：Slogan 左下 + QR Code右下 */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginTop: 'auto'
+            }}>
+              <div style={{
+                background: 'transparent',
+                padding: '8px 0 16px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                textAlign: 'left',
+                gap: '7.2px'
+              }}>
+                <div style={{
+                  fontSize: '31.104px',
+                  fontWeight: '700',
+                  color: '#353535',
+                  letterSpacing: '0.864px',
+                  lineHeight: '1',
+                  textAlign: 'left',
+                  margin: 0,
+                  padding: 0,
+                  display: 'block',
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                  opacity: 0.8
+                }}>
+                  {'Own the Day.'.trim()}
+                </div>
+                <div style={{
+                  fontSize: '24.192px',
+                  fontWeight: '500',
+                  color: '#353535',
+                  lineHeight: '1.3',
+                  textAlign: 'left',
+                  margin: 0,
+                  padding: 0,
+                  display: 'block',
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                  opacity: 0.8
+                }}>
+                  {'一起書寫你我的品牌故事'.trim()}
+                </div>
+              </div>
+
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '6.48px'
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=108x108&data=${encodeURIComponent('https://2025-liam-design.vercel.app/psychology-test')}`}
+                  alt="QR Code"
+                  style={{
+                    width: '108px',
+                    height: '108px',
+                    background: 'white',
+                    padding: '6.48px',
+                    borderRadius: '8.64px'
+                  }}
+                  crossOrigin="anonymous"
+                />
+                <div style={{
+                  fontSize: '12.96px',
+                  fontWeight: '600',
+                  color: '#353535',
+                  textAlign: 'center'
+                }}>
+                  掃描立即測
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 结果内容 */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(24px, 3vw, 32px)'
+          }}>
+            {/* 标题 */}
+            <div style={{
+              textAlign: 'center',
+              marginBottom: 'clamp(16px, 2vw, 24px)'
+            }}>
+              <h1 style={{
+                fontSize: isMobile ? 'clamp(1.4rem, 4vw, 2rem)' : 'clamp(1.8rem, 4vw, 2.5rem)',
+                fontWeight: '900',
+                color: resultData.bgColor,
+                marginBottom: 'clamp(16px, 2vw, 24px)',
+                lineHeight: '1.2'
+              }}>
+                {resultData.intro.title.split('：').map((part, index) => {
+                  if (index === 0) {
+                    return <span key={index}>{part}：</span>;
+                  } else {
+                    // 职业名称部分（去掉最后的感叹号）
+                    const parts = part.split('！');
+                    return (
+                      <span key={index}>
+                        <span className="highlight-text" style={{
+                          color: resultData.bgColor,
+                          fontWeight: '900',
+                          background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                          backgroundSize: '200% 100%',
+                          backgroundPosition: '-100% 0',
+                          backgroundRepeat: 'no-repeat',
+                          animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                          padding: '2px 4px',
+                          borderRadius: '4px',
+                          display: 'inline-block'
+                        }}>
+                          {parts[0]}
+                        </span>
+                        {parts[1] ? '！' : ''}
+                      </span>
+                    );
+                  }
+                })}
+              </h1>
+              <p style={{
+                fontSize: isMobile ? 'clamp(0.8rem, 2vw, 1.04rem)' : 'clamp(0.96rem, 2vw, 1.2rem)',
+                fontWeight: '500',
+                color: '#353535',
+                lineHeight: '1.8',
+                marginBottom: 'clamp(12px, 1.5vw, 16px)'
+              }}>
+                {resultData.intro.subtitle}
+              </p>
+              <p style={{
+                fontSize: isMobile ? 'clamp(0.8rem, 2vw, 1.04rem)' : 'clamp(0.96rem, 2vw, 1.2rem)',
+                fontWeight: '500',
+                color: '#353535',
+                lineHeight: '1.8'
+              }}>
+                {resultData.intro.description}
+              </p>
+            </div>
+
+            {/* 图片 */}
+            <div style={{
+              width: '100%',
+              minHeight: isMobile ? '250px' : 'clamp(300px, 35vw, 400px)',
+              position: 'relative',
+              borderRadius: '15px',
+              overflow: 'hidden',
+              background: resultData.imageBgColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
+            }}>
+              <Image
+                src={`/career-${resultType}.png`}
+                alt="Character"
+                width={3541}
+                height={2203}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+
+            {/* 你在意的 3 大要點 */}
+            <div style={{
+              background: 'rgba(255, 255, 243, 0.1)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              borderRadius: '15px',
+              padding: 'clamp(24px, 3vw, 32px)',
+              border: `2px solid ${resultData.color}40`,
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+            }}>
+              <h3 style={{
+                fontSize: isMobile ? 'clamp(1.2rem, 3vw, 1.6rem)' : 'clamp(1.4rem, 3vw, 1.8rem)',
+                fontWeight: '700',
+                background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                marginBottom: 'clamp(16px, 2vw, 24px)',
+                textAlign: 'center'
+              }}>
+                你在意的 3 大要點
+              </h3>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '12px',
+                justifyContent: 'center'
+              }}>
+                {resultData.focusPoints.map((point, index) => (
+                  <span key={index} style={{
+                    padding: '10px 20px',
+                    background: 'transparent',
+                    borderRadius: '20px',
+                    fontSize: isMobile ? '0.9rem' : '1rem',
+                    color: resultData.bgColor,
+                    fontWeight: '600',
+                    border: `1px solid ${resultData.bgColor}30`
+                  }}>
+                    {point.title}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 我們可以提供的協助 */}
+            <div style={{
+              background: 'rgba(255, 255, 243, 0.1)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              borderRadius: '15px',
+              padding: 'clamp(24px, 3vw, 32px)',
+              border: `2px solid ${resultData.color}40`,
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+            }}>
+              <h3 style={{
+                fontSize: isMobile ? 'clamp(1.2rem, 3vw, 1.6rem)' : 'clamp(1.4rem, 3vw, 1.8rem)',
+                fontWeight: '700',
+                background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                marginBottom: 'clamp(16px, 2vw, 24px)',
+                textAlign: 'center'
+              }}>
+                我們可以提供的協助
+              </h3>
+              <p style={{
+                fontSize: isMobile ? '1rem' : '1.1rem',
+                color: '#353535',
+                lineHeight: '1.8',
+                marginBottom: 'clamp(16px, 2vw, 24px)',
+                textAlign: 'center'
+              }}>
+                {resultData.assistance.description}
+              </p>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '12px',
+                justifyContent: 'center'
+              }}>
+                {resultData.assistance.services.split('｜').map((service, index) => (
+                  <span key={index} style={{
+                    padding: '10px 20px',
+                    background: 'transparent',
+                    borderRadius: '20px',
+                    fontSize: isMobile ? '0.9rem' : '1rem',
+                    color: resultData.bgColor,
+                    fontWeight: '600',
+                    border: `1px solid ${resultData.bgColor}30`
+                  }}>
+                    {service}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA 按钮区 */}
+            <div style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '16px' : '20px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 'clamp(16px, 2vw, 24px)'
+            }}>
+              {resultData.ctaButtons.map((button, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleCTA(button.action)}
+                  style={{
+                    padding: isMobile ? 'clamp(14px, 2.5vw, 18px) clamp(24px, 4vw, 36px)' : 'clamp(16px, 2.5vw, 20px) clamp(32px, 5vw, 48px)',
+                    background: 'transparent',
+                    border: '1px solid #353535',
+                    borderRadius: '50px',
+                    color: '#353535',
+                    fontSize: isMobile ? 'clamp(0.95rem, 2vw, 1.1rem)' : 'clamp(1rem, 2vw, 1.3rem)',
+                    fontWeight: '700',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    width: isMobile ? '100%' : 'auto',
+                    minWidth: isMobile ? 'auto' : '200px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.opacity = '0.8';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                >
+                  {button.text}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CSS 動畫 */}
+        <style jsx global>{`
+          @keyframes highlight {
+            0% {
+              background-position: -100% 0;
+            }
+            100% {
+              background-position: 100% 0;
+            }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   // Question Page
   const currentQ = questions[currentQuestion];
   const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -486,7 +1513,8 @@ const PsychologyTestModal: React.FC<{
       height: '100%',
       background: 'rgba(0, 0, 0, 0.7)',
       backdropFilter: 'blur(10px)',
-      zIndex: 999999,
+      zIndex: 9999999,
+      isolation: 'isolate',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -498,7 +1526,7 @@ const PsychologyTestModal: React.FC<{
       <div style={{
         maxWidth: '900px',
         width: '100%',
-        maxHeight: '90vh',
+        maxHeight: isMobile ? '70vh' : '90vh',
         overflow: 'auto',
         background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
         borderRadius: '20px',
@@ -813,13 +1841,17 @@ const PsychologyTestModal: React.FC<{
 // 心理测验 Card 入口组件
 const PsychologyTestCard: React.FC<{
   isMobile: boolean;
-}> = ({ isMobile }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
-
-  const handleComplete = (result: CareerType) => {
-    // 跳转到结果页，传递结果参数
-    router.push(`/psychology-test/result?type=${result}`);
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}> = ({ isMobile, isOpen: externalIsOpen, onOpenChange }) => {
+  const [internalIsModalOpen, setInternalIsModalOpen] = useState(false);
+  const isModalOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsModalOpen;
+  const setIsModalOpen = (open: boolean) => {
+    if (onOpenChange) {
+      onOpenChange(open);
+    } else {
+      setInternalIsModalOpen(open);
+    }
   };
 
   return (
@@ -1313,7 +2345,6 @@ const PsychologyTestCard: React.FC<{
       <PsychologyTestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onComplete={handleComplete}
         isMobile={isMobile}
       />
 

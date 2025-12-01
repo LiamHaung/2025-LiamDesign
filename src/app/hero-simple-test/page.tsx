@@ -4057,6 +4057,46 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             >
               Our Services｜了解服務流程
             </button>
+
+            {/* 按鈕 3: BRAND QUIZ */}
+            <button
+              onClick={() => {
+                const brandQuizSection = document.getElementById('brand-quiz-section');
+                if (brandQuizSection) {
+                  brandQuizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              style={{
+                padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
+                fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
+                fontWeight: '700',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                color: '#353535',
+                background: 'transparent',
+                border: '2px solid #353535',
+                borderRadius: '50px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.02em',
+                width: isMobile || isSmallMobile ? '100%' : 'auto',
+                minWidth: isMobile || isSmallMobile ? 'auto' : '180px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#353535';
+                e.currentTarget.style.color = '#FFFFF3';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(53, 53, 53, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#353535';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              BRAND QUIZ ｜品牌測驗
+            </button>
           </div>
           </div>
 
@@ -6715,12 +6755,16 @@ export default function HeroSimpleTest() {
       </div>
 
       {/* 品牌心理測驗 Card */}
-      <div className="w-full py-12 md:py-16" style={{ 
-        background: '#003EC3',
-        minHeight: '400px',
-        position: 'relative',
-        zIndex: 10
-      }}>
+      <div 
+        id="brand-quiz-section"
+        className="w-full py-12 md:py-16" 
+        style={{ 
+          background: '#003EC3',
+          minHeight: '400px',
+          position: 'relative',
+          zIndex: 10
+        }}
+      >
         <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
           {/* 標題區域 */}
           <div style={{
