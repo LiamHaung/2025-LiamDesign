@@ -220,7 +220,7 @@ const careerResults: Record<string, {
     title: "森林職人",
     titleEn: "Woodland Artisan",
     emoji: "🌟",
-    bgColor: "#d1db3c",
+    bgColor: "#2f6022",
     imageBgColor: "#b5bf3b",
     intro: {
       title: "你的職業是：森林職人 Woodland Artisan！",
@@ -579,7 +579,7 @@ const PsychologyTestModal: React.FC<{
       
       // 生成图片
       const canvas = await html2canvas(shareImageRef.current, {
-        backgroundColor: resultData.bgColor || '#fefef3',
+        backgroundColor: resultType === 'woodland' ? '#d1db3c' : (resultData.bgColor || '#fefef3'),
         scale: 3,
         useCORS: true,
         logging: false,
@@ -1023,7 +1023,7 @@ const PsychologyTestModal: React.FC<{
               top: '-9999px',
               width: '900px',
               height: '1350px',
-              background: resultData.bgColor,
+              background: resultType === 'woodland' ? '#d1db3c' : resultData.bgColor,
               padding: '30px',
               color: '#353535',
               fontFamily: 'var(--font-google-sans-flex), sans-serif',
@@ -1108,6 +1108,88 @@ const PsychologyTestModal: React.FC<{
                 position: 'relative',
                 overflow: 'hidden'
               }}>
+                {/* 左側裝飾元素 */}
+                <div style={{
+                  position: 'absolute',
+                  left: '20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  alignItems: 'center',
+                  pointerEvents: 'none'
+                }}>
+                  {/* 星星 */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/star-big.png"
+                    alt="Star"
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      objectFit: 'contain',
+                      opacity: 0.8,
+                      animation: 'float 3s ease-in-out infinite'
+                    }}
+                  />
+                  {/* 雲朵 */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/cloud-1.png"
+                    alt="Cloud"
+                    style={{
+                      width: '80px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      opacity: 0.7,
+                      animation: 'float 4s ease-in-out infinite 0.5s'
+                    }}
+                  />
+                </div>
+
+                {/* 右側裝飾元素 */}
+                <div style={{
+                  position: 'absolute',
+                  right: '20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  alignItems: 'center',
+                  pointerEvents: 'none'
+                }}>
+                  {/* 太陽 */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/sun-big.png"
+                    alt="Sun"
+                    style={{
+                      width: '70px',
+                      height: '70px',
+                      objectFit: 'contain',
+                      opacity: 0.8,
+                      animation: 'float 3.5s ease-in-out infinite 0.3s'
+                    }}
+                  />
+                  {/* 雲朵 */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/cloud-2.png"
+                    alt="Cloud"
+                    style={{
+                      width: '80px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      opacity: 0.7,
+                      animation: 'float 4.5s ease-in-out infinite 0.8s'
+                    }}
+                  />
+                </div>
+
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`/career-${resultType}.png`}
@@ -1333,6 +1415,88 @@ const PsychologyTestModal: React.FC<{
               justifyContent: 'center',
               padding: '20px'
             }}>
+              {/* 左側裝飾元素 */}
+              <div style={{
+                position: 'absolute',
+                left: '20px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                alignItems: 'center',
+                pointerEvents: 'none'
+              }}>
+                {/* 星星 */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/star-big.png"
+                  alt="Star"
+                  style={{
+                    width: isMobile ? '40px' : '60px',
+                    height: isMobile ? '40px' : '60px',
+                    objectFit: 'contain',
+                    opacity: 0.8,
+                    animation: 'float 3s ease-in-out infinite'
+                  }}
+                />
+                {/* 雲朵 */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/cloud-1.png"
+                  alt="Cloud"
+                  style={{
+                    width: isMobile ? '60px' : '80px',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    opacity: 0.7,
+                    animation: 'float 4s ease-in-out infinite 0.5s'
+                  }}
+                />
+              </div>
+
+              {/* 右側裝飾元素 */}
+              <div style={{
+                position: 'absolute',
+                right: '20px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                alignItems: 'center',
+                pointerEvents: 'none'
+              }}>
+                {/* 太陽 */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/sun-big.png"
+                  alt="Sun"
+                  style={{
+                    width: isMobile ? '50px' : '70px',
+                    height: isMobile ? '50px' : '70px',
+                    objectFit: 'contain',
+                    opacity: 0.8,
+                    animation: 'float 3.5s ease-in-out infinite 0.3s'
+                  }}
+                />
+                {/* 雲朵 */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/cloud-2.png"
+                  alt="Cloud"
+                  style={{
+                    width: isMobile ? '60px' : '80px',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    opacity: 0.7,
+                    animation: 'float 4.5s ease-in-out infinite 0.8s'
+                  }}
+                />
+              </div>
+
               <Image
                 src={`/career-${resultType}.png`}
                 alt="Character"
@@ -1341,7 +1505,9 @@ const PsychologyTestModal: React.FC<{
                 style={{
                   width: '100%',
                   height: 'auto',
-                  objectFit: 'contain'
+                  objectFit: 'contain',
+                  position: 'relative',
+                  zIndex: 2
                 }}
               />
             </div>
@@ -1492,6 +1658,15 @@ const PsychologyTestModal: React.FC<{
             }
             100% {
               background-position: 100% 0;
+            }
+          }
+          
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-15px);
             }
           }
         `}</style>

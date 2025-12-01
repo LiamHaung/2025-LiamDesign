@@ -2930,6 +2930,16 @@ const DesignDiary: React.FC<{
           }}>
             DESIGN DIARY
           </h1>
+          <p style={{
+            fontSize: 'clamp(1rem, 3vw, 1.5rem)',
+            color: '#E8F4FD',
+            margin: '0',
+            fontWeight: '400',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+            letterSpacing: '0.1em'
+          }}>
+            Stories Behind Every Design
+          </p>
         </div>
 
         {/* 日記列表 - 橫向滾動容器 */}
@@ -3061,11 +3071,11 @@ const DesignDiary: React.FC<{
                   fontSize: isMobile ? '1rem' : '1.2rem',
                   lineHeight: '1.7',
                   marginBottom: '1.5rem',
-                        fontFamily: 'var(--font-handwriting), var(--font-noto-sans-tc), sans-serif',
+                        fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                         flex: '1',
                   overflow: 'hidden',
                         textAlign: 'left',
-                        fontWeight: '600',
+                        fontWeight: '400',
                         display: '-webkit-box',
                         WebkitLineClamp: 4,
                         WebkitBoxOrient: 'vertical',
@@ -3088,26 +3098,22 @@ const DesignDiary: React.FC<{
                          key={tagIndex}
                          style={{
                            padding: '0.375rem 0.875rem',
-                                background: tagIndex === 0 ? '#003EC3' : '#F5F1E8',
-                                color: tagIndex === 0 ? '#FFFFFF' : '#2C2C2C',
+                           background: '#003EC3',
+                           color: '#FFFFFF',
                            borderRadius: '20px',
                            fontSize: '0.75rem',
-                                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                           fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                            fontWeight: 'bold',
-                                transition: 'all 0.2s ease',
-                                border: tagIndex === 0 ? 'none' : '1px solid rgba(44, 44, 44, 0.1)'
+                           transition: 'all 0.2s ease',
+                           border: 'none'
                          }}
                          onMouseEnter={(e) => {
-                                if (tagIndex !== 0) {
-                                  e.currentTarget.style.background = '#E8E3D8';
-                                  e.currentTarget.style.border = '1px solid rgba(44, 44, 44, 0.2)';
-                                }
+                           e.currentTarget.style.background = '#0052CC';
+                           e.currentTarget.style.transform = 'translateY(-1px)';
                          }}
                          onMouseLeave={(e) => {
-                                if (tagIndex !== 0) {
-                                  e.currentTarget.style.background = '#F5F1E8';
-                                  e.currentTarget.style.border = '1px solid rgba(44, 44, 44, 0.1)';
-                                }
+                           e.currentTarget.style.background = '#003EC3';
+                           e.currentTarget.style.transform = 'translateY(0)';
                          }}
                        >
                          {tag}
@@ -3373,9 +3379,9 @@ const DesignDiary: React.FC<{
                     lineHeight: '1.8',
                     whiteSpace: 'pre-line',
                     fontSize: isMobile ? '1.2rem' : '1.5rem',
-                  fontFamily: 'var(--font-handwriting), var(--font-noto-sans-tc), sans-serif',
+                  fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                   textAlign: 'left',
-                    fontWeight: '800'
+                    fontWeight: '400'
                   }}>
                     {selectedEntry.content}
                   </p>
@@ -3989,8 +3995,6 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
                 fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
-                fontWeight: '900',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#353535',
                 background: 'transparent',
                 border: '2px solid #353535',
@@ -4015,7 +4019,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              Explore Portfolio｜看作品
+              <span style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '500' }}>Explore Portfolio</span>
+              <span style={{ fontFamily: 'var(--font-noto-sans-tc), sans-serif', fontWeight: '500' }}>｜看作品</span>
             </button>
 
             {/* 按鈕 2: Our Services */}
@@ -4029,8 +4034,6 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
                 fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
-                fontWeight: '700',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#353535',
                 background: 'transparent',
                 border: '2px solid #353535',
@@ -4055,7 +4058,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              Our Services｜了解服務流程
+              <span style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '500' }}>Our Services</span>
+              <span style={{ fontFamily: 'var(--font-noto-sans-tc), sans-serif', fontWeight: '500' }}>｜了解服務流程</span>
             </button>
 
             {/* 按鈕 3: BRAND QUIZ */}
@@ -4069,8 +4073,6 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
                 fontSize: isSmallMobile ? 'clamp(0.85rem, 2.5vw, 1rem)' : isMobile ? 'clamp(0.9rem, 2.8vw, 1.05rem)' : 'clamp(1rem, 2vw, 1.1rem)',
-                fontWeight: '700',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 color: '#353535',
                 background: 'transparent',
                 border: '2px solid #353535',
@@ -4095,7 +4097,8 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              BRAND QUIZ ｜品牌測驗
+              <span style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '500' }}>BRAND QUIZ</span>
+              <span style={{ fontFamily: 'var(--font-noto-sans-tc), sans-serif', fontWeight: '500' }}> ｜品牌測驗</span>
             </button>
           </div>
           </div>
@@ -5282,82 +5285,108 @@ export default function HeroSimpleTest() {
   }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry]);
 
   // 輪播組件數據
-  const carouselItems: ProjectItem[] = [
+  const allCarouselItems: ProjectItem[] = [
     {
       id: 1,
-      title: "品牌設計專案",
-      description: "完整的品牌識別設計，包含 Logo、色彩系統、應用範例等全方位品牌體驗。",
+      title: "車衣設計",
+      description: "熱情、團結，騎車的樂趣集結於一身，帶給車友一致的視覺成為車隊的耀眼新星",
       image: "/project-cover-01.jpg",
       tags: ["品牌設計", "Logo設計", "視覺識別"],
        galleryImages: [
-         "/project-cover-01.jpg",
          "/project-01-01.jpg",
          "/project-01-02.png"
        ],
-      detailedDescription: "這是一個完整的品牌設計專案，從品牌定位開始，設計了完整的視覺識別系統。包含 Logo 設計、品牌色彩系統、字體選擇、應用範例等。整個設計過程注重品牌的一致性和可擴展性，確保在不同媒介上都能完美呈現品牌形象。",
-      year: 2023
-    },
-    {
-      id: 2,
-      title: "網頁設計專案",
-      description: "現代化的響應式網頁設計，專注於用戶體驗和視覺美學的完美結合。",
-      image: "/project-cover-02.jpg",
-      tags: ["網頁設計", "響應式設計", "UI/UX"],
-       galleryImages: [
-         "/project-cover-02.jpg",
-        "/project-02-01.png",
-        "/project-02-02.jpg"
-       ],
-      detailedDescription: "響應式網頁設計專案，涵蓋從用戶研究到最終實現的完整流程。我們注重用戶體驗設計，確保網站在不同設備上都能提供優秀的瀏覽體驗。設計過程中我們進行了多輪測試和優化，最終創造出既美觀又實用的網頁設計。",
+      detailedDescription: "這次的車衣設計，希望把「騎車的爽感」整理成一套能被穿上的語言。色彩的跳動、線條的速度感、圖形的排列，就像把路線的節奏收進衣服裡。整體視覺強調熱情與團結——不只是亮眼，而是讓車隊走在一起時能自然形成一股氣勢。在齊聚的瞬間，大家會因為一套一致的視覺而更靠近，成為真正意義上的「同隊」。",
       year: 2024
     },
     {
+      id: 2,
+      title: "台式牛排的新味覺菜單",
+      description: "把記憶裡的味道重新說一遍，台式牛排的魅力一直都很直接：鐵板、香氣、吱吱作響的醬汁。",
+      image: "/project-cover-02.jpg",
+      tags: ["網頁設計", "響應式設計", "UI/UX"],
+       galleryImages: [
+        "/project-02-01.png",
+        "/project-02-02.jpg",
+        "/project-02-03.jpg"
+       ],
+      detailedDescription: "我們希望讓客人看到的不只是品項，而是一種熟悉的場景——蒸氣、香味、份量、日常。加入更多具體又誘人的品項，也強調肉質、風味、搭配的組合，讓菜單本身就像一個「先吃一口的前奏」。整份視覺在保留傳統台味的前提下，也讓細節更俐落、更當代：讓老店的靈魂留著，但呈現方式更能說服現代的視覺習慣。",
+      year: 2025
+    },
+    {
       id: 3,
-      title: "Brand Identity",
-      description: "建立完整的品牌識別系統，包含標誌設計和視覺規範。",
+      title: "地方創生Ft.三星鄉公所",
+      description: "讓人感受到土地的，是那種輕輕的、自然的在地感——像空氣裡會飄的味道，不用強調，但你感覺得到。",
       image: "/project-cover-03.jpg",
       tags: ["Logo Design", "Branding", "Identity"],
       galleryImages: [
-        "/project-cover-03.jpg",
         "/project-03-01.jpg",
         "/project-03-02.jpg",
         "/project-03-03.jpg",
         "/project-03-04.jpg"
       ],
-      detailedDescription: "品牌識別設計專案，從標誌設計到完整的視覺識別系統。我們幫助品牌建立獨特的視覺語言，傳達品牌價值和個性，創造一致的品牌體驗。整個識別系統包含標誌、色彩、字體、應用規範等完整元素。",
-      year: 2022
+      detailedDescription: "三星的步調、米香、生活方式，都帶著一種不急不徐的氣味。所以整體的設計不是要做得很喧嘩，也不是要直接把地標貼滿。而是透過色調、留白、符號的抽象化，讓視覺長得像三星——輕、在地、有生活味。地方創生的魅力就在這裡：不是將鄉土風情標籤化，而是讓它在畫面裡自然流動，像是原本就存在於這裡，而不是被刻意放上去。",
+      year: 2025
     },
     {
       id: 4,
-      title: "Web Design",
-      description: "創建現代化、響應式的網站設計，專注於用戶體驗和視覺美學。",
+      title: "國家人權博物館提案",
+      description: "不義遺址的存在本身，就是一個提醒。不是要喚起恐懼，而是提供一個更清楚的入口——讓人理解曾經發生過什麼，為什麼值得記住。",
       image: "/project-cover-04.jpg",
-      tags: ["Web Design", "Responsive", "UX"],
+      tags: ["不義遺址", "歷史場館", "文化導覽", "摺頁設計", "博物館視覺"],
       galleryImages: [
-        "/project-cover-04.jpg",
-        "/project-04-01.png",
-        "/illustration_4.png",
-        "/illustration_5.png",
-        "/illustration_6.png"
+        "/project-04-01.png"
       ],
-      detailedDescription: "響應式網站設計專案，確保在桌面、平板和手機上都能提供優秀的瀏覽體驗。我們注重載入速度、用戶導航和視覺層次，創造現代化的網站設計。整個設計過程採用敏捷開發方法，快速迭代和優化。",
+      detailedDescription: "內文這次的提案以一份摺頁 DM 為核心，以最小篇幅整理出遺址的脈絡、位置與可被閱讀的線索。視覺語調刻意保持節制：安靜、沉穩、沒有過度情緒化的裝飾，讓重點留給歷史本身的重量。設計的功能不是放大悲劇，而是讓人願意踏進場域、慢慢理解故事、並透過更清楚的資訊，建立對這段歷史的連結。",
       year: 2025
     },
     {
       id: 5,
-      title: "創意設計專案",
-      description: "一個充滿創意的設計專案，展示了獨特的視覺風格和創新的設計理念。",
+      title: "日日用心｜ 品牌logo設計",
+      description: "晨恩企業的品牌更新，希望呈現的不是複雜的形象，而是「 日日用心請您放心 」的可靠感。所以在 logo 的調性上，選擇回到最基本的穩定與清晰。",
       image: "/project-cover-05.jpg",
-      tags: ["創意設計", "視覺創新", "品牌體驗"],
+      tags: ["品牌識別", "Logo設計", "企業形象", "穩定信任感", "視覺設計"],
       galleryImages: [
-        "/project-cover-05.jpg",
-        "/project-05-01.jpg",
-        "/project-05-02.jpg"
+        "/project-05-02.jpg",
+        "/project-05-01.jpg"
       ],
-      detailedDescription: "創意設計專案，融合了多種設計元素和創新思維。我們通過獨特的視覺語言和創新的設計方法，創造出令人印象深刻的品牌體驗。這個專案展示了我們在創意設計方面的專業能力和創新精神。",
-      year: 2021
+      detailedDescription: "設計的方向以「日常可信賴」為核心，從字型、比例到線條強度，都做得更一致、更耐看。\n\n沒有多餘的複雜元素，也沒有搶戲的符號，目的是讓品牌在第一眼就能傳遞出踏實、整潔、能放心依靠的印象。\n\n日日用心的精神不在於華麗的視覺，而是在每次被看見時，都能給人同一種安定感。",
+      year: 2025
+    },
+    {
+      id: 6,
+      title: "用插畫捕捉世界盃的節奏",
+      description: "2022 世足的插畫創作，希望把比賽裡那些「太快來不及記住」的瞬間，以畫面的方式留下。",
+      image: "/project-cover-06.png",
+      tags: ["插畫設計", "世足2022", "體育視覺", "動態插畫", "比賽瞬間"],
+      galleryImages: [
+        "/project-06-01.png",
+        "/project-06-02.png",
+        "/project-06-03.png",
+        "/project-06-04.png"
+      ],
+      detailedDescription: "這次的視覺核心是「動作的爆炸點」。\n\n球員的身體線條、衝刺的方向、球鞋與草皮的摩擦感，都用誇張、略帶漫畫式的筆觸強化張力。\n\n色調以高飽和度呈現比賽的熱度，\n\n中央的金盃則成為所有視線的匯聚點，象徵世界盃的共同目標。\n\n整體插畫並不追求精準寫實，\n\n而是想讓觀者感受足球那種「快到不太能思考，只能跟著熱血」的節奏。",
+      year: 2022
+    },
+    {
+      id: 7,
+      title: "生醫技術手冊",
+      description: "「將複雜的醫療資訊，理成好懂的樣子」",
+      image: "/project-covor-07.png",
+      tags: ["生醫手冊", "資訊設計", "流程導覽", "醫療溝通", "專業視覺"],
+      galleryImages: [
+        "/project-07-01.jpg"
+      ],
+      detailedDescription: "細胞移植相關資訊通常既龐大又專業。\n\n這本手冊的任務不是替醫師講課，而是把資訊整理得更清楚，\n\n讓需要了解流程的人，能安心地一步一步讀下去。\n\n整份手冊的設計重點在「專業感與易讀性」。\n\n從版面、配色到資訊分層，都以醫療領域的穩定與信賴為主軸。\n\n沒有過度繁複的圖像，也沒有讓人負擔的專業術語堆積——\n\n目的是讓使用者能快速掌握：\n\n流程怎麼走、服務包含什麼、每一步的意義是什麼。\n\n我們透過乾淨的文字架構、圖示與強調色，\n\n讓複雜的醫療技術，變成一份「可以慢慢讀，也能快速找到答案」的理解工具。\n\n這本手冊不是醫療書籍，\n\n而是一份「在重要決定之前，能讓人覺得安心」的資訊陪伴。",
+      year: 2024
     }
   ];
+
+  // 第一組輪播（id 1-7）
+  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 7);
+  
+  // 第二組輪播（id 8-10）
+  const secondCarouselItems = allCarouselItems.filter(item => item.id >= 8 && item.id <= 10);
 
   // 商品數據
   const productItems: ProductItem[] = [
@@ -5410,84 +5439,72 @@ export default function HeroSimpleTest() {
     {
       id: 1,
       date: '2024.01.15',
-      title: '最初的想法',
+      title: '好看可以學，有趣比較難',
       projectName: '品牌視覺識別設計',
       backgroundImage: '/project-cover-01.jpg',
-      content: `今天開始思考這個品牌的新視覺方向。客戶想要的是什麼？是溫馨、親近的感覺，還是現代、專業的形象？
+      content: `好看的設計，往往不是靠把東西塞滿或技巧堆高。比較像是一種默契：比例、顏色和品牌自然地走在一起，像爵士裡剛剛好的節奏——你感覺得出來，它們本來就該待在同一個畫面裡。
 
-走在路上看到咖啡廳的招牌，突然想到...也許可以結合兩者？溫馨但不失專業，親近但保持質感。
+真正迷人的作品，也不是盯著看會發現「這裡多一個東西」的那種細節，而是連那些不起眼的角落，都被一起思考在整體脈絡裡。完整感不是靠加法，而是靠所有元素都在該在的位置，彼此呼應。
 
-腦中開始浮現一些色彩組合：溫暖的咖啡色調、柔和的米白色、點綴一些深綠色...這讓我想起了秋天的午後，坐在窗邊看著街景的感覺。`,
-      tags: ['靈感', '色彩', '品牌定位'],
+而在所有設計的特質裡，「有趣」也許是最難捕捉的。
+
+好看讓人接受，有趣讓人留下。
+
+當整體的重心被放對了，態度就會自然浮出來，畫面也才真正站得住。
+
+讓人記得的設計，大多都有這種難以量化的有趣。`,
+      tags: ['靈感', '色彩', '設計過程'],
       part1: '與客戶初次會議，了解品牌核心價值與目標受眾。發現客戶希望傳達「溫馨但不失專業」的品牌形象。',
       part2: '開始收集競品分析，觀察市場上類似品牌的視覺呈現方式。注意到大多數品牌都偏向極簡或過於複雜的設計。',
       part3: '第一次靈感迸發：在咖啡廳看到招牌時，突然想到「溫馨但專業」的視覺方向。開始構思色彩系統和設計語言。'
     },
     {
       id: 2,
-      date: '2024.01.18',
-      title: 'Logo 設計的掙扎',
+      date: '2024.01.22',
+      title: '在地感的流動｜三星鄉公所案隨筆',
       projectName: '品牌視覺識別設計',
-      backgroundImage: '/project-cover-02.jpg',
-      content: `已經畫了快50個草圖，但總覺得哪裡不對。客戶給的 feedback 是「太複雜了」、「不夠有記憶點」、「感覺跟其他品牌很像」。
+      backgroundImage: '/project-cover-03.jpg',
+      content: `做三星鄉公所的案子時，最明顯的感受是：這個地方有自己的節奏、自己的米香、自己的生活步調。那種在地的氛圍不是大聲的，而是輕輕的、自然的，不會矯揉造作。
 
-重新回到最初的目標：簡單、有溫度、好記。
+地方創生相關的設計，不是把「地方元素」貼一貼，也不是把代表性圖騰塞滿畫面。比較像是讓在地感自然流進視覺裡——讓色調、空氣感、留白的方式，都能跟日常相處得來。
 
-今天在公園散步時，看到一片葉子落在水面上，葉脈的線條突然給了我靈感。也許...簡化的線條，流動的形態，可以傳達「自然」、「生長」的概念？`,
-      tags: ['Logo', '設計過程', '靈感'],
-      part1: '開始 Logo 草圖階段，嘗試了各種不同的設計方向：幾何圖形、有機線條、文字標誌等。',
-      part2: '客戶回饋指出問題：太複雜、缺乏記憶點、與其他品牌過於相似。需要重新思考設計策略。',
-      part3: '在公園散步時獲得靈感：葉子落水的瞬間，葉脈線條呈現的自然流動感。決定採用簡化線條結合流動形態的設計方向。'
+在做這個案子的過程裡，最常出現的問題是：「這樣呈現，是否真的長得像這個地方？」如果答案是肯定的，那視覺就會開始貼近土地本身，而不是貼近潮流。`,
+      tags: ['設計過程', '靈感激盪']
     },
     {
       id: 3,
-      date: '2024.01.22',
-      title: '色彩的選擇',
+      date: '2024.01.18',
+      title: '日更',
       projectName: '品牌視覺識別設計',
-      backgroundImage: '/project-cover-03.jpg',
-      content: `花了整個下午調色。藍色？太冷。紅色？太強烈。綠色？感覺不夠溫暖。
-
-最後決定採用大地色系：主要色是深咖啡色（#4A2C2A），輔助色是溫暖的米白色（#F5F1E8），點綴色是深綠色（#2D5016）。
-
-這個組合讓我想起在森林小徑散步的感覺，沉穩但不沉重，自然但不隨意。`,
-      tags: ['色彩', '品牌識別']
+      backgroundImage: '/project-cover-02.jpg',
+      content: `... ...`,
+      tags: ['逛展', '隨筆']
     },
     {
       id: 4,
       date: '2024.01.25',
-      title: '字體的選擇很重要',
+      title: '日更',
       projectName: '品牌視覺識別設計',
       backgroundImage: '/project-cover-04.jpg',
-      content: `選擇字體總是讓人頭痛。襯線字體？無襯線字體？
-
-考慮到品牌想要傳達的「專業但親近」，我選擇了無襯線字體作為主字體，但在標題和強調處使用帶有手寫感的字體。
-
-這就像是在正式場合穿一件剪裁合身的西裝，但領子上別了一枚有故事的別針——既專業又有人味。`,
+      content: `... ...`,
       tags: ['字體', '品牌識別']
     },
     {
       id: 5,
       date: '2024.02.01',
-      title: '第一次提案',
+      title: '日更',
       projectName: '品牌視覺識別設計',
       backgroundImage: '/project-cover-05.jpg',
-      content: `今天向客戶提案了。有點緊張，但更多的是興奮。
-
-看到他們眼中的認同，我知道方向對了。雖然還有一些細節需要調整，但整體概念得到了肯定。
-
-在回家的路上，我一直在想：設計不只是做出「好看的東西」，而是要做出「對的東西」——能解決問題、能打動人心的東西。`,
+      content: `... ...`,
       tags: ['提案', '反思']
     },
     {
       id: 6,
       date: '2024.02.05',
-      title: '細節的堅持',
+      title: '日更',
       projectName: '品牌視覺識別設計',
       backgroundImage: '/illustration_1.png',
-      content: `客戶問：「這個小細節有人會注意嗎？」
-我回答：「也許不會直接注意到，但會感受到。」
-就像好的咖啡，你不會注意到每一粒咖啡豆，但會感受到整體的層次和風味。設計也是這樣，每個細節累積起來，創造出整體的質感和體驗。
-今天調整了 spacing、字距、陰影...這些看似微小的事情，但正是它們決定了設計的品質。`,
+      content: `... ...`,
       tags: ['細節', '質感', '設計哲學']
     }
   ];
@@ -7021,7 +7038,7 @@ export default function HeroSimpleTest() {
             position: 'relative',
           zIndex: 10
         }}>
-          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} />
+          <Carousel3D items={firstCarouselItems} onItemClick={handleProjectClick} />
           
           {/* 操作提示 */}
             <div style={{
@@ -7081,9 +7098,10 @@ export default function HeroSimpleTest() {
           width: '100%',
           height: '80vh',
           position: 'relative',
-            zIndex: 10
+            zIndex: 10,
+            display: 'none' // 隱藏第二組輪播
         }}>
-          <Carousel3D items={carouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={5} />
+          <Carousel3D items={secondCarouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={7} />
           
           {/* 操作提示 */}
         <div style={{
