@@ -3436,7 +3436,7 @@ const Carousel3D: React.FC<{
       '--rot': reverse 
         ? `calc(var(--active) * -60deg)` // 反向時角度也反轉
         : `calc(var(--active) * 60deg)`,
-      '--opacity': `calc(var(--zIndex) / var(--items) * 3 - 2)`,
+      '--opacity': `max(0.3, calc(var(--zIndex) / var(--items) * 2 - 1))`,
     } as React.CSSProperties;
   };
   
@@ -3597,7 +3597,9 @@ const Carousel3D: React.FC<{
       {/* 標題 */}
             <div className="absolute bottom-6 left-6 z-20 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif' }}>
               <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
-              <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
+              {!isMobile && (
+                <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
+              )}
       </div>
             
             {/* 編號 */}
