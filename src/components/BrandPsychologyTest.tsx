@@ -1041,14 +1041,15 @@ const PsychologyTestModal: React.FC<{
               flexDirection: 'column',
               alignItems: 'center',
               width: '100%',
-              marginBottom: '0px'
+              marginBottom: '0px',
+              marginTop: '60px'
             }}>
               <div style={{
                 width: '183.6px',
                 height: '96px',
                 flexShrink: 0,
                 marginBottom: '4px',
-                marginTop: '-20px',
+                marginTop: '0px',
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
@@ -1075,7 +1076,7 @@ const PsychologyTestModal: React.FC<{
               <h1 style={{
                 fontSize: '48.3px',
                 fontWeight: '900',
-                color: '#353535',
+                color: resultType === 'navigator' ? '#FFFFFF' : '#353535',
                 backgroundColor: 'transparent',
                 lineHeight: '1.2',
                 margin: 0,
@@ -1091,7 +1092,7 @@ const PsychologyTestModal: React.FC<{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '16px',
+              marginTop: '40px',
               marginBottom: '24px',
               width: '100%'
             }}>
@@ -1127,8 +1128,8 @@ const PsychologyTestModal: React.FC<{
                     src="/star-big.png"
                     alt="Star"
                     style={{
-                      width: '60px',
-                      height: '60px',
+                      width: '150px',
+                      height: '150px',
                       objectFit: 'contain',
                       opacity: 0.8,
                       animation: 'float 3s ease-in-out infinite'
@@ -1140,7 +1141,7 @@ const PsychologyTestModal: React.FC<{
                     src="/cloud-1.png"
                     alt="Cloud"
                     style={{
-                      width: '80px',
+                      width: '200px',
                       height: 'auto',
                       objectFit: 'contain',
                       opacity: 0.7,
@@ -1168,8 +1169,8 @@ const PsychologyTestModal: React.FC<{
                     src="/sun-big.png"
                     alt="Sun"
                     style={{
-                      width: '70px',
-                      height: '70px',
+                      width: '175px',
+                      height: '175px',
                       objectFit: 'contain',
                       opacity: 0.8,
                       animation: 'float 3.5s ease-in-out infinite 0.3s'
@@ -1181,7 +1182,7 @@ const PsychologyTestModal: React.FC<{
                     src="/cloud-2.png"
                     alt="Cloud"
                     style={{
-                      width: '80px',
+                      width: '200px',
                       height: 'auto',
                       objectFit: 'contain',
                       opacity: 0.7,
@@ -1219,7 +1220,7 @@ const PsychologyTestModal: React.FC<{
               <p style={{
                 fontSize: '20px',
                 fontWeight: '500',
-                color: '#353535',
+                color: resultType === 'navigator' ? '#FFFFFF' : '#353535',
                 lineHeight: '1.6',
                 margin: '0 0 12px 0',
                 fontFamily: 'var(--font-google-sans-flex), sans-serif'
@@ -1229,7 +1230,7 @@ const PsychologyTestModal: React.FC<{
               <p style={{
                 fontSize: '20px',
                 fontWeight: '500',
-                color: '#353535',
+                color: resultType === 'navigator' ? '#FFFFFF' : '#353535',
                 lineHeight: '1.6',
                 margin: 0,
                 fontFamily: 'var(--font-google-sans-flex), sans-serif'
