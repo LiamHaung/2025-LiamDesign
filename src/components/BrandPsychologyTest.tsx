@@ -183,8 +183,8 @@ const careerResults: Record<string, {
     title: "冒險舵手",
     titleEn: "Navigator",
     emoji: "🌟",
-    bgColor: "#c08bee",
-    imageBgColor: "#8c46d4",
+    bgColor: "#003EC3",
+    imageBgColor: "#0028A3",
     intro: {
       title: "你的職業是：冒險舵手 Navigator！",
       subtitle: "你知道品牌想往哪裡走，也有想法只是缺一個能陪你一起規劃的夥伴。",
@@ -213,8 +213,8 @@ const careerResults: Record<string, {
       { icon: "🧭", text: "查看流程", action: "process" },
       { icon: "💬", text: "一起討論", action: "contact" }
     ],
-    color: "#6B8E6B",
-    bgGradient: "linear-gradient(135deg, #e8f5e8 0%, #d4e8d4 50%, #c4d8c4 100%)"
+    color: "#003EC3",
+    bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #c4d4e8 50%, #003EC3 100%)"
   },
   woodland: {
     title: "森林職人",
@@ -664,6 +664,9 @@ const PsychologyTestModal: React.FC<{
           width: '100%',
           maxHeight: isMobile ? '70vh' : '90vh',
           overflow: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          willChange: 'scroll',
+          touchAction: 'pan-y',
           background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
           borderRadius: '20px',
           padding: 'clamp(30px, 5vw, 50px)',
@@ -969,6 +972,9 @@ const PsychologyTestModal: React.FC<{
         width: '100%',
         maxHeight: isMobile ? '70vh' : '90vh',
         overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        willChange: 'scroll',
+        touchAction: 'pan-y',
         background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
         borderRadius: '20px',
         padding: 'clamp(30px, 4vw, 50px)',
@@ -1057,7 +1063,7 @@ const PsychologyTestModal: React.FC<{
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                  src="/cursor-07.png"
+                  src={resultType === 'navigator' ? "/cursor-08.png" : "/cursor-07.png"}
                   alt="Liam Design Studio"
                   style={{
                     width: '183.6px',
@@ -1278,7 +1284,7 @@ const PsychologyTestModal: React.FC<{
                 <div style={{
                   fontSize: '31.104px',
                   fontWeight: '700',
-                  color: '#353535',
+                  color: resultType === 'navigator' ? '#FFFFF3' : '#353535',
                   letterSpacing: '0.864px',
                   lineHeight: '1',
                   textAlign: 'left',
@@ -1294,7 +1300,7 @@ const PsychologyTestModal: React.FC<{
                 <div style={{
                   fontSize: '24.192px',
                   fontWeight: '500',
-                  color: '#353535',
+                  color: resultType === 'navigator' ? '#FFFFF3' : '#353535',
                   lineHeight: '1.3',
                   textAlign: 'left',
                   margin: 0,
@@ -1704,6 +1710,9 @@ const PsychologyTestModal: React.FC<{
         width: '100%',
         maxHeight: isMobile ? '70vh' : '90vh',
         overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        willChange: 'scroll',
+        touchAction: 'pan-y',
         background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
         borderRadius: '20px',
         padding: 'clamp(30px, 4vw, 50px)',

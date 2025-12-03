@@ -3411,9 +3411,17 @@ const Carousel3D: React.FC<{
   const speedWheel = reverse ? -0.02 : 0.02; // 反向時速度反轉
   const speedDrag = reverse ? 0.1 : -0.1; // 反向時拖動方向反轉
 
-  // 計算 Z-index
-  const getZindex = (array: ProjectItem[], index: number) => 
-    array.map((_, i) => (index === i) ? array.length : array.length - Math.abs(index - i));
+  // 計算 Z-index - 確保激活的card在最上層
+  const getZindex = (array: ProjectItem[], activeIndex: number) => 
+    array.map((_, i) => {
+      if (i === activeIndex) {
+        // 激活的card使用最高的z-index
+        return array.length * 2;
+      } else {
+        // 其他card根據距離遞減
+        return array.length - Math.abs(i - activeIndex);
+      }
+    });
 
   // 計算項目位置
   const displayItems = (item: ProjectItem, index: number, activeIndex: number) => {
@@ -8879,7 +8887,8 @@ export default function HeroSimpleTest() {
             width: '100%',
             overflow: 'hidden',
             position: 'relative',
-            padding: '20px 0'
+            padding: '20px 0',
+            display: 'none' // 隱藏此欄位
           }}>
             <h3 style={{
               fontSize: isMobile ? 'clamp(1.2rem, 3.5vw, 1.6rem)' : 'clamp(1.4rem, 3vw, 1.8rem)',
