@@ -388,7 +388,8 @@ const PsychologyTestModal: React.FC<{
       // 延迟跳转确保模态框关闭动画完成
       setTimeout(() => {
         if (typeof window !== 'undefined') {
-          window.location.href = '/#projects-section';
+          // 使用相对锚点，跳转到当前页面的 projects 区块
+          window.location.hash = 'projects';
         }
       }, 300);
     } else if (action === 'contact') {
@@ -396,7 +397,8 @@ const PsychologyTestModal: React.FC<{
       // 延迟跳转确保模态框关闭动画完成
       setTimeout(() => {
         if (typeof window !== 'undefined') {
-          window.location.href = '/#contact-section';
+          // 使用相对锚点，跳转到当前页面的 contact 区块
+          window.location.hash = 'contact';
         }
       }, 300);
     }

@@ -7165,6 +7165,7 @@ export default function HeroSimpleTest() {
 
         {/* 3D 輪播組件 */}
         <div 
+          id="projects"
           ref={firstCarouselRef}
           style={{
           width: '100%',
@@ -8864,16 +8865,18 @@ export default function HeroSimpleTest() {
           </p>
 
           {/* 特別適合的品牌 + FAQ 並排容器 */}
-          <div style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '30px' : '24px',
-            marginBottom: '60px',
-            maxWidth: '1200px',
-            margin: '0 auto 60px auto',
-            width: '100%',
-            padding: isMobile ? '0 1rem' : '0 2rem'
-          }}>
+          <div 
+            id="contact"
+            style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '30px' : '24px',
+              marginBottom: '60px',
+              maxWidth: '1200px',
+              margin: '0 auto 60px auto',
+              width: '100%',
+              padding: isMobile ? '0 1rem' : '0 2rem'
+            }}>
             {/* 特別適合的品牌對話窗 */}
             <div style={{
               background: 'rgba(255, 255, 255, 0.1)',
