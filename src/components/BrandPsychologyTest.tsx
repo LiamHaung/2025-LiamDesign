@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 // 测验题目数据
@@ -311,6 +312,14 @@ const PsychologyTestModal: React.FC<{
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [resultType, setResultType] = useState<CareerType | null>(null);
   const shareImageRef = useRef<HTMLDivElement>(null);
+  
+  // 使用 Portal 渲染到 body，确保在最上层（仅在客户端）
+  // 必须在所有条件返回之前调用，遵守 React Hooks 规则
+  const [isClient, setIsClient] = useState(typeof window !== 'undefined');
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const router = useRouter();
 
   useEffect(() => {
@@ -648,7 +657,7 @@ const PsychologyTestModal: React.FC<{
 
   // Intro Page
   if (currentStep === 'intro') {
-    return (
+    const content = (
       <div style={{
         position: 'fixed',
         top: 0,
@@ -666,7 +675,8 @@ const PsychologyTestModal: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
-        fontFamily: 'var(--font-google-sans-flex), sans-serif'
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
       >
@@ -820,15 +830,21 @@ const PsychologyTestModal: React.FC<{
             >
               開始測驗 ｜ Start
             </button>
-          </div>
         </div>
       </div>
+    </div>
     );
+    
+    // 确保在客户端且 document.body 存在时使用 Portal
+    if (isClient && typeof window !== 'undefined' && document.body) {
+      return createPortal(content, document.body);
+    }
+    return content;
   }
 
   // Loading Page
   if (currentStep === 'loading') {
-    return (
+    const content = (
       <div style={{
         position: 'fixed',
         top: 0,
@@ -954,6 +970,12 @@ const PsychologyTestModal: React.FC<{
         `}</style>
       </div>
     );
+    
+    // 确保在客户端且 document.body 存在时使用 Portal
+    if (isClient && typeof window !== 'undefined' && document.body) {
+      return createPortal(content, document.body);
+    }
+    return content;
   }
 
   // Result Page
@@ -961,7 +983,7 @@ const PsychologyTestModal: React.FC<{
     const resultData = careerResults[resultType];
     if (!resultData) return null;
 
-    return (
+    const content = (
       <div style={{
         position: 'fixed',
         top: 0,
@@ -1696,6 +1718,12 @@ const PsychologyTestModal: React.FC<{
         `}</style>
       </div>
     );
+    
+    // 确保在客户端且 document.body 存在时使用 Portal
+    if (isClient && typeof window !== 'undefined' && document.body) {
+      return createPortal(content, document.body);
+    }
+    return content;
   }
 
   // Question Page
@@ -1703,7 +1731,7 @@ const PsychologyTestModal: React.FC<{
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const hasAnswer = answers[currentQ.id] !== undefined;
 
-  return (
+  const content = (
       <div style={{
         position: 'fixed',
         top: 0,
@@ -1721,7 +1749,8 @@ const PsychologyTestModal: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
-        fontFamily: 'var(--font-google-sans-flex), sans-serif'
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
       >
@@ -2041,6 +2070,10 @@ const PsychologyTestModal: React.FC<{
       </div>
     </div>
   );
+  
+  return isClient && typeof window !== 'undefined' && document.body
+    ? createPortal(content, document.body)
+    : content;
 };
 
 // 心理测验 Card 入口组件

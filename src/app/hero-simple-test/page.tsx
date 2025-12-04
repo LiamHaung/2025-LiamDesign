@@ -3616,7 +3616,7 @@ const Carousel3D: React.FC<{
             />
       
       {/* 標題 */}
-            <div className="absolute bottom-6 left-6 z-20 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif' }}>
+            <div className="absolute bottom-6 left-6 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', zIndex: 1 }}>
               <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
               {!isMobile && (
               <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
@@ -3624,14 +3624,14 @@ const Carousel3D: React.FC<{
       </div>
             
             {/* 編號 */}
-            <div className="absolute top-6 left-6 z-20 text-white">
+            <div className="absolute top-6 left-6 text-white" style={{ zIndex: 1 }}>
               <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>
                 {String(index + startNumber + 1).padStart(2, '0')}
               </span>
       </div>
 
             {/* 年份標籤 */}
-            <div className="absolute top-6 right-6 z-20">
+            <div className="absolute top-6 right-6" style={{ zIndex: 1 }}>
               <div 
                 style={{
                   background: 'rgba(255, 255, 255, 0.9)',
