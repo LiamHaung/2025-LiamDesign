@@ -3448,7 +3448,8 @@ const Carousel3D: React.FC<{
     
     // 响应式间距：手机端较小，平板中等，桌面端较大
     // 使用 clamp() 实现流畅的响应式间距
-    const spacing = 'clamp(300px, 45vw, 520px)'; // 300px (mobile) -> 45vw (tablet) -> 520px (desktop)
+    // 桌面端间距增加120%: 520px * 2.2 = 1144px
+    const spacing = 'clamp(300px, 45vw, 1144px)'; // 300px (mobile) -> 45vw (tablet) -> 1144px (desktop)
     
     return {
       '--zIndex': zIndex,
