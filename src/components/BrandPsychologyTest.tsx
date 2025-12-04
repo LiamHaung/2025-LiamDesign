@@ -662,37 +662,38 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 9999999,
+        zIndex: 999999,
         isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        pointerEvents: 'auto'
+        overflow: 'hidden'
       }}
       onClick={onClose}
       >
         <div style={{
-          maxWidth: '900px',
+          maxWidth: isMobile ? '100%' : '900px',
           width: '100%',
-          maxHeight: isMobile ? '70vh' : '90vh',
+          maxHeight: isMobile ? '85vh' : '90vh',
           overflow: 'auto',
           WebkitOverflowScrolling: 'touch',
           willChange: 'scroll',
           touchAction: 'pan-y',
           background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
-          borderRadius: '20px',
-          padding: 'clamp(30px, 5vw, 50px)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-          position: 'relative'
+          borderRadius: isMobile ? '16px' : '20px',
+          padding: isMobile ? '24px' : 'clamp(30px, 5vw, 50px)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+          position: 'relative',
+          zIndex: 1000000
         }}
         onClick={(e) => e.stopPropagation()}
         >
@@ -849,19 +850,20 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 9999999,
+        zIndex: 999999,
         isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'var(--font-google-sans-flex), sans-serif'
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        overflow: 'hidden'
       }}
       onClick={onClose}
       >
@@ -988,37 +990,38 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 9999999,
+        zIndex: 999999,
         isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'auto'
+        overflow: 'hidden'
       }}
       onClick={onClose}
       >
       <div style={{
-        maxWidth: '900px',
+        maxWidth: isMobile ? '100%' : '900px',
         width: '100%',
-        maxHeight: isMobile ? '70vh' : '90vh',
+        maxHeight: isMobile ? '85vh' : '90vh',
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch',
         willChange: 'scroll',
         touchAction: 'pan-y',
         background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
-        borderRadius: '20px',
-        padding: 'clamp(30px, 4vw, 50px)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        position: 'relative'
+        borderRadius: isMobile ? '16px' : '20px',
+        padding: isMobile ? '24px' : 'clamp(30px, 4vw, 50px)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+        position: 'relative',
+        zIndex: 1000000
       }}
       onClick={(e) => e.stopPropagation()}
       >
@@ -1736,37 +1739,38 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 9999999,
+        zIndex: 999999,
         isolation: 'isolate',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        pointerEvents: 'auto'
+        overflow: 'hidden'
       }}
       onClick={onClose}
       >
       <div style={{
-        maxWidth: '900px',
+        maxWidth: isMobile ? '100%' : '900px',
         width: '100%',
-        maxHeight: isMobile ? '70vh' : '90vh',
+        maxHeight: isMobile ? '85vh' : '90vh',
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch',
         willChange: 'scroll',
         touchAction: 'pan-y',
         background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
-        borderRadius: '20px',
-        padding: 'clamp(30px, 4vw, 50px)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        position: 'relative'
+        borderRadius: isMobile ? '16px' : '20px',
+        padding: isMobile ? '24px' : 'clamp(30px, 4vw, 50px)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+        position: 'relative',
+        zIndex: 1000000
       }}
       onClick={(e) => e.stopPropagation()}
       >
