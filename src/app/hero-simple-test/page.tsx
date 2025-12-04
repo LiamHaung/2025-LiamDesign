@@ -1859,14 +1859,14 @@ const IntroModal = ({
     onClick={onClose}
     >
       <div style={{
-        background: 'rgba(0, 62, 195, 0.1)',
+        background: 'rgba(255, 255, 243, 0.95)',
         backdropFilter: 'blur(20px)',
         borderRadius: '20px',
         padding: '40px',
         maxWidth: '500px',
         width: '100%',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 20px 60px rgba(0, 62, 195, 0.3)',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
         position: 'relative',
         textAlign: 'center'
       }}
@@ -1879,12 +1879,12 @@ const IntroModal = ({
             position: 'absolute',
             top: '20px',
             right: '20px',
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: 'rgba(0, 0, 0, 0.1)',
             border: 'none',
             borderRadius: '50%',
             width: '40px',
             height: '40px',
-            color: 'white',
+            color: '#000000',
             fontSize: '20px',
             cursor: 'pointer',
             display: 'flex',
@@ -1893,10 +1893,10 @@ const IntroModal = ({
             transition: 'all 0.3s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.background = 'rgba(0, 0, 0, 0.2)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.background = 'rgba(0, 0, 0, 0.1)';
           }}
         >
           ×
@@ -1909,9 +1909,9 @@ const IntroModal = ({
           borderRadius: '50%',
           overflow: 'hidden',
           margin: '0 auto 30px auto',
-          background: 'linear-gradient(135deg, rgba(0, 62, 195, 0.2), rgba(74, 144, 226, 0.2))',
-          border: '3px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 8px 32px rgba(0, 62, 195, 0.3)'
+          background: 'linear-gradient(135deg, rgba(200, 200, 200, 0.3), rgba(150, 150, 150, 0.2))',
+          border: '3px solid rgba(0, 0, 0, 0.2)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)'
         }}>
           <Image
             src="/designer.png"
@@ -1930,33 +1930,39 @@ const IntroModal = ({
         <h2 style={{
           fontSize: '2rem',
           fontWeight: '400',
-          color: '#fffff3',
+          color: '#000000',
           margin: '0 0 20px 0',
           fontFamily: 'var(--font-google-sans-flex), sans-serif',
           letterSpacing: '0.05em'
         }}>
-          Liam
+          Hi 我是 Liam
         </h2>
+
+        {/* 小標題 */}
+        <h3 style={{
+          fontSize: '1.3rem',
+          fontWeight: '700',
+          color: '#000000',
+          margin: '0 0 20px 0',
+          fontFamily: 'var(--font-google-sans-flex), sans-serif',
+          letterSpacing: '0.02em'
+        }}>
+          設計陪跑，讓品牌長成自己的樣子
+        </h3>
 
         {/* 介紹 */}
         <div style={{
           fontSize: '1rem',
-          color: 'rgba(255, 255, 243, 0.9)',
-          lineHeight: '1.6',
+          color: '#000000',
+          lineHeight: '1.8',
           margin: '0 0 30px 0',
           fontFamily: 'var(--font-google-sans-flex), sans-serif',
-          fontWeight: '400',
-          letterSpacing: '0.02em'
+          fontWeight: '500',
+          letterSpacing: '0.02em',
+          textAlign: 'left'
         }}>
-          <p style={{ margin: '0 0 15px 0' }}>
-            你好！我是 Liam，一名熱愛設計的創作者。
-          </p>
-          <p style={{ margin: '0 0 15px 0' }}>
-            專注於品牌設計、視覺識別與數位體驗設計，
-            相信好的設計能夠傳達情感，創造價值。
-          </p>
           <p style={{ margin: '0' }}>
-            歡迎來到我的作品集，希望你能在這裡找到靈感！
+            以在地感、故事性與生活觀察為核心，擅長把品牌轉化成視覺。從識別到活動主視覺，以陪跑的方式協助品牌找到步調，做出既有溫度又能成長的設計。
           </p>
         </div>
 
@@ -1964,7 +1970,7 @@ const IntroModal = ({
         <button
           onClick={onClose}
           style={{
-            background: '#003EC3',
+            background: '#000000',
             border: 'none',
             borderRadius: '12px',
             padding: '12px 24px',
@@ -1974,15 +1980,17 @@ const IntroModal = ({
             fontFamily: 'var(--font-google-sans-flex), sans-serif',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
-            boxShadow: '0 8px 25px rgba(0, 62, 195, 0.3)'
+            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 62, 195, 0.4)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.4)';
+            e.currentTarget.style.background = '#333333';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 62, 195, 0.3)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
+            e.currentTarget.style.background = '#000000';
           }}
         >
           關閉
