@@ -359,10 +359,15 @@ const PsychologyTestModal: React.FC<{
 
       canvas.toBlob((blob) => {
         if (blob) {
-          const file = new File([blob], 'brand-result.png', { type: 'image/png' });
-          if (navigator.share && navigator.canShare?.({ files: [file] })) {
+          // 检测是否为移动设备
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (isMobileDevice && navigator.share && navigator.canShare?.({ files: [new File([blob], 'brand-result.png', { type: 'image/png' })] })) {
+            // 移动端使用分享功能
+            const file = new File([blob], 'brand-result.png', { type: 'image/png' });
             navigator.share({ files: [file], title: '我的品牌測驗結果' });
           } else {
+            // 桌面端或不支持分享的设备直接下载
             const url = canvas.toDataURL();
             const link = document.createElement('a');
             link.download = 'brand-result.png';
@@ -745,23 +750,30 @@ const PsychologyTestModal: React.FC<{
 
             <div style={{
               width: '100%',
-              maxWidth: '300px',
-              height: 'clamp(200px, 30vw, 300px)',
+              height: 'clamp(400px, 60vw, 600px)',
               background: resultData.imageBgColor,
               borderRadius: '20px',
-              margin: '0 auto',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-              marginBottom: 'clamp(24px, 3vw, 32px)'
+              marginBottom: 'clamp(24px, 3vw, 32px)',
+              overflow: 'hidden',
+              position: 'relative'
             }}>
               <Image
                 src={`/career-${resultType}.png`}
                 alt={resultData.title}
-                width={250}
-                height={250}
-                style={{ maxWidth: '90%', height: 'auto' }}
+                width={500}
+                height={500}
+                style={{ 
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '200%',
+                  maxHeight: '200%',
+                  objectFit: 'contain',
+                  transform: 'scale(2)'
+                }}
               />
             </div>
           </div>
@@ -1280,7 +1292,90 @@ const PsychologyTestModal: React.FC<{
             marginBottom: 'clamp(24px, 3vw, 32px)',
             lineHeight: '1.4'
           }}>
-            {currentQ.question}
+            {currentQ.id === 1 && (
+              <>
+                當你的品牌踏上冒險旅程，<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>它最先帶著什麼法杖？</span>
+              </>
+            )}
+            {currentQ.id === 2 && (
+              <>
+                如果你的品牌是一座魔法小屋，<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>它會長在哪裡？</span>
+              </>
+            )}
+            {currentQ.id === 3 && (
+              <>
+                如果要替品牌施放一個魔法，<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>你會優先強化什麼？</span>
+              </>
+            )}
+            {currentQ.id === 4 && (
+              <>
+                在旅途中，<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>顧客會因為你的「哪種魔力」而靠近？</span>
+              </>
+            )}
+            {currentQ.id === 5 && (
+              <>
+                如果你的品牌變成<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>一個魔法角色，他最像什麼？</span>
+              </>
+            )}
+            {currentQ.id === 6 && (
+              <>
+                三年後，你最<span style={{
+                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                  backgroundSize: '200% 100%',
+                  backgroundPosition: '-100% 0',
+                  backgroundRepeat: 'no-repeat',
+                  animation: 'highlight 1.5s ease-in-out 0.3s forwards',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>希望品牌成為什麼模樣？</span>
+              </>
+            )}
           </h2>
 
           <div style={{
@@ -1487,7 +1582,7 @@ const PsychologyTestCard: React.FC<{
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/career-visual.png"
+                  src="/test-visual.png"
                   alt="Character"
                   style={{
                     objectFit: 'contain',
@@ -1555,7 +1650,7 @@ const PsychologyTestCard: React.FC<{
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/career-visual.png"
+                  src="/test-visual.png"
                   alt="Character"
                   style={{
                     maxWidth: '100%',
