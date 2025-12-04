@@ -3422,24 +3422,16 @@ const Carousel3D: React.FC<{
   reverse?: boolean; // 是否反向（從右到左）
   startNumber?: number; // 起始編號（默認為0，即從01開始）
 }> = ({ items, onItemClick, reverse = false, startNumber = 0 }) => {
-  const [progress, setProgress] = useState(50);
-  const [startX, setStartX] = useState(0);
   const [active, setActive] = useState(0);
-  const [isDown, setIsDown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
-
-  const speedWheel = reverse ? -0.02 : 0.02; // 反向時速度反轉
-  const speedDrag = reverse ? 0.1 : -0.1; // 反向時拖動方向反轉
 
   // 計算 Z-index - 確保激活的card始終在最上層
   const getZindex = (array: ProjectItem[], activeIndex: number) => 
     array.map((_, i) => {
       if (i === activeIndex) {
-        // 激活的card使用最高的z-index，確保在最上層（01時01在最上，02時02在最上，以此類推）
         return array.length * 10;
       } else {
-        // 其他card根據距離遞減，但確保不會超過激活的卡片
         return array.length - Math.abs(i - activeIndex);
       }
     });
@@ -3454,10 +3446,7 @@ const Carousel3D: React.FC<{
       activeValue = -activeValue;
     }
     
-    // 响应式间距：手机端较小，平板中等，桌面端较大
-    // 使用 clamp() 实现流畅的响应式间距
-    // 桌面端间距增加120%: 520px * 2.2 = 1144px
-    const spacing = 'clamp(300px, 45vw, 1144px)'; // 300px (mobile) -> 45vw (tablet) -> 1144px (desktop)
+    const spacing = 'clamp(300px, 45vw, 1144px)';
     
     return {
       '--zIndex': zIndex,
@@ -3468,23 +3457,16 @@ const Carousel3D: React.FC<{
       '--x': `calc(var(--active) * ${spacing})`,
       '--y': `0px`,
       '--rot': reverse 
-        ? `calc(var(--active) * -60deg)` // 反向時角度也反轉
+        ? `calc(var(--active) * -60deg)`
         : `calc(var(--active) * 60deg)`,
-      '--opacity': 1, // 固定100%透明度
+      '--opacity': 1,
     } as React.CSSProperties;
   };
-  
-  useEffect(() => {
-    const animate = () => {
-      const newProgress = Math.max(0, Math.min(progress, 100));
-      const newActive = Math.floor(newProgress / 100 * (items.length - 1));
-      setActive(newActive);
-    };
-    animate();
-  }, [progress, items.length]);
 
   // 檢測螢幕尺寸
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -3495,82 +3477,50 @@ const Carousel3D: React.FC<{
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // 添加事件監聽器
+  // 导航函数
+  const goToNext = () => {
+    setActive((prev) => (prev + 1) % items.length);
+  };
+
+  const goToPrev = () => {
+    setActive((prev) => (prev - 1 + items.length) % items.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setActive(index);
+  };
+
+  // 键盘控制
   useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      // 只在輪播區域內且按住特定鍵時才阻止滾動
-      const target = e.target as HTMLElement;
-      const isInCarousel = carousel.contains(target);
-      
-      if (isInCarousel && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        const wheelProgress = e.deltaY * speedWheel;
-        setProgress(prev => prev + wheelProgress);
-      }
-    };
-
-    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
-      if (!isDown) return;
-      
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const mouseProgress = (clientX - startX) * speedDrag;
-      setProgress(prev => prev + mouseProgress);
-      setStartX(clientX);
-    };
-
-    const handleMouseDown = (e: MouseEvent | TouchEvent) => {
-      setIsDown(true);
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      setStartX(clientX);
-    };
-
-    const handleMouseUp = () => {
-      setIsDown(false);
-    };
-
-    // 只在當前輪播元件上綁定事件，避免與其他輪播元件聯動
-    carousel.addEventListener('wheel', handleWheel, { passive: false });
-    carousel.addEventListener('mousedown', handleMouseDown);
-    carousel.addEventListener('touchstart', handleMouseDown);
+    if (typeof window === 'undefined') return;
     
-    // mousemove 和 mouseup 需要在 document 上監聽，以便在拖動時滑鼠移出元件也能響應
-    // 但使用 isDown 狀態確保只有當前輪播元件在拖動時才會更新
-    const handleDocumentMouseMove = (e: MouseEvent | TouchEvent) => {
-      if (!isDown) return;
-      handleMouseMove(e);
-    };
-
-    const handleDocumentMouseUp = () => {
-      if (isDown) {
-        handleMouseUp();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        if (reverse) {
+          setActive((prev) => (prev + 1) % items.length);
+        } else {
+          setActive((prev) => (prev - 1 + items.length) % items.length);
+        }
+      } else if (e.key === 'ArrowRight') {
+        if (reverse) {
+          setActive((prev) => (prev - 1 + items.length) % items.length);
+        } else {
+          setActive((prev) => (prev + 1) % items.length);
+        }
       }
     };
 
-    document.addEventListener('mousemove', handleDocumentMouseMove);
-    document.addEventListener('mouseup', handleDocumentMouseUp);
-    document.addEventListener('touchmove', handleDocumentMouseMove);
-    document.addEventListener('touchend', handleDocumentMouseUp);
-
-    return () => {
-      carousel.removeEventListener('wheel', handleWheel);
-      carousel.removeEventListener('mousedown', handleMouseDown);
-      carousel.removeEventListener('touchstart', handleMouseDown);
-      document.removeEventListener('mousemove', handleDocumentMouseMove);
-      document.removeEventListener('mouseup', handleDocumentMouseUp);
-      document.removeEventListener('touchmove', handleDocumentMouseMove);
-      document.removeEventListener('touchend', handleDocumentMouseUp);
-    };
-  }, [isDown, startX, speedWheel, speedDrag]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [reverse, items.length]);
 
   return (
-    <div 
-      ref={carouselRef}
-      className="relative h-full overflow-hidden font-mono cursor-grab"
-      style={{ cursor: isDown ? 'grabbing' : 'grab' }}
-    >
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      <div 
+        ref={carouselRef}
+        className="relative h-full overflow-hidden font-mono"
+        style={{ height: 'calc(100% - 80px)' }}
+      >
       {items.map((item, index) => (
         <div
           key={item.id}
@@ -3676,6 +3626,120 @@ const Carousel3D: React.FC<{
           </div>
         </div>
       ))}
+      </div>
+      
+      {/* 底部控制条 */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: isMobile ? '12px' : '20px',
+        zIndex: 1000,
+        background: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(10px)',
+        padding: isMobile ? '12px 20px' : '16px 24px',
+        borderRadius: '50px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+      }}>
+        {/* 左箭头 */}
+        <button
+          onClick={reverse ? goToNext : goToPrev}
+          style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '50%',
+            width: isMobile ? '36px' : '40px',
+            height: isMobile ? '36px' : '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            color: 'white',
+            fontSize: isMobile ? '18px' : '20px',
+            transition: 'all 0.3s ease',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          ←
+        </button>
+
+        {/* 点状指示器 */}
+        <div style={{
+          display: 'flex',
+          gap: isMobile ? '6px' : '8px',
+          alignItems: 'center'
+        }}>
+          {items.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              style={{
+                width: active === index ? (isMobile ? '24px' : '32px') : (isMobile ? '6px' : '8px'),
+                height: isMobile ? '6px' : '8px',
+                borderRadius: '4px',
+                border: 'none',
+                background: active === index 
+                  ? 'rgba(255, 255, 255, 0.9)' 
+                  : 'rgba(255, 255, 255, 0.3)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                padding: 0
+              }}
+              onMouseEnter={(e) => {
+                if (active !== index) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (active !== index) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                }
+              }}
+            />
+          ))}
+        </div>
+
+        {/* 右箭头 */}
+        <button
+          onClick={reverse ? goToPrev : goToNext}
+          style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '50%',
+            width: isMobile ? '36px' : '40px',
+            height: isMobile ? '36px' : '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            color: 'white',
+            fontSize: isMobile ? '18px' : '20px',
+            transition: 'all 0.3s ease',
+            fontFamily: 'var(--font-google-sans-flex), sans-serif'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          →
+        </button>
+      </div>
     </div>
   );
 };
