@@ -3446,18 +3446,22 @@ const Carousel3D: React.FC<{
       activeValue = -activeValue;
     }
     
+    // 响应式间距：手机端较小，平板中等，桌面端较大
+    // 使用 clamp() 实现流畅的响应式间距
+    const spacing = 'clamp(300px, 45vw, 520px)'; // 300px (mobile) -> 45vw (tablet) -> 520px (desktop)
+    
     return {
       '--zIndex': zIndex,
       '--active': activeValue,
       '--items': items.length,
       '--width': 'clamp(250px, 35vw, 400px)',
       '--height': 'clamp(350px, 50vw, 500px)',
-      '--x': `calc(var(--active) * 400%)`,
+      '--x': `calc(var(--active) * ${spacing})`,
       '--y': `0px`,
       '--rot': reverse 
         ? `calc(var(--active) * -60deg)` // 反向時角度也反轉
         : `calc(var(--active) * 60deg)`,
-      '--opacity': `max(0.3, calc(var(--zIndex) / var(--items) * 2 - 1))`,
+      '--opacity': 1, // 固定100%透明度
     } as React.CSSProperties;
   };
   
@@ -3580,7 +3584,7 @@ const Carousel3D: React.FC<{
           <div 
             className="absolute inset-0 transition-opacity duration-700 ease-out"
             style={{
-              opacity: 'var(--opacity)',
+              opacity: 1,
             }}
           >
             {/* 图层顺序（从下到上）：图片 → 黑色渐层 → 标题/内文 → 数字 → 年份 */}

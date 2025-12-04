@@ -52,16 +52,20 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
     const zIndex = getZindex(items, activeIndex)[index];
     const activeValue = (index - activeIndex) / items.length;
     
+    // 响应式间距：手机端较小，平板中等，桌面端较大
+    // 使用 clamp() 实现流畅的响应式间距
+    const spacing = 'clamp(300px, 45vw, 500px)'; // 300px (mobile) -> 45vw (tablet) -> 500px (desktop)
+    
     return {
       '--zIndex': zIndex,
       '--active': activeValue,
       '--items': items.length,
       '--width': 'clamp(200px, 40vw, 500px)',
       '--height': 'clamp(280px, 50vw, 600px)',
-      '--x': `calc(var(--active) * 400%)`,
+      '--x': `calc(var(--active) * ${spacing})`,
       '--y': `0px`,
       '--rot': `calc(var(--active) * 60deg)`,
-      '--opacity': `calc(var(--zIndex) / var(--items) * 3 - 2)`,
+      '--opacity': 1, // 固定100%透明度
     } as React.CSSProperties;
   };
 
@@ -187,7 +191,7 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
               width: '100%',
               height: '100%',
               transition: 'opacity .8s cubic-bezier(0, 0.02, 0, 1)',
-              opacity: 'var(--opacity)',
+              opacity: 1,
               fontFamily: 'var(--font-zpix), monospace'
             }}
           >
