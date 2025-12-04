@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 // 测验题目数据
@@ -75,10 +76,11 @@ const questions = [
 // 职业类型定义
 type CareerType = 'story' | 'visual' | 'navigator' | 'woodland' | 'explorer';
 
-// 职业结果数据（保持原有数据结构）
+// 职业结果数据
 const careerResults: Record<string, {
   title: string;
   titleEn: string;
+  emoji: string;
   bgColor: string;
   imageBgColor: string;
   intro: {
@@ -94,10 +96,18 @@ const careerResults: Record<string, {
     description: string;
     services: string;
   };
+  ctaButtons: Array<{
+    icon: string;
+    text: string;
+    action: string;
+  }>;
+  color: string;
+  bgGradient: string;
 }> = {
   story: {
     title: "故事魔法師",
     titleEn: "Story Wizard",
+    emoji: "🌟",
     bgColor: "#ffa008",
     imageBgColor: "#dd902e",
     intro: {
@@ -113,11 +123,19 @@ const careerResults: Record<string, {
     assistance: {
       description: "透過插畫、敘事主視覺與品牌架構，幫你把品牌故事整理成一個完整的世界觀，讓每一個設計都能說話。",
       services: "品牌故事整理｜插畫主視覺｜敘事延伸設計"
-    }
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🔗", text: "查看作品", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#8B6F47",
+    bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
   },
   visual: {
     title: "視覺工匠",
     titleEn: "Visual Crafter",
+    emoji: "🌟",
     bgColor: "#38b1e3",
     imageBgColor: "#2597c0",
     intro: {
@@ -133,11 +151,19 @@ const careerResults: Record<string, {
     assistance: {
       description: "建立一套完整又精緻的視覺識別系統：Logo、字體、色票、排版規範，讓你的品牌在任何場景都保持專業。",
       services: "品牌識別設計｜視覺系統建立｜質感提升"
-    }
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🔗", text: "查看作品", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#4A6FA5",
+    bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #d4e3f0 50%, #c4d4e8 100%)"
   },
   navigator: {
     title: "冒險舵手",
     titleEn: "Navigator",
+    emoji: "🌟",
     bgColor: "#003EC3",
     imageBgColor: "#0028A3",
     intro: {
@@ -153,11 +179,19 @@ const careerResults: Record<string, {
     assistance: {
       description: "協助你整理品牌方向、建立優先順序，把品牌從想法導向「可執行的設計」。",
       services: "品牌定位規劃｜設計陪跑｜跨平台整合視覺"
-    }
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🧭", text: "查看流程", action: "process" },
+      { icon: "💬", text: "一起討論", action: "contact" }
+    ],
+    color: "#003EC3",
+    bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #c4d4e8 50%, #003EC3 100%)"
   },
   woodland: {
     title: "森林職人",
     titleEn: "Woodland Artisan",
+    emoji: "🌟",
     bgColor: "#2f6022",
     imageBgColor: "#b5bf3b",
     intro: {
@@ -173,11 +207,19 @@ const careerResults: Record<string, {
     assistance: {
       description: "以插畫、在地故事、視覺延伸，幫你把品牌生活感與真誠放大成視覺特色。",
       services: "在地文化設計｜手繪式主視覺｜店內物料延伸"
-    }
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🏡", text: "看更多案例", action: "portfolio" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#8B6F47",
+    bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
   },
   explorer: {
     title: "創意探險家",
     titleEn: "Idea Explorer",
+    emoji: "🌟",
     bgColor: "#4bb45a",
     imageBgColor: "#3a9e46",
     intro: {
@@ -193,7 +235,14 @@ const careerResults: Record<string, {
     assistance: {
       description: "從 Logo、色票到 IG 首版視覺，幫你建立一個輕量但完整的品牌開場畫面。",
       services: "品牌起步包｜基礎 Logo｜風格探索視覺"
-    }
+    },
+    ctaButtons: [
+      { icon: "🔆", text: "分享圖片", action: "share" },
+      { icon: "🌱", text: "開始你的品牌", action: "start" },
+      { icon: "💬", text: "聯絡設計師", action: "contact" }
+    ],
+    color: "#D4A574",
+    bgGradient: "linear-gradient(135deg, #fff8e8 0%, #f5e6d3 50%, #e8d5c0 100%)"
   }
 };
 
@@ -215,6 +264,39 @@ const PsychologyTestModal: React.FC<{
   });
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [resultType, setResultType] = useState<CareerType | null>(null);
+  const shareImageRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  // 背景锁定功能 - 使用安全的方法
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+    if (isOpen) {
+      // 记录当前滚动位置
+      const scrollY = window.scrollY;
+      // 锁定背景（不使用 position: fixed，改用 overflow: hidden）
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = '0px'; // 防止滚动条消失导致的抖动
+      // 保存滚动位置以便恢复
+      document.body.setAttribute('data-scroll-y', scrollY.toString());
+    } else {
+      // 恢复背景滚动
+      const scrollY = document.body.getAttribute('data-scroll-y');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY));
+        document.body.removeAttribute('data-scroll-y');
+      }
+    }
+
+    // 清理函数
+    return () => {
+      if (typeof window === 'undefined' || typeof document === 'undefined') return;
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -263,114 +345,274 @@ const PsychologyTestModal: React.FC<{
     }, 100);
   };
 
-  // Intro Page - 超简单版本
+  // 分享功能
+  const handleShare = async () => {
+    if (!shareImageRef.current) return;
+
+    try {
+      // 动态导入 html2canvas
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(shareImageRef.current, {
+        backgroundColor: null,
+        scale: 2,
+      });
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], 'brand-result.png', { type: 'image/png' });
+          if (navigator.share && navigator.canShare?.({ files: [file] })) {
+            navigator.share({ files: [file], title: '我的品牌測驗結果' });
+          } else {
+            const url = canvas.toDataURL();
+            const link = document.createElement('a');
+            link.download = 'brand-result.png';
+            link.href = url;
+            link.click();
+          }
+        }
+      });
+    } catch (error) {
+      console.error('分享失败:', error);
+    }
+  };
+
+  // CTA 按钮处理
+  const handleCTAClick = (action: string) => {
+    if (action === 'share') {
+      handleShare();
+    } else if (action === 'portfolio') {
+      onClose();
+      router.push('/');
+    } else if (action === 'contact') {
+      onClose();
+      router.push('/#contact');
+    } else if (action === 'start' || action === 'process') {
+      onClose();
+      router.push('/#services');
+    }
+  };
+
+  // Intro Page - 添加原设计样式
   if (currentStep === 'intro') {
     return (
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0, 0, 0, 0.9)',
-        zIndex: 10000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px'
-      }}>
-        <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: isMobile ? '30px 20px' : '50px 40px',
-          maxWidth: '600px',
-          width: '100%',
-          maxHeight: '90vh',
+      <div 
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          zIndex: 999999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: isMobile ? '20px' : '40px',
+          fontFamily: 'var(--font-google-sans-flex), sans-serif',
           overflow: 'auto',
-          position: 'relative'
-        }}>
+          WebkitOverflowScrolling: 'touch'
+        }}
+        onClick={onClose}
+      >
+        <div 
+          style={{
+            maxWidth: isMobile ? '100%' : '900px',
+            width: '100%',
+            maxHeight: isMobile ? '85vh' : '90vh',
+            overflow: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+            borderRadius: isMobile ? '16px' : '20px',
+            padding: isMobile ? '24px' : 'clamp(30px, 5vw, 50px)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+            position: 'relative'
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* 关闭按钮 */}
           <button
             onClick={onClose}
             style={{
               position: 'absolute',
-              top: '15px',
-              right: '15px',
-              background: '#ddd',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(255, 255, 255, 0.85)',
               border: 'none',
               borderRadius: '50%',
-              width: '35px',
-              height: '35px',
-              fontSize: '20px',
-              cursor: 'pointer'
+              width: '40px',
+              height: '40px',
+              color: '#555',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+              zIndex: 10
             }}
           >
             ×
           </button>
 
-          <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#333' }}>
-            品牌心理測驗
-          </h2>
-          <p style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '30px', color: '#666' }}>
-            通過 6 題測驗，找出品牌的前進方向！
-          </p>
+          {/* 内容区域 */}
+          <div style={{
+            textAlign: 'center',
+            padding: 'clamp(40px, 6vw, 60px) clamp(20px, 4vw, 40px)'
+          }}>
+            <p style={{
+              fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+              fontWeight: '500',
+              color: '#353535',
+              lineHeight: '1.8',
+              marginBottom: 'clamp(24px, 4vw, 32px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              在魔法森林裡，<span style={{
+                color: '#8B6F47',
+                fontWeight: '700',
+                padding: '2px 4px'
+              }}>你的想法化成一道微光，</span><br />
+              <span style={{
+                color: '#8B6F47',
+                fontWeight: '700',
+                padding: '2px 4px'
+              }}>帶著你走向命定的品牌職業——</span><br />
+              也許是魔法師、匠人、旅人，<br />
+              或剛起步的探險者。
+            </p>
+            <p style={{
+              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              fontWeight: '600',
+              color: '#8B6F47',
+              marginBottom: 'clamp(32px, 5vw, 48px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              通過 <span style={{
+                fontWeight: '700',
+                fontSize: '1.1em'
+              }}>6 題測驗</span>，找出品牌的前進方向！
+            </p>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)',
+              fontWeight: '700',
+              color: '#353535',
+              marginBottom: 'clamp(32px, 5vw, 48px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              出發吧！
+            </p>
 
-          <button
-            onClick={handleStart}
-            style={{
-              padding: '15px 40px',
-              background: '#000',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-          >
-            開始測驗
-          </button>
+            {/* CTA 按钮 */}
+            <button
+              onClick={handleStart}
+              style={{
+                padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 5vw, 48px)',
+                background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                border: 'none',
+                borderRadius: '50px',
+                color: 'white',
+                fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+                fontWeight: '700',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 25px rgba(139, 111, 71, 0.4)'
+              }}
+            >
+              開始測驗 ｜ Start
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
-  // Loading Page
+  // Loading Page - 添加原设计样式
   if (currentStep === 'loading') {
     return (
       <div style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0, 0, 0, 0.9)',
-        zIndex: 10000,
+        background: 'rgba(0, 0, 0, 0.85)',
+        zIndex: 999999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '20px'
-      }}>
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
+      }}
+      onClick={onClose}
+      >
         <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '40px',
-          maxWidth: '400px',
+          textAlign: 'center',
+          maxWidth: '500px',
           width: '100%',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '50px', marginBottom: '20px' }}>✨</div>
-          <h2 style={{ fontSize: '20px', marginBottom: '10px', color: '#333' }}>
+          padding: '40px',
+          background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+          borderRadius: '20px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+          position: 'relative'
+        }}
+        onClick={(e) => e.stopPropagation()}
+        >
+          {/* 关闭按钮 */}
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              color: '#555',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+              zIndex: 10
+            }}
+          >
+            ×
+          </button>
+
+          <div style={{
+            fontSize: 'clamp(3rem, 8vw, 5rem)',
+            marginBottom: 'clamp(24px, 3vw, 32px)'
+          }}>
+            ✨
+          </div>
+          <h2 style={{
+            fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
+            fontWeight: '700',
+            color: '#353535',
+            marginBottom: 'clamp(12px, 1.5vw, 16px)'
+          }}>
             正在解析你的品牌魔法職業…
           </h2>
-          <p style={{ fontSize: '14px', color: '#666', marginBottom: '30px' }}>
+          <p style={{
+            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+            color: '#8B6F47',
+            marginBottom: 'clamp(30px, 4vw, 40px)',
+            fontStyle: 'italic'
+          }}>
             稍等一下，讓魔法書翻一翻頁。
           </p>
           <div style={{
             width: '100%',
             height: '6px',
-            background: '#eee',
+            background: 'rgba(139, 111, 71, 0.2)',
             borderRadius: '10px',
             overflow: 'hidden'
           }}>
             <div style={{
               width: `${loadingProgress}%`,
               height: '100%',
-              background: '#000',
-              transition: 'width 0.3s'
+              background: 'linear-gradient(90deg, #8B6F47 0%, #D4A574 100%)',
+              borderRadius: '10px',
+              transition: 'width 0.3s ease'
             }} />
           </div>
         </div>
@@ -378,226 +620,480 @@ const PsychologyTestModal: React.FC<{
     );
   }
 
-  // Result Page - 简化版
+  // Result Page - 添加原设计样式
   if (currentStep === 'result' && resultType) {
     const resultData = careerResults[resultType];
     
     return (
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0, 0, 0, 0.9)',
-        zIndex: 10000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px'
-      }}>
-        <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: isMobile ? '30px 20px' : '50px 40px',
-          maxWidth: '600px',
-          width: '100%',
-          maxHeight: '90vh',
+      <div 
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          zIndex: 999999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: isMobile ? '20px' : '40px',
+          fontFamily: 'var(--font-google-sans-flex), sans-serif',
           overflow: 'auto',
+          WebkitOverflowScrolling: 'touch'
+        }}
+        onClick={onClose}
+      >
+        <div style={{
+          maxWidth: isMobile ? '100%' : '900px',
+          width: '100%',
+          maxHeight: isMobile ? '85vh' : '90vh',
+          overflow: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+          borderRadius: isMobile ? '16px' : '20px',
+          padding: isMobile ? '24px' : 'clamp(30px, 4vw, 50px)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
           position: 'relative'
-        }}>
+        }}
+        onClick={(e) => e.stopPropagation()}
+        >
+          {/* 关闭按钮 */}
           <button
             onClick={onClose}
             style={{
               position: 'absolute',
-              top: '15px',
-              right: '15px',
-              background: '#ddd',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(255, 255, 255, 0.85)',
               border: 'none',
               borderRadius: '50%',
-              width: '35px',
-              height: '35px',
-              fontSize: '20px',
-              cursor: 'pointer'
+              width: '40px',
+              height: '40px',
+              color: '#555',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+              zIndex: 10
             }}
           >
             ×
           </button>
 
-          <h2 style={{ fontSize: '28px', marginBottom: '10px', color: resultData.bgColor }}>
-            {resultData.title}
-          </h2>
-          <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#666' }}>
-            {resultData.titleEn}
-          </h3>
+          {/* 结果标题和角色图片 */}
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(24px, 3vw, 32px)' }}>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 4.5vw, 3rem)',
+              fontWeight: '900',
+              color: resultData.bgColor,
+              marginBottom: 'clamp(8px, 1vw, 12px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              {resultData.title}
+            </h2>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)',
+              color: '#8B6F47',
+              fontWeight: '600',
+              marginBottom: 'clamp(24px, 3vw, 32px)'
+            }}>
+              {resultData.titleEn}
+            </p>
 
-          <div style={{
-            width: '100%',
-            height: '200px',
-            background: resultData.imageBgColor,
-            borderRadius: '15px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Image
-              src={`/career-${resultType}.png`}
-              alt={resultData.title}
-              width={200}
-              height={200}
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
+            <div style={{
+              width: '100%',
+              maxWidth: '300px',
+              height: 'clamp(200px, 30vw, 300px)',
+              background: resultData.imageBgColor,
+              borderRadius: '20px',
+              margin: '0 auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+              marginBottom: 'clamp(24px, 3vw, 32px)'
+            }}>
+              <Image
+                src={`/career-${resultType}.png`}
+                alt={resultData.title}
+                width={250}
+                height={250}
+                style={{ maxWidth: '90%', height: 'auto' }}
+              />
+            </div>
           </div>
 
-          <p style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '15px', color: '#333' }}>
-            {resultData.intro.subtitle}
-          </p>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', marginBottom: '20px', color: '#666' }}>
-            {resultData.intro.description}
-          </p>
+          {/* 结果介绍 */}
+          <div style={{
+            background: 'rgba(255, 255, 243, 0.6)',
+            borderRadius: '15px',
+            padding: 'clamp(20px, 3vw, 30px)',
+            border: '2px solid rgba(139, 111, 71, 0.2)',
+            marginBottom: 'clamp(20px, 2.5vw, 24px)'
+          }}>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+              fontWeight: '700',
+              color: '#353535',
+              marginBottom: 'clamp(12px, 1.5vw, 16px)',
+              lineHeight: '1.5'
+            }}>
+              {resultData.intro.subtitle}
+            </p>
+            <p style={{
+              fontSize: 'clamp(0.95rem, 1.9vw, 1.1rem)',
+              color: '#555',
+              lineHeight: '1.6',
+              fontWeight: '500'
+            }}>
+              {resultData.intro.description}
+            </p>
+          </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontSize: '16px', marginBottom: '10px', color: '#333' }}>你在意的重點：</h4>
-            {resultData.focusPoints.map((point, i) => (
-              <div key={i} style={{
-                padding: '8px 15px',
-                background: '#f5f5f5',
-                borderRadius: '8px',
-                marginBottom: '8px',
-                fontSize: '14px',
-                color: '#666'
-              }}>
-                {point.title}
-              </div>
+          {/* 关注重点 */}
+          <div style={{ marginBottom: 'clamp(20px, 2.5vw, 24px)' }}>
+            <h3 style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+              fontWeight: '700',
+              color: '#353535',
+              marginBottom: 'clamp(12px, 1.5vw, 16px)'
+            }}>
+              你在意的重點：
+            </h3>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'clamp(10px, 1.2vw, 12px)'
+            }}>
+              {resultData.focusPoints.map((point, i) => (
+                <div key={i} style={{
+                  padding: 'clamp(12px, 2vw, 16px)',
+                  background: 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: '12px',
+                  border: '2px solid rgba(139, 111, 71, 0.2)',
+                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
+                }}>
+                  <h4 style={{
+                    fontSize: 'clamp(0.95rem, 1.9vw, 1.1rem)',
+                    fontWeight: '700',
+                    color: resultData.bgColor,
+                    marginBottom: '4px'
+                  }}>
+                    {point.title}
+                  </h4>
+                  <p style={{
+                    fontSize: 'clamp(0.85rem, 1.7vw, 1rem)',
+                    color: '#666',
+                    lineHeight: '1.5'
+                  }}>
+                    {point.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 我可以帮你 */}
+          <div style={{
+            background: 'rgba(255, 255, 243, 0.6)',
+            borderRadius: '15px',
+            padding: 'clamp(20px, 3vw, 30px)',
+            border: '2px solid rgba(139, 111, 71, 0.2)',
+            marginBottom: 'clamp(20px, 2.5vw, 24px)'
+          }}>
+            <h3 style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+              fontWeight: '700',
+              color: '#353535',
+              marginBottom: 'clamp(12px, 1.5vw, 16px)'
+            }}>
+              我可以幫你：
+            </h3>
+            <p style={{
+              fontSize: 'clamp(0.95rem, 1.9vw, 1.1rem)',
+              color: '#555',
+              lineHeight: '1.6',
+              marginBottom: 'clamp(12px, 1.5vw, 16px)',
+              fontWeight: '500'
+            }}>
+              {resultData.assistance.description}
+            </p>
+            <p style={{
+              fontSize: 'clamp(0.85rem, 1.7vw, 1rem)',
+              color: resultData.bgColor,
+              fontWeight: '700'
+            }}>
+              {resultData.assistance.services}
+            </p>
+          </div>
+
+          {/* CTA 按钮 */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: 'clamp(12px, 1.5vw, 16px)',
+            justifyContent: 'center'
+          }}>
+            {resultData.ctaButtons.map((button, index) => (
+              <button
+                key={index}
+                onClick={() => handleCTAClick(button.action)}
+                style={{
+                  padding: 'clamp(12px, 2vw, 16px) clamp(24px, 3vw, 32px)',
+                  background: button.action === 'share'
+                    ? 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)'
+                    : 'rgba(255, 255, 255, 0.9)',
+                  border: button.action === 'share' ? 'none' : '2px solid rgba(139, 111, 71, 0.3)',
+                  borderRadius: '50px',
+                  color: button.action === 'share' ? 'white' : '#8B6F47',
+                  fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)',
+                  fontWeight: '700',
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: button.action === 'share'
+                    ? '0 8px 25px rgba(139, 111, 71, 0.4)'
+                    : '0 2px 10px rgba(0, 0, 0, 0.1)',
+                  flex: isMobile ? '1' : 'auto'
+                }}
+              >
+                {button.icon} {button.text}
+              </button>
             ))}
           </div>
 
-          <button
-            onClick={onClose}
+          {/* 隐藏的分享图片容器 */}
+          <div
+            ref={shareImageRef}
             style={{
-              padding: '15px 40px',
-              background: '#000',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              width: '100%'
+              position: 'absolute',
+              left: '-9999px',
+              top: '-9999px',
+              width: '900px',
+              height: '1350px',
+              background: resultType === 'woodland' ? '#d1db3c' : resultData.bgColor,
+              padding: '60px',
+              color: '#353535',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '30px'
             }}
           >
-            關閉
-          </button>
+            <h2 style={{
+              fontSize: '80px',
+              fontWeight: '900',
+              color: 'white',
+              marginBottom: '40px',
+              textAlign: 'center'
+            }}>
+              {resultData.title}
+            </h2>
+            <p style={{
+              fontSize: '40px',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '60px',
+              textAlign: 'center'
+            }}>
+              {resultData.titleEn}
+            </p>
+            <Image
+              src={`/career-${resultType}.png`}
+              alt={resultData.title}
+              width={400}
+              height={400}
+            />
+          </div>
         </div>
       </div>
     );
   }
 
-  // Question Page
+  // Question Page - 添加原设计样式
   const currentQ = questions[currentQuestion];
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const hasAnswer = answers[currentQ.id] !== undefined;
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      background: 'rgba(0, 0, 0, 0.9)',
-      zIndex: 10000,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px'
-    }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '20px',
-        padding: isMobile ? '30px 20px' : '40px 30px',
-        maxWidth: '700px',
-        width: '100%',
-        maxHeight: '90vh',
+    <div 
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0, 0, 0, 0.85)',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: isMobile ? '20px' : '40px',
+        fontFamily: 'var(--font-google-sans-flex), sans-serif',
         overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
+      }}
+      onClick={onClose}
+    >
+      <div style={{
+        maxWidth: isMobile ? '100%' : '900px',
+        width: '100%',
+        maxHeight: isMobile ? '85vh' : '90vh',
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+        borderRadius: isMobile ? '16px' : '20px',
+        padding: isMobile ? '24px' : 'clamp(30px, 4vw, 50px)',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
         position: 'relative'
-      }}>
+      }}
+      onClick={(e) => e.stopPropagation()}
+      >
+        {/* 关闭按钮 */}
         <button
           onClick={onClose}
           style={{
             position: 'absolute',
-            top: '15px',
-            right: '15px',
-            background: '#ddd',
+            top: '20px',
+            right: '20px',
+            background: 'rgba(255, 255, 255, 0.85)',
             border: 'none',
             borderRadius: '50%',
-            width: '35px',
-            height: '35px',
-            fontSize: '20px',
-            cursor: 'pointer'
+            width: '40px',
+            height: '40px',
+            color: '#555',
+            fontSize: '24px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s ease',
+            zIndex: 10
           }}
         >
           ×
         </button>
 
-        <div style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <span style={{ fontSize: '14px', color: '#666' }}>品牌魔法測驗</span>
-            <span style={{ fontSize: '14px', color: '#666' }}>
+        {/* 进度条 */}
+        <div style={{ marginBottom: 'clamp(24px, 3vw, 32px)' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 'clamp(10px, 1.2vw, 12px)'
+          }}>
+            <span style={{
+              fontSize: 'clamp(0.85rem, 1.6vw, 1rem)',
+              fontWeight: '600',
+              color: '#8B6F47'
+            }}>
+              品牌魔法測驗
+            </span>
+            <span style={{
+              fontSize: 'clamp(0.85rem, 1.6vw, 1rem)',
+              fontWeight: '600',
+              color: '#8B6F47'
+            }}>
               Question {currentQuestion + 1} / {questions.length}
             </span>
           </div>
           <div style={{
             width: '100%',
-            height: '6px',
-            background: '#eee',
+            height: '8px',
+            background: 'rgba(139, 111, 71, 0.2)',
             borderRadius: '10px',
             overflow: 'hidden'
           }}>
             <div style={{
               width: `${progress}%`,
               height: '100%',
-              background: '#000',
-              transition: 'width 0.3s'
+              background: 'linear-gradient(90deg, #8B6F47 0%, #D4A574 100%)',
+              borderRadius: '10px',
+              transition: 'width 0.5s ease-out',
+              boxShadow: '0 0 20px rgba(139, 111, 71, 0.3)'
             }} />
           </div>
         </div>
 
-        <h2 style={{ fontSize: '20px', marginBottom: '20px', lineHeight: '1.4', color: '#333' }}>
-          {currentQ.question}
-        </h2>
+        {/* 题目卡片 */}
+        <div style={{
+          background: 'rgba(255, 255, 243, 0.6)',
+          borderRadius: '15px',
+          padding: 'clamp(24px, 3vw, 40px)',
+          border: '2px solid rgba(139, 111, 71, 0.2)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          marginBottom: 'clamp(24px, 3vw, 32px)'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
+            fontWeight: '700',
+            color: '#353535',
+            marginBottom: 'clamp(24px, 3vw, 32px)',
+            lineHeight: '1.4'
+          }}>
+            {currentQ.question}
+          </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-          {currentQ.options.map((option) => {
-            const isSelected = answers[currentQ.id] === option.id;
-            return (
-              <button
-                key={option.id}
-                onClick={() => handleAnswer(currentQ.id, option.id, option.type as CareerType)}
-                style={{
-                  padding: '15px',
-                  background: isSelected ? '#000' : 'white',
-                  color: isSelected ? 'white' : '#333',
-                  border: isSelected ? 'none' : '2px solid #ddd',
-                  borderRadius: '12px',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s'
-                }}
-              >
-                {option.text}
-              </button>
-            );
-          })}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(12px, 1.5vw, 16px)'
+          }}>
+            {currentQ.options.map((option) => {
+              const isSelected = answers[currentQ.id] === option.id;
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => handleAnswer(currentQ.id, option.id, option.type as CareerType)}
+                  style={{
+                    width: '100%',
+                    padding: 'clamp(16px, 2.5vw, 20px)',
+                    background: isSelected
+                      ? 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)'
+                      : 'rgba(255, 255, 255, 0.8)',
+                    border: isSelected
+                      ? 'none'
+                      : '2px solid rgba(139, 111, 71, 0.3)',
+                    borderRadius: '12px',
+                    color: isSelected ? 'white' : '#353535',
+                    fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+                    fontWeight: '500',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    textAlign: 'left',
+                    boxShadow: isSelected
+                      ? '0 8px 25px rgba(139, 111, 71, 0.4)'
+                      : '0 2px 10px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  {option.text}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        {/* 操作按钮 */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 'clamp(12px, 1.5vw, 16px)'
+        }}>
           <button
             onClick={handlePrev}
             disabled={currentQuestion === 0}
             style={{
-              padding: '12px 24px',
-              background: currentQuestion === 0 ? '#eee' : 'white',
-              color: currentQuestion === 0 ? '#999' : '#333',
-              border: '2px solid #ddd',
+              padding: 'clamp(12px, 2vw, 16px) clamp(24px, 3vw, 32px)',
+              background: currentQuestion === 0
+                ? 'rgba(139, 111, 71, 0.2)'
+                : 'rgba(255, 255, 255, 0.8)',
+              border: '2px solid rgba(139, 111, 71, 0.3)',
               borderRadius: '50px',
-              fontSize: '14px',
+              color: currentQuestion === 0 ? 'rgba(139, 111, 71, 0.5)' : '#8B6F47',
+              fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+              fontWeight: '600',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               cursor: currentQuestion === 0 ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease',
               opacity: currentQuestion === 0 ? 0.5 : 1
             }}
           >
@@ -608,14 +1104,20 @@ const PsychologyTestModal: React.FC<{
             disabled={!hasAnswer}
             style={{
               flex: 1,
-              padding: '12px 24px',
-              background: hasAnswer ? '#000' : '#eee',
-              color: hasAnswer ? 'white' : '#999',
+              padding: 'clamp(12px, 2vw, 16px) clamp(24px, 3vw, 32px)',
+              background: hasAnswer
+                ? 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)'
+                : 'rgba(139, 111, 71, 0.2)',
               border: 'none',
               borderRadius: '50px',
-              fontSize: '14px',
+              color: hasAnswer ? 'white' : 'rgba(139, 111, 71, 0.5)',
+              fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
+              fontWeight: '700',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
               cursor: hasAnswer ? 'pointer' : 'not-allowed',
-              opacity: hasAnswer ? 1 : 0.5
+              transition: 'all 0.3s ease',
+              opacity: hasAnswer ? 1 : 0.5,
+              boxShadow: hasAnswer ? '0 8px 25px rgba(139, 111, 71, 0.4)' : 'none'
             }}
           >
             {currentQuestion === questions.length - 1 ? '查看結果 →' : '下一題 →'}
