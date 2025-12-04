@@ -8720,18 +8720,21 @@ export default function HeroSimpleTest() {
       </div>
 
       {/* 第二個藍色區域 - CONTACT */}
-      <div ref={contactSectionRef} style={{
-        minHeight: '100vh',
-        backgroundColor: '#0099FF',
-        position: 'relative',
-        padding: '80px 20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 0,
-        overflow: 'hidden'
-      }}>
+      <div 
+        id="contact-section"
+        ref={contactSectionRef} 
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#0099FF',
+          position: 'relative',
+          padding: '80px 20px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 0,
+          overflow: 'hidden'
+        }}>
         {/* 雲朵裝飾 - CONTACT區域2朵 */}
         <div style={{
           position: 'absolute',

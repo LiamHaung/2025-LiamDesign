@@ -388,7 +388,7 @@ const PsychologyTestModal: React.FC<{
       // 延迟跳转确保模态框关闭动画完成
       setTimeout(() => {
         if (typeof window !== 'undefined') {
-          window.location.href = '/#project';
+          window.location.href = '/#projects-section';
         }
       }, 300);
     } else if (action === 'contact') {
@@ -396,7 +396,7 @@ const PsychologyTestModal: React.FC<{
       // 延迟跳转确保模态框关闭动画完成
       setTimeout(() => {
         if (typeof window !== 'undefined') {
-          window.location.href = '/#contact';
+          window.location.href = '/#contact-section';
         }
       }, 300);
     }
@@ -1609,7 +1609,7 @@ const PsychologyTestCard: React.FC<{
               width: '100%',
               position: 'relative',
               height: 'clamp(180px, 35vw, 250px)',
-              zIndex: 2
+              zIndex: 1
             }}>
               <div style={{
                 width: '100%',
@@ -1618,7 +1618,8 @@ const PsychologyTestCard: React.FC<{
                 overflow: 'visible',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                zIndex: 1
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -1630,7 +1631,9 @@ const PsychologyTestCard: React.FC<{
                     transform: 'scale(2.5)',
                     transformOrigin: 'center center',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                      position: 'relative',
+                      zIndex: 1
                     }}
                   />
                 </div>
@@ -1644,7 +1647,7 @@ const PsychologyTestCard: React.FC<{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                  zIndex: 3
+                  zIndex: 10
                 }}>
                   <button
                     onClick={() => setIsModalOpen(true)}
@@ -1678,7 +1681,8 @@ const PsychologyTestCard: React.FC<{
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              position: 'relative'
+              position: 'relative',
+              zIndex: 1
             }}>
               <div style={{
                 width: '100%',
@@ -1686,7 +1690,9 @@ const PsychologyTestCard: React.FC<{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: 'clamp(16px, 2vw, 24px)'
+                marginBottom: 'clamp(16px, 2vw, 24px)',
+                position: 'relative',
+                zIndex: 1
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -1697,7 +1703,9 @@ const PsychologyTestCard: React.FC<{
                     maxHeight: '100%',
                     objectFit: 'contain',
                     transform: 'scale(2.5)',
-                    transformOrigin: 'center center'
+                    transformOrigin: 'center center',
+                    position: 'relative',
+                    zIndex: 1
                   }}
                 />
               </div>
@@ -1714,10 +1722,12 @@ const PsychologyTestCard: React.FC<{
                     fontFamily: 'var(--font-google-sans-flex), sans-serif',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)'
-                }}
-              >
-                開始測驗 ｜ Start
+                    boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
+                    position: 'relative',
+                    zIndex: 10
+                  }}
+                >
+                  開始測驗 ｜ Start
                 </button>
             </div>
           )}
