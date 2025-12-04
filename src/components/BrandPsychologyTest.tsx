@@ -385,12 +385,20 @@ const PsychologyTestModal: React.FC<{
       handleShare();
     } else if (action === 'portfolio') {
       onClose();
-      // 导向 project 区块
-      window.location.href = '/#project';
+      // 延迟跳转确保模态框关闭动画完成
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/#project';
+        }
+      }, 300);
     } else if (action === 'contact') {
       onClose();
-      // 导向 contact 区块
-      window.location.href = '/#contact';
+      // 延迟跳转确保模态框关闭动画完成
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/#contact';
+        }
+      }, 300);
     }
   };
 
@@ -1687,7 +1695,9 @@ const PsychologyTestCard: React.FC<{
                   style={{
                     maxWidth: '100%',
                     maxHeight: '100%',
-                    objectFit: 'contain'
+                    objectFit: 'contain',
+                    transform: 'scale(2.5)',
+                    transformOrigin: 'center center'
                   }}
                 />
               </div>
