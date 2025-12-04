@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 // 测验题目数据
@@ -125,9 +124,9 @@ const careerResults: Record<string, {
       services: "品牌故事整理｜插畫主視覺｜敘事延伸設計"
     },
     ctaButtons: [
-      { icon: "🔆", text: "分享圖片", action: "share" },
-      { icon: "🔗", text: "查看作品", action: "portfolio" },
-      { icon: "💬", text: "聯絡設計師", action: "contact" }
+      { icon: "", text: "分享圖片", action: "share" },
+      { icon: "", text: "查看作品", action: "portfolio" },
+      { icon: "", text: "一起討論", action: "contact" }
     ],
     color: "#8B6F47",
     bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
@@ -153,9 +152,9 @@ const careerResults: Record<string, {
       services: "品牌識別設計｜視覺系統建立｜質感提升"
     },
     ctaButtons: [
-      { icon: "🔆", text: "分享圖片", action: "share" },
-      { icon: "🔗", text: "查看作品", action: "portfolio" },
-      { icon: "💬", text: "聯絡設計師", action: "contact" }
+      { icon: "", text: "分享圖片", action: "share" },
+      { icon: "", text: "查看作品", action: "portfolio" },
+      { icon: "", text: "一起討論", action: "contact" }
     ],
     color: "#4A6FA5",
     bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #d4e3f0 50%, #c4d4e8 100%)"
@@ -181,9 +180,9 @@ const careerResults: Record<string, {
       services: "品牌定位規劃｜設計陪跑｜跨平台整合視覺"
     },
     ctaButtons: [
-      { icon: "🔆", text: "分享圖片", action: "share" },
-      { icon: "🧭", text: "查看流程", action: "process" },
-      { icon: "💬", text: "一起討論", action: "contact" }
+      { icon: "", text: "分享圖片", action: "share" },
+      { icon: "", text: "查看作品", action: "portfolio" },
+      { icon: "", text: "一起討論", action: "contact" }
     ],
     color: "#003EC3",
     bgGradient: "linear-gradient(135deg, #e8f0f8 0%, #c4d4e8 50%, #003EC3 100%)"
@@ -209,9 +208,9 @@ const careerResults: Record<string, {
       services: "在地文化設計｜手繪式主視覺｜店內物料延伸"
     },
     ctaButtons: [
-      { icon: "🔆", text: "分享圖片", action: "share" },
-      { icon: "🏡", text: "看更多案例", action: "portfolio" },
-      { icon: "💬", text: "聯絡設計師", action: "contact" }
+      { icon: "", text: "分享圖片", action: "share" },
+      { icon: "", text: "查看作品", action: "portfolio" },
+      { icon: "", text: "一起討論", action: "contact" }
     ],
     color: "#8B6F47",
     bgGradient: "linear-gradient(135deg, #f7ebc3 0%, #e8d5a3 50%, #d4c19a 100%)"
@@ -237,9 +236,9 @@ const careerResults: Record<string, {
       services: "品牌起步包｜基礎 Logo｜風格探索視覺"
     },
     ctaButtons: [
-      { icon: "🔆", text: "分享圖片", action: "share" },
-      { icon: "🌱", text: "開始你的品牌", action: "start" },
-      { icon: "💬", text: "聯絡設計師", action: "contact" }
+      { icon: "", text: "分享圖片", action: "share" },
+      { icon: "", text: "查看作品", action: "portfolio" },
+      { icon: "", text: "一起討論", action: "contact" }
     ],
     color: "#D4A574",
     bgGradient: "linear-gradient(135deg, #fff8e8 0%, #f5e6d3 50%, #e8d5c0 100%)"
@@ -265,7 +264,6 @@ const PsychologyTestModal: React.FC<{
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [resultType, setResultType] = useState<CareerType | null>(null);
   const shareImageRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   // 背景锁定功能 - 使用安全的方法
   useEffect(() => {
@@ -387,13 +385,12 @@ const PsychologyTestModal: React.FC<{
       handleShare();
     } else if (action === 'portfolio') {
       onClose();
-      router.push('/');
+      // 导向 project 区块
+      window.location.href = '/#project';
     } else if (action === 'contact') {
       onClose();
-      router.push('/#contact');
-    } else if (action === 'start' || action === 'process') {
-      onClose();
-      router.push('/#services');
+      // 导向 contact 区块
+      window.location.href = '/#contact';
     }
   };
 
@@ -413,152 +410,152 @@ const PsychologyTestModal: React.FC<{
         `}</style>
         <div 
           style={{
-            position: 'fixed',
+        position: 'fixed',
             inset: 0,
             background: 'rgba(0, 0, 0, 0.85)',
-            zIndex: 999999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: isMobile ? '20px' : '40px',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: isMobile ? '20px' : '40px',
             fontFamily: 'var(--font-google-sans-flex), sans-serif',
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch'
-          }}
-          onClick={onClose}
-        >
+      }}
+      onClick={onClose}
+      >
           <div 
             style={{
               maxWidth: isMobile ? '100%' : '900px',
-              width: '100%',
+          width: '100%',
               maxHeight: isMobile ? '85vh' : '90vh',
-              overflow: 'auto',
+          overflow: 'auto',
               WebkitOverflowScrolling: 'touch',
-              background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+          background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
               borderRadius: isMobile ? '16px' : '20px',
               padding: isMobile ? '24px' : 'clamp(30px, 5vw, 50px)',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-              position: 'relative'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* 关闭按钮 */}
-            <button
+          position: 'relative'
+        }}
+        onClick={(e) => e.stopPropagation()}
+        >
+          {/* 关闭按钮 */}
+          <button
               onClick={onClose}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.85)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                color: '#555',
-                fontSize: '24px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.3s ease',
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              color: '#555',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
                 zIndex: 10
-              }}
-            >
-              ×
-            </button>
+            }}
+          >
+            ×
+          </button>
 
             {/* 内容区域 */}
-            <div style={{
-              textAlign: 'center',
-              padding: 'clamp(40px, 6vw, 60px) clamp(20px, 4vw, 40px)'
+          <div style={{
+            textAlign: 'center',
+            padding: 'clamp(40px, 6vw, 60px) clamp(20px, 4vw, 40px)'
+          }}>
+            <p style={{
+              fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+              fontWeight: '500',
+              color: '#353535',
+              lineHeight: '1.8',
+              marginBottom: 'clamp(24px, 4vw, 32px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
             }}>
-              <p style={{
-                fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-                fontWeight: '500',
-                color: '#353535',
-                lineHeight: '1.8',
-                marginBottom: 'clamp(24px, 4vw, 32px)',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif'
-              }}>
                 在魔法森林裡，<span style={{
-                  color: '#8B6F47',
-                  fontWeight: '700',
-                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
-                  backgroundSize: '200% 100%',
-                  backgroundPosition: '-100% 0',
-                  backgroundRepeat: 'no-repeat',
-                  animation: 'highlight 1.5s ease-in-out 0.5s forwards',
-                  padding: '2px 4px',
-                  borderRadius: '4px',
-                  display: 'inline-block'
-                }}>你的想法化成一道微光，</span><br />
-                <span style={{
-                  color: '#8B6F47',
-                  fontWeight: '700',
-                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
-                  backgroundSize: '200% 100%',
-                  backgroundPosition: '-100% 0',
-                  backgroundRepeat: 'no-repeat',
-                  animation: 'highlight 1.5s ease-in-out 1.2s forwards',
-                  padding: '2px 4px',
-                  borderRadius: '4px',
-                  display: 'inline-block'
-                }}>帶著你走向命定的品牌職業——</span><br />
-                也許是魔法師、匠人、旅人，<br />
-                或剛起步的探險者。
-              </p>
-              <p style={{
-                fontSize: 'clamp(1rem, 2vw, 1.3rem)',
-                fontWeight: '600',
                 color: '#8B6F47',
-                marginBottom: 'clamp(32px, 5vw, 48px)',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif'
-              }}>
-                通過 <span style={{
-                  fontWeight: '700',
-                  fontSize: '1.1em',
-                  background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
-                  backgroundSize: '200% 100%',
-                  backgroundPosition: '-100% 0',
-                  backgroundRepeat: 'no-repeat',
-                  animation: 'highlight 1.5s ease-in-out 2s forwards',
-                  padding: '2px 4px',
-                  borderRadius: '4px',
-                  display: 'inline-block'
-                }}>6 題測驗</span>，找出品牌的前進方向！
-              </p>
-              <p style={{
-                fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)',
                 fontWeight: '700',
-                color: '#353535',
-                marginBottom: 'clamp(32px, 5vw, 48px)',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif'
-              }}>
-                出發吧！
-              </p>
+                background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                backgroundSize: '200% 100%',
+                backgroundPosition: '-100% 0',
+                backgroundRepeat: 'no-repeat',
+                animation: 'highlight 1.5s ease-in-out 0.5s forwards',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                display: 'inline-block'
+              }}>你的想法化成一道微光，</span><br />
+                <span style={{
+                color: '#8B6F47',
+                fontWeight: '700',
+                background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                backgroundSize: '200% 100%',
+                backgroundPosition: '-100% 0',
+                backgroundRepeat: 'no-repeat',
+                animation: 'highlight 1.5s ease-in-out 1.2s forwards',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                display: 'inline-block'
+              }}>帶著你走向命定的品牌職業——</span><br />
+              也許是魔法師、匠人、旅人，<br />
+              或剛起步的探險者。
+            </p>
+            <p style={{
+              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              fontWeight: '600',
+              color: '#8B6F47',
+              marginBottom: 'clamp(32px, 5vw, 48px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+                通過 <span style={{
+                fontWeight: '700',
+                fontSize: '1.1em',
+                background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(233, 165, 47, 0.4) 50%, rgba(233, 165, 47, 0.4) 60%, transparent 100%)',
+                backgroundSize: '200% 100%',
+                backgroundPosition: '-100% 0',
+                backgroundRepeat: 'no-repeat',
+                animation: 'highlight 1.5s ease-in-out 2s forwards',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                display: 'inline-block'
+              }}>6 題測驗</span>，找出品牌的前進方向！
+            </p>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)',
+              fontWeight: '700',
+              color: '#353535',
+              marginBottom: 'clamp(32px, 5vw, 48px)',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif'
+            }}>
+              出發吧！
+            </p>
 
-              {/* CTA 按钮 */}
-              <button
-                onClick={handleStart}
-                style={{
-                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 5vw, 48px)',
-                  background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-                  border: 'none',
-                  borderRadius: '50px',
-                  color: 'white',
-                  fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
-                  fontWeight: '700',
-                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 8px 25px rgba(139, 111, 71, 0.4)'
-                }}
-              >
-                開始測驗 ｜ Start
-              </button>
-            </div>
+            {/* CTA 按钮 */}
+            <button
+              onClick={handleStart}
+              style={{
+                padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 5vw, 48px)',
+                background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                border: 'none',
+                borderRadius: '50px',
+                color: 'white',
+                fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+                fontWeight: '700',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 8px 25px rgba(139, 111, 71, 0.4)'
+              }}
+            >
+              開始測驗 ｜ Start
+            </button>
           </div>
         </div>
+      </div>
       </>
     );
   }
@@ -573,96 +570,96 @@ const PsychologyTestModal: React.FC<{
             to { transform: rotate(360deg); }
           }
         `}</style>
-        <div style={{
-          position: 'fixed',
+      <div style={{
+        position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.85)',
-          zIndex: 999999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
           fontFamily: 'var(--font-google-sans-flex), sans-serif',
           overflow: 'auto',
           WebkitOverflowScrolling: 'touch'
+      }}
+      onClick={onClose}
+      >
+        <div style={{
+          textAlign: 'center',
+          maxWidth: '500px',
+          width: '100%',
+          padding: '40px',
+          background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
+          borderRadius: '20px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+          position: 'relative'
         }}
-        onClick={onClose}
+        onClick={(e) => e.stopPropagation()}
         >
-          <div style={{
-            textAlign: 'center',
-            maxWidth: '500px',
-            width: '100%',
-            padding: '40px',
-            background: 'linear-gradient(to bottom, #f7ebc3 0%, #fffff3 50%, #fffff3 100%)',
-            borderRadius: '20px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-            position: 'relative'
-          }}
-          onClick={(e) => e.stopPropagation()}
-          >
-            {/* 关闭按钮 */}
-            <button
+          {/* 关闭按钮 */}
+          <button
               onClick={onClose}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.85)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                color: '#555',
-                fontSize: '24px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.3s ease',
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              color: '#555',
+              fontSize: '24px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
                 zIndex: 10
-              }}
-            >
-              ×
-            </button>
+            }}
+          >
+            ×
+          </button>
 
-            <div style={{
-              fontSize: 'clamp(3rem, 8vw, 5rem)',
-              marginBottom: 'clamp(24px, 3vw, 32px)',
-              animation: 'rotate 3s linear infinite'
-            }}>
-              ✨
-            </div>
-            <h2 style={{
-              fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
-              fontWeight: '700',
-              color: '#353535',
-              marginBottom: 'clamp(12px, 1.5vw, 16px)'
-            }}>
-              正在解析你的品牌魔法職業…
-            </h2>
-            <p style={{
-              fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-              color: '#8B6F47',
-              marginBottom: 'clamp(30px, 4vw, 40px)',
-              fontStyle: 'italic'
-            }}>
-              稍等一下，讓魔法書翻一翻頁。
-            </p>
-            <div style={{
-              width: '100%',
-              height: '6px',
-              background: 'rgba(139, 111, 71, 0.2)',
-              borderRadius: '10px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                width: `${loadingProgress}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #8B6F47 0%, #D4A574 100%)',
-                borderRadius: '10px',
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
+          <div style={{
+            fontSize: 'clamp(3rem, 8vw, 5rem)',
+            marginBottom: 'clamp(24px, 3vw, 32px)',
+            animation: 'rotate 3s linear infinite'
+          }}>
+            ✨
           </div>
+          <h2 style={{
+            fontSize: 'clamp(1.5rem, 3.5vw, 2rem)',
+            fontWeight: '700',
+            color: '#353535',
+            marginBottom: 'clamp(12px, 1.5vw, 16px)'
+          }}>
+            正在解析你的品牌魔法職業…
+          </h2>
+          <p style={{
+            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+            color: '#8B6F47',
+            marginBottom: 'clamp(30px, 4vw, 40px)',
+            fontStyle: 'italic'
+          }}>
+            稍等一下，讓魔法書翻一翻頁。
+          </p>
+          <div style={{
+            width: '100%',
+            height: '6px',
+            background: 'rgba(139, 111, 71, 0.2)',
+            borderRadius: '10px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              width: `${loadingProgress}%`,
+              height: '100%',
+              background: 'linear-gradient(90deg, #8B6F47 0%, #D4A574 100%)',
+              borderRadius: '10px',
+              transition: 'width 0.3s ease'
+            }} />
+          </div>
+        </div>
         </div>
       </>
     );
@@ -761,6 +758,7 @@ const PsychologyTestModal: React.FC<{
               overflow: 'hidden',
               position: 'relative'
             }}>
+              {/* 职业角色图片 */}
               <Image
                 src={`/career-${resultType}.png`}
                 alt={resultData.title}
@@ -769,12 +767,46 @@ const PsychologyTestModal: React.FC<{
                 style={{ 
                   width: 'auto',
                   height: 'auto',
-                  maxWidth: '200%',
-                  maxHeight: '200%',
+                  maxWidth: '140%',
+                  maxHeight: '140%',
                   objectFit: 'contain',
-                  transform: 'scale(2)'
+                  transform: 'scale(1.4)',
+                  position: 'relative',
+                  zIndex: 2
                 }}
               />
+              {/* 随机装饰元素 */}
+              {(() => {
+                // 根据职业类型生成一个稳定的随机数 (0-2)
+                const seed = resultType.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                const randomIndex = seed % 3;
+                const decorations = [
+                  { src: '/sun-big.png', alt: 'Sun', size: 120 },
+                  { src: '/cloud-1.png', alt: 'Cloud', size: 140 },
+                  { src: '/star-big.png', alt: 'Star', size: 100 }
+                ];
+                const decoration = decorations[randomIndex];
+                
+                return (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={decoration.src}
+                    alt={decoration.alt}
+                    style={{
+                      position: 'absolute',
+                      width: `${decoration.size}px`,
+                      height: `${decoration.size}px`,
+                      objectFit: 'contain',
+                      opacity: 0.7,
+                      zIndex: 1,
+                      // 根据装饰类型决定位置
+                      ...(randomIndex === 0 ? { top: '20px', right: '20px' } : 
+                         randomIndex === 1 ? { bottom: '30px', left: '30px' } : 
+                         { top: '30px', left: '20px' })
+                    }}
+                  />
+                );
+              })()}
             </div>
           </div>
 
@@ -912,7 +944,7 @@ const PsychologyTestModal: React.FC<{
                   flex: isMobile ? '1' : 'auto'
                 }}
               >
-                {button.icon} {button.text}
+                {button.text}
               </button>
             ))}
           </div>
@@ -1182,19 +1214,19 @@ const PsychologyTestModal: React.FC<{
   return (
     <div 
       style={{
-        position: 'fixed',
+      position: 'fixed',
         inset: 0,
         background: 'rgba(0, 0, 0, 0.85)',
-        zIndex: 999999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: isMobile ? '20px' : '40px',
+      zIndex: 999999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch'
-      }}
-      onClick={onClose}
+    }}
+    onClick={onClose}
     >
       <div style={{
         maxWidth: isMobile ? '100%' : '900px',
@@ -1583,49 +1615,49 @@ const PsychologyTestCard: React.FC<{
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/test-visual.png"
-                  alt="Character"
-                  style={{
-                    objectFit: 'contain',
+                    alt="Character"
+                    style={{
+                      objectFit: 'contain',
                     padding: 'clamp(8px, 2vw, 12px)',
-                    transform: 'scale(1.5)',
+                    transform: 'scale(2.5)',
                     transformOrigin: 'center center',
                     width: '100%',
                     height: '100%'
-                  }}
-                />
-              </div>
-              <div style={{
-                position: 'absolute',
+                    }}
+                  />
+                </div>
+                <div style={{
+                  position: 'absolute',
                 bottom: 'clamp(8px, 2vw, 12px)',
-                left: '50%',
-                transform: 'translateX(-50%)',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
                 width: 'auto',
                 minWidth: 'clamp(140px, 35vw, 200px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                zIndex: 3
-              }}>
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  style={{
+                  zIndex: 3
+                }}>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    style={{
                     padding: 'clamp(12px, 2.5vw, 16px) clamp(28px, 6vw, 40px)',
-                    background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-                    border: 'none',
-                    borderRadius: '50px',
-                    color: 'white',
+                      background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                      border: 'none',
+                      borderRadius: '50px',
+                      color: 'white',
                     fontSize: 'clamp(0.85rem, 2vw, 1rem)',
-                    fontWeight: '700',
-                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
+                      fontWeight: '700',
+                      fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
                     width: '100%',
-                    textAlign: 'center'
-                  }}
+                      textAlign: 'center'
+                    }}
                 >
                   開始測驗
-                </button>
+                  </button>
               </div>
             </div>
           )}
@@ -1659,24 +1691,24 @@ const PsychologyTestCard: React.FC<{
                   }}
                 />
               </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                style={{
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
                   padding: 'clamp(14px, 2.5vw, 18px) clamp(24px, 4vw, 32px)',
-                  background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-                  border: 'none',
-                  borderRadius: '50px',
-                  color: 'white',
+                    background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                    border: 'none',
+                    borderRadius: '50px',
+                    color: 'white',
                   fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-                  fontWeight: '700',
-                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
+                    fontWeight: '700',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
                   boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)'
                 }}
               >
                 開始測驗 ｜ Start
-              </button>
+                </button>
             </div>
           )}
         </div>
