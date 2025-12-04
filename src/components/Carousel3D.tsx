@@ -148,7 +148,6 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
         zIndex: 1,
         height: '100vh',
         overflow: 'hidden',
-        pointerEvents: 'none',
         fontFamily: 'var(--font-zpix), monospace',
         cursor: isDown ? 'grabbing' : 'grab'
       }}
