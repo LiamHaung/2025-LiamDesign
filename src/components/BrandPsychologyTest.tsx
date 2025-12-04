@@ -662,22 +662,23 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0, 0, 0, 0.7)',
+        background: 'rgba(0, 0, 0, 0.85)',
         ...(isMobile ? {} : {
         backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 999999,
-        isolation: 'isolate',
+        zIndex: 2147483647,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden',
-        pointerEvents: 'auto'
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
       }}
       onClick={onClose}
       >
@@ -848,21 +849,22 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0, 0, 0, 0.7)',
+        background: 'rgba(0, 0, 0, 0.85)',
         ...(isMobile ? {} : {
         backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 999999,
-        isolation: 'isolate',
+        zIndex: 2147483647,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden',
-        pointerEvents: 'auto'
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
       }}
       onClick={onClose}
       >
@@ -986,22 +988,23 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0, 0, 0, 0.7)',
+        background: 'rgba(0, 0, 0, 0.85)',
         ...(isMobile ? {} : {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 999999,
-        isolation: 'isolate',
+        zIndex: 2147483647,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden',
-        pointerEvents: 'auto'
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
       }}
       onClick={onClose}
       >
@@ -1733,22 +1736,23 @@ const PsychologyTestModal: React.FC<{
       position: 'fixed',
       top: 0,
       left: 0,
+      right: 0,
+      bottom: 0,
         width: '100vw',
         height: '100vh',
-      background: 'rgba(0, 0, 0, 0.7)',
+      background: 'rgba(0, 0, 0, 0.85)',
         ...(isMobile ? {} : {
       backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-      zIndex: 999999,
-        isolation: 'isolate',
+      zIndex: 2147483647,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden',
-        pointerEvents: 'auto'
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch'
     }}
     onClick={onClose}
     >

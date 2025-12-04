@@ -7173,25 +7173,6 @@ export default function HeroSimpleTest() {
           zIndex: 10
         }}>
           <Carousel3D items={firstCarouselItems} onItemClick={handleProjectClick} />
-          
-          {/* 操作提示 */}
-            <div style={{
-              position: 'absolute',
-              bottom: '20px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            background: 'rgba(0, 0, 0, 0.7)',
-            color: 'white',
-            padding: '10px 20px',
-            borderRadius: '20px',
-            fontSize: '14px',
-            fontFamily: 'var(--font-google-sans-flex), sans-serif',
-            fontWeight: '400',
-            zIndex: 20,
-            display: isMobile ? 'none' : 'block'
-          }}>
-            左右滑看更多
-            </div>
         </div>
 
         {/* 分隔線 */}
@@ -7236,24 +7217,6 @@ export default function HeroSimpleTest() {
             display: 'none' // 隱藏第二組輪播
         }}>
           <Carousel3D items={secondCarouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={7} />
-          
-          {/* 操作提示 */}
-        <div style={{
-          position: 'absolute',
-            bottom: '20px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(0, 0, 0, 0.7)',
-            color: 'white',
-            padding: '10px 20px',
-            borderRadius: '20px',
-            fontSize: '14px',
-            fontFamily: 'var(--font-zpix), monospace',
-            zIndex: 20,
-            display: isMobile ? 'none' : 'block'
-          }}>
-            左右滑看更多
-          </div>
         </div>
 
         {/* 雲朵裝飾 - PROJECTS區域1朵 */}
