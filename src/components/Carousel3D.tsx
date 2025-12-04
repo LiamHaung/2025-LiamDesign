@@ -192,36 +192,43 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
               fontFamily: 'var(--font-zpix), monospace'
             }}
           >
-            {/* Background overlay */}
-            <div style={{
-              content: '',
-              position: 'absolute',
-              zIndex: 1,
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .5))'
-            }} />
+            {/* 图层顺序（从下到上）：图片 → 黑色渐层 → 标题 → 数字 */}
             
-            {/* Image */}
+            {/* Image - 最底层 */}
             <img 
               src={item.image} 
               alt={item.title}
               style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 1
               }}
             />
             
-            {/* Title */}
+            {/* Black gradient overlay - 第二层，在图片上方 */}
+            <div style={{
+              content: '',
+              position: 'absolute',
+              zIndex: 2,
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .5))',
+              pointerEvents: 'none'
+            }} />
+            
+            {/* Title - 第三层，在渐层上方 */}
             <div 
               className="title"
               style={{
                 position: 'absolute',
-                zIndex: 1,
+                zIndex: 3,
                 color: '#fff',
                 bottom: '30px',
                 left: '30px',
@@ -229,18 +236,19 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
                 fontSize: 'clamp(24px, 4vw, 40px)',
                 textShadow: '0 4px 8px rgba(0, 0, 0, .3)',
                 fontFamily: 'var(--font-zpix), monospace',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                pointerEvents: 'none'
               }}
             >
               {item.title}
             </div>
             
-            {/* Number */}
+            {/* Number - 最上层 */}
             <div 
               className="num"
               style={{
                 position: 'absolute',
-                zIndex: 1,
+                zIndex: 4,
                 color: '#fff',
                 top: '20px',
                 left: '30px',
@@ -248,7 +256,8 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
                 fontSize: 'clamp(32px, 12vw, 120px)',
                 fontFamily: 'var(--font-zpix), monospace',
                 fontWeight: 'bold',
-                opacity: 0.7
+                opacity: 0.7,
+                pointerEvents: 'none'
               }}
             >
               {String(index + 1).padStart(2, '0')}

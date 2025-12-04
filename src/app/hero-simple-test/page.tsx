@@ -3583,55 +3583,65 @@ const Carousel3D: React.FC<{
               opacity: 'var(--opacity)',
             }}
           >
-            {/* 圖片 */}
-            <Image 
-              src={item.image || "/illustration_1.png"} 
-              alt={item.title}
-              fill
-              className="object-cover"
-            />
+            {/* 图层顺序（从下到上）：图片 → 黑色渐层 → 标题/内文 → 数字 → 年份 */}
             
-            {/* 漸層陰影遮罩 - 增強文字可讀性 */}
+            {/* 圖片 - 最底层 (z-1) */}
+            <div className="absolute inset-0" style={{ zIndex: 1 }}>
+              <Image 
+                src={item.image || "/illustration_1.png"} 
+                alt={item.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            
+            {/* 漸層陰影遮罩 - 第二层，在图片上方 (z-2) */}
             <div 
-              className="absolute inset-0 z-10"
+              className="absolute inset-0"
               style={{
-                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%)'
+                zIndex: 2,
+                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%)',
+                pointerEvents: 'none'
               }}
             />
-            {/* 底部額外漸層 - 確保底部文字區域有足夠對比 */}
+            {/* 底部額外漸層 - 第二层 (z-2) */}
             <div 
-              className="absolute bottom-0 left-0 right-0 z-10"
+              className="absolute bottom-0 left-0 right-0"
               style={{
+                zIndex: 2,
                 height: '40%',
-                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)'
+                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)',
+                pointerEvents: 'none'
               }}
             />
-            {/* 頂部漸層 - 確保編號可讀性 */}
+            {/* 頂部漸層 - 第二层 (z-2) */}
             <div 
-              className="absolute top-0 left-0 right-0 z-10"
+              className="absolute top-0 left-0 right-0"
               style={{
+                zIndex: 2,
                 height: '25%',
-                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%)'
+                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%)',
+                pointerEvents: 'none'
               }}
             />
       
-      {/* 標題 */}
-            <div className="absolute bottom-6 left-6 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', zIndex: 1 }}>
+            {/* 標題和內文 - 第三层，在渐层上方 (z-3) */}
+            <div className="absolute bottom-6 left-6 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', zIndex: 3, pointerEvents: 'none' }}>
               <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
               {!isMobile && (
-              <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
+                <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
               )}
-      </div>
+            </div>
             
-            {/* 編號 */}
-            <div className="absolute top-6 left-6 text-white" style={{ zIndex: 1 }}>
+            {/* 編號 - 第四层 (z-4) */}
+            <div className="absolute top-6 left-6 text-white" style={{ zIndex: 4, pointerEvents: 'none' }}>
               <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>
                 {String(index + startNumber + 1).padStart(2, '0')}
               </span>
-      </div>
+            </div>
 
-            {/* 年份標籤 */}
-            <div className="absolute top-6 right-6" style={{ zIndex: 1 }}>
+            {/* 年份標籤 - 最上层 (z-5) */}
+            <div className="absolute top-6 right-6" style={{ zIndex: 5, pointerEvents: 'none' }}>
               <div 
                 style={{
                   background: 'rgba(255, 255, 255, 0.9)',
@@ -3648,7 +3658,7 @@ const Carousel3D: React.FC<{
                 }}
               >
                 {item.year}
-      </div>
+              </div>
             </div>
           </div>
         </div>

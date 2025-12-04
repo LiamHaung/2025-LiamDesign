@@ -316,7 +316,7 @@ const PsychologyTestModal: React.FC<{
   // 使用 Portal 渲染到 body，确保在最上层（仅在客户端）
   // 必须在所有条件返回之前调用，遵守 React Hooks 规则
   const [isClient, setIsClient] = useState(typeof window !== 'undefined');
-  
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -666,7 +666,7 @@ const PsychologyTestModal: React.FC<{
         height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
-          backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
         zIndex: 999999,
@@ -676,7 +676,8 @@ const PsychologyTestModal: React.FC<{
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
       >
@@ -831,9 +832,9 @@ const PsychologyTestModal: React.FC<{
             >
               開始測驗 ｜ Start
             </button>
+          </div>
         </div>
       </div>
-    </div>
     );
     
     // 确保在客户端且 document.body 存在时使用 Portal
@@ -854,7 +855,7 @@ const PsychologyTestModal: React.FC<{
         height: '100vh',
         background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
-          backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
         zIndex: 999999,
@@ -863,7 +864,8 @@ const PsychologyTestModal: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
       >
@@ -1004,7 +1006,8 @@ const PsychologyTestModal: React.FC<{
         justifyContent: 'center',
         padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        pointerEvents: 'auto'
       }}
       onClick={onClose}
       >
@@ -1735,28 +1738,29 @@ const PsychologyTestModal: React.FC<{
   const hasAnswer = answers[currentQ.id] !== undefined;
 
   const content = (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0, 0, 0, 0.7)',
+      background: 'rgba(0, 0, 0, 0.7)',
         ...(isMobile ? {} : {
-          backdropFilter: 'blur(10px)',
+      backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)'
         }),
-        zIndex: 999999,
+      zIndex: 999999,
         isolation: 'isolate',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: isMobile ? '20px' : '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
-        overflow: 'hidden'
-      }}
-      onClick={onClose}
-      >
+        overflow: 'hidden',
+        pointerEvents: 'auto'
+    }}
+    onClick={onClose}
+    >
       <div style={{
         maxWidth: isMobile ? '100%' : '900px',
         width: '100%',
