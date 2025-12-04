@@ -103,6 +103,8 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 1024);
     };
@@ -323,6 +325,8 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleResize = () => {
       const isMobile = window.innerWidth < 1024;
       if (isMobile) {

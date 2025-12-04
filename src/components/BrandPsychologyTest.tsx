@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import html2canvas from "html2canvas";
 
 // 测验题目数据
 const questions = [
@@ -315,6 +314,8 @@ const PsychologyTestModal: React.FC<{
   const router = useRouter();
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    
     if (isOpen) {
       // 重置状态
       setCurrentStep('intro');
@@ -450,6 +451,8 @@ const PsychologyTestModal: React.FC<{
     }
     // 清理函數
     return () => {
+      if (typeof window === 'undefined' || typeof document === 'undefined') return;
+      
       const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
@@ -557,12 +560,15 @@ const PsychologyTestModal: React.FC<{
   };
 
   const handleShare = async () => {
-    if (!resultType || !shareImageRef.current) return;
+    if (typeof window === 'undefined' || !resultType || !shareImageRef.current) return;
     
     const resultData = careerResults[resultType];
     if (!resultData) return;
     
     try {
+      // 动态导入 html2canvas
+      const html2canvas = (await import('html2canvas')).default;
+      
       // 等待所有图片加载
       const imgs = shareImageRef.current.querySelectorAll('img');
       await Promise.all(Array.from(imgs).map((img) => {
@@ -604,9 +610,11 @@ const PsychologyTestModal: React.FC<{
       }, 'image/png', 1.0);
     } catch (error) {
       console.error('生成圖片失敗:', error);
-      const text = `我剛測出自己是【${resultData.title} ${resultData.titleEn}】，原來我的品牌是這樣的角色。你也可以試試看～`;
-      navigator.clipboard.writeText(text);
-      alert('已複製到剪貼簿！');
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        const text = `我剛測出自己是【${resultData.title} ${resultData.titleEn}】，原來我的品牌是這樣的角色。你也可以試試看～`;
+        navigator.clipboard.writeText(text);
+        alert('已複製到剪貼簿！');
+      }
     }
   };
 
@@ -648,7 +656,10 @@ const PsychologyTestModal: React.FC<{
         width: '100%',
         height: '100%',
         background: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(10px)',
+        ...(isMobile ? {} : {
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)'
+        }),
         zIndex: 9999999,
         isolation: 'isolate',
         display: 'flex',
@@ -825,7 +836,10 @@ const PsychologyTestModal: React.FC<{
         width: '100%',
         height: '100%',
         background: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(10px)',
+        ...(isMobile ? {} : {
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)'
+        }),
         zIndex: 9999999,
         isolation: 'isolate',
         display: 'flex',
@@ -955,7 +969,10 @@ const PsychologyTestModal: React.FC<{
         width: '100%',
         height: '100%',
         background: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(10px)',
+        ...(isMobile ? {} : {
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)'
+        }),
         zIndex: 9999999,
         isolation: 'isolate',
         display: 'flex',
@@ -1687,24 +1704,27 @@ const PsychologyTestModal: React.FC<{
   const hasAnswer = answers[currentQ.id] !== undefined;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0, 0, 0, 0.7)',
-      backdropFilter: 'blur(10px)',
-      zIndex: 9999999,
-      isolation: 'isolate',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: isMobile ? '20px' : '40px',
-      fontFamily: 'var(--font-google-sans-flex), sans-serif'
-    }}
-    onClick={onClose}
-    >
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.7)',
+        ...(isMobile ? {} : {
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)'
+        }),
+        zIndex: 9999999,
+        isolation: 'isolate',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: isMobile ? '20px' : '40px',
+        fontFamily: 'var(--font-google-sans-flex), sans-serif'
+      }}
+      onClick={onClose}
+      >
       <div style={{
         maxWidth: '900px',
         width: '100%',

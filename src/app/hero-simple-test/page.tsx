@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import PsychologyTestCard from "@/components/BrandPsychologyTest";
 // import Carousel3D from '../../components/Carousel3D';
@@ -3102,9 +3103,9 @@ const DesignDiary: React.FC<{
                            color: '#FFFFFF',
                            borderRadius: '20px',
                            fontSize: '0.75rem',
-                           fontFamily: 'var(--font-noto-sans-tc), sans-serif',
+                                fontFamily: 'var(--font-noto-sans-tc), sans-serif',
                            fontWeight: 'bold',
-                           transition: 'all 0.2s ease',
+                                transition: 'all 0.2s ease',
                            border: 'none'
                          }}
                          onMouseEnter={(e) => {
@@ -3186,16 +3187,25 @@ const DesignDiary: React.FC<{
           <div
             style={{
               position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0, 0.4)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              zIndex: 100000,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'rgba(0, 0, 0, 0.6)',
+              ...(isMobile ? {} : {
+                backdropFilter: 'blur(30px)',
+                WebkitBackdropFilter: 'blur(30px)'
+              }),
+              zIndex: 999999,
+              isolation: 'isolate',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '1.5rem',
-              animation: 'fadeIn 0.3s ease'
+              padding: isMobile ? '1rem' : '1.5rem',
+              animation: 'fadeIn 0.3s ease',
+              overflow: 'auto'
             }}
             onClick={() => onSelectEntry(null)}
           >
@@ -3223,20 +3233,23 @@ const DesignDiary: React.FC<{
                 border: '2px solid #FFFFFF',
                 borderRadius: '24px',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-                width: isMobile ? '90vw' : '800px',
-                minWidth: isMobile ? '90vw' : '800px',
-                maxWidth: isMobile ? '90vw' : '800px',
+                width: isMobile ? '95vw' : '800px',
+                minWidth: isMobile ? '95vw' : '800px',
+                maxWidth: isMobile ? '95vw' : '800px',
                 height: 'auto',
-                maxHeight: isMobile ? '70vh' : '60vh',
+                maxHeight: isMobile ? '90vh' : '85vh',
                 overflowY: 'auto',
-                overflowX: 'visible',
+                overflowX: 'hidden',
                 paddingTop: '3rem',
                 paddingLeft: isMobile ? '1.5rem' : '3rem',
                 paddingRight: isMobile ? '1.5rem' : '3rem',
                 paddingBottom: '2rem',
                 position: 'relative',
                 fontFamily: 'var(--font-noto-sans-tc), sans-serif',
-                animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                zIndex: 999999,
+                margin: 'auto',
+                WebkitOverflowScrolling: 'touch'
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -3311,7 +3324,7 @@ const DesignDiary: React.FC<{
                 alignSelf: 'flex-end', // 對齊到右側
                 marginLeft: 'auto', // 推到右側
                 marginBottom: 'auto', // 推到頂部
-                zIndex: 100002, // 確保在最上層
+                zIndex: 999999, // 確保在最上層
                 width: 'fit-content',
                 height: 'fit-content'
               }}>
@@ -3334,7 +3347,7 @@ const DesignDiary: React.FC<{
                   justifyContent: 'center',
                   transition: 'all 0.3s ease',
                   fontWeight: 'bold',
-                  zIndex: 100002, // 確保在最上層
+                  zIndex: 999999, // 確保在最上層
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)'
@@ -3411,14 +3424,14 @@ const Carousel3D: React.FC<{
   const speedWheel = reverse ? -0.02 : 0.02; // 反向時速度反轉
   const speedDrag = reverse ? 0.1 : -0.1; // 反向時拖動方向反轉
 
-  // 計算 Z-index - 確保激活的card在最上層
+  // 計算 Z-index - 確保激活的card始終在最上層
   const getZindex = (array: ProjectItem[], activeIndex: number) => 
     array.map((_, i) => {
       if (i === activeIndex) {
-        // 激活的card使用最高的z-index
-        return array.length * 2;
+        // 激活的card使用最高的z-index，確保在最上層（01時01在最上，02時02在最上，以此類推）
+        return array.length * 10;
       } else {
-        // 其他card根據距離遞減
+        // 其他card根據距離遞減，但確保不會超過激活的卡片
         return array.length - Math.abs(i - activeIndex);
       }
     });
@@ -3606,7 +3619,7 @@ const Carousel3D: React.FC<{
             <div className="absolute bottom-6 left-6 z-20 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif' }}>
               <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
               {!isMobile && (
-                <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
+              <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
               )}
       </div>
             
@@ -5389,11 +5402,35 @@ export default function HeroSimpleTest() {
       ],
       detailedDescription: "細胞移植相關資訊通常既龐大又專業。\n\n這本手冊的任務不是替醫師講課，而是把資訊整理得更清楚，\n\n讓需要了解流程的人，能安心地一步一步讀下去。\n\n整份手冊的設計重點在「專業感與易讀性」。\n\n從版面、配色到資訊分層，都以醫療領域的穩定與信賴為主軸。\n\n沒有過度繁複的圖像，也沒有讓人負擔的專業術語堆積——\n\n目的是讓使用者能快速掌握：\n\n流程怎麼走、服務包含什麼、每一步的意義是什麼。\n\n我們透過乾淨的文字架構、圖示與強調色，\n\n讓複雜的醫療技術，變成一份「可以慢慢讀，也能快速找到答案」的理解工具。\n\n這本手冊不是醫療書籍，\n\n而是一份「在重要決定之前，能讓人覺得安心」的資訊陪伴。",
       year: 2024
+    },
+    {
+      id: 8,
+      title: "餐廳限定活動文宣",
+      description: "整個文宣的視覺語氣以「溫暖、飽滿、節慶感」呈現",
+      image: "/project-covor-08.png",
+      tags: ["期間限定", "餐廳文宣", "台灣豬", "品牌插畫", "菜單設計"],
+      galleryImages: [
+        "/project-08-01.png"
+      ],
+      detailedDescription: "在地食材 × 誠實風味\n\n整個文宣的視覺語氣以「溫暖、飽滿、節慶感」呈現，\n\n呼應限定檔期帶來的少量珍貴與搶眼亮點。\n\n插畫角色也延續品牌語氣，讓內容更親近、看起來更「好吃」。",
+      year: 2025
+    },
+    {
+      id: 9,
+      title: "毛起來嘉年華 Ft.竹北寵物節提案",
+      description: "竹北動物日的主視覺，希望讓活動一眼就能感受到：這是一場為毛孩量身打造的慶典。沒有比賽壓力、沒有複雜的規則，只有音樂、野餐、互動與歡笑，一個真正屬於寵物的城市派對。",
+      image: "/project-covor-09.png",
+      tags: ["寵物活動", "主視覺設計", "插畫活動海報", "城市節慶", "竹北動物日"],
+      galleryImages: [
+        "/project-09-01.png"
+      ],
+      detailedDescription: "視覺以溫暖的手繪筆觸呈現城市中的小慶典：\n\n狗狗和貓咪一起演奏、野餐桌上的蛋糕、樹蔭下的旗幟與陽光，\n\n每個角色都像是在活動前偷偷練習，準備迎接城市裡最熱鬧的一天。\n\n整體風格以「友善、溫柔、可參與」為主，\n\n讓活動看起來不只是公部門宣傳，\n\n而是居民與毛孩都能真的融入其中的節日。\n\n主視覺想傳達的很簡單——\n\n有毛孩的地方，就有快樂聚集的理由。",
+      year: 2025
     }
   ];
 
-  // 第一組輪播（id 1-7）
-  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 7);
+  // 第一組輪播（id 1-9）
+  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 9);
   
   // 第二組輪播（id 8-10）
   const secondCarouselItems = allCarouselItems.filter(item => item.id >= 8 && item.id <= 10);
@@ -6786,10 +6823,10 @@ export default function HeroSimpleTest() {
         id="brand-quiz-section"
         className="w-full py-12 md:py-16" 
         style={{ 
-          background: '#003EC3',
-          minHeight: '400px',
-          position: 'relative',
-          zIndex: 10
+        background: '#003EC3',
+        minHeight: '400px',
+        position: 'relative',
+        zIndex: 10
         }}
       >
         <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
@@ -7425,6 +7462,87 @@ export default function HeroSimpleTest() {
           <DesignDiary entries={diaryEntries} selectedEntry={selectedDiaryEntry} onSelectEntry={setSelectedDiaryEntry} />
         </div>
       </div>
+
+      {/* 日記彈出視窗 - 使用 Portal 渲染到 body 最外層，確保在最上層 */}
+      {selectedDiaryEntry && isClient && typeof window !== 'undefined' && typeof document !== 'undefined' && document.body ? createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'rgba(0, 0, 0, 0.6)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              zIndex: 999999,
+              isolation: 'isolate',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1.5rem'
+            }}
+            onClick={() => setSelectedDiaryEntry(null)}
+          >
+            <div
+              style={{
+                background: '#FCFBE4',
+                border: '2px solid #FFFFFF',
+                borderRadius: '24px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                width: '800px',
+                maxWidth: '95vw',
+                maxHeight: '85vh',
+                overflowY: 'auto',
+                padding: '3rem',
+                position: 'relative',
+                fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedDiaryEntry(null)}
+                style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '20px',
+                  background: 'rgba(0, 0, 0, 0.6)',
+                  color: '#FFFFFF',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderRadius: '50%',
+                  width: '2rem',
+                  height: '2rem',
+                  cursor: 'pointer',
+                  fontSize: '1.25rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                ×
+              </button>
+              <h2 style={{
+                fontSize: 'clamp(1.75rem, 4vw, 2.25rem)',
+                fontWeight: 'bold',
+                color: '#000000',
+                fontFamily: 'var(--font-handwriting), var(--font-noto-sans-tc), sans-serif',
+                marginBottom: '1.5rem'
+              }}>
+                {selectedDiaryEntry.title}
+              </h2>
+              <p style={{
+                color: '#000000',
+                lineHeight: '1.8',
+                whiteSpace: 'pre-line',
+                fontSize: '1.5rem',
+                fontFamily: 'var(--font-noto-sans-tc), sans-serif'
+              }}>
+                {selectedDiaryEntry.content}
+              </p>
+            </div>
+          </div>,
+          document.body
+        ) : null}
 
       {/* 深色區域 - 包含星星和內容 */}
       <div 

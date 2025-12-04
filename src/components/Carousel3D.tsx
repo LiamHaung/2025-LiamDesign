@@ -35,9 +35,17 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
   const speedWheel = 0.02;
   const speedDrag = -0.1;
 
-  // Get Z-index for items
+  // Get Z-index for items - 確保激活的卡片始終在最上層
   const getZindex = (array: unknown[], index: number) => 
-    array.map((_, i) => (index === i) ? array.length : array.length - Math.abs(index - i));
+    array.map((_, i) => {
+      if (i === index) {
+        // 激活的卡片使用最高的 z-index，確保在最上層
+        return array.length * 10;
+      } else {
+        // 其他卡片根據距離遞減，但確保不會超過激活的卡片
+        return array.length - Math.abs(index - i);
+      }
+    });
 
   // Display items with proper positioning
   const displayItems = (item: CarouselItem, index: number, activeIndex: number) => {
