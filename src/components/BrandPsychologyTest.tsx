@@ -315,7 +315,7 @@ const PsychologyTestModal: React.FC<{
   
   // 使用 Portal 渲染到 body，确保在最上层（仅在客户端）
   // 必须在所有条件返回之前调用，遵守 React Hooks 规则
-  const [isClient, setIsClient] = useState(typeof window !== 'undefined');
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -837,11 +837,8 @@ const PsychologyTestModal: React.FC<{
       </div>
     );
     
-    // 确保在客户端且 document.body 存在时使用 Portal
-    if (isClient && typeof window !== 'undefined' && document.body) {
-      return createPortal(content, document.body);
-    }
-    return content;
+    // 确保在客户端使用 Portal
+    return isClient ? createPortal(content, document.body) : null;
   }
 
   // Loading Page
@@ -975,11 +972,8 @@ const PsychologyTestModal: React.FC<{
       </div>
     );
     
-    // 确保在客户端且 document.body 存在时使用 Portal
-    if (isClient && typeof window !== 'undefined' && document.body) {
-      return createPortal(content, document.body);
-    }
-    return content;
+    // 确保在客户端使用 Portal
+    return isClient ? createPortal(content, document.body) : null;
   }
 
   // Result Page
@@ -1725,11 +1719,8 @@ const PsychologyTestModal: React.FC<{
       </div>
     );
     
-    // 确保在客户端且 document.body 存在时使用 Portal
-    if (isClient && typeof window !== 'undefined' && document.body) {
-      return createPortal(content, document.body);
-    }
-    return content;
+    // 确保在客户端使用 Portal
+    return isClient ? createPortal(content, document.body) : null;
   }
 
   // Question Page
@@ -2079,9 +2070,8 @@ const PsychologyTestModal: React.FC<{
     </div>
   );
   
-  return isClient && typeof window !== 'undefined' && document.body
-    ? createPortal(content, document.body)
-    : content;
+  // 确保在客户端使用 Portal
+  return isClient ? createPortal(content, document.body) : null;
 };
 
 // 心理测验 Card 入口组件
