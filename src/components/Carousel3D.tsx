@@ -44,7 +44,7 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
     const zIndex = getZindex(items, activeIndex)[index];
     const activeValue = (index - activeIndex) / items.length;
     
-    const spacing = 'clamp(300px, 45vw, 1100px)';
+    const spacing = 'clamp(360px, 54vw, 1320px)'; // 增加20%: 300*1.2=360, 45*1.2=54, 1100*1.2=1320
     
     return {
       '--zIndex': zIndex,
@@ -211,7 +211,7 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
                   left: '30px',
                   transition: 'opacity .8s cubic-bezier(0, 0.02, 0, 1)',
                   fontSize: 'clamp(32px, 12vw, 120px)',
-                  fontFamily: 'var(--font-zpix), monospace',
+                  fontFamily: 'var(--font-google-sans-flex), sans-serif',
                   fontWeight: 'bold',
                   opacity: 0.7,
                   pointerEvents: 'none'
@@ -286,7 +286,7 @@ const Carousel3D: React.FC<Carousel3DProps> = ({ items }) => {
                 borderRadius: '4px',
                 border: 'none',
                 background: active === index 
-                  ? 'rgba(255, 255, 255, 0.9)' 
+                  ? '#003EC3' // 品牌藍
                   : 'rgba(255, 255, 255, 0.3)',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',

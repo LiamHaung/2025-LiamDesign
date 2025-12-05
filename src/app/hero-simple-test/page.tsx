@@ -5348,6 +5348,7 @@ export default function HeroSimpleTest() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isPsychologyTestOpen, setIsPsychologyTestOpen] = useState(false);
+  const [isBrandQuizVisible, setIsBrandQuizVisible] = useState(false);
   
   // 載入狀態管理
   const [loadingPhase, setLoadingPhase] = useState<'loading' | 'ready' | 'main'>('loading');
@@ -5407,6 +5408,7 @@ export default function HeroSimpleTest() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // 當BRAND QUIZ區塊進入視口時，隱藏滾動條
+            setIsBrandQuizVisible(true);
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
             // 添加class以應用CSS
@@ -5414,6 +5416,7 @@ export default function HeroSimpleTest() {
             document.documentElement.classList.add('brand-quiz-visible');
           } else {
             // 當BRAND QUIZ區塊離開視口時，恢復滾動條（除非有其他modal打開）
+            setIsBrandQuizVisible(false);
             if (!isContactModalOpen && !isModalOpen && !isPriceModalOpen && !isProductModalOpen && !isCartSidebarOpen && !selectedDiaryEntry && !isPsychologyTestOpen) {
               document.body.style.overflow = 'unset';
               document.documentElement.style.overflow = 'unset';
@@ -6163,7 +6166,7 @@ export default function HeroSimpleTest() {
       scrollY: scrollY,
       blueSectionHeight: blueSectionHeight,
       darkSectionHeight: darkSectionHeight,
-      hideScrollIndicator: isModalOpen || !!selectedDiaryEntry // 彈出視窗打開時隱藏 scroll 指示器
+      hideScrollIndicator: isModalOpen || !!selectedDiaryEntry || isBrandQuizVisible // 彈出視窗打開時或BRAND QUIZ區塊可見時隱藏 scroll 指示器
     };
 
     return <DreamyHero {...props} />;
