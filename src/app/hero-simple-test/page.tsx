@@ -3446,8 +3446,7 @@ const Carousel3D: React.FC<{
       activeValue = -activeValue;
     }
     
-    // 桌面版本间距增加20%：1144 * 1.2 = 1372.8, 45vw * 1.2 = 54vw
-    const spacing = isMobile ? 'clamp(300px, 45vw, 1144px)' : 'clamp(300px, 54vw, 1372.8px)';
+    const spacing = 'clamp(300px, 45vw, 1144px)';
     
     return {
       '--zIndex': zIndex,
@@ -3599,7 +3598,7 @@ const Carousel3D: React.FC<{
             
             {/* 編號 - 第四层 (z-4) */}
             <div className="absolute top-6 left-6 text-white" style={{ zIndex: 4, pointerEvents: 'none' }}>
-              <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '900' }}>
+              <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>
                 {String(index + startNumber + 1).padStart(2, '0')}
               </span>
             </div>
@@ -3691,7 +3690,7 @@ const Carousel3D: React.FC<{
                 borderRadius: '4px',
                 border: 'none',
                 background: active === index 
-                  ? '#003EC3' 
+                  ? 'rgba(255, 255, 255, 0.9)' 
                   : 'rgba(255, 255, 255, 0.3)',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
@@ -3757,7 +3756,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
   // 動畫狀態控制
   const [glassOpacity, setGlassOpacity] = useState(0); // 毛玻璃區塊透明度
   const [title1Opacity, setTitle1Opacity] = useState(0); // "Own the Day." 透明度
-  const [title2Opacity, setTitle2Opacity] = useState(0); // "一起書寫你我的品牌故事" 透明度
+  const [title2Opacity, setTitle2Opacity] = useState(0); // "一起來書寫好玩的品牌故事" 透明度
   const [ctaOpacity, setCtaOpacity] = useState(0); // CTA 按鈕透明度
   
   // 封面元素淡入動畫狀態（主次層次）
@@ -3799,7 +3798,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
       setTitle1Opacity(1);
     }, 1400);
     
-    // 6. "一起書寫你我的品牌故事" 淡入 (1900-2400ms)
+    // 6. "一起來書寫好玩的品牌故事" 淡入 (1900-2400ms)
     const timer3 = setTimeout(() => {
       setTitle2Opacity(1);
     }, 1900);
@@ -5396,54 +5395,6 @@ export default function HeroSimpleTest() {
     };
   }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry]);
 
-  // 監控BRAND QUIZ區塊，自動隱藏滾動條
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const brandQuizSection = document.getElementById('brand-quiz-section');
-    if (!brandQuizSection) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // 當BRAND QUIZ區塊進入視口時，隱藏滾動條
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-            // 添加class以應用CSS
-            document.body.classList.add('brand-quiz-visible');
-            document.documentElement.classList.add('brand-quiz-visible');
-          } else {
-            // 當BRAND QUIZ區塊離開視口時，恢復滾動條（除非有其他modal打開）
-            if (!isContactModalOpen && !isModalOpen && !isPriceModalOpen && !isProductModalOpen && !isCartSidebarOpen && !selectedDiaryEntry && !isPsychologyTestOpen) {
-              document.body.style.overflow = 'unset';
-              document.documentElement.style.overflow = 'unset';
-              document.body.classList.remove('brand-quiz-visible');
-              document.documentElement.classList.remove('brand-quiz-visible');
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.1, // 當10%的區塊進入視口時觸發
-        rootMargin: '0px'
-      }
-    );
-
-    observer.observe(brandQuizSection);
-
-    return () => {
-      observer.disconnect();
-      // 清理時恢復滾動條
-      if (!isContactModalOpen && !isModalOpen && !isPriceModalOpen && !isProductModalOpen && !isCartSidebarOpen && !selectedDiaryEntry && !isPsychologyTestOpen) {
-        document.body.style.overflow = 'unset';
-        document.documentElement.style.overflow = 'unset';
-        document.body.classList.remove('brand-quiz-visible');
-        document.documentElement.classList.remove('brand-quiz-visible');
-      }
-    };
-  }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry, isPsychologyTestOpen]);
-
   // 輪播組件數據
   const allCarouselItems: ProjectItem[] = [
     {
@@ -6203,19 +6154,6 @@ export default function HeroSimpleTest() {
         
         html {
           background-color: #353535; /* 確保 html 也是深色背景 */
-        }
-        
-        /* 當BRAND QUIZ區塊可見時，隱藏滾動條 */
-        body.brand-quiz-visible,
-        html.brand-quiz-visible {
-          overflow: hidden !important;
-        }
-        
-        body.brand-quiz-visible::-webkit-scrollbar,
-        html.brand-quiz-visible::-webkit-scrollbar {
-          display: none !important;
-          width: 0 !important;
-          height: 0 !important;
         }
         
         .hero-test-container {

@@ -272,14 +272,9 @@ const PsychologyTestModal: React.FC<{
     if (isOpen) {
       // 记录当前滚动位置
       const scrollY = window.scrollY;
-      // 锁定背景并隐藏滚动条 - 使用class方式更强制
-      document.body.classList.add('modal-open');
-      document.documentElement.classList.add('modal-open');
+      // 锁定背景并隐藏滚动条
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = '0px';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
       // 隐藏滚动条（兼容不同浏览器）
       document.documentElement.style.overflow = 'hidden';
       // 保存滚动位置以便恢复
@@ -287,13 +282,8 @@ const PsychologyTestModal: React.FC<{
     } else {
       // 恢复背景滚动
       const scrollY = document.body.getAttribute('data-scroll-y');
-      document.body.classList.remove('modal-open');
-      document.documentElement.classList.remove('modal-open');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.documentElement.style.overflow = '';
       if (scrollY) {
         window.scrollTo(0, parseInt(scrollY));
@@ -304,13 +294,8 @@ const PsychologyTestModal: React.FC<{
     // 清理函数
     return () => {
       if (typeof window === 'undefined' || typeof document === 'undefined') return;
-      document.body.classList.remove('modal-open');
-      document.documentElement.classList.remove('modal-open');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.documentElement.style.overflow = '';
     };
   }, [isOpen]);
@@ -437,33 +422,14 @@ const PsychologyTestModal: React.FC<{
             }
           }
           
-          /* 强制隐藏滚动条 - 所有浏览器 */
+          /* 隐藏滚动条 */
           .modal-overlay::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
+            display: none;
           }
           
           .modal-overlay {
-            -ms-overflow-style: none !important;
-            scrollbar-width: none !important;
-            overflow: -moz-scrollbars-none !important;
-          }
-          
-          /* 隐藏body和html的滚动条 */
-          body.modal-open,
-          html.modal-open {
-            overflow: hidden !important;
-            position: fixed !important;
-            width: 100% !important;
-            height: 100% !important;
-          }
-          
-          body.modal-open::-webkit-scrollbar,
-          html.modal-open::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
           }
         `}</style>
         <div 
@@ -631,33 +597,14 @@ const PsychologyTestModal: React.FC<{
             to { transform: rotate(360deg); }
           }
           
-          /* 强制隐藏滚动条 - 所有浏览器 */
+          /* 隐藏滚动条 */
           .modal-overlay::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
+            display: none;
           }
           
           .modal-overlay {
-            -ms-overflow-style: none !important;
-            scrollbar-width: none !important;
-            overflow: -moz-scrollbars-none !important;
-          }
-          
-          /* 隐藏body和html的滚动条 */
-          body.modal-open,
-          html.modal-open {
-            overflow: hidden !important;
-            position: fixed !important;
-            width: 100% !important;
-            height: 100% !important;
-          }
-          
-          body.modal-open::-webkit-scrollbar,
-          html.modal-open::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
           }
         `}</style>
       <div 
@@ -1309,33 +1256,14 @@ const PsychologyTestModal: React.FC<{
   return (
     <>
       <style jsx global>{`
-        /* 强制隐藏滚动条 - 所有浏览器 */
+        /* 隐藏滚动条 */
         .modal-overlay::-webkit-scrollbar {
-          display: none !important;
-          width: 0 !important;
-          height: 0 !important;
+          display: none;
         }
         
         .modal-overlay {
-          -ms-overflow-style: none !important;
-          scrollbar-width: none !important;
-          overflow: -moz-scrollbars-none !important;
-        }
-        
-        /* 隐藏body和html的滚动条 */
-        body.modal-open,
-        html.modal-open {
-          overflow: hidden !important;
-          position: fixed !important;
-          width: 100% !important;
-          height: 100% !important;
-        }
-        
-        body.modal-open::-webkit-scrollbar,
-        html.modal-open::-webkit-scrollbar {
-          display: none !important;
-          width: 0 !important;
-          height: 0 !important;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
       <div 
