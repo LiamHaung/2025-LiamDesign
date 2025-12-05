@@ -272,9 +272,14 @@ const PsychologyTestModal: React.FC<{
     if (isOpen) {
       // 记录当前滚动位置
       const scrollY = window.scrollY;
-      // 锁定背景并隐藏滚动条
+      // 锁定背景并隐藏滚动条 - 使用class方式更强制
+      document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = '0px';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       // 隐藏滚动条（兼容不同浏览器）
       document.documentElement.style.overflow = 'hidden';
       // 保存滚动位置以便恢复
@@ -282,20 +287,30 @@ const PsychologyTestModal: React.FC<{
     } else {
       // 恢复背景滚动
       const scrollY = document.body.getAttribute('data-scroll-y');
+      document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       document.documentElement.style.overflow = '';
       if (scrollY) {
         window.scrollTo(0, parseInt(scrollY));
         document.body.removeAttribute('data-scroll-y');
-      }
+    }
     }
 
     // 清理函数
     return () => {
       if (typeof window === 'undefined' || typeof document === 'undefined') return;
+      document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       document.documentElement.style.overflow = '';
     };
   }, [isOpen]);
@@ -422,14 +437,33 @@ const PsychologyTestModal: React.FC<{
             }
           }
           
-          /* 隐藏滚动条 */
+          /* 强制隐藏滚动条 - 所有浏览器 */
           .modal-overlay::-webkit-scrollbar {
-            display: none;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
           }
           
           .modal-overlay {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow: -moz-scrollbars-none !important;
+          }
+          
+          /* 隐藏body和html的滚动条 */
+          body.modal-open,
+          html.modal-open {
+            overflow: hidden !important;
+            position: fixed !important;
+            width: 100% !important;
+            height: 100% !important;
+          }
+          
+          body.modal-open::-webkit-scrollbar,
+          html.modal-open::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
           }
         `}</style>
         <div 
@@ -597,14 +631,33 @@ const PsychologyTestModal: React.FC<{
             to { transform: rotate(360deg); }
           }
           
-          /* 隐藏滚动条 */
+          /* 强制隐藏滚动条 - 所有浏览器 */
           .modal-overlay::-webkit-scrollbar {
-            display: none;
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
           }
           
           .modal-overlay {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow: -moz-scrollbars-none !important;
+          }
+          
+          /* 隐藏body和html的滚动条 */
+          body.modal-open,
+          html.modal-open {
+            overflow: hidden !important;
+            position: fixed !important;
+            width: 100% !important;
+            height: 100% !important;
+          }
+          
+          body.modal-open::-webkit-scrollbar,
+          html.modal-open::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
           }
         `}</style>
       <div 
@@ -1256,20 +1309,39 @@ const PsychologyTestModal: React.FC<{
   return (
     <>
       <style jsx global>{`
-        /* 隐藏滚动条 */
+        /* 强制隐藏滚动条 - 所有浏览器 */
         .modal-overlay::-webkit-scrollbar {
-          display: none;
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
         }
         
         .modal-overlay {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+          overflow: -moz-scrollbars-none !important;
+        }
+        
+        /* 隐藏body和html的滚动条 */
+        body.modal-open,
+        html.modal-open {
+          overflow: hidden !important;
+          position: fixed !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+        
+        body.modal-open::-webkit-scrollbar,
+        html.modal-open::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
         }
       `}</style>
       <div 
         className="modal-overlay"
         style={{
-        position: 'fixed',
+      position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.85)',
       zIndex: 999999,
@@ -1596,9 +1668,9 @@ const PsychologyTestCard: React.FC<{
         }}
       >
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+                alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
           textAlign: 'center',
@@ -1606,60 +1678,60 @@ const PsychologyTestCard: React.FC<{
           gap: 'clamp(20px, 3vw, 30px)'
         }}>
           {/* 1. 在品牌世界裡，你屬於哪個魔法角色呢？ */}
-          <h3 style={{
-            fontSize: isMobile ? 'clamp(1.1rem, 3vw, 1.4rem)' : 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: '900',
-            color: '#fffff3',
+            <h3 style={{
+              fontSize: isMobile ? 'clamp(1.1rem, 3vw, 1.4rem)' : 'clamp(1.5rem, 3vw, 2rem)',
+              fontWeight: '900',
+              color: '#fffff3',
             margin: 0,
-            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
             lineHeight: '1.3'
           }}>
-            在品牌世界裡，你屬於<br />
-            <span style={{
-              background: 'linear-gradient(135deg, #fffff3 0%, #e9a52f 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>哪個魔法角色呢？</span>
-          </h3>
+              在品牌世界裡，你屬於<br />
+              <span style={{
+                background: 'linear-gradient(135deg, #fffff3 0%, #e9a52f 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>哪個魔法角色呢？</span>
+            </h3>
 
           {/* 2. 用6個小問題快速掌握品牌合適的設計路線！ */}
-          <div style={{
-            background: 'rgba(255, 255, 243, 0.05)',
+            <div style={{
+              background: 'rgba(255, 255, 243, 0.05)',
             borderRadius: '12px',
             padding: 'clamp(12px, 2vw, 16px)',
-            border: '1px solid rgba(255, 255, 243, 0.1)',
+              border: '1px solid rgba(255, 255, 243, 0.1)',
             maxWidth: '600px',
             width: '100%'
           }}>
-            <p style={{
-              fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(1rem, 2vw, 1.3rem)',
-              color: '#e0e0e0',
-              lineHeight: '1.6',
-              fontFamily: 'var(--font-google-sans-flex), sans-serif',
-              fontWeight: '500',
-              margin: 0
-            }}>
+              <p style={{
+                fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(1rem, 2vw, 1.3rem)',
+                color: '#e0e0e0',
+                lineHeight: '1.6',
+                fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                fontWeight: '500',
+                margin: 0
+              }}>
               用<span style={{ color: '#e9a52f', fontWeight: '700', fontSize: '1.1em' }}>6個小問題</span>快速掌握品牌合適的設計路線！
-            </p>
+              </p>
           </div>
 
           {/* 3. 圖片 */}
-          <div style={{
+            <div style={{
             width: '100%',
-            position: 'relative',
+              position: 'relative',
             height: isMobile ? 'clamp(180px, 35vw, 250px)' : 'clamp(200px, 25vw, 300px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             zIndex: 1
-          }}>
+            }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/test-visual.png"
-              alt="Character"
-              style={{
-                objectFit: 'contain',
+                    alt="Character"
+                    style={{
+                      objectFit: 'contain',
                 padding: 'clamp(8px, 2vw, 12px)',
                 transform: 'scale(2.0)',
                 transformOrigin: 'center center',
@@ -1667,34 +1739,34 @@ const PsychologyTestCard: React.FC<{
                 height: '100%',
                 position: 'relative',
                 zIndex: 1
-              }}
-            />
-          </div>
+                  }}
+                />
+              </div>
 
           {/* 4. 開始測驗按鈕 */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            style={{
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
               padding: isMobile ? 'clamp(12px, 2.5vw, 16px) clamp(28px, 6vw, 40px)' : 'clamp(14px, 2.5vw, 18px) clamp(24px, 4vw, 32px)',
-              background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-              border: 'none',
-              borderRadius: '50px',
-              color: 'white',
+                    background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+                    border: 'none',
+                    borderRadius: '50px',
+                    color: 'white',
               fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(0.9rem, 1.8vw, 1.1rem)',
-              fontWeight: '700',
-              fontFamily: 'var(--font-google-sans-flex), sans-serif',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
+                    fontWeight: '700',
+                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
               width: isMobile ? '100%' : 'auto',
               minWidth: isMobile ? 'clamp(140px, 35vw, 200px)' : 'auto',
               textAlign: 'center',
               position: 'relative',
               zIndex: 10
-            }}
-          >
+                  }}
+                >
             {isMobile ? '開始測驗' : '開始測驗 ｜ Start'}
-          </button>
+                </button>
         </div>
       </div>
 

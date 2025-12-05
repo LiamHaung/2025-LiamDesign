@@ -4053,7 +4053,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
               color: '#353535',
               fontFamily: 'LINESeedJP, sans-serif',
-              fontWeight: '800',
+              fontWeight: '700',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
               margin: 0,
               letterSpacing: '0.03em',
@@ -4065,7 +4065,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               opacity: title2Opacity,
               transition: 'opacity 0.5s ease-in'
             }}>
-              一起書寫你我的品牌故事
+              一起來書寫好玩的品牌故事
             </h2>
         </div>
 
@@ -5395,6 +5395,54 @@ export default function HeroSimpleTest() {
     };
   }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry]);
 
+  // 監控BRAND QUIZ區塊，自動隱藏滾動條
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const brandQuizSection = document.getElementById('brand-quiz-section');
+    if (!brandQuizSection) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 當BRAND QUIZ區塊進入視口時，隱藏滾動條
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            // 添加class以應用CSS
+            document.body.classList.add('brand-quiz-visible');
+            document.documentElement.classList.add('brand-quiz-visible');
+          } else {
+            // 當BRAND QUIZ區塊離開視口時，恢復滾動條（除非有其他modal打開）
+            if (!isContactModalOpen && !isModalOpen && !isPriceModalOpen && !isProductModalOpen && !isCartSidebarOpen && !selectedDiaryEntry && !isPsychologyTestOpen) {
+              document.body.style.overflow = 'unset';
+              document.documentElement.style.overflow = 'unset';
+              document.body.classList.remove('brand-quiz-visible');
+              document.documentElement.classList.remove('brand-quiz-visible');
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.1, // 當10%的區塊進入視口時觸發
+        rootMargin: '0px'
+      }
+    );
+
+    observer.observe(brandQuizSection);
+
+    return () => {
+      observer.disconnect();
+      // 清理時恢復滾動條
+      if (!isContactModalOpen && !isModalOpen && !isPriceModalOpen && !isProductModalOpen && !isCartSidebarOpen && !selectedDiaryEntry && !isPsychologyTestOpen) {
+        document.body.style.overflow = 'unset';
+        document.documentElement.style.overflow = 'unset';
+        document.body.classList.remove('brand-quiz-visible');
+        document.documentElement.classList.remove('brand-quiz-visible');
+      }
+    };
+  }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry, isPsychologyTestOpen]);
+
   // 輪播組件數據
   const allCarouselItems: ProjectItem[] = [
     {
@@ -6138,6 +6186,19 @@ export default function HeroSimpleTest() {
         
         html {
           background-color: #353535; /* 確保 html 也是深色背景 */
+        }
+        
+        /* 當BRAND QUIZ區塊可見時，隱藏滾動條 */
+        body.brand-quiz-visible,
+        html.brand-quiz-visible {
+          overflow: hidden !important;
+        }
+        
+        body.brand-quiz-visible::-webkit-scrollbar,
+        html.brand-quiz-visible::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
         }
         
         .hero-test-container {
@@ -8812,7 +8873,7 @@ export default function HeroSimpleTest() {
             letterSpacing: '0.05em',
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
-            CONTACT I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>來吧來吧</span>
+            CONTACT I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>來哩來</span>
           </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
