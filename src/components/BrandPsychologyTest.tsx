@@ -421,6 +421,16 @@ const PsychologyTestModal: React.FC<{
               background-position: 100% 0;
             }
           }
+          
+          /* 隐藏滚动条 */
+          .modal-overlay::-webkit-scrollbar {
+            display: none;
+          }
+          
+          .modal-overlay {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
         `}</style>
         <div 
           style={{
@@ -434,8 +444,12 @@ const PsychologyTestModal: React.FC<{
         padding: isMobile ? '20px' : '40px',
             fontFamily: 'var(--font-google-sans-flex), sans-serif',
             overflow: 'auto',
-            WebkitOverflowScrolling: 'touch'
+            WebkitOverflowScrolling: 'touch',
+            // 隐藏滚动条
+            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none' // IE/Edge
       }}
+      className="modal-overlay"
       >
           <div 
             style={{
@@ -582,8 +596,20 @@ const PsychologyTestModal: React.FC<{
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
+          
+          /* 隐藏滚动条 */
+          .modal-overlay::-webkit-scrollbar {
+            display: none;
+          }
+          
+          .modal-overlay {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
         `}</style>
-      <div style={{
+      <div 
+        className="modal-overlay"
+        style={{
         position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.85)',
@@ -593,7 +619,9 @@ const PsychologyTestModal: React.FC<{
         justifyContent: 'center',
           fontFamily: 'var(--font-google-sans-flex), sans-serif',
           overflow: 'auto',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
       }}
       >
         <div style={{
@@ -683,6 +711,7 @@ const PsychologyTestModal: React.FC<{
     
     return (
       <div 
+        className="modal-overlay"
         style={{
           position: 'fixed',
           inset: 0,
@@ -694,9 +723,10 @@ const PsychologyTestModal: React.FC<{
           padding: isMobile ? '20px' : '40px',
           fontFamily: 'var(--font-google-sans-flex), sans-serif',
           overflow: 'auto',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
         }}
-        onClick={onClose}
       >
         <div style={{
           maxWidth: isMobile ? '100%' : '900px',
@@ -1224,11 +1254,24 @@ const PsychologyTestModal: React.FC<{
   const hasAnswer = answers[currentQ.id] !== undefined;
 
   return (
-    <div 
-      style={{
-      position: 'fixed',
-        inset: 0,
-        background: 'rgba(0, 0, 0, 0.85)',
+    <>
+      <style jsx global>{`
+        /* 隐藏滚动条 */
+        .modal-overlay::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .modal-overlay {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+      <div 
+        className="modal-overlay"
+        style={{
+        position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
       zIndex: 999999,
       display: 'flex',
       alignItems: 'center',
@@ -1236,9 +1279,10 @@ const PsychologyTestModal: React.FC<{
       padding: isMobile ? '20px' : '40px',
         fontFamily: 'var(--font-google-sans-flex), sans-serif',
         overflow: 'auto',
-        WebkitOverflowScrolling: 'touch'
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
     }}
-    onClick={onClose}
     >
       <div style={{
         maxWidth: isMobile ? '100%' : '900px',
@@ -1515,6 +1559,7 @@ const PsychologyTestModal: React.FC<{
         </div>
       </div>
     </div>
+    </>
   );
 };
 
@@ -1616,7 +1661,7 @@ const PsychologyTestCard: React.FC<{
               style={{
                 objectFit: 'contain',
                 padding: 'clamp(8px, 2vw, 12px)',
-                transform: 'scale(2.5)',
+                transform: 'scale(2.0)',
                 transformOrigin: 'center center',
                 width: '100%',
                 height: '100%',

@@ -2929,7 +2929,7 @@ const DesignDiary: React.FC<{
           zIndex: 11
         }}>
           <h1 style={{
-            fontSize: isMobile ? 'clamp(2rem, 8vw, 3rem)' : 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: isMobile ? 'clamp(1.2rem, 4.8vw, 1.8rem)' : 'clamp(1.5rem, 4.8vw, 3.6rem)',
             fontWeight: '900',
             color: '#FFFFFF',
             margin: '0 0 20px 0',
@@ -4051,9 +4051,9 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             {/* 副標題 - 響應式字體大小（等比例放大 1.2 倍） */}
             <h2 style={{
               fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
-              fontWeight: '400',
               color: '#353535',
-              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              fontFamily: 'LINESeedJP, sans-serif',
+              fontWeight: '800',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
               margin: 0,
               letterSpacing: '0.03em',
@@ -7093,7 +7093,7 @@ export default function HeroSimpleTest() {
             }}></div>
             
             <h1 style={{
-              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+              fontSize: 'clamp(1.5rem, 4.8vw, 3.6rem)',
               fontWeight: '900',
               color: '#FFFFFF',
               margin: '0 0 10px 0',
@@ -7156,7 +7156,7 @@ export default function HeroSimpleTest() {
           position: 'relative'
         }}>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(1.5rem, 4.8vw, 3.6rem)',
             fontWeight: '900',
             color: '#FFFFFF',
             margin: '0 0 20px 0',
@@ -7772,7 +7772,7 @@ export default function HeroSimpleTest() {
           zIndex: 10
         }}>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(1.5rem, 4.8vw, 3.6rem)',
             fontWeight: '900',
             color: '#FFFFFF',
             margin: '0 0 20px 0',
@@ -8632,7 +8632,7 @@ export default function HeroSimpleTest() {
           zIndex: 15
         }}>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(1.5rem, 4.8vw, 3.6rem)',
             fontWeight: '900',
             color: '#FFFFFF',
             margin: '0 0 20px 0',
@@ -8804,7 +8804,7 @@ export default function HeroSimpleTest() {
           zIndex: 100
         }}>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(1.5rem, 4.8vw, 3.6rem)',
             fontWeight: '900',
             color: '#FFFFF3',
             margin: '0 0 20px 0',
