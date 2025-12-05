@@ -3744,7 +3744,7 @@ const Carousel3D: React.FC<{
   );
 };
 // 夢幻版 Hero 組件
-const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scrollY: number; hideScrollIndicator?: boolean }) => {
+const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 使用傳入的 scrollY prop，不需要內部狀態
   const scrollY = propScrollY || 0;
   
@@ -3900,44 +3900,6 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
         </div>
       </div>
 
-      {/* 中間下方 Scroll 指示器 - 彈出視窗打開時隱藏 */}
-      <div className="scroll-responsive" style={{
-        position: 'absolute',
-        bottom: '60px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 20,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '15px', // 放大 150%: 10px * 1.5 = 15px
-        color: '#666',
-        fontSize: '18px', // 放大 150%: 12px * 1.5 = 18px
-        fontFamily: 'var(--font-zpix), monospace',
-        letterSpacing: '3px', // 放大 150%: 2px * 1.5 = 3px
-        opacity: hideScrollIndicator ? 0 : 1, // 彈出視窗打開時隱藏
-        pointerEvents: hideScrollIndicator ? 'none' : 'auto',
-        transition: 'opacity 0.3s ease'
-      }}>
-        <div>SCROLL</div>
-        <div style={{
-          width: '3px', // 放大 150%: 2px * 1.5 = 3px
-          height: '45px', // 放大 150%: 30px * 1.5 = 45px
-          background: '#666',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          <div style={{
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '12px', // 放大 150%: 8px * 1.5 = 12px
-            background: '#4A90E2',
-            animation: 'scrollIndicator 2s infinite'
-          }}></div>
-        </div>
-      </div>
 
       {/* 中央區域 - Flex 容器：畫面左右上下置中，包含船隻+海浪和標題 */}
       {/* 🔴 紅線：最外層 Flex 容器 */}
@@ -4031,9 +3993,9 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
             {/* 主標題 - 響應式字體大小（等比例放大 1.2 倍） */}
           <h1 style={{
               fontSize: isSmallMobile ? 'clamp(1.44rem, 4.8vw, 2.16rem)' : isMobile ? 'clamp(1.68rem, 5.4vw, 2.64rem)' : isTablet ? 'clamp(1.8rem, 3.6vh, 2.64rem)' : 'clamp(2.16rem, 4.8vh, 3.36rem)',
-            fontWeight: '900',
               color: '#353535',
               fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              fontWeight: '500',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
             margin: 0,
             letterSpacing: '0.1em',
@@ -4053,7 +4015,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
               fontSize: isSmallMobile ? 'clamp(0.9rem, 3vw, 1.2rem)' : isMobile ? 'clamp(1.02rem, 3.6vw, 1.44rem)' : isTablet ? 'clamp(1.08rem, 2.4vh, 1.56rem)' : 'clamp(1.2rem, 3vh, 1.8rem)',
               color: '#353535',
               fontFamily: 'LINESeedJP, sans-serif',
-              fontWeight: '700',
+              fontWeight: '400',
               textAlign: (isMobile || isSmallMobile) ? 'center' : 'left', // 手機版置中，桌面版靠左
               margin: 0,
               letterSpacing: '0.03em',
@@ -5533,8 +5495,8 @@ export default function HeroSimpleTest() {
     }
   ];
 
-  // 第一組輪播（id 1-9）
-  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 9);
+  // 第一組輪播（id 1-10）
+  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 10);
   
   // 第二組輪播（id 8-10）
   const secondCarouselItems = allCarouselItems.filter(item => item.id >= 8 && item.id <= 10);
@@ -6114,8 +6076,7 @@ export default function HeroSimpleTest() {
       backgroundColor: "#13496b",
       scrollY: scrollY,
       blueSectionHeight: blueSectionHeight,
-      darkSectionHeight: darkSectionHeight,
-      hideScrollIndicator: isModalOpen || !!selectedDiaryEntry // 彈出視窗打開時隱藏 scroll 指示器
+      darkSectionHeight: darkSectionHeight
     };
 
     return <DreamyHero {...props} />;
