@@ -5562,11 +5562,27 @@ export default function HeroSimpleTest() {
       ],
       detailedDescription: "視覺以溫暖的手繪筆觸呈現城市中的小慶典：\n\n狗狗和貓咪一起演奏、野餐桌上的蛋糕、樹蔭下的旗幟與陽光，\n\n每個角色都像是在活動前偷偷練習，準備迎接城市裡最熱鬧的一天。\n\n整體風格以「友善、溫柔、可參與」為主，\n\n讓活動看起來不只是公部門宣傳，\n\n而是居民與毛孩都能真的融入其中的節日。\n\n主視覺想傳達的很簡單——\n\n有毛孩的地方，就有快樂聚集的理由。",
       year: 2025
+    },
+    {
+      id: 10,
+      title: "外交部品牌識別提案",
+      description: "中華民國外交部品牌識別優化，重新定義品牌識別之意涵並延續中華民國文化底蘊並結合新生代的活力元素結合蝴蝶、棒球、禮節來傳達禮儀之邦的精神。",
+      image: "/project-covor-10.png",
+      tags: ["品牌識別", "Logo設計", "視覺識別", "政府品牌", "文化設計"],
+      galleryImages: [
+        "/project-10-01.png",
+        "/project-10-02.png",
+        "/project-10-03.png",
+        "/project-10-04.png",
+        "/project-10-05.png"
+      ],
+      detailedDescription: "本識別以「外」字為核心意象，將其筆畫轉化為兩條動態、向外展開的流線。造型融合了多重意涵：借鑒「緞帶」的柔美弧線，傳達台灣好客、溫暖的禮節文化；呼應「蝴蝶王國」的生態多元性，象徵積極的國際交流；並隱含如「棒球」般堅韌不拔的國民精神。這些元素共同體現台灣外交的本質：積極連結世界、建立雙向合作、並向國際社會展現穩定力量與溫厚精神。配色取自台灣在地自然能量——玉山翠青、藍腹鷴綠、太平洋深藍，共同傳達台灣作為民主開放社會，追求和平、互助與共享未來的核心價值。整體標誌以現代幾何節奏，展現「友善穩定、向外連結」的台灣外交形象。",
+      year: 2025
     }
   ];
 
-  // 第一組輪播（id 1-9）
-  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 9);
+  // 第一組輪播（id 1-10）
+  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 10);
   
   // 第二組輪播（id 8-10）
   const secondCarouselItems = allCarouselItems.filter(item => item.id >= 8 && item.id <= 10);
