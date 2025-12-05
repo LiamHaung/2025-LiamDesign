@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 // 测验题目数据
@@ -300,7 +301,14 @@ const PsychologyTestModal: React.FC<{
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  // 确保在客户端渲染
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isOpen || !isMounted) return null;
 
   const handleStart = () => {
     setCurrentStep('question');
@@ -410,7 +418,7 @@ const PsychologyTestModal: React.FC<{
 
   // Intro Page - 添加原设计样式
   if (currentStep === 'intro') {
-    return (
+    const introContent = (
       <>
         <style jsx global>{`
           @keyframes highlight {
@@ -437,7 +445,7 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
             inset: 0,
             background: 'rgba(0, 0, 0, 0.85)',
-        zIndex: 999999,
+        zIndex: 9999999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -585,11 +593,12 @@ const PsychologyTestModal: React.FC<{
       </div>
       </>
     );
+    return typeof window !== 'undefined' ? createPortal(introContent, document.body) : null;
   }
 
   // Loading Page - 添加原设计样式
   if (currentStep === 'loading') {
-    return (
+    const loadingContent = (
       <>
         <style jsx global>{`
           @keyframes rotate {
@@ -613,7 +622,7 @@ const PsychologyTestModal: React.FC<{
         position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.85)',
-        zIndex: 999999,
+        zIndex: 9999999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -703,20 +712,21 @@ const PsychologyTestModal: React.FC<{
         </div>
       </>
     );
+    return typeof window !== 'undefined' ? createPortal(loadingContent, document.body) : null;
   }
 
   // Result Page - 添加原设计样式
   if (currentStep === 'result' && resultType) {
     const resultData = careerResults[resultType];
     
-    return (
+    const resultContent = (
       <div 
         className="modal-overlay"
         style={{
           position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.85)',
-          zIndex: 999999,
+          zIndex: 9999999,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -1246,6 +1256,7 @@ const PsychologyTestModal: React.FC<{
         </div>
       </div>
     );
+    return typeof window !== 'undefined' ? createPortal(resultContent, document.body) : null;
   }
 
   // Question Page - 添加原设计样式
@@ -1253,7 +1264,7 @@ const PsychologyTestModal: React.FC<{
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const hasAnswer = answers[currentQ.id] !== undefined;
 
-  return (
+  const questionContent = (
     <>
       <style jsx global>{`
         /* 隐藏滚动条 */
@@ -1561,6 +1572,7 @@ const PsychologyTestModal: React.FC<{
     </div>
     </>
   );
+  return typeof window !== 'undefined' ? createPortal(questionContent, document.body) : null;
 };
 
 // Card 入口组件
