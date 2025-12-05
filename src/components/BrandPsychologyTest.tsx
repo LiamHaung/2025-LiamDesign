@@ -272,9 +272,11 @@ const PsychologyTestModal: React.FC<{
     if (isOpen) {
       // 记录当前滚动位置
       const scrollY = window.scrollY;
-      // 锁定背景（不使用 position: fixed，改用 overflow: hidden）
+      // 锁定背景并隐藏滚动条
       document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = '0px'; // 防止滚动条消失导致的抖动
+      document.body.style.paddingRight = '0px';
+      // 隐藏滚动条（兼容不同浏览器）
+      document.documentElement.style.overflow = 'hidden';
       // 保存滚动位置以便恢复
       document.body.setAttribute('data-scroll-y', scrollY.toString());
     } else {
@@ -282,6 +284,7 @@ const PsychologyTestModal: React.FC<{
       const scrollY = document.body.getAttribute('data-scroll-y');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
+      document.documentElement.style.overflow = '';
       if (scrollY) {
         window.scrollTo(0, parseInt(scrollY));
         document.body.removeAttribute('data-scroll-y');
@@ -293,6 +296,7 @@ const PsychologyTestModal: React.FC<{
       if (typeof window === 'undefined' || typeof document === 'undefined') return;
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
+      document.documentElement.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -432,7 +436,6 @@ const PsychologyTestModal: React.FC<{
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch'
       }}
-      onClick={onClose}
       >
           <div 
             style={{
@@ -592,7 +595,6 @@ const PsychologyTestModal: React.FC<{
           overflow: 'auto',
           WebkitOverflowScrolling: 'touch'
       }}
-      onClick={onClose}
       >
         <div style={{
           textAlign: 'center',
@@ -1550,189 +1552,104 @@ const PsychologyTestCard: React.FC<{
       >
         <div style={{
           display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
-          gap: isMobile ? '0' : 'clamp(20px, 3vw, 30px)',
-          alignItems: isMobile ? 'center' : 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           width: '100%',
-          justifyContent: isMobile ? 'center' : 'center',
-          paddingTop: isMobile ? '0' : 'clamp(8px, 1.5vw, 12px)',
-          paddingBottom: isMobile ? '0' : 'clamp(8px, 1.5vw, 12px)',
-          minHeight: isMobile ? 'auto' : 'clamp(280px, 38vw, 420px)'
+          textAlign: 'center',
+          padding: isMobile ? 'clamp(20px, 4vw, 30px)' : 'clamp(30px, 5vw, 50px)',
+          gap: 'clamp(20px, 3vw, 30px)'
         }}>
-          <div style={{
-            flex: isMobile ? '1' : '0 0 65%',
-            width: isMobile ? '100%' : '65%',
-            zIndex: 2,
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            textAlign: isMobile ? 'center' : 'left'
+          {/* 1. 在品牌世界裡，你屬於哪個魔法角色呢？ */}
+          <h3 style={{
+            fontSize: isMobile ? 'clamp(1.1rem, 3vw, 1.4rem)' : 'clamp(1.5rem, 3vw, 2rem)',
+            fontWeight: '900',
+            color: '#fffff3',
+            margin: 0,
+            fontFamily: 'var(--font-google-sans-flex), sans-serif',
+            lineHeight: '1.3'
           }}>
-            <h3 style={{
-              fontSize: isMobile ? 'clamp(1.1rem, 3vw, 1.4rem)' : 'clamp(1.5rem, 3vw, 2rem)',
-              fontWeight: '900',
-              color: '#fffff3',
-              marginBottom: isMobile ? 'clamp(12px, 2vw, 16px)' : 'clamp(12px, 2vw, 16px)',
-              fontFamily: 'var(--font-google-sans-flex), sans-serif',
-              lineHeight: '1.3'
-            }}>
-              在品牌世界裡，你屬於<br />
-              <span style={{
-                background: 'linear-gradient(135deg, #fffff3 0%, #e9a52f 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>哪個魔法角色呢？</span>
-            </h3>
+            在品牌世界裡，你屬於<br />
+            <span style={{
+              background: 'linear-gradient(135deg, #fffff3 0%, #e9a52f 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>哪個魔法角色呢？</span>
+          </h3>
 
-            <div style={{
-              background: 'rgba(255, 255, 243, 0.05)',
-              borderRadius: isMobile ? '8px' : '12px',
-              padding: isMobile ? 'clamp(12px, 2vw, 16px)' : 'clamp(12px, 1.8vw, 18px)',
-              border: '1px solid rgba(255, 255, 243, 0.1)',
-              marginBottom: isMobile ? 'clamp(16px, 3vw, 24px)' : '0'
+          {/* 2. 用6個小問題快速掌握品牌合適的設計路線！ */}
+          <div style={{
+            background: 'rgba(255, 255, 243, 0.05)',
+            borderRadius: '12px',
+            padding: 'clamp(12px, 2vw, 16px)',
+            border: '1px solid rgba(255, 255, 243, 0.1)',
+            maxWidth: '600px',
+            width: '100%'
+          }}>
+            <p style={{
+              fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(1rem, 2vw, 1.3rem)',
+              color: '#e0e0e0',
+              lineHeight: '1.6',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              fontWeight: '500',
+              margin: 0
             }}>
-              <p style={{
-                fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(1rem, 2vw, 1.3rem)',
-                color: '#e0e0e0',
-                lineHeight: '1.6',
-                fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                fontWeight: '500',
-                margin: 0
-              }}>
-                用<span style={{ color: '#e9a52f', fontWeight: '700', fontSize: '1.1em' }}>6個小問題</span>快速掌握品牌合適的設計路線！
-              </p>
-            </div>
+              用<span style={{ color: '#e9a52f', fontWeight: '700', fontSize: '1.1em' }}>6個小問題</span>快速掌握品牌合適的設計路線！
+            </p>
           </div>
 
-          {isMobile && (
-            <div style={{
-              width: '100%',
-              position: 'relative',
-              height: 'clamp(180px, 35vw, 250px)',
-              zIndex: 1
-            }}>
-              <div style={{
+          {/* 3. 圖片 */}
+          <div style={{
+            width: '100%',
+            position: 'relative',
+            height: isMobile ? 'clamp(180px, 35vw, 250px)' : 'clamp(200px, 25vw, 300px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1
+          }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/test-visual.png"
+              alt="Character"
+              style={{
+                objectFit: 'contain',
+                padding: 'clamp(8px, 2vw, 12px)',
+                transform: 'scale(2.5)',
+                transformOrigin: 'center center',
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                overflow: 'visible',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 zIndex: 1
-              }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/test-visual.png"
-                    alt="Character"
-                    style={{
-                      objectFit: 'contain',
-                    padding: 'clamp(8px, 2vw, 12px)',
-                    transform: 'scale(2.5)',
-                    transformOrigin: 'center center',
-                    width: '100%',
-                    height: '100%',
-                      position: 'relative',
-                      zIndex: 1
-                    }}
-                  />
-                </div>
-                <div style={{
-                  position: 'absolute',
-                bottom: 'clamp(8px, 2vw, 12px)',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                width: 'auto',
-                minWidth: 'clamp(140px, 35vw, 200px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                  zIndex: 10
-                }}>
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    style={{
-                    padding: 'clamp(12px, 2.5vw, 16px) clamp(28px, 6vw, 40px)',
-                      background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-                      border: 'none',
-                      borderRadius: '50px',
-                      color: 'white',
-                    fontSize: 'clamp(0.85rem, 2vw, 1rem)',
-                      fontWeight: '700',
-                      fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
-                    width: '100%',
-                      textAlign: 'center'
-                    }}
-                >
-                  開始測驗
-                  </button>
-              </div>
-            </div>
-          )}
+              }}
+            />
+          </div>
 
-          {!isMobile && (
-            <div style={{
-              flex: '0 0 35%',
-              width: '35%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
+          {/* 4. 開始測驗按鈕 */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            style={{
+              padding: isMobile ? 'clamp(12px, 2.5vw, 16px) clamp(28px, 6vw, 40px)' : 'clamp(14px, 2.5vw, 18px) clamp(24px, 4vw, 32px)',
+              background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
+              border: 'none',
+              borderRadius: '50px',
+              color: 'white',
+              fontSize: isMobile ? 'clamp(0.85rem, 2vw, 1rem)' : 'clamp(0.9rem, 1.8vw, 1.1rem)',
+              fontWeight: '700',
+              fontFamily: 'var(--font-google-sans-flex), sans-serif',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
+              width: isMobile ? '100%' : 'auto',
+              minWidth: isMobile ? 'clamp(140px, 35vw, 200px)' : 'auto',
+              textAlign: 'center',
               position: 'relative',
-              zIndex: 1
-            }}>
-              <div style={{
-                width: '100%',
-                height: 'clamp(200px, 25vw, 300px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 'clamp(16px, 2vw, 24px)',
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/test-visual.png"
-                  alt="Character"
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain',
-                    transform: 'scale(2.5)',
-                    transformOrigin: 'center center',
-                    position: 'relative',
-                    zIndex: 1
-                  }}
-                />
-              </div>
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  style={{
-                  padding: 'clamp(14px, 2.5vw, 18px) clamp(24px, 4vw, 32px)',
-                    background: 'linear-gradient(135deg, #8B6F47 0%, #6B5B3D 100%)',
-                    border: 'none',
-                    borderRadius: '50px',
-                    color: 'white',
-                  fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-                    fontWeight: '700',
-                    fontFamily: 'var(--font-google-sans-flex), sans-serif',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 16px rgba(139, 111, 71, 0.5)',
-                    position: 'relative',
-                    zIndex: 10
-                  }}
-                >
-                  開始測驗 ｜ Start
-                </button>
-            </div>
-          )}
+              zIndex: 10
+            }}
+          >
+            {isMobile ? '開始測驗' : '開始測驗 ｜ Start'}
+          </button>
         </div>
       </div>
 

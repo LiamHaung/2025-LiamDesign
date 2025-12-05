@@ -2937,7 +2937,7 @@ const DesignDiary: React.FC<{
             letterSpacing: '0.05em',
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
-            DESIGN DIARY
+            DESIGN DIARY I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>設計隨筆</span>
           </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
@@ -5347,6 +5347,7 @@ export default function HeroSimpleTest() {
   const [selectedStep, setSelectedStep] = useState<number | null>(1);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [isPsychologyTestOpen, setIsPsychologyTestOpen] = useState(false);
   
   // 載入狀態管理
   const [loadingPhase, setLoadingPhase] = useState<'loading' | 'ready' | 'main'>('loading');
@@ -6119,6 +6120,14 @@ export default function HeroSimpleTest() {
       {showMainContent && (
         <>
           <style jsx global>{`
+        @font-face {
+          font-family: 'LINESeedJP';
+          src: url('/fonts/LINESeedJP_A_TTF_Eb.ttf') format('truetype');
+          font-weight: 800;
+          font-style: normal;
+          font-display: swap;
+        }
+        
         body {
           margin: 0;
           padding: 0;
@@ -6288,7 +6297,7 @@ export default function HeroSimpleTest() {
       `}</style>
 
       {/* 手機版漢堡選單 */}
-      {isMobile && (
+      {isMobile && !isPsychologyTestOpen && (
         <div style={{
           position: 'fixed',
           top: '20px',
@@ -6603,8 +6612,9 @@ export default function HeroSimpleTest() {
         transition: 'all 0.3s ease, opacity 0.5s ease-in-out',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         cursor: 'pointer',
-        opacity: isMobile && isScrolling ? 0 : navOpacity,
-        pointerEvents: (isMobile && isScrolling) || navOpacity === 0 ? 'none' : 'auto'
+        opacity: (isMobile && (isScrolling || isPsychologyTestOpen)) ? 0 : navOpacity,
+        pointerEvents: (isMobile && (isScrolling || isPsychologyTestOpen)) || navOpacity === 0 ? 'none' : 'auto',
+        display: (isMobile && isPsychologyTestOpen) ? 'none' : 'block'
       }}
       onClick={() => setIsIntroModalOpen(true)}
       onMouseEnter={(e) => {
@@ -6819,8 +6829,9 @@ export default function HeroSimpleTest() {
         border: '1px solid rgba(255, 255, 255, 0.2)',
         transition: 'all 0.3s ease, opacity 0.3s ease-in-out',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        opacity: isMobile && isScrolling ? 0 : 1,
-        pointerEvents: isMobile && isScrolling ? 'none' : 'auto'
+        opacity: (isMobile && (isScrolling || isPsychologyTestOpen)) ? 0 : 1,
+        pointerEvents: (isMobile && (isScrolling || isPsychologyTestOpen)) ? 'none' : 'auto',
+        display: (isMobile && isPsychologyTestOpen) ? 'none' : 'block'
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = 'rgba(0, 62, 195, 0.2)';
@@ -7085,14 +7096,14 @@ export default function HeroSimpleTest() {
               fontSize: 'clamp(2.5rem, 8vw, 6rem)',
               fontWeight: '900',
               color: '#FFFFFF',
-              margin: '0 0 20px 0',
+              margin: '0 0 10px 0',
               textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
               letterSpacing: '0.05em',
               fontFamily: 'var(--font-google-sans-flex), sans-serif',
               position: 'relative',
               zIndex: 10
             }}>
-              BRAND QUIZ
+              BRAND QUIZ I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>品牌測驗</span>
             </h1>
             <p style={{
               fontSize: 'clamp(1rem, 3vw, 1.5rem)',
@@ -7114,7 +7125,11 @@ export default function HeroSimpleTest() {
             position: 'relative',
             zIndex: 1
           }}>
-            <PsychologyTestCard isMobile={isMobile} />
+            <PsychologyTestCard 
+              isMobile={isMobile} 
+              isOpen={isPsychologyTestOpen}
+              onOpenChange={setIsPsychologyTestOpen}
+            />
           </div>
         </div>
       </div>
@@ -7149,8 +7164,8 @@ export default function HeroSimpleTest() {
             letterSpacing: '0.05em',
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
-            PROJECTS
-          </h1>
+            PROJECTS I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>作品總覽</span>
+            </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
             color: '#E8F4FD',
@@ -7765,7 +7780,7 @@ export default function HeroSimpleTest() {
             letterSpacing: '0.05em',
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
-            OUR SERVICES
+            OUR SERVICES I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>服務流程</span>
           </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
@@ -8797,7 +8812,7 @@ export default function HeroSimpleTest() {
             letterSpacing: '0.05em',
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
-            CONTACT
+            CONTACT I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>來吧來吧</span>
           </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
@@ -8855,15 +8870,6 @@ export default function HeroSimpleTest() {
           zIndex: 100,
           padding: isMobile ? '0 20px' : '0 40px'
         }}>
-          <p style={{
-            color: '#FFFFFF',
-            fontSize: '1.2rem',
-            lineHeight: '1.6',
-            marginBottom: '60px'
-          }}>
-            準備好開始你的下一個項目了嗎？讓我們一起創造令人驚艷的設計作品。
-          </p>
-
           {/* 特別適合的品牌 + FAQ 並排容器 */}
           <div 
             id="contact"
@@ -9146,7 +9152,7 @@ export default function HeroSimpleTest() {
             e.currentTarget.style.transform = 'translateY(0)';
             }}
             onClick={() => setIsContactModalOpen(true)}>
-            Get In Touch
+            聯繫我們
           </button>
 
             <button style={{
