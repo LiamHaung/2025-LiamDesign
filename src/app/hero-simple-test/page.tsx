@@ -3756,7 +3756,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
   // 動畫狀態控制
   const [glassOpacity, setGlassOpacity] = useState(0); // 毛玻璃區塊透明度
   const [title1Opacity, setTitle1Opacity] = useState(0); // "Own the Day." 透明度
-  const [title2Opacity, setTitle2Opacity] = useState(0); // "一起來書寫好玩的品牌故事" 透明度
+  const [title2Opacity, setTitle2Opacity] = useState(0); // "一起書寫你我的品牌故事" 透明度
   const [ctaOpacity, setCtaOpacity] = useState(0); // CTA 按鈕透明度
   
   // 封面元素淡入動畫狀態（主次層次）
@@ -3798,7 +3798,7 @@ const DreamyHero = ({ scrollY: propScrollY, hideScrollIndicator = false }: { scr
       setTitle1Opacity(1);
     }, 1400);
     
-    // 6. "一起來書寫好玩的品牌故事" 淡入 (1900-2400ms)
+    // 6. "一起書寫你我的品牌故事" 淡入 (1900-2400ms)
     const timer3 = setTimeout(() => {
       setTitle2Opacity(1);
     }, 1900);
@@ -5533,8 +5533,8 @@ export default function HeroSimpleTest() {
     }
   ];
 
-  // 第一組輪播（id 1-10）
-  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 10);
+  // 第一組輪播（id 1-9）
+  const firstCarouselItems = allCarouselItems.filter(item => item.id >= 1 && item.id <= 9);
   
   // 第二組輪播（id 8-10）
   const secondCarouselItems = allCarouselItems.filter(item => item.id >= 8 && item.id <= 10);
