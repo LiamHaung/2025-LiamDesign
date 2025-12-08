@@ -1231,16 +1231,12 @@ const PsychologyTestModal: React.FC<{
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=108x108&data=${encodeURIComponent('https://2025-liam-design.vercel.app/psychology-test')}`}
+                  src="/qrcode.png"
                   alt="QR Code"
                   style={{
                     width: '108px',
-                    height: '108px',
-                    background: 'white',
-                    padding: '6.48px',
-                    borderRadius: '8.64px'
+                    height: '108px'
                   }}
-                  crossOrigin="anonymous"
                 />
                 <div style={{
                   fontSize: '12.96px',
