@@ -5333,6 +5333,9 @@ export default function HeroSimpleTest() {
   const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
   const [selectedDiaryEntry, setSelectedDiaryEntry] = useState<DiaryEntry | null>(null);
   
+  // 複製提示狀態
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+  
   // 滾動狀態管理（手機版按鈕隱藏/顯示）
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -5739,6 +5742,19 @@ export default function HeroSimpleTest() {
     // 跳轉到 Google Form 或 Typeform
     const formUrl = 'https://forms.gle/your-form-id'; // 替換為實際表單 URL
     window.open(formUrl, '_blank');
+  };
+
+  // 複製到剪貼板函數
+  const handleCopyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(label);
+      setTimeout(() => {
+        setCopiedText(null);
+      }, 2000);
+    } catch (err) {
+      console.error('複製失敗:', err);
+    }
   };
 
   // 區塊數據
@@ -8354,9 +8370,10 @@ export default function HeroSimpleTest() {
                     borderRadius: '15px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    position: 'relative'
                   }}
-                  onClick={() => window.open('mailto:liam@example.com')}
+                  onClick={() => handleCopyToClipboard('liamkont0215@gmail.com', 'modal-email')}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
@@ -8387,14 +8404,31 @@ export default function HeroSimpleTest() {
                       Email
                     </div>
                     <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.9rem' }}>
-                      liam@example.com
+                      liamkont0215@gmail.com
                     </div>
                   </div>
                   
-                  {/* 箭頭 */}
+                  {/* 複製提示 */}
                   <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1.2rem' }}>
-                    →
+                    {copiedText === 'modal-email' ? '✓' : '→'}
                   </div>
+                  {copiedText === 'modal-email' && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '-40px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: '#4A90E2',
+                      color: 'white',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      whiteSpace: 'nowrap',
+                      zIndex: 10
+                    }}>
+                      已複製到剪貼板！
+                    </div>
+                  )}
                 </div>
 
                 {/* LINE */}
@@ -8407,9 +8441,10 @@ export default function HeroSimpleTest() {
                     borderRadius: '15px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    position: 'relative'
                   }}
-                  onClick={() => window.open('#')}
+                  onClick={() => handleCopyToClipboard('@048ddoar', 'modal-line')}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
@@ -8442,14 +8477,31 @@ export default function HeroSimpleTest() {
                       LINE
                     </div>
                     <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.9rem' }}>
-                      @liamdesign
+                      @048ddoar
                     </div>
                   </div>
                   
-                  {/* 箭頭 */}
+                  {/* 複製提示 */}
                   <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1.2rem' }}>
-                    →
+                    {copiedText === 'modal-line' ? '✓' : '→'}
                   </div>
+                  {copiedText === 'modal-line' && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '-40px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: '#4A90E2',
+                      color: 'white',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      whiteSpace: 'nowrap',
+                      zIndex: 10
+                    }}>
+                      已複製到剪貼板！
+                    </div>
+                  )}
                 </div>
 
                 {/* Instagram */}
@@ -8462,9 +8514,10 @@ export default function HeroSimpleTest() {
                     borderRadius: '15px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    position: 'relative'
                   }}
-                  onClick={() => window.open('#')}
+                  onClick={() => handleCopyToClipboard('@3r.liam_', 'modal-instagram')}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
@@ -8501,10 +8554,27 @@ export default function HeroSimpleTest() {
                     </div>
                   </div>
                   
-                  {/* 箭頭 */}
+                  {/* 複製提示 */}
                   <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1.2rem' }}>
-                    →
+                    {copiedText === 'modal-instagram' ? '✓' : '→'}
                   </div>
+                  {copiedText === 'modal-instagram' && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '-40px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: '#4A90E2',
+                      color: 'white',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      whiteSpace: 'nowrap',
+                      zIndex: 10
+                    }}>
+                      已複製到剪貼板！
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -9222,17 +9292,19 @@ export default function HeroSimpleTest() {
             justifyContent: 'center',
             gap: '30px',
             marginBottom: '20px',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            position: 'relative'
           }}>
-            <a 
-              href="mailto:liam@example.com"
+            <div
+              onClick={() => handleCopyToClipboard('liamkont0215@gmail.com', 'email')}
               style={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                textDecoration: 'none',
                 fontSize: '0.9rem',
                 fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 fontWeight: '400',
-                transition: 'color 0.3s ease'
+                transition: 'color 0.3s ease',
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#4A90E2';
@@ -9241,17 +9313,34 @@ export default function HeroSimpleTest() {
                 e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
               }}
             >
-              📧 liam@example.com
-            </a>
-            <a 
-              href="#"
+              📧 liamkont0215@gmail.com
+              {copiedText === 'email' && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-30px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: '#4A90E2',
+                  color: 'white',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap'
+                }}>
+                  已複製！
+                </span>
+              )}
+            </div>
+            <div
+              onClick={() => handleCopyToClipboard('@048ddoar', 'line')}
               style={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                textDecoration: 'none',
                 fontSize: '0.9rem',
                 fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 fontWeight: '400',
-                transition: 'color 0.3s ease'
+                transition: 'color 0.3s ease',
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#4A90E2';
@@ -9260,17 +9349,34 @@ export default function HeroSimpleTest() {
                 e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
               }}
             >
-              💬 LINE @liamdesign
-            </a>
-            <a 
-              href="#"
+              💬 LINE @048ddoar
+              {copiedText === 'line' && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-30px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: '#4A90E2',
+                  color: 'white',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap'
+                }}>
+                  已複製！
+                </span>
+              )}
+            </div>
+            <div
+              onClick={() => handleCopyToClipboard('@3r.liam_', 'instagram')}
               style={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                textDecoration: 'none',
                 fontSize: '0.9rem',
                 fontFamily: 'var(--font-google-sans-flex), sans-serif',
                 fontWeight: '400',
-                transition: 'color 0.3s ease'
+                transition: 'color 0.3s ease',
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#4A90E2';
@@ -9280,7 +9386,23 @@ export default function HeroSimpleTest() {
               }}
             >
               📷 Instagram @3r.liam_
-            </a>
+              {copiedText === 'instagram' && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-30px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: '#4A90E2',
+                  color: 'white',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap'
+                }}>
+                  已複製！
+                </span>
+              )}
+            </div>
           </div>
 
           {/* 分隔線 */}
