@@ -1,9 +1,5 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "nodeVersion": "22.x",
-  "regions": ["hkg1"]
+  "framework": "nextjs"
 }
 
