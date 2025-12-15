@@ -3484,7 +3484,7 @@ const Carousel3D: React.FC<{
 
   const goToPrev = () => {
     setActive((prev) => (prev - 1 + items.length) % items.length);
-  };
+    };
 
   const goToSlide = (index: number) => {
     setActive(index);
@@ -3493,7 +3493,7 @@ const Carousel3D: React.FC<{
   // 键盘控制
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         if (reverse) {
@@ -3516,11 +3516,11 @@ const Carousel3D: React.FC<{
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-      <div 
-        ref={carouselRef}
+    <div 
+      ref={carouselRef}
         className="relative h-full overflow-hidden font-mono"
         style={{ height: 'calc(100% - 80px)' }}
-      >
+    >
       {items.map((item, index) => (
         <div
           key={item.id}
@@ -3550,12 +3550,12 @@ const Carousel3D: React.FC<{
             
             {/* 圖片 - 最底层 (z-1) */}
             <div className="absolute inset-0" style={{ zIndex: 1 }}>
-              <Image 
-                src={item.image || "/illustration_1.png"} 
-                alt={item.title}
-                fill
-                className="object-cover"
-              />
+            <Image 
+              src={item.image || "/illustration_1.png"} 
+              alt={item.title}
+              fill
+              className="object-cover"
+            />
             </div>
             
             {/* 漸層陰影遮罩 - 第二层，在图片上方 (z-2) */}
@@ -3592,16 +3592,16 @@ const Carousel3D: React.FC<{
             <div className="absolute bottom-6 left-6 text-white" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', zIndex: 3, pointerEvents: 'none' }}>
               <h3 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.title}</h3>
               {!isMobile && (
-                <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
+              <p className="text-sm opacity-90" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>{item.description}</p>
               )}
-            </div>
+      </div>
             
             {/* 編號 - 第四层 (z-4) */}
             <div className="absolute top-6 left-6 text-white" style={{ zIndex: 4, pointerEvents: 'none' }}>
               <span className="text-6xl font-bold opacity-70" style={{ fontFamily: 'var(--font-google-sans-flex), sans-serif', fontWeight: '400' }}>
                 {String(index + startNumber + 1).padStart(2, '0')}
               </span>
-            </div>
+      </div>
 
             {/* 年份標籤 - 最上层 (z-5) */}
             <div className="absolute top-6 right-6" style={{ zIndex: 5, pointerEvents: 'none' }}>
@@ -3621,7 +3621,7 @@ const Carousel3D: React.FC<{
                 }}
               >
                 {item.year}
-              </div>
+      </div>
             </div>
           </div>
         </div>
@@ -7158,7 +7158,7 @@ export default function HeroSimpleTest() {
             fontFamily: 'var(--font-google-sans-flex), sans-serif'
           }}>
             PROJECTS I <span style={{ fontFamily: 'LINESeedJP, sans-serif', fontWeight: '800' }}>作品總覽</span>
-            </h1>
+          </h1>
           <p style={{
             fontSize: 'clamp(1rem, 3vw, 1.5rem)',
             color: '#E8F4FD',
@@ -8787,17 +8787,17 @@ export default function HeroSimpleTest() {
         id="contact-section"
         ref={contactSectionRef} 
         style={{
-          minHeight: '100vh',
-          backgroundColor: '#0099FF',
-          position: 'relative',
-          padding: '80px 20px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 0,
-          overflow: 'hidden'
-        }}>
+        minHeight: '100vh',
+        backgroundColor: '#0099FF',
+        position: 'relative',
+        padding: '80px 20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 0,
+        overflow: 'hidden'
+      }}>
         {/* 雲朵裝飾 - CONTACT區域2朵 */}
         <div style={{
           position: 'absolute',
@@ -8921,15 +8921,15 @@ export default function HeroSimpleTest() {
           <div 
             id="contact"
             style={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              gap: isMobile ? '30px' : '24px',
-              marginBottom: '60px',
-              maxWidth: '1200px',
-              margin: '0 auto 60px auto',
-              width: '100%',
-              padding: isMobile ? '0 1rem' : '0 2rem'
-            }}>
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '30px' : '24px',
+            marginBottom: '60px',
+            maxWidth: '1200px',
+            margin: '0 auto 60px auto',
+            width: '100%',
+            padding: isMobile ? '0 1rem' : '0 2rem'
+          }}>
             {/* 特別適合的品牌對話窗 */}
             <div style={{
               background: 'rgba(255, 255, 255, 0.1)',

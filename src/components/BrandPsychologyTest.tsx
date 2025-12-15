@@ -265,6 +265,8 @@ const PsychologyTestModal: React.FC<{
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [resultType, setResultType] = useState<CareerType | null>(null);
   const shareImageRef = useRef<HTMLDivElement>(null);
+  const qrCodeImageRef = useRef<HTMLImageElement>(null);
+  const [qrCodeLoaded, setQrCodeLoaded] = useState(false);
 
   // 背景锁定功能 - 使用安全的方法
   useEffect(() => {
@@ -360,11 +362,47 @@ const PsychologyTestModal: React.FC<{
     if (!shareImageRef.current) return;
 
     try {
+      // 等待所有图片加载完成
+      const waitForImages = (): Promise<void> => {
+        return new Promise((resolve) => {
+          const images = shareImageRef.current?.querySelectorAll('img') || [];
+          const imagePromises: Promise<void>[] = [];
+          
+          images.forEach((img) => {
+            if (img.complete) {
+              return; // 图片已加载
+            }
+            
+            const promise = new Promise<void>((imgResolve) => {
+              img.onload = () => imgResolve();
+              img.onerror = () => imgResolve(); // 即使失败也继续
+            });
+            imagePromises.push(promise);
+          });
+          
+          if (imagePromises.length === 0) {
+            resolve();
+            return;
+          }
+          
+          // 额外等待 200ms 确保图片完全渲染
+          Promise.all(imagePromises).then(() => {
+            setTimeout(resolve, 200);
+          });
+        });
+      };
+
+      // 等待图片加载
+      await waitForImages();
+
       // 动态导入 html2canvas
       const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(shareImageRef.current, {
         backgroundColor: null,
         scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
       });
 
       canvas.toBlob((blob) => {
@@ -1100,9 +1138,9 @@ const PsychologyTestModal: React.FC<{
                   alignItems: 'center'
                 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/star-big.png" alt="Star" style={{ width: '150px', height: '150px', objectFit: 'contain', opacity: 0.8 }} />
+                  <img src="/star-big.png" alt="Star" crossOrigin="anonymous" style={{ width: '150px', height: '150px', objectFit: 'contain', opacity: 0.8 }} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/cloud-1.png" alt="Cloud" style={{ width: '200px', height: 'auto', objectFit: 'contain', opacity: 0.7 }} />
+                  <img src="/cloud-1.png" alt="Cloud" crossOrigin="anonymous" style={{ width: '200px', height: 'auto', objectFit: 'contain', opacity: 0.7 }} />
                 </div>
 
                 {/* 右側裝飾元素 */}
@@ -1118,9 +1156,9 @@ const PsychologyTestModal: React.FC<{
                   alignItems: 'center'
                 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sun-big.png" alt="Sun" style={{ width: '175px', height: '175px', objectFit: 'contain', opacity: 0.8 }} />
+                  <img src="/sun-big.png" alt="Sun" crossOrigin="anonymous" style={{ width: '175px', height: '175px', objectFit: 'contain', opacity: 0.8 }} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/cloud-2.png" alt="Cloud" style={{ width: '200px', height: 'auto', objectFit: 'contain', opacity: 0.7 }} />
+                  <img src="/cloud-2.png" alt="Cloud" crossOrigin="anonymous" style={{ width: '200px', height: 'auto', objectFit: 'contain', opacity: 0.7 }} />
                 </div>
 
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1231,11 +1269,19 @@ const PsychologyTestModal: React.FC<{
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
+                  ref={qrCodeImageRef}
                   src="/qrcode.png"
                   alt="QR Code"
+                  crossOrigin="anonymous"
+                  onLoad={() => setQrCodeLoaded(true)}
+                  onError={(e) => {
+                    console.error('QR Code image failed to load:', e);
+                    setQrCodeLoaded(true); // 即使失败也继续，避免阻塞
+                  }}
                   style={{
                     width: '108px',
-                    height: '108px'
+                    height: '108px',
+                    display: 'block'
                   }}
                 />
                 <div style={{
