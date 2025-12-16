@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import PsychologyTestCard from "@/components/BrandPsychologyTest";
@@ -2290,6 +2290,13 @@ const ProjectModal: React.FC<{
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // 當項目改變或彈窗打開時，重置圖片索引為 0
+  useEffect(() => {
+    if (isOpen && project) {
+      setCurrentImageIndex(0);
+    }
+  }, [isOpen, project]);
+
   if (!isOpen || !project) return null;
 
   const nextImage = () => {
@@ -3416,15 +3423,26 @@ const DesignDiary: React.FC<{
 };
 
 // 3D 輪播組件
-const Carousel3D: React.FC<{
+export interface Carousel3DRef {
+  resetIndex: () => void;
+}
+
+const Carousel3D = forwardRef<Carousel3DRef, {
   items: ProjectItem[];
   onItemClick: (item: ProjectItem) => void;
   reverse?: boolean; // 是否反向（從右到左）
   startNumber?: number; // 起始編號（默認為0，即從01開始）
-}> = ({ items, onItemClick, reverse = false, startNumber = 0 }) => {
+}>(({ items, onItemClick, reverse = false, startNumber = 0 }, ref) => {
   const [active, setActive] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // 暴露重置方法给父组件
+  useImperativeHandle(ref, () => ({
+    resetIndex: () => {
+      setActive(0);
+    }
+  }));
 
   // 計算 Z-index - 確保激活的card始終在最上層
   const getZindex = (array: ProjectItem[], activeIndex: number) => 
@@ -3742,7 +3760,10 @@ const Carousel3D: React.FC<{
       </div>
     </div>
   );
-};
+});
+
+Carousel3D.displayName = 'Carousel3D';
+
 // 夢幻版 Hero 組件
 const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
   // 使用傳入的 scrollY prop，不需要內部狀態
@@ -5347,6 +5368,8 @@ export default function HeroSimpleTest() {
   const diarySectionRef = useRef<HTMLDivElement>(null);
   const firstCarouselRef = useRef<HTMLDivElement>(null);
   const secondCarouselRef = useRef<HTMLDivElement>(null);
+  const firstCarouselComponentRef = useRef<Carousel3DRef>(null);
+  const secondCarouselComponentRef = useRef<Carousel3DRef>(null);
 
   // 鎖定背景滾動（當彈出視窗打開時）
   useEffect(() => {
@@ -5359,6 +5382,25 @@ export default function HeroSimpleTest() {
       document.body.style.overflow = 'unset';
     };
   }, [isContactModalOpen, isModalOpen, isPriceModalOpen, isProductModalOpen, isCartSidebarOpen, selectedDiaryEntry]);
+
+  // 當品牌測驗彈窗關閉時，重置 3D 輪播的 index
+  const prevPsychologyTestOpenRef = useRef<boolean>(false);
+  useEffect(() => {
+    // 只在從打開變為關閉時重置
+    if (prevPsychologyTestOpenRef.current && !isPsychologyTestOpen) {
+      // 使用 setTimeout 確保在彈窗完全關閉後再重置
+      setTimeout(() => {
+        // 彈窗關閉時重置兩個輪播的 index
+        if (firstCarouselComponentRef.current) {
+          firstCarouselComponentRef.current.resetIndex();
+        }
+        if (secondCarouselComponentRef.current) {
+          secondCarouselComponentRef.current.resetIndex();
+        }
+      }, 100);
+    }
+    prevPsychologyTestOpenRef.current = isPsychologyTestOpen;
+  }, [isPsychologyTestOpen]);
 
   // 輪播組件數據
   const allCarouselItems: ProjectItem[] = [
@@ -7181,7 +7223,7 @@ export default function HeroSimpleTest() {
             position: 'relative',
           zIndex: 10
         }}>
-          <Carousel3D items={firstCarouselItems} onItemClick={handleProjectClick} />
+          <Carousel3D ref={firstCarouselComponentRef} items={firstCarouselItems} onItemClick={handleProjectClick} />
         </div>
 
         {/* 分隔線 */}
@@ -7225,7 +7267,7 @@ export default function HeroSimpleTest() {
             zIndex: 10,
             display: 'none' // 隱藏第二組輪播
         }}>
-          <Carousel3D items={secondCarouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={7} />
+          <Carousel3D ref={secondCarouselComponentRef} items={secondCarouselItems} onItemClick={handleProjectClick} reverse={true} startNumber={7} />
         </div>
 
         {/* 雲朵裝飾 - PROJECTS區域1朵 */}
