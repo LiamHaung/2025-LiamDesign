@@ -5801,11 +5801,12 @@ export default function HeroSimpleTest() {
 
   // 區塊數據
   const sections = [
-    { id: 'hero', name: 'Hero', nameZh: '首頁' },
-    { id: 'portfolio', name: 'Portfolio', nameZh: '作品' },
-    { id: 'diary', name: 'Diary', nameZh: '日記' },
-    { id: 'services', name: 'Services', nameZh: '服務' },
-    { id: 'contact', name: 'Contact', nameZh: '聯繫' }
+    { id: 'hero', name: 'Hero', nameZh: '首頁', anchor: '' },
+    { id: 'quiz', name: 'Quiz', nameZh: '測驗', anchor: '#brand-quiz-section' },
+    { id: 'portfolio', name: 'Portfolio', nameZh: '作品', anchor: '#projects' },
+    { id: 'diary', name: 'Diary', nameZh: '日記', anchor: '#diary-section' },
+    { id: 'services', name: 'Services', nameZh: '服務', anchor: '#services-section' },
+    { id: 'contact', name: 'Contact', nameZh: '聯繫', anchor: '#contact' }
   ];
 
   // 滾動偵測 - 判斷當前區塊（使用實際元素位置）
@@ -6400,20 +6401,23 @@ export default function HeroSimpleTest() {
                   key={section.id}
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    const windowHeight = window.innerHeight;
-                    let targetScroll = 0;
                     
-                    switch (index) {
-                      case 0: targetScroll = 0; break;
-                      case 1: targetScroll = windowHeight; break;
-                      case 2: targetScroll = windowHeight + blueSectionHeight; break;
-                      case 3: targetScroll = windowHeight + blueSectionHeight + darkSectionHeight; break;
+                    if (index === 0) {
+                      // 首頁：滾動到頂部
+                      window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                      });
+                    } else if (section.anchor) {
+                      // 使用錨點導航
+                      const element = document.querySelector(section.anchor);
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start'
+                        });
+                      }
                     }
-                    
-                    window.scrollTo({
-                      top: targetScroll,
-                      behavior: 'smooth'
-                    });
                   }}
                   style={{
                     display: 'block',
@@ -7360,6 +7364,7 @@ export default function HeroSimpleTest() {
 
       {/* 設計日記區域 - 深色背景並向上覆蓋藍色區域 */}
       <div 
+        id="diary-section"
         ref={diarySectionRef}
         style={{
         position: 'relative',
