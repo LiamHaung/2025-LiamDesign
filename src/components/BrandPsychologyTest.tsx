@@ -266,7 +266,6 @@ const PsychologyTestModal: React.FC<{
   const [resultType, setResultType] = useState<CareerType | null>(null);
   const shareImageRef = useRef<HTMLDivElement>(null);
   const qrCodeImageRef = useRef<HTMLImageElement>(null);
-  const [qrCodeLoaded, setQrCodeLoaded] = useState(false);
 
   // 背景锁定功能 - 使用安全的方法
   useEffect(() => {
@@ -1273,10 +1272,8 @@ const PsychologyTestModal: React.FC<{
                   src="/qrcode.png"
                   alt="QR Code"
                   crossOrigin="anonymous"
-                  onLoad={() => setQrCodeLoaded(true)}
                   onError={(e) => {
                     console.error('QR Code image failed to load:', e);
-                    setQrCodeLoaded(true); // 即使失败也继续，避免阻塞
                   }}
                   style={{
                     width: '108px',
