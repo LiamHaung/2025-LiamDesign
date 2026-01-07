@@ -4080,10 +4080,17 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             {/* 按鈕 1: Explore Portfolio */}
             <button
               onClick={() => {
-                const projectSection = document.getElementById('projects-section');
-                if (projectSection) {
-                  projectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                setTimeout(() => {
+                  const element = document.querySelector('#projects');
+                  if (element) {
+                    const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offset = 80; // 偏移量，避免被固定导航栏遮挡
+                    window.scrollTo({
+                      top: elementTop - offset,
+                      behavior: 'smooth'
+                    });
+                  }
+                }, 100);
               }}
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
@@ -4119,10 +4126,17 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             {/* 按鈕 2: Our Services */}
             <button
               onClick={() => {
-                const servicesSection = document.getElementById('services-section');
-                if (servicesSection) {
-                  servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                setTimeout(() => {
+                  const element = document.querySelector('#services-section');
+                  if (element) {
+                    const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offset = 80; // 偏移量，避免被固定导航栏遮挡
+                    window.scrollTo({
+                      top: elementTop - offset,
+                      behavior: 'smooth'
+                    });
+                  }
+                }, 100);
               }}
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
@@ -4158,10 +4172,17 @@ const DreamyHero = ({ scrollY: propScrollY }: { scrollY: number }) => {
             {/* 按鈕 3: BRAND QUIZ */}
             <button
               onClick={() => {
-                const brandQuizSection = document.getElementById('brand-quiz-section');
-                if (brandQuizSection) {
-                  brandQuizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                setTimeout(() => {
+                  const element = document.querySelector('#brand-quiz-section');
+                  if (element) {
+                    const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offset = 80; // 偏移量，避免被固定导航栏遮挡
+                    window.scrollTo({
+                      top: elementTop - offset,
+                      behavior: 'smooth'
+                    });
+                  }
+                }, 100);
               }}
               style={{
                 padding: isSmallMobile ? '10px 20px' : isMobile ? '12px 24px' : '14px 28px',
