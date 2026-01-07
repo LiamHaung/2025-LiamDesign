@@ -8564,7 +8564,7 @@ export default function HeroSimpleTest() {
                     transition: 'all 0.3s ease',
                     position: 'relative'
                   }}
-                  onClick={() => handleCopyToClipboard('@3r.liam_', 'modal-instagram')}
+                  onClick={() => handleCopyToClipboard('@liam_story_made', 'modal-instagram')}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                     e.currentTarget.style.transform = 'translateY(-2px)';
@@ -8597,7 +8597,7 @@ export default function HeroSimpleTest() {
                       Instagram
                     </div>
                     <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.9rem' }}>
-                      @3r.liam_
+                      @liam_story_made
                     </div>
                   </div>
                   
@@ -9415,7 +9415,7 @@ export default function HeroSimpleTest() {
               )}
             </div>
             <div
-              onClick={() => handleCopyToClipboard('@3r.liam_', 'instagram')}
+              onClick={() => handleCopyToClipboard('@liam_story_made', 'instagram')}
               style={{
                 color: 'rgba(255, 255, 255, 0.8)',
                 fontSize: '0.9rem',
@@ -9432,7 +9432,7 @@ export default function HeroSimpleTest() {
                 e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
               }}
             >
-              📷 Instagram @3r.liam_
+              📷 Instagram @liam_story_made
               {copiedText === 'instagram' && (
                 <span style={{
                   position: 'absolute',
