@@ -5814,42 +5814,54 @@ export default function HeroSimpleTest() {
     if (typeof window === 'undefined') return;
     
     const updateCurrentSection = () => {
-    const windowHeight = window.innerHeight;
+      const windowHeight = window.innerHeight;
       
-      // 使用 getBoundingClientRect 獲取每個區塊相對於視窗的位置
-      const sections = [
-        { ref: null, top: 0 }, // Hero
-        { ref: blueSectionRef, top: 0 },
-        { ref: diarySectionRef, top: 0 },
-        { ref: darkSectionRef, top: 0 },
-        { ref: contactSectionRef, top: 0 }
-      ];
-      
-      // 獲取每個區塊的實際位置（相對於視窗頂部）
+      // 使用 sections 數組的 anchor 屬性獲取每個區塊的位置
       const sectionPositions = sections.map((section, index) => {
         if (index === 0) return 0; // Hero 在頂部
-        if (section.ref?.current) {
-          const rect = section.ref.current.getBoundingClientRect();
-          return rect.top + window.scrollY;
+        
+        if (section.anchor) {
+          const element = document.querySelector(section.anchor);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            return rect.top + window.scrollY;
+          }
         }
         return Infinity; // 如果元素不存在，設為 Infinity
       });
       
       // 當前滾動位置
       const scrollPosition = window.scrollY;
+      const viewportTop = scrollPosition;
       const viewportCenter = scrollPosition + windowHeight / 2;
     
-    let newSection = 0;
+      let newSection = 0;
       
-      // 從後往前判斷，找到第一個視窗中心超過的區塊
-      for (let i = sectionPositions.length - 1; i >= 0; i--) {
-        if (viewportCenter >= sectionPositions[i] - windowHeight * 0.2) {
+      // 從前往後判斷，找到視窗中心所在或視窗頂部已進入的區塊
+      for (let i = 0; i < sectionPositions.length; i++) {
+        const sectionTop = sectionPositions[i];
+        const sectionBottom = i < sectionPositions.length - 1 
+          ? sectionPositions[i + 1] 
+          : Infinity;
+        
+        // 如果視窗中心在當前區塊範圍內
+        if (viewportCenter >= sectionTop && viewportCenter < sectionBottom) {
           newSection = i;
           break;
         }
-    }
+        // 如果視窗頂部已經進入當前區塊（即使中心還沒到）
+        if (viewportTop >= sectionTop && viewportTop < sectionBottom) {
+          newSection = i;
+          break;
+        }
+      }
+      
+      // 如果視窗中心在最後一個區塊之後，設為最後一個區塊
+      if (viewportCenter >= sectionPositions[sectionPositions.length - 1]) {
+        newSection = sectionPositions.length - 1;
+      }
     
-    setCurrentSection(newSection);
+      setCurrentSection(newSection);
     };
     
     // 初始更新
@@ -6410,13 +6422,17 @@ export default function HeroSimpleTest() {
                       });
                     } else if (section.anchor) {
                       // 使用錨點導航
-                      const element = document.querySelector(section.anchor);
-                      if (element) {
-                        element.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start'
-                        });
-                      }
+                      setTimeout(() => {
+                        const element = document.querySelector(section.anchor);
+                        if (element) {
+                          const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+                          const offset = 80; // 偏移量，避免被固定导航栏遮挡
+                          window.scrollTo({
+                            top: elementTop - offset,
+                            behavior: 'smooth'
+                          });
+                        }
+                      }, 100);
                     }
                   }}
                   style={{
@@ -6496,54 +6512,27 @@ export default function HeroSimpleTest() {
               }}
               onClick={() => {
                 setHoveredNavIndex(null);
-                // 平滑滾動到對應區塊
-                const windowHeight = window.innerHeight;
-                let targetScroll = 0;
                 
-                switch (index) {
-                  case 0: // Hero
-                    targetScroll = 0;
-                    break;
-                  case 1: // Portfolio (第一個作品 - 第一組輪播元件)
-                    if (firstCarouselRef.current) {
-                      firstCarouselRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      return;
-                    } else if (blueSectionRef.current) {
-                      targetScroll = blueSectionRef.current.offsetTop;
-                    } else {
-                    targetScroll = windowHeight;
+                if (index === 0) {
+                  // 首頁：滾動到頂部
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                } else if (section.anchor) {
+                  // 使用錨點導航
+                  setTimeout(() => {
+                    const element = document.querySelector(section.anchor);
+                    if (element) {
+                      const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+                      const offset = 80; // 偏移量，避免被固定导航栏遮挡
+                      window.scrollTo({
+                        top: elementTop - offset,
+                        behavior: 'smooth'
+                      });
                     }
-                    break;
-                  case 2: // Diary (日記)
-                    if (diarySectionRef.current) {
-                      diarySectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      return;
-                    } else {
-                    targetScroll = windowHeight + blueSectionHeight;
-                    }
-                    break;
-                  case 3: // Services (服務)
-                    if (darkSectionRef.current) {
-                      // 使用 scrollIntoView 確保正確滾動到服務區塊
-                      darkSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      return; // 直接返回，不需要後續的 window.scrollTo
-                    } else {
-                      targetScroll = windowHeight + blueSectionHeight + diarySectionHeight;
-                    }
-                    break;
-                  case 4: // Contact
-                    if (contactSectionRef.current) {
-                      targetScroll = contactSectionRef.current.offsetTop;
-                    } else {
-                      targetScroll = windowHeight + blueSectionHeight + diarySectionHeight + darkSectionHeight;
-                    }
-                    break;
+                  }, 100);
                 }
-                
-                window.scrollTo({
-                  top: targetScroll,
-                  behavior: 'smooth'
-                });
               }}
               onMouseEnter={(e) => {
                 setHoveredNavIndex(index);
@@ -7175,7 +7164,7 @@ export default function HeroSimpleTest() {
 
       {/* 純藍色背景區域 - 基於內容動態調整高度 */}
       <div 
-        id="projects-section"
+        id="projects"
         ref={blueSectionRef}
         style={{
           backgroundColor: '#003EC3', // 使用 backgroundColor 而不是 background
@@ -7219,7 +7208,6 @@ export default function HeroSimpleTest() {
 
         {/* 3D 輪播組件 */}
         <div 
-          id="projects"
           ref={firstCarouselRef}
           style={{
           width: '100%',
@@ -8831,7 +8819,7 @@ export default function HeroSimpleTest() {
 
       {/* 第二個藍色區域 - CONTACT */}
       <div 
-        id="contact-section"
+        id="contact"
         ref={contactSectionRef} 
         style={{
         minHeight: '100vh',
@@ -8966,7 +8954,6 @@ export default function HeroSimpleTest() {
         }}>
           {/* 特別適合的品牌 + FAQ 並排容器 */}
           <div 
-            id="contact"
             style={{
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
